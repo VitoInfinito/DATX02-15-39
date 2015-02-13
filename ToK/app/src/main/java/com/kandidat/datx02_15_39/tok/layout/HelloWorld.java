@@ -1,9 +1,11 @@
-package com.kandidat.datx02_15_39.tok;
+package com.kandidat.datx02_15_39.tok.layout;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.kandidat.datx02_15_39.tok.R;
 
 
 public class HelloWorld extends ActionBarActivity {
