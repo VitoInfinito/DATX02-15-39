@@ -25,19 +25,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Kost"
-        android:id="@+id/button2"
+        android:id="@+id/diet_button"
         android:layout_below="@+id/button"
         android:layout_alignRight="@+id/button"
         android:layout_alignEnd="@+id/button"
-        android:layout_marginTop="37dp"/>
+        android:layout_marginTop="37dp"
+        android:onClick="OnDietButtonClick"
+        />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sömn"
-        android:id="@+id/button3"
+        android:id="@+id/button2"
         android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/button2"
-        android:layout_alignEnd="@+id/button2"/>
+        android:layout_alignLeft="@+id/diet_button"
+        android:layout_alignStart="@+id/diet_button" />
 
 </RelativeLayout>
