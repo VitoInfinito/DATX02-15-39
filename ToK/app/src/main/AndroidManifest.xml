@@ -11,6 +11,10 @@
             android:name=".layout.MainActivity"
             android:label="@string/title_activity_hello_world" >
         </activity>
+        <activity
+            android:name=".layout.SleepHomeActivity"
+            android:label="@string/title_activity_sleep_home" >
+        </activity>
     </application>
 
 </manifest>
