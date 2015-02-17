@@ -18,37 +18,49 @@
 
         <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:minHeight="70dp"
             android:id="@+id/menu_bar"
             android:columnCount="3"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="top|left|center|right">
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="match_parent"
-                android:text="New Button"
-                android:id="@+id/button3"
+                android:id="@+id/menu_button"
                 android:layout_row="0"
-                android:layout_column="0" />
+                android:layout_column="0"
+                android:layout_gravity="top|left|bottom|right"
+                />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="New Text"
-                android:id="@+id/textView2"
+                android:text="@string/TrainingAndDiet"
+                android:id="@+id/menu_bar_title"
                 android:layout_row="0"
-                android:layout_column="1" />
+                android:layout_column="1"
+                android:layout_gravity="top|left|bottom|right"
+                android:textSize="28sp"
+                android:gravity="center_vertical"/>
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Button"
-                android:id="@+id/button4"
-                android:gravity="right"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:id="@+id/add_activity_button"
                 android:layout_row="0"
-                android:layout_column="2" />
-
+                android:layout_column="2"
+                android:maxWidth="70dp"
+                />
         </GridLayout>
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/body_frame">
+        </FrameLayout>
+
     </LinearLayout>
 </RelativeLayout>
