@@ -1,5 +1,6 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -37,5 +38,14 @@ public class SleepHomeActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Navigates back to the main activity.
+     *
+     * @param view Not used.
+     */
+    public void backButtonOnClick(View view){
+        startActivity(new Intent(this, MainActivity.class));
     }
 }
