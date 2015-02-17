@@ -9,5 +9,6 @@
     <string name="title_activity_diet_home">DietHomeActivity</string>
     <string name="title_activity_sleep_home">SleepHomeActivity</string>
     <string name="TrainingAndDiet">Träning Och Kost</string>
+    <string name="title_activity_add_diet">AddDietActivity</string>
 
 </resources>

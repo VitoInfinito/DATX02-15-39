@@ -8,9 +8,129 @@
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context="com.kandidat.datx02_15_39.tok.layout.AddDietActivity">
 
-    <TextView
-        android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:minHeight="70dp"
+            android:id="@+id/gridLayout"
+            android:columnCount="3"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:useDefaultMargins="true">
+
+            <Button
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:id="@+id/menu_button"
+                android:layout_row="0"
+                android:layout_column="0"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/TrainingAndDiet"
+                android:id="@+id/menu_bar_title"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_gravity="left|center_horizontal|right"
+                android:textSize="20sp"
+                android:gravity="center_vertical|center_horizontal"/>
+
+            <Button
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:id="@+id/button4"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:maxWidth="70dp"
+                />
+        </GridLayout>
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/body_frame">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center">
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:id="@+id/button_container"
+                    android:columnCount="3"
+                    android:rowCount="1"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="100dp"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/scale_button"
+                        android:layout_row="0"
+                        android:layout_column="0"
+                        android:text="scale"
+                        android:maxHeight="100dp"
+                        />
+
+                    <Button
+                        android:layout_width="100dp"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/recipe_button"
+                        android:layout_column="1"
+                        android:layout_row="0"
+                        android:text="recipe"
+                        android:maxHeight="100dp"
+                        android:layout_gravity="center_horizontal"/>
+
+                    <Button
+                        android:layout_width="100dp"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/barcode_button"
+                        android:layout_column="2"
+                        android:layout_row="0"
+                        android:text="barcode"
+                        android:maxHeight="100dp"
+                        />
+                </GridLayout>
+
+                <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:id="@+id/search_container"
+                    >
+
+                    <SearchView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/searchfield"
+                        android:iconifiedByDefault="false"
+                        android:contentDescription="search for..."
+                        android:queryHint="Search for...."/>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/item_container">
+
+                    <ListView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/items_list"
+                        android:layout_gravity="center"
+                        android:choiceMode="multipleChoice"/>
+
+                </FrameLayout>
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
 </RelativeLayout>
