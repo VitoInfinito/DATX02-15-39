@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import com.kandidat.datx02_15_39.tok.R;
 
 
-public class HelloWorld extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
