@@ -40,6 +40,8 @@
         android:id="@+id/button2"
         android:layout_centerVertical="true"
         android:layout_alignLeft="@+id/diet_button"
-        android:layout_alignStart="@+id/diet_button" />
+        android:layout_alignStart="@+id/diet_button"
+        android:onClick="OnSleepButtonClick"
+        />
 
 </RelativeLayout>

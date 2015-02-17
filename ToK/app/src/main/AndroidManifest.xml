@@ -15,6 +15,10 @@
             android:name=".layout.DietHomeActivity"
             android:label="@string/title_activity_diet_home" >
         </activity>
+        <activity
+            android:name=".layout.SleepHomeActivity"
+            android:label="@string/title_activity_sleep_home" >
+        </activity>
     </application>
 
 </manifest>
