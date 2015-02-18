@@ -17,4 +17,12 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:onClick="backButtonOnClick" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/displayCircle"
+        android:layout_above="@+id/backButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="69dp" />
 </RelativeLayout>
