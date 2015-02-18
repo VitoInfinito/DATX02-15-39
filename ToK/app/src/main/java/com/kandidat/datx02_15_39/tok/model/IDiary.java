@@ -1,6 +1,7 @@
 package com.kandidat.datx02_15_39.tok.model;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Lagerstedt on 2015-02-16.
@@ -10,6 +11,8 @@ import java.util.Date;
  * same kind.
  */
 public interface IDiary {
+
+	public IDiary getInstance();
 
     /**
      * A Method to add new activities to your diary
@@ -36,13 +39,19 @@ public interface IDiary {
 	 * Method to show the data of a days activities
 	 * @param day
 	 */
-    public void showDaysActivities(Date day); 							// Return a Diagram maybe ?
+    public List<IDiaryActivity> showDaysActivities(Date day); 							// Return a Diagram maybe ?
 
 	/**
 	 * method to show the data of a weeks activities
 	 * @param start
 	 * @param end
 	 */
-    public void showWeekActivities(Date start, Date end);			// Return a Diagram maybe ?
+    public List<IDiaryActivity> showWeekActivities(Date start, Date end);			// Return a Diagram maybe ?
 
+	/**
+	 * Method used when a already created Activity needs to be changed
+	 * @param id - The id of the specific Activity you want to edit
+	 * @param eap - Contains the Attributes you want to edit
+	 */
+	public void editActivity(String id, EditActivityParams eap);
 }
