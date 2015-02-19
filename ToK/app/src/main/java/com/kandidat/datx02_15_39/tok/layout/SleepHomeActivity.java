@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.kandidat.datx02_15_39.tok.R;
-import com.kandidat.datx02_15_39.tok.model.DrawCircle;
 
 public class SleepHomeActivity extends ActionBarActivity {
 
