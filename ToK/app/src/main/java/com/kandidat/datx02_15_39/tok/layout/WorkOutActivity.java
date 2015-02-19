@@ -1,28 +1,29 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.layout.MainActivity;
 
 
-public class MainActivity extends ActionBarActivity {
+public class WorkOutActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hello_world);
+        setContentView(R.layout.activity_work_out);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_hello_world, menu);
+        getMenuInflater().inflate(R.menu.menu_work_out, menu);
         return true;
     }
 
@@ -40,33 +41,12 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    public void OnDietButtonClick(View view) {
-
-        //kostButton = (Button) findViewById(R.id.diet_button);
-
-        Intent dietIntent = new Intent(this, DietHomeActivity.class);
-
-        startActivity(dietIntent);
-
-
-
-    }
-
     /**
-     * Navigates to sleep activity overview.
+     * Navigates back to the main activity.
      *
      * @param view Not used.
      */
-    public void OnSleepButtonClick(View view) {
-        startActivity(new Intent(this, SleepHomeActivity.class));
-    }
-
-    /**
-     * Navigates to workout activity overview
-     * @param view Not used
-     */
-    public void OnWorkOutButtonClick(View view){
-        startActivity(new Intent(this, WorkOutActivity.class));
+    public void backButtonOnClick(View view){
+        startActivity(new Intent(this, MainActivity.class));
     }
 }
