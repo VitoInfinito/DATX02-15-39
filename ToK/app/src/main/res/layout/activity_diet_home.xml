@@ -8,6 +8,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.kandidat.datx02_15_39.tok.layout.DietHomeActivity">
 
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -32,7 +33,7 @@
                 android:layout_row="0"
                 android:layout_column="0"
                 android:layout_gravity="top|left|bottom|right"
-                />
+                android:text="4" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -60,7 +61,124 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:id="@+id/body_frame">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal">
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal" />
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/graph_frame"></FrameLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal">
+
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/button3"
+                        android:text="&lt;"
+                        android:textSize="20sp"
+                        android:background="@android:color/transparent"
+                         />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Today"
+                        android:textSize="20sp"
+                        android:id="@+id/textView2" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:text=">"
+                        android:textSize="20sp"
+                        android:id="@+id/button5"
+                        android:background="@android:color/transparent"
+                        />
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nutrients_frame">
+
+                    <TableLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent">
+
+                    </TableLayout>
+
+                    <GridLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:columnCount="2"
+                        android:rowCount="3">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="Large Text"
+                            android:id="@+id/textView3"
+                            android:layout_gravity="center"
+                            android:layout_column="0"
+                            android:layout_row="0" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="Large Text"
+                            android:id="@+id/textView4"
+                            android:layout_gravity="center"
+                            android:layout_column="1"
+                            android:layout_row="0" />
+                    </GridLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/diet_feed_frame"></FrameLayout>
+
+            </LinearLayout>
+
+
         </FrameLayout>
+
 
     </LinearLayout>
 </RelativeLayout>
