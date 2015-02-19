@@ -14,9 +14,10 @@ public class DrawCircle extends View {
         super(context);
     }
 
+    @Override
     public void onDraw(Canvas canvas){
 
-
+        super.onDraw(canvas);
 
         Paint p = new Paint();
         p.setAntiAlias(true);
