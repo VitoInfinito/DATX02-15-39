@@ -23,6 +23,10 @@
             android:name=".layout.AddDietActivity"
             android:label="@string/title_activity_add_diet" >
         </activity>
+        <activity
+            android:name=".layout.WorkOutActivity"
+            android:label="@string/title_activity_work_out" >
+        </activity>
     </application>
 
 </manifest>
