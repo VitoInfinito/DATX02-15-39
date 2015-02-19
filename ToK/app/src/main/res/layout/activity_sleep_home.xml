@@ -27,9 +27,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/displayCircle"
+        android:layout_below="@+id/addSleepButton"
         android:layout_above="@+id/backButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="69dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/addSleepButton"
+        android:layout_alignEnd="@+id/addSleepButton" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
