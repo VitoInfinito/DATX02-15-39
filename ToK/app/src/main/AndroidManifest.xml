@@ -19,6 +19,14 @@
             android:name=".layout.SleepHomeActivity"
             android:label="@string/title_activity_sleep_home" >
         </activity>
+        <activity
+            android:name=".layout.AddSleepActivity"
+            android:label="@string/title_activity_add_sleep"
+            android:parentActivityName=".layout.SleepHomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.kandidat.datx02_15_39.tok.layout.SleepHomeActivity" />
+        </activity>
     </application>
 
 </manifest>
