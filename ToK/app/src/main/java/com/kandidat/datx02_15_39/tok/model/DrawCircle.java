@@ -16,16 +16,16 @@ public class DrawCircle extends View {
 
     @Override
     public void onDraw(Canvas canvas){
-
         super.onDraw(canvas);
 
         Paint p = new Paint();
         p.setAntiAlias(true);
         p.setARGB(255, 255,255,255);
+        p.setStrokeWidth(5);
 
         canvas.drawColor(Color.YELLOW);
 
 
-        canvas.drawCircle(10,10,5, p);
+        canvas.drawCircle(120,120,5, p);
     }
 }

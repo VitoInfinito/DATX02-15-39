@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.DrawCircle;
@@ -23,8 +24,26 @@ public class SleepHomeActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sleep_home);
 
-        DrawCircle dc = new DrawCircle(this);
-        setContentView(dc);
+        //DrawCircle dc = new DrawCircle(this);
+        //setContentView(dc);
+        ImageView dispC = (ImageView) findViewById(R.id.displayCircle);
+
+        Bitmap b = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(b);
+        //DrawCircle dc = new DrawCircle();
+        Paint p = new Paint();
+        p.setAntiAlias(true);
+        p.setARGB(255, 255,255,255);
+        p.setStrokeWidth(5);
+
+        c.drawColor(Color.YELLOW);
+        c.drawCircle(120,120,10,p);
+
+        dispC.draw(c);
+
+        //dispC.setImageResource(new DrawCircle(this));
+
+
     }
 
     @Override
