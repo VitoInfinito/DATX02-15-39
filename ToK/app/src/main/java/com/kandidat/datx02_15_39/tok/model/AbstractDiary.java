@@ -33,7 +33,22 @@ public abstract class AbstractDiary implements IDiary {
         //activities.put(sdf.format(d), ida);
     }
 
-    protected void getActivityFromTable
+    protected void removeDate(Date d) {
+        activities.remove(sdf.format(d));
+    }
+
+    //Might have to remake later
+    protected void removeActivity(Date d, IDiaryActivity ida) {
+        String key = sdf.format(d);
+        if(activities.containsKey(key)) {
+            List<IDiaryActivity> idl = activities.get(key);
+            idl.remove(ida);
+        }
+    }
+
+    protected List<IDiaryActivity> getActivitiesFromTable(Date d) {
+        return activities.get(sdf.format(d));
+    }
 
 
 }
