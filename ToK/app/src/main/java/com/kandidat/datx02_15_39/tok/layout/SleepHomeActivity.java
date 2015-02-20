@@ -1,16 +1,21 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.Series;
 import com.kandidat.datx02_15_39.tok.R;
 
 import java.text.DateFormat;
@@ -38,6 +43,12 @@ public class SleepHomeActivity extends ActionBarActivity {
         graph.addSeries(series);
         graph.setTitle("Sleep");
         graph.canScrollHorizontally(1);
+        series.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPoint) {
+                Toast.makeText(getActivity(), "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -78,5 +89,9 @@ public class SleepHomeActivity extends ActionBarActivity {
      */
     public void backButtonOnClick(View view){
         startActivity(new Intent(this, MainActivity.class));
+    }
+
+    public Context getActivity() {
+        return this;
     }
 }
