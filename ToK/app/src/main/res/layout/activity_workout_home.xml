@@ -7,6 +7,8 @@
     tools:context="com.kandidat.datx02_15_39.tok.layout.WorkoutHomeActivity">
 
     <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
