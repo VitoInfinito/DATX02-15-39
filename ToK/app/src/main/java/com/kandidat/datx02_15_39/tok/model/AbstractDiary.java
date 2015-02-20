@@ -2,6 +2,7 @@ package com.kandidat.datx02_15_39.tok.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 
@@ -17,5 +18,7 @@ public abstract class AbstractDiary implements IDiary {
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
-
+	protected void addActivityToTable(Date d, IDiaryActivity ida){
+		String key = sdf.format(d);
+	}
 }
