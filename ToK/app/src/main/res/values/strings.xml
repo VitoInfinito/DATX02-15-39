@@ -13,5 +13,6 @@
     <string name="title_activity_add_diet">AddDietActivity</string>
     <string name="title_activity_work_out">WorkOutActivity</string>
     <string name="title_activity_workout_home">WorkoutHomeActivity</string>
+    <string name="title_activity_add_workout">AddWorkoutActivity</string>
 
 </resources>
