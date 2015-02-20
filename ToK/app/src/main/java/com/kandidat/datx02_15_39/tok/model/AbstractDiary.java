@@ -25,12 +25,11 @@ public abstract class AbstractDiary implements IDiary {
             idl = activities.get(key);
         }else {
             idl = new ArrayList<IDiaryActivity>();
+            activities.put(sdf.format(d), idl);
         }
 
         idl.add(ida);
 
-
-        //activities.put(sdf.format(d), ida);
     }
 
     protected void removeDate(Date d) {
