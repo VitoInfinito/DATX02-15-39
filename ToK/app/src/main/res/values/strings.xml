@@ -7,8 +7,9 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_diet_home">DietHomeActivity</string>
-    <string name="title_activity_sleep_home">SleepHomeActivity</string>
+    <string name="title_activity_sleep_home">Sleep</string>
     <string name="TrainingAndDiet">Träning Och Kost</string>
+    <string name="title_activity_add_sleep">AddSleepActivity</string>
     <string name="title_activity_add_diet">AddDietActivity</string>
     <string name="title_activity_work_out">WorkOutActivity</string>
     <string name="title_activity_workout_home">WorkoutHomeActivity</string>
