@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by emma on 2015-02-20.
+ * Created by Emma on 2015-02-20.
  */
 public class WorkoutDiary extends AbstractDiary {
     private IDiary instance;
@@ -24,7 +24,6 @@ public class WorkoutDiary extends AbstractDiary {
 
     @Override
     public void addActivity(Date d, IDiaryActivity activity) {
-
     }
 
     @Override
