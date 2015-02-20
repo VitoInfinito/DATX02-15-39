@@ -18,6 +18,68 @@
             android:orientation="horizontal"
             android:layout_gravity="center_horizontal"
             android:useDefaultMargins="true">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="100dp"
+                    android:id="@+id/button_container"
+                    android:gravity="center_horizontal"
+                    android:weightSum="6"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:layout_width="100dp"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/yoga_button"
+                        android:maxHeight="100dp"
+                        android:width="100dp"
+                        android:maxWidth="100dp"
+                        android:src="@drawable/yoga"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/border_line_transparent_background"
+                        android:padding="10dp"/>
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1"/>
+
+                    <ImageButton
+                        android:layout_width="100dp"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/bike_button"
+                        android:maxHeight="100dp"
+                        android:width="100dp"
+                        android:maxWidth="100dp"
+                        android:src="@drawable/bike"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/border_line_transparent_background"
+                        android:padding="10dp"/>
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1"/>
+
+                    <ImageButton
+                        android:layout_width="100dp"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/sprint_button"
+                        android:maxHeight="100dp"
+                        android:width="100dp"
+                        android:maxWidth="100dp"
+                        android:src="@drawable/sprint"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/border_line_transparent_background"
+                        android:padding="10dp"/>
+                </LinearLayout>
+            </LinearLayout>
             </GridLayout>
         </LinearLayout>
 
