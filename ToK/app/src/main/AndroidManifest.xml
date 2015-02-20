@@ -10,6 +10,11 @@
         <activity
             android:name=".layout.MainActivity"
             android:label="@string/title_activity_hello_world" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".layout.DietHomeActivity"
@@ -26,6 +31,18 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kandidat.datx02_15_39.tok.layout.SleepHomeActivity" />
+        </activity>
+        <activity
+            android:name=".layout.AddDietActivity"
+            android:label="@string/title_activity_add_diet" >
+        </activity>
+        <activity
+            android:name=".layout.WorkoutHomeActivity"
+            android:label="@string/title_activity_workout_home"
+            android:parentActivityName=".layout.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.kandidat.datx02_15_39.tok.layout.MainActivity" />
         </activity>
     </application>
 

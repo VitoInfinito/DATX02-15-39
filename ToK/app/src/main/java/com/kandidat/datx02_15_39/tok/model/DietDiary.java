@@ -1,11 +1,24 @@
 package com.kandidat.datx02_15_39.tok.model;
 
 import java.util.Date;
+import java.util.Hashtable;
+import java.util.List;
 
 /**
  * Created by Lagerstedt on 2015-02-16.
  */
 public class DietDiary extends AbstractDiary{
+
+	private static IDiary instance;
+
+	@Override
+	public IDiary getInstance() {
+		if(instance == null){
+			instance = new DietDiary();
+		}
+		return instance;
+	}
+
 	@Override
 	public void addActivity(Date d, IDiaryActivity activity) {
 
@@ -22,19 +35,17 @@ public class DietDiary extends AbstractDiary{
 	}
 
 	@Override
-	public void showDaysActivities(Date day) {
-
+	public List<IDiaryActivity> showDaysActivities(Date day) {
+		return null;
 	}
 
 	@Override
-	public void showWeekActivities(Date start, Date end) {
-
+	public List<IDiaryActivity> showWeekActivities(Date start, Date end) {
+		return null;
 	}
 
-	/**
-	 * Edit you current activity with a new one in order to change it
-	 */
-	public void editActivity(String id){
+	@Override
+	public void editActivity(String id, EditActivityParams eap) {
 
 	}
 
