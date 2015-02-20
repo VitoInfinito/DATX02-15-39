@@ -1,19 +1,22 @@
-package com.kandidat.datx02_15_39.tok.model;
+package com.kandidat.datx02_15_39.tok.model.diet;
+
+import com.kandidat.datx02_15_39.tok.model.AbstractDiary;
+import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
+import com.kandidat.datx02_15_39.tok.model.IDiary;
+import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Hashtable;
 import java.util.List;
 
 /**
  * Created by Lagerstedt on 2015-02-16.
  */
-public class DietDiary extends AbstractDiary{
+public class DietDiary extends AbstractDiary {
 
-	private static IDiary instance;
+	private static DietDiary instance;
 
-	@Override
-	public IDiary getInstance() {
+	public static DietDiary getInstance() {
 		if(instance == null){
 			instance = new DietDiary();
 		}
