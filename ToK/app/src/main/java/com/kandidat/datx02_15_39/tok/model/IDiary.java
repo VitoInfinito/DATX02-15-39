@@ -13,9 +13,7 @@ import java.util.List;
  */
 public interface IDiary {
 
-	public IDiary getInstance();
-
-    /**
+	/**
      * A Method to add new activities to your diary
      *
      * @param d        - The date you want to add a activity to
