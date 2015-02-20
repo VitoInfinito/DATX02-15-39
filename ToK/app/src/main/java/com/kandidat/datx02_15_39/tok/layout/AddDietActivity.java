@@ -1,5 +1,6 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +14,8 @@ public class AddDietActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_diet);
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.hide();
 	}
 
 

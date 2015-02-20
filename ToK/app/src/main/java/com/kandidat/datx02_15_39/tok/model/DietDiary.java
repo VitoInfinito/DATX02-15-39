@@ -1,5 +1,6 @@
 package com.kandidat.datx02_15_39.tok.model;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -35,12 +36,12 @@ public class DietDiary extends AbstractDiary{
 	}
 
 	@Override
-	public List<IDiaryActivity> showDaysActivities(Date day) {
+	public List<IDiaryActivity> showDaysActivities(Calendar day) {
 		return null;
 	}
 
 	@Override
-	public List<IDiaryActivity> showWeekActivities(Date start, Date end) {
+	public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end) {
 		return null;
 	}
 
