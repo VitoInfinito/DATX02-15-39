@@ -34,7 +34,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_gravity="right"
-        android:onClick=""/>
+        android:onClick="onAddWorkoutButtonClick"/>
 
     <ListView
         android:layout_width="wrap_content"
