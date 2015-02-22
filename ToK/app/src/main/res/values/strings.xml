@@ -15,5 +15,6 @@
     <string name="title_activity_workout_home">WorkoutHomeActivity</string>
     <string name="title_activity_add_workout">AddWorkoutActivity</string>
     <string name="title_activity_add_work_out">Lägg till träning</string>
+    <string name="title_workout_diary">Träningsdagbok</string>
 
 </resources>
