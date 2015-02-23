@@ -5,6 +5,7 @@ import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiary;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -16,8 +17,11 @@ public class SleepDiary extends AbstractDiary {
     private static IDiary instance;
     private List<IDiaryActivity> activityList;
 
-    @Override
-    public IDiary getInstance() {
+    protected SleepDiary() {
+
+    }
+
+    public static IDiary getInstance() {
         if(instance == null){
             instance = new SleepDiary();
         }
@@ -39,17 +43,17 @@ public class SleepDiary extends AbstractDiary {
 
     }
 
-    @Override
-    public List<IDiaryActivity> showDaysActivities(Date day) {
-        return null;
-    }
+	@Override
+	public List<IDiaryActivity> showDaysActivities(Calendar day) {
+		return null;
+	}
 
-    @Override
-    public List<IDiaryActivity> showWeekActivities(Date start, Date end) {
-        return null;
-    }
+	@Override
+	public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end) {
+		return null;
+	}
 
-    @Override
+	@Override
     public void editActivity(String id, EditActivityParams eap) {
 
     }

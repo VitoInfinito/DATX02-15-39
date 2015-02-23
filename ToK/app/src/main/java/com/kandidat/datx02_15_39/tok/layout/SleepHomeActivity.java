@@ -9,17 +9,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.model.sleep.SleepDiary;
 
-import java.text.NumberFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class SleepHomeActivity extends ActionBarActivity {
 
@@ -30,15 +25,19 @@ public class SleepHomeActivity extends ActionBarActivity {
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
 
-        LineGraphSeries<DataPoint> series4 = new LineGraphSeries<DataPoint>(new DataPoint[] {
-                new DataPoint(1, 1),
-                new DataPoint(2, 2),
-                new DataPoint(3, 0)
+       //Need to get the instance of SleepDiary SleepDiary.get
+
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
+                new DataPoint(0, 1),
+                new DataPoint(1, 5),
+                new DataPoint(2, 3),
+                new DataPoint(3, 2),
+                new DataPoint(4, 6)
         });
 
-        graph.addSeries(series4);
-        series4.setColor(Color.CYAN);
-        series4.setTitle("Sömn");
+        graph.addSeries(series);
+        series.setColor(Color.CYAN);
+        series.setTitle("Sömn");
 
         graph.setOnClickListener( new View.OnClickListener() {
             /**
