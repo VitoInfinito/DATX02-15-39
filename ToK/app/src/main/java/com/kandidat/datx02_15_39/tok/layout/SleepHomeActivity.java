@@ -17,6 +17,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.OnDataPointTapListener;
 import com.jjoe64.graphview.series.Series;
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.model.sleep.SleepDiary;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,6 +32,8 @@ public class SleepHomeActivity extends ActionBarActivity {
         setContentView(R.layout.activity_sleep_home);
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
+
+       //Need to get the instance of SleepDiary SleepDiary.get
 
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
                 new DataPoint(0, 1),

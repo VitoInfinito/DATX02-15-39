@@ -16,8 +16,12 @@ public class SleepDiary extends AbstractDiary {
     private static IDiary instance;
     private List<IDiaryActivity> activityList;
 
+    protected SleepDiary() {
+
+    }
+
     @Override
-    public IDiary getInstance() {
+    public static IDiary getInstance() {
         if(instance == null){
             instance = new SleepDiary();
         }
