@@ -1,4 +1,8 @@
-package com.kandidat.datx02_15_39.tok.model;
+package com.kandidat.datx02_15_39.tok.model.diet;
+
+import com.kandidat.datx02_15_39.tok.model.AddToActivity;
+import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
+import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 
 import java.util.Date;
 import java.util.List;

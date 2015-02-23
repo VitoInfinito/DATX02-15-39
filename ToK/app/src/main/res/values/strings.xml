@@ -12,4 +12,9 @@
     <string name="title_activity_add_diet">AddDietActivity</string>
     <string name="title_activity_work_out">WorkOutActivity</string>
     <string name="title_activity_workout_home">WorkoutHomeActivity</string>
+<<<<<<< HEAD
+=======
+    <string name="title_add_diet">Lägg till mat</string>
+
+>>>>>>> dev
 </resources>

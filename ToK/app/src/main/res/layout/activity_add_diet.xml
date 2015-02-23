@@ -36,7 +36,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/TrainingAndDiet"
+                android:text="@string/title_add_diet"
                 android:id="@+id/menu_bar_title"
                 android:layout_row="0"
                 android:layout_column="1"
