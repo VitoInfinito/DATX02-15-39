@@ -1,5 +1,6 @@
 package com.kandidat.datx02_15_39.tok.model;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -12,9 +13,7 @@ import java.util.List;
  */
 public interface IDiary {
 
-	public IDiary getInstance();
-
-    /**
+	/**
      * A Method to add new activities to your diary
      *
      * @param d        - The date you want to add a activity to
@@ -39,14 +38,14 @@ public interface IDiary {
 	 * Method to show the data of a days activities
 	 * @param day
 	 */
-    public List<IDiaryActivity> showDaysActivities(Date day); 							// Return a Diagram maybe ?
+    public List<IDiaryActivity> showDaysActivities(Calendar day); 							// Return a Diagram maybe ?
 
 	/**
 	 * method to show the data of a weeks activities
 	 * @param start
 	 * @param end
 	 */
-    public List<IDiaryActivity> showWeekActivities(Date start, Date end);			// Return a Diagram maybe ?
+    public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end);			// Return a Diagram maybe ?
 
 	/**
 	 * Method used when a already created Activity needs to be changed

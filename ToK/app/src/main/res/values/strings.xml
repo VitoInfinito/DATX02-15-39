@@ -16,5 +16,6 @@
     <string name="title_activity_add_workout">AddWorkoutActivity</string>
     <string name="title_activity_add_work_out">Lägg till träning</string>
     <string name="title_workout_diary">Träningsdagbok</string>
+    <string name="title_add_diet">Lägg till mat</string>
 
 </resources>
