@@ -13,33 +13,62 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
+import com.kandidat.datx02_15_39.tok.model.sleep.SleepActivity;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepDiary;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 
 public class SleepHomeActivity extends ActionBarActivity {
+    private SleepDiary diary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        diary = (SleepDiary) SleepDiary.getInstance();
+        Calendar cal = Calendar.getInstance();
+
+        //TODO change to not account for specific times i.e seconds and minutes
+        Date activeDate = cal.getTime();
+
+        //Temporary for testing
+
+        Date earlierDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 7, cal.get(Calendar.MINUTE)).getTime();
+        Date laterDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
+        Sleep sleep = new Sleep(earlierDate, laterDate);
+        SleepActivity activity = new SleepActivity("masterID", sleep);
+        diary.addActivity(activeDate, activity);
+
+
         setContentView(R.layout.activity_sleep_home);
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
 
-       //Need to get the instance of SleepDiary SleepDiary.get
 
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
+
+
+
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(fetchDataPoints(activeDate)
+
+                /*new DataPoint[] {
                 new DataPoint(0, 1),
                 new DataPoint(1, 5),
                 new DataPoint(2, 3),
                 new DataPoint(3, 2),
                 new DataPoint(4, 6)
-        });
+        }*/
+
+        );
 
         graph.addSeries(series);
         series.setColor(Color.CYAN);
         series.setTitle("Sömn");
 
-        graph.setOnClickListener( new View.OnClickListener() {
+        graph.setOnClickListener(new View.OnClickListener() {
             /**
              * Handles clicks on the graph.
              *
@@ -95,5 +124,11 @@ public class SleepHomeActivity extends ActionBarActivity {
 
     public Context getActivity() {
         return this;
+    }
+
+    private DataPoint[] fetchDataPoints(Date date, Date date2) {
+
+
+        return null;
     }
 }
