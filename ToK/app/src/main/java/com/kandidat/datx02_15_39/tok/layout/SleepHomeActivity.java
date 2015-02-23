@@ -2,26 +2,24 @@ package com.kandidat.datx02_15_39.tok.layout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.OnDataPointTapListener;
-import com.jjoe64.graphview.series.Series;
 import com.kandidat.datx02_15_39.tok.R;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.text.NumberFormat;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.GregorianCalendar;
 
 public class SleepHomeActivity extends ActionBarActivity {
 
@@ -32,23 +30,28 @@ public class SleepHomeActivity extends ActionBarActivity {
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
 
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
+        LineGraphSeries<DataPoint> series4 = new LineGraphSeries<DataPoint>(new DataPoint[] {
+                new DataPoint(1, 1),
+                new DataPoint(2, 2),
+                new DataPoint(3, 0)
         });
 
-        graph.addSeries(series);
-        graph.setTitle("Sleep");
-        graph.canScrollHorizontally(1);
-        series.setOnDataPointTapListener(new OnDataPointTapListener() {
+        graph.addSeries(series4);
+        series4.setColor(Color.CYAN);
+        series4.setTitle("Sömn");
+
+        graph.setOnClickListener( new View.OnClickListener() {
+            /**
+             * Handles clicks on the graph.
+             *
+             * @param v The view to reference as current.
+             */
             @Override
-            public void onTap(Series series, DataPointInterface dataPoint) {
-                Toast.makeText(getActivity(), "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                startActivity(new Intent(v.getContext(), detailedSleepActivity.class));
             }
         });
+
     }
 
     @Override

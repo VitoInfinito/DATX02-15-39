@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">ToK</string>
     <string name="title_activity_hello_world">HelloWorld</string>
     <string name="hello_world">Hejsan världen!</string>
@@ -12,4 +13,6 @@
     <string name="title_activity_add_diet">AddDietActivity</string>
     <string name="title_activity_work_out">WorkOutActivity</string>
     <string name="title_activity_workout_home">WorkoutHomeActivity</string>
+    <string name="title_activity_detailed_sleep">Sömn - Detaljvy</string>
+
 </resources>
