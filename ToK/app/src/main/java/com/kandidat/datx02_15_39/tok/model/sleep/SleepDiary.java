@@ -21,7 +21,6 @@ public class SleepDiary extends AbstractDiary {
 
     }
 
-    @Override
     public static IDiary getInstance() {
         if(instance == null){
             instance = new SleepDiary();
