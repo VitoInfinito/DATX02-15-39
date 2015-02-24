@@ -18,7 +18,7 @@ public class SleepDiary extends AbstractDiary {
     private List<IDiaryActivity> activityList;
 
     protected SleepDiary() {
-
+        super();
     }
 
     public static IDiary getInstance() {
@@ -36,6 +36,11 @@ public class SleepDiary extends AbstractDiary {
     @Override
     public IDiaryActivity getActivity(String id) {
         return null;
+    }
+
+    //Currently returns first element for testing
+    public IDiaryActivity getActivityFromDate(Date d) {
+        return getActivitiesFromTable(d).get(0);
     }
 
     @Override
