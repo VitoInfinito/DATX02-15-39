@@ -16,6 +16,7 @@ public class WorkoutDiary extends AbstractDiary {
     private WorkoutDiary instance;
 
     public WorkoutDiary getInstance() {
+
         if(instance==null){
             instance = new WorkoutDiary();
 

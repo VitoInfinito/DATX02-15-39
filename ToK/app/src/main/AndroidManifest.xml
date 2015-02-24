@@ -47,6 +47,14 @@
         <activity
             android:name=".layout.AddWorkoutActivity"
             android:label="@string/title_activity_add_workout" >
+            </activity>
+        <activity
+            android:name=".layout.detailedSleepActivity"
+            android:label="@string/title_activity_detailed_sleep"
+            android:parentActivityName=".layout.SleepHomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.kandidat.datx02_15_39.tok.layout.SleepHomeActivity" />
         </activity>
     </application>
 

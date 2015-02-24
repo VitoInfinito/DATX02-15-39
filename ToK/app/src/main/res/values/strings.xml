@@ -3,19 +3,22 @@
 
     <string name="app_name">ToK</string>
     <string name="title_activity_hello_world">HelloWorld</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hejsan världen!</string>
+    <string name="action_settings">Inställningar</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_diet_home">DietHomeActivity</string>
-    <string name="title_activity_sleep_home">Sleep</string>
+    <string name="title_activity_sleep_home">Sömn</string>
     <string name="TrainingAndDiet">Träning Och Kost</string>
     <string name="title_activity_add_sleep">AddSleepActivity</string>
     <string name="title_activity_add_diet">AddDietActivity</string>
     <string name="title_activity_work_out">WorkOutActivity</string>
     <string name="title_activity_workout_home">WorkoutHomeActivity</string>
+<<<<<<< HEAD
     <string name="title_activity_add_workout">AddWorkoutActivity</string>
     <string name="title_activity_add_work_out">Lägg till träning</string>
     <string name="title_workout_diary">Träningsdagbok</string>
+=======
+    <string name="title_activity_detailed_sleep">Sömn - Detaljvy</string>
+>>>>>>> dev
     <string name="title_add_diet">Lägg till mat</string>
-
 </resources>
