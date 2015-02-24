@@ -46,7 +46,8 @@
         </activity>
         <activity
             android:name=".layout.AddWorkoutActivity"
-            android:label="@string/title_activity_add_workout" >
+            android:label="@string/title_activity_add_workout"
+            android:parentActivityName=".layout.WorkoutHomeActivity">
             </activity>
         <activity
             android:name=".layout.detailedSleepActivity"

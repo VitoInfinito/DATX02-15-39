@@ -11,6 +11,7 @@ import android.view.View;
 
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.kandidat.datx02_15_39.tok.R;
@@ -50,7 +51,7 @@ public class WorkoutHomeActivity extends ActionBarActivity {
 
         GraphView graph = (GraphView) findViewById(R.id.workout_graph);
 
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(fetchDataPoints(activeDate));
+        BarGraphSeries<DataPoint> series = new BarGraphSeries<DataPoint>(fetchDataPoints(activeDate));
 
         graph.addSeries(series);
         series.setColor(Color.BLACK);
@@ -99,7 +100,7 @@ public class WorkoutHomeActivity extends ActionBarActivity {
     }
 
     private DataPoint[] fetchDataPoints(Date date) {
-  /*      WorkoutActivity activity = (WorkoutActivity) diary.getActivityFromDate(date);
+        WorkoutActivity activity = (WorkoutActivity) diary.getActivityFromDate(date);
         Workout workout = activity.getWorkout();
         Date startTime = workout.getStartTime();
         Date stopTime = workout.getEndTime();
@@ -107,20 +108,20 @@ public class WorkoutHomeActivity extends ActionBarActivity {
 
         System.out.println(sdfShowFullTime.format(startTime));
         System.out.println(sdfShowFullTime.format(stopTime));
-*/
+
 
 
         //Still purely for testing
-        /*return new DataPoint[] {
+        return new DataPoint[] {
                 new DataPoint(Integer.parseInt(sdfShowHour.format(startTime))-1, 0),
                 new DataPoint(Integer.parseInt(sdfShowHour.format(startTime)), 3),
                 new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime)), 3),
-                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime))+1, 0)};*/
+                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime))+1, 0)};
 
-        return new DataPoint[] {
-                new DataPoint(1, 0),
-                new DataPoint(2, 3),
-                new DataPoint(3, 3),
-                new DataPoint(4, 0)};
+//        return new DataPoint[] {
+//                new DataPoint(1, 0),
+//                new DataPoint(2, 3),
+//                new DataPoint(3, 3),
+//                new DataPoint(4, 0)};
     }
 }
