@@ -1,5 +1,6 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
@@ -47,7 +48,7 @@ public class WorkoutHomeActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_workout_home);
 
-        GraphView graph = (GraphView) findViewById(R.id.graph);
+        GraphView graph = (GraphView) findViewById(R.id.workout_graph);
 
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(fetchDataPoints(activeDate));
 
@@ -67,7 +68,6 @@ public class WorkoutHomeActivity extends ActionBarActivity {
             }
         });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,11 +90,16 @@ public class WorkoutHomeActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
     public void onAddWorkoutButtonClick(View view){
         startActivity(new Intent(this, AddWorkoutActivity.class));
     }
+    public Context getActivity() {
+        return this;
+    }
+
     private DataPoint[] fetchDataPoints(Date date) {
-        WorkoutActivity activity = (WorkoutActivity) diary.getActivityFromDate(date);
+  /*      WorkoutActivity activity = (WorkoutActivity) diary.getActivityFromDate(date);
         Workout workout = activity.getWorkout();
         Date startTime = workout.getStartTime();
         Date stopTime = workout.getEndTime();
@@ -102,14 +107,20 @@ public class WorkoutHomeActivity extends ActionBarActivity {
 
         System.out.println(sdfShowFullTime.format(startTime));
         System.out.println(sdfShowFullTime.format(stopTime));
-
+*/
 
 
         //Still purely for testing
-        return new DataPoint[] {
+        /*return new DataPoint[] {
                 new DataPoint(Integer.parseInt(sdfShowHour.format(startTime))-1, 0),
                 new DataPoint(Integer.parseInt(sdfShowHour.format(startTime)), 3),
                 new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime)), 3),
-                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime))+1, 0)};
+                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime))+1, 0)};*/
+
+        return new DataPoint[] {
+                new DataPoint(1, 0),
+                new DataPoint(2, 3),
+                new DataPoint(3, 3),
+                new DataPoint(4, 0)};
     }
 }
