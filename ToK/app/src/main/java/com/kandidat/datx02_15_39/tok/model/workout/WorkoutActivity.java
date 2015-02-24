@@ -42,5 +42,8 @@ public class WorkoutActivity implements IDiaryActivity {
     public void add(AddToActivity addToActivity) {
 
     }
+    public Workout getWorkout(){
+        return this.workout;
+    }
 
 }
