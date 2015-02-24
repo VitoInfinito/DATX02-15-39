@@ -13,12 +13,10 @@
     <string name="title_activity_add_diet">AddDietActivity</string>
     <string name="title_activity_work_out">WorkOutActivity</string>
     <string name="title_activity_workout_home">WorkoutHomeActivity</string>
-<<<<<<< HEAD
+
     <string name="title_activity_add_workout">AddWorkoutActivity</string>
     <string name="title_activity_add_work_out">Lägg till träning</string>
     <string name="title_workout_diary">Träningsdagbok</string>
-=======
     <string name="title_activity_detailed_sleep">Sömn - Detaljvy</string>
->>>>>>> dev
     <string name="title_add_diet">Lägg till mat</string>
 </resources>
