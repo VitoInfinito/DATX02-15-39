@@ -5,6 +5,7 @@ import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiary;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -12,9 +13,9 @@ import java.util.List;
  * Created by Emma on 2015-02-20.
  */
 public class WorkoutDiary extends AbstractDiary {
-    private IDiary instance;
-    @Override
-    public IDiary getInstance() {
+    private WorkoutDiary instance;
+
+    public WorkoutDiary getInstance() {
         if(instance==null){
             instance = new WorkoutDiary();
 
@@ -37,15 +38,14 @@ public class WorkoutDiary extends AbstractDiary {
     }
 
     @Override
-    public List<IDiaryActivity> showDaysActivities(Date day) {
+    public List<IDiaryActivity> showDaysActivities(Calendar day) {
         return null;
     }
 
     @Override
-    public List<IDiaryActivity> showWeekActivities(Date start, Date end) {
+    public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end) {
         return null;
     }
-
     @Override
     public void editActivity(String id, EditActivityParams eap) {
 
