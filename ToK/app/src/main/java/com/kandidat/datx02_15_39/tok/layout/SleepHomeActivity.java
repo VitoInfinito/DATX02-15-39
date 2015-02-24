@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -30,6 +31,7 @@ public class SleepHomeActivity extends ActionBarActivity {
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("yyyyMMdd");
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
     private SimpleDateFormat sdfShowHour = new SimpleDateFormat("HH");
+    private SimpleDateFormat sdfShowMinutes = new SimpleDateFormat("mm");
     private SimpleDateFormat sdfShowFullTime = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 
     @Override
@@ -69,6 +71,19 @@ public class SleepHomeActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(v.getContext(), detailedSleepActivity.class));
+            }
+        });
+
+        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX) {
+                    int hours = (int) value;
+                    int minutes = (int) ((value - hours)*100);
+                    return super.formatLabel(hours, isValueX) + ":" + minutes;
+                } else {
+                    return super.formatLabel(value, isValueX);
+                }
             }
         });
 
@@ -130,13 +145,19 @@ public class SleepHomeActivity extends ActionBarActivity {
         System.out.println(sdfShowFullTime.format(startTime));
         System.out.println(sdfShowFullTime.format(stopTime));
 
+        //Integer.parseInt(sdfShowHour.format(startTime))-1
+        double merfelherder = Double.parseDouble(sdfShowMinutes.format(startTime))/100;
+        merfelherder += Double.parseDouble(sdfShowHour.format(startTime));
+
+        double herfelmerder = Double.parseDouble(sdfShowMinutes.format(stopTime))/100;
+        herfelmerder += Double.parseDouble(sdfShowHour.format(stopTime));
 
 
         //Still purely for testing
         return new DataPoint[] {
-                new DataPoint(Integer.parseInt(sdfShowHour.format(startTime))-1, 0),
-                new DataPoint(Integer.parseInt(sdfShowHour.format(startTime)), 3),
-                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime)), 3),
-                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime))+1, 0)};
+                new DataPoint(merfelherder-1, 0),
+                new DataPoint(merfelherder, 3),
+                new DataPoint(herfelmerder, 3),
+                new DataPoint(herfelmerder+1, 0)};
     }
 }
