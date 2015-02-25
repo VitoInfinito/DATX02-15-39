@@ -10,11 +10,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.ValueDependentColor;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
+import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.PointsGraphSeries;
+import com.jjoe64.graphview.series.Series;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
@@ -60,11 +68,15 @@ public class SleepHomeActivity extends ActionBarActivity {
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
 
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(fetchDataPoints(activeDate));
+        PointsGraphSeries<DataPoint> series = new PointsGraphSeries<DataPoint>(fetchDataPoints(activeDate));
+
+        setGraphXBounds(activeDate, graph);
 
         graph.addSeries(series);
-        series.setColor(Color.BLACK);
+        //series.setColor(Color.BLUE);
         series.setTitle(sdfShowDay.format(activeDate));
+
+       // series.setSpacing(0);
 
         graph.setOnClickListener(new View.OnClickListener() {
             /**
@@ -84,7 +96,12 @@ public class SleepHomeActivity extends ActionBarActivity {
                 if (isValueX) {
                     int hours = (int) value;
                     int minutes = (int) ((value - hours)*100);
-                    return super.formatLabel(hours, isValueX) + ":" + minutes;
+                    if(minutes > 60) {
+                        minutes -= 60;
+                        hours++;
+                    }
+
+                    return super.formatLabel(hours, isValueX) + ":" + (minutes < 10 ? '0' + minutes : minutes);
                 } else {
                     return super.formatLabel(value, isValueX);
                 }
@@ -92,6 +109,34 @@ public class SleepHomeActivity extends ActionBarActivity {
         });
 
 	    fillListWithDummyData();
+       /* // styling
+        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+            @Override
+            public int get(DataPoint data) {
+                //return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+                if(data.getY() == 3) {
+                    return Color.rgb(255, 0, 0);
+                }else if(data.getY() == 2) {
+                    return Color.rgb(0, 255, 0);
+                }
+
+                return Color.rgb(0, 0, 255);
+            }
+        });*/
+
+
+  /*      StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
+        staticLabelsFormatter.setVerticalLabels(new String[] {"V", "L", "D"});
+        graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+*/
+
+
+        series.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPoint) {
+                Toast.makeText(getActivity(), "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -145,10 +190,32 @@ public class SleepHomeActivity extends ActionBarActivity {
         Sleep sleep = activity.getSleep();
         Date startTime = sleep.getStartTime();
         Date stopTime = sleep.getStopTime();
+        Date time = new Date(stopTime.getTime() - startTime.getTime());
+
+        //Integer.parseInt(sdfShowHour.format(startTime))-1
+        double merfelherder = Double.parseDouble(sdfShowMinutes.format(startTime))/100;
+        merfelherder += Double.parseDouble(sdfShowHour.format(startTime));
+
+        double herfelmerder = Double.parseDouble(sdfShowMinutes.format(stopTime))/100;
+        herfelmerder += Double.parseDouble(sdfShowHour.format(stopTime));
+
+        double pertedelherfer = Double.parseDouble(sdfShowMinutes.format(time))/100;
+        pertedelherfer += Double.parseDouble(sdfShowHour.format(time));
 
 
-        System.out.println(sdfShowFullTime.format(startTime));
-        System.out.println(sdfShowFullTime.format(stopTime));
+        //Still purely for testing
+        return new DataPoint[] {
+                new DataPoint(merfelherder-1, 0),
+                new DataPoint(merfelherder, 3),
+                new DataPoint(herfelmerder, 3),
+                new DataPoint(herfelmerder+5, 0)};
+    }
+
+    private void setGraphXBounds(Date date, GraphView graph) {
+        SleepActivity activity = (SleepActivity) diary.getActivityFromDate(date);
+        Sleep sleep = activity.getSleep();
+        Date startTime = sleep.getStartTime();
+        Date stopTime = sleep.getStopTime();
 
         //Integer.parseInt(sdfShowHour.format(startTime))-1
         double merfelherder = Double.parseDouble(sdfShowMinutes.format(startTime))/100;
@@ -158,12 +225,10 @@ public class SleepHomeActivity extends ActionBarActivity {
         herfelmerder += Double.parseDouble(sdfShowHour.format(stopTime));
 
 
-        //Still purely for testing
-        return new DataPoint[] {
-                new DataPoint(merfelherder-1, 0),
-                new DataPoint(merfelherder, 3),
-                new DataPoint(herfelmerder, 3),
-                new DataPoint(herfelmerder+1, 0)};
+        // set manual X bounds
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setMinX(merfelherder-1);
+        graph.getViewport().setMaxX(herfelmerder+1);
     }
 	private void fillListWithDummyData(){
 		ListView lv = (ListView) findViewById(R.id.sleepFeed);
