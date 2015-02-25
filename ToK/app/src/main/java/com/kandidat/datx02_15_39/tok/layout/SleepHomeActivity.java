@@ -2,12 +2,15 @@ package com.kandidat.datx02_15_39.tok.layout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jjoe64.graphview.DefaultLabelFormatter;
@@ -23,6 +26,7 @@ import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.jjoe64.graphview.series.Series;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
+import com.kandidat.datx02_15_39.tok.model.sleep.DrawDiagram;
 import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepActivity;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepDiary;
@@ -35,6 +39,8 @@ import java.util.GregorianCalendar;
 
 public class SleepHomeActivity extends ActionBarActivity {
     private SleepDiary diary;
+    private Date activeDate;
+    private Date earlierDate;
 
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("yyyyMMdd");
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
@@ -50,10 +56,10 @@ public class SleepHomeActivity extends ActionBarActivity {
         Calendar cal = Calendar.getInstance();
 
         //TODO change to not account for specific times i.e seconds and minutes
-        Date activeDate = cal.getTime();
+        activeDate = cal.getTime();
 
         //Temporary for testing
-        Date earlierDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 7, cal.get(Calendar.MINUTE)).getTime();
+        earlierDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 7, cal.get(Calendar.MINUTE)).getTime();
         Date laterDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
         Sleep sleep = new Sleep(earlierDate, laterDate);
         SleepActivity activity = new SleepActivity("masterID", sleep);
@@ -61,6 +67,10 @@ public class SleepHomeActivity extends ActionBarActivity {
 
 
         setContentView(R.layout.activity_sleep_home);
+
+        //View viewGraph = findViewById(R.id.imageViewGraph);
+        //DrawDiagram graphDiagram = new DrawDiagram(viewGraph.getContext());
+
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
 
@@ -104,8 +114,20 @@ public class SleepHomeActivity extends ActionBarActivity {
             }
         });
 
-       /* // styling
-        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+        series.setCustomShape(new PointsGraphSeries.CustomShape() {
+            @Override
+            public void draw(Canvas canvas, Paint paint, float x, float y) {
+                Sleep drawSleep = ((SleepActivity) diary.getActivityFromDate(activeDate)).getSleepThatStarts(earlierDate);
+                System.out.println("DrawSleep at " + x + " starts at time " + drawSleep);
+
+                paint.setStrokeWidth(10);
+                canvas.drawLine(x-20, y-20, x+20, y+20, paint);
+                canvas.drawLine(x+20, y-20, x-20, y+20, paint);
+            }
+        });
+
+        // styling
+        /*series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
             @Override
             public int get(DataPoint data) {
                 //return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
@@ -123,8 +145,8 @@ public class SleepHomeActivity extends ActionBarActivity {
   /*      StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
         staticLabelsFormatter.setVerticalLabels(new String[] {"V", "L", "D"});
         graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
-*/
 
+*/
 
         series.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
@@ -204,7 +226,7 @@ public class SleepHomeActivity extends ActionBarActivity {
         return new DataPoint[] {
                 new DataPoint(merfelherder-1, 0),
                 new DataPoint(merfelherder, 3),
-                new DataPoint(herfelmerder, 3),
+                new DataPoint(herfelmerder, 2),
                 new DataPoint(herfelmerder+5, 0)};
     }
 
@@ -227,4 +249,7 @@ public class SleepHomeActivity extends ActionBarActivity {
         graph.getViewport().setMinX(merfelherder-1);
         graph.getViewport().setMaxX(herfelmerder+1);
     }
+
 }
+
+

@@ -23,6 +23,17 @@ public class SleepActivity implements IDiaryActivity{
         return sleep;
     }
 
+    public Sleep getSleepThatStarts(Date date) {
+        System.out.println("Got into getSleepThatStarts with date " + date + " and sleep starts at " + sleep.getStartTime());
+        System.out.println("The compare gives " + sleep.getStartTime().compareTo(date));
+        //TODO For later when we have list of sleep
+       // for(int i=0; i<)
+        if(sleep.getStartTime().compareTo(date) == 0){
+            return sleep;
+        }
+        return null;
+     }
+
 
     @Override
     public String getID() {
