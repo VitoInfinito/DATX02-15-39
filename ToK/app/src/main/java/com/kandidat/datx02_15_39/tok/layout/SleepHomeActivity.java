@@ -10,7 +10,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.jjoe64.graphview.DefaultLabelFormatter;
@@ -32,9 +33,11 @@ import com.kandidat.datx02_15_39.tok.model.sleep.SleepActivity;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepDiary;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 
 public class SleepHomeActivity extends ActionBarActivity {
@@ -126,8 +129,10 @@ public class SleepHomeActivity extends ActionBarActivity {
             }
         });
 
-        // styling
-        /*series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+
+	    fillListWithDummyData();
+       /* // styling
+        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
             @Override
             public int get(DataPoint data) {
                 //return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
@@ -154,8 +159,6 @@ public class SleepHomeActivity extends ActionBarActivity {
                 Toast.makeText(getActivity(), "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 
     @Override
@@ -250,6 +253,30 @@ public class SleepHomeActivity extends ActionBarActivity {
         graph.getViewport().setMaxX(herfelmerder+1);
     }
 
+	private void fillListWithDummyData(){
+		ListView lv = (ListView) findViewById(R.id.sleepFeed);
+
+		// Instanciating an array list (you don't need to do this,
+		// you already have yours).
+		List<String> sleepList = new ArrayList<String>();
+		sleepList.add("Badger");
+		sleepList.add("Badger");
+		sleepList.add("Badger");
+		sleepList.add("Badger");
+		sleepList.add("Mushroom");
+		sleepList.add("Mushroom");
+		sleepList.add("Sn-a-a-a-a-ke");
+
+		// This is the array adapter, it takes the context of the activity as a
+		// first parameter, the type of list view as a second parameter and your
+		// array as a third parameter.
+		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+				this,
+				android.R.layout.simple_list_item_1,
+				sleepList );
+
+		lv.setAdapter(arrayAdapter);
+	}
 }
 
 
