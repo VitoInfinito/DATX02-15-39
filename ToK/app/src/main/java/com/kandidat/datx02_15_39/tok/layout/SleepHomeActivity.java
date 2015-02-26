@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jjoe64.graphview.DefaultLabelFormatter;
@@ -42,8 +43,9 @@ import java.util.List;
 
 public class SleepHomeActivity extends ActionBarActivity {
     private SleepDiary diary;
+    private GregorianCalendar currentCalendar;
     private Date activeDate;
-    private Date earlierDate;
+    private PointsGraphSeries<DataPoint> series;
 
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("yyyyMMdd");
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
@@ -56,17 +58,14 @@ public class SleepHomeActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         diary = (SleepDiary) SleepDiary.getInstance();
-        Calendar cal = Calendar.getInstance();
 
         //TODO change to not account for specific times i.e seconds and minutes
-        activeDate = cal.getTime();
+        Calendar cal = Calendar.getInstance();
+        currentCalendar = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
+        activeDate = currentCalendar.getTime();
+        //Used for testing
+        produceFakeData();
 
-        //Temporary for testing
-        earlierDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 7, cal.get(Calendar.MINUTE)).getTime();
-        Date laterDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
-        Sleep sleep = new Sleep(earlierDate, laterDate);
-        SleepActivity activity = new SleepActivity("masterID", sleep);
-        diary.addActivity(activeDate, activity);
 
 
         setContentView(R.layout.activity_sleep_home);
@@ -77,14 +76,14 @@ public class SleepHomeActivity extends ActionBarActivity {
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
 
-        PointsGraphSeries<DataPoint> series = new PointsGraphSeries<DataPoint>(fetchDataPoints(activeDate));
+        series = new PointsGraphSeries<DataPoint>(fetchDataPoints(activeDate));
 
-        setGraphXBounds(activeDate, graph);
+
 
         graph.addSeries(series);
         //series.setColor(Color.BLUE);
         series.setTitle(sdfShowDay.format(activeDate));
-
+        setGraphXBounds(activeDate, graph);
        // series.setSpacing(0);
 
         graph.setOnClickListener(new View.OnClickListener() {
@@ -120,8 +119,8 @@ public class SleepHomeActivity extends ActionBarActivity {
         series.setCustomShape(new PointsGraphSeries.CustomShape() {
             @Override
             public void draw(Canvas canvas, Paint paint, float x, float y) {
-                Sleep drawSleep = ((SleepActivity) diary.getActivityFromDate(activeDate)).getSleepThatStarts(earlierDate);
-                System.out.println("DrawSleep at " + x + " starts at time " + drawSleep);
+                //Sleep drawSleep = ((SleepActivity) diary.getActivityFromDate(activeDate)).getSleepThatStarts(earlierDate);
+                //System.out.println("DrawSleep at " + x + " starts at time " + drawSleep);
 
                 paint.setStrokeWidth(10);
                 canvas.drawLine(x-20, y-20, x+20, y+20, paint);
@@ -201,6 +200,40 @@ public class SleepHomeActivity extends ActionBarActivity {
         startActivity(new Intent(this, MainActivity.class));
     }
 
+    /**
+     * Updates the graph with and earlier sleep date
+     * @param view
+     */
+    public void gotoEarlierSleepDate(View view){
+        updateGraphSeries(-1);
+    }
+
+    /**
+     * Updates the graph with and later sleep date
+     * @param view
+     */
+    public void gotoLaterSleepDate(View view){
+        updateGraphSeries(1);
+    }
+
+    private void updateGraphSeries(int offset) {
+        currentCalendar.set(Calendar.DAY_OF_MONTH, currentCalendar.get(Calendar.DAY_OF_MONTH) + offset);
+        Date newDate = currentCalendar.getTime();
+
+        series.resetData(fetchDataPoints(newDate));
+
+        setGraphXBounds(newDate, (GraphView) findViewById(R.id.graph));
+
+        String newDateSDFDay = sdfShowDay.format(newDate);
+        if(newDateSDFDay.equals(sdfShowDay.format(Calendar.getInstance().getTime()))) {
+            ((TextView) findViewById(R.id.textDay)).setText("Today");
+        }else {
+            ((TextView) findViewById(R.id.textDay)).setText(newDateSDFDay);
+        }
+    }
+
+
+
     public Context getActivity() {
         return this;
     }
@@ -209,48 +242,57 @@ public class SleepHomeActivity extends ActionBarActivity {
 
     private DataPoint[] fetchDataPoints(Date date) {
         SleepActivity activity = (SleepActivity) diary.getActivityFromDate(date);
-        Sleep sleep = activity.getSleep();
-        Date startTime = sleep.getStartTime();
-        Date stopTime = sleep.getStopTime();
-        Date time = new Date(stopTime.getTime() - startTime.getTime());
+        if(activity != null) {
+            Sleep sleep = activity.getSleep();
+            Date startTime = sleep.getStartTime();
+            Date stopTime = sleep.getStopTime();
+            Date time = new Date(stopTime.getTime() - startTime.getTime());
 
-        //Integer.parseInt(sdfShowHour.format(startTime))-1
-        double merfelherder = Double.parseDouble(sdfShowMinutes.format(startTime))/100;
-        merfelherder += Double.parseDouble(sdfShowHour.format(startTime));
+            //Integer.parseInt(sdfShowHour.format(startTime))-1
+            double merfelherder = Double.parseDouble(sdfShowMinutes.format(startTime)) / 100;
+            merfelherder += Double.parseDouble(sdfShowHour.format(startTime));
 
-        double herfelmerder = Double.parseDouble(sdfShowMinutes.format(stopTime))/100;
-        herfelmerder += Double.parseDouble(sdfShowHour.format(stopTime));
+            double herfelmerder = Double.parseDouble(sdfShowMinutes.format(stopTime)) / 100;
+            herfelmerder += Double.parseDouble(sdfShowHour.format(stopTime));
 
-        double pertedelherfer = Double.parseDouble(sdfShowMinutes.format(time))/100;
-        pertedelherfer += Double.parseDouble(sdfShowHour.format(time));
+            double pertedelherfer = Double.parseDouble(sdfShowMinutes.format(time)) / 100;
+            pertedelherfer += Double.parseDouble(sdfShowHour.format(time));
 
 
-        //Still purely for testing
-        return new DataPoint[] {
-                new DataPoint(merfelherder-1, 0),
-                new DataPoint(merfelherder, 3),
-                new DataPoint(herfelmerder, 2),
-                new DataPoint(herfelmerder+5, 0)};
+            //Still purely for testing
+            return new DataPoint[]{
+                    new DataPoint(merfelherder - 1, 0),
+                    new DataPoint(merfelherder, 3),
+                    new DataPoint(herfelmerder, 2),
+                    new DataPoint(herfelmerder + 5, 0)};
+        }
+
+        //If activity was not found we return an empty list.
+        return new DataPoint[]{
+                new DataPoint(0,0)
+        };
     }
 
     private void setGraphXBounds(Date date, GraphView graph) {
         SleepActivity activity = (SleepActivity) diary.getActivityFromDate(date);
-        Sleep sleep = activity.getSleep();
-        Date startTime = sleep.getStartTime();
-        Date stopTime = sleep.getStopTime();
+        if(activity != null) {
+            Sleep sleep = activity.getSleep();
+            Date startTime = sleep.getStartTime();
+            Date stopTime = sleep.getStopTime();
 
-        //Integer.parseInt(sdfShowHour.format(startTime))-1
-        double merfelherder = Double.parseDouble(sdfShowMinutes.format(startTime))/100;
-        merfelherder += Double.parseDouble(sdfShowHour.format(startTime));
+            //Integer.parseInt(sdfShowHour.format(startTime))-1
+            double merfelherder = Double.parseDouble(sdfShowMinutes.format(startTime))/100;
+            merfelherder += Double.parseDouble(sdfShowHour.format(startTime));
 
-        double herfelmerder = Double.parseDouble(sdfShowMinutes.format(stopTime))/100;
-        herfelmerder += Double.parseDouble(sdfShowHour.format(stopTime));
+            double herfelmerder = Double.parseDouble(sdfShowMinutes.format(stopTime))/100;
+            herfelmerder += Double.parseDouble(sdfShowHour.format(stopTime));
 
 
-        // set manual X bounds
-        graph.getViewport().setXAxisBoundsManual(true);
-        graph.getViewport().setMinX(merfelherder-1);
-        graph.getViewport().setMaxX(herfelmerder+1);
+            // set manual X bounds
+            graph.getViewport().setXAxisBoundsManual(true);
+            graph.getViewport().setMinX(merfelherder-1);
+            graph.getViewport().setMaxX(herfelmerder+1);
+        }
     }
 
 	private void fillListWithDummyData(){
@@ -277,6 +319,44 @@ public class SleepHomeActivity extends ActionBarActivity {
 
 		lv.setAdapter(arrayAdapter);
 	}
+
+    /*Temporary for testing*/
+    private void produceFakeData() {
+        Calendar cal = Calendar.getInstance();
+        if(diary.getActivityFromDate(cal.getTime()) == null) {
+
+            Date todaysDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
+            Date yesterdaysDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) - 1, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
+            Date tomorrowsDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + 1, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
+
+            diary.addActivity(todaysDate,
+                    new SleepActivity("id1",
+                            new Sleep(
+                                    new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 7, cal.get(Calendar.MINUTE)).getTime(),
+                                    new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 3, cal.get(Calendar.MINUTE)).getTime()
+                            )
+                    )
+            );
+
+            diary.addActivity(yesterdaysDate,
+                    new SleepActivity("id2",
+                            new Sleep(
+                                    new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) - 1, cal.get(Calendar.HOUR_OF_DAY) - 6, cal.get(Calendar.MINUTE)).getTime(),
+                                    new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) - 1, cal.get(Calendar.HOUR_OF_DAY) - 2, cal.get(Calendar.MINUTE)).getTime()
+                            )
+                    )
+            );
+
+            diary.addActivity(tomorrowsDate,
+                    new SleepActivity("id3",
+                            new Sleep(
+                                    new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + 1, cal.get(Calendar.HOUR_OF_DAY) - 5, cal.get(Calendar.MINUTE)).getTime(),
+                                    new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + 1, cal.get(Calendar.HOUR_OF_DAY) + 3, cal.get(Calendar.MINUTE)).getTime()
+                            )
+                    )
+            );
+        }
+    }
 }
 
 

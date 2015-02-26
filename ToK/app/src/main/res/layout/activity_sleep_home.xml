@@ -51,7 +51,8 @@
                     android:text="&lt;"
                     android:id="@+id/previousDayButton"
                     android:layout_weight="1"
-                    android:layout_toLeftOf="@+id/textDay"/>
+                    android:layout_toLeftOf="@+id/textDay"
+                    android:onClick="gotoEarlierSleepDate" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -68,7 +69,8 @@
                     android:text=">"
                     android:id="@+id/nextDayButton"
                     android:layout_weight="1"
-                    android:layout_toRightOf="@+id/textDay"/>
+                    android:layout_toRightOf="@+id/textDay"
+                    android:onClick="gotoLaterSleepDate" />
             </RelativeLayout>
 
             <LinearLayout

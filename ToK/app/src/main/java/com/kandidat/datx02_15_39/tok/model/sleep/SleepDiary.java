@@ -40,7 +40,8 @@ public class SleepDiary extends AbstractDiary {
 
     //Currently returns first element for testing
     public IDiaryActivity getActivityFromDate(Date d) {
-        return getActivitiesFromTable(d).get(0);
+        List<IDiaryActivity> act = getActivitiesFromTable(d);
+        return act != null ? act.get(0) : null;
     }
 
     @Override
