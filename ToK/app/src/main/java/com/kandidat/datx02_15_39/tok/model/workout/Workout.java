@@ -9,10 +9,12 @@ import java.util.Date;
 public class Workout {
     private Date startDate;
     private Date endDate;
+    private double intensity;
 
-    public Workout(Date start, Date end){
+    public Workout(Date start, Date end, double intensity){
         this.startDate = start;
         this.endDate = end;
+        this.intensity = intensity;
     }
 
     public Date getStartTime(){

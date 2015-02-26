@@ -19,4 +19,9 @@
     <string name="title_workout_diary">Träningsdagbok</string>
     <string name="title_activity_detailed_sleep">Sömn - Detaljvy</string>
     <string name="title_add_diet">Lägg till mat</string>
+
+    <string name="add_intensity">Välj intensitet</string>
+    <string name="save">Spara</string>
+    <string name="cancel">Cancel</string>
+    <string name="intensity">add_intensity</string>
 </resources>

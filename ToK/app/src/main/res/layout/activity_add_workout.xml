@@ -86,8 +86,11 @@
                         android:maxWidth="100dp"
                         android:src="@drawable/yoga"
                         android:scaleType="fitCenter"
+                        android:layout_marginTop="8dp"
                         android:background="@drawable/border_line_transparent_background"
-                        android:padding="10dp"/>
+                        android:padding="10dp"
+                        android:onClick="addWorkOut"
+                        android:text="@string/title_activity_add_work_out"/>
 
                     <Space
                         android:layout_width="wrap_content"
@@ -103,6 +106,7 @@
                         android:maxWidth="100dp"
                         android:src="@drawable/bike"
                         android:scaleType="fitCenter"
+                        android:layout_marginTop="8dp"
                         android:background="@drawable/border_line_transparent_background"
                         android:padding="10dp"/>
 
@@ -120,8 +124,10 @@
                         android:maxWidth="100dp"
                         android:src="@drawable/sprint"
                         android:scaleType="fitCenter"
+                        android:layout_marginTop="8dp"
                         android:background="@drawable/border_line_transparent_background"
-                        android:padding="10dp"/>
+                        android:padding="10dp"
+                        />
 
                 </LinearLayout>
                 <LinearLayout
@@ -147,6 +153,7 @@
                         android:maxWidth="100dp"
                         android:src="@drawable/soccer"
                         android:scaleType="fitCenter"
+                        android:layout_marginTop="8dp"
                         android:background="@drawable/border_line_transparent_background"
                         android:padding="10dp"/>
 
@@ -164,6 +171,7 @@
                         android:maxWidth="100dp"
                         android:src="@drawable/swim"
                         android:scaleType="fitCenter"
+                        android:layout_marginTop="8dp"
                         android:background="@drawable/border_line_transparent_background"
                         android:padding="10dp"/>
                     <Space
@@ -180,6 +188,7 @@
                         android:maxWidth="100dp"
                         android:src="@drawable/tennis"
                         android:scaleType="fitCenter"
+                        android:layout_marginTop="8dp"
                         android:background="@drawable/border_line_transparent_background"
                         android:padding="10dp"/>
                     </LinearLayout>

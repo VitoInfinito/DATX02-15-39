@@ -15,6 +15,7 @@ import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.model.workout.AddWorkoutDialogFragment;
 import com.kandidat.datx02_15_39.tok.model.workout.Workout;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutActivity;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutDiary;
@@ -43,7 +44,8 @@ public class WorkoutHomeActivity extends ActionBarActivity {
 
         Date start = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 1, cal.get(Calendar.MINUTE)).getTime();
         Date end = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
-        Workout workout = new Workout (start, end);
+
+        Workout workout = new Workout (start, end, 5.0);
         WorkoutActivity activity = new WorkoutActivity("id", workout);
         diary.addActivity(activeDate, activity);
 
@@ -95,6 +97,8 @@ public class WorkoutHomeActivity extends ActionBarActivity {
     public void onAddWorkoutButtonClick(View view){
         startActivity(new Intent(this, AddWorkoutActivity.class));
     }
+
+
     public Context getActivity() {
         return this;
     }
@@ -117,11 +121,5 @@ public class WorkoutHomeActivity extends ActionBarActivity {
                 new DataPoint(Integer.parseInt(sdfShowHour.format(startTime)), 3),
                 new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime)), 3),
                 new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime))+1, 0)};
-
-//        return new DataPoint[] {
-//                new DataPoint(1, 0),
-//                new DataPoint(2, 3),
-//                new DataPoint(3, 3),
-//                new DataPoint(4, 0)};
     }
 }
