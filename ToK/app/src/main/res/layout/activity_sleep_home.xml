@@ -91,7 +91,7 @@
                     android:id="@+id/imageButton"
                     android:src="@drawable/moon"
                     android:layout_centerHorizontal="true"
-                    />
+                    android:onClick="addSleepButtonOnClick"/>
             </RelativeLayout>
 
             <FrameLayout

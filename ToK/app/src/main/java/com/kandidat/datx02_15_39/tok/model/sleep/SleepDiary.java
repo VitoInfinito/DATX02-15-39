@@ -30,7 +30,7 @@ public class SleepDiary extends AbstractDiary {
 
     @Override
     public void addActivity(Date d, IDiaryActivity activity) {
-        addActivityToTable(d, activity);
+	    addActivityToTable(d, activity);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class SleepDiary extends AbstractDiary {
 
 	@Override
 	public List<IDiaryActivity> showDaysActivities(Calendar day) {
-		return null;
+		return getActivitiesFromTable(day.getTime());
 	}
 
 	@Override
