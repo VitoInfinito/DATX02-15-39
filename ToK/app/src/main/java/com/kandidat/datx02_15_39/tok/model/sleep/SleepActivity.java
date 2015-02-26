@@ -47,7 +47,7 @@ public class SleepActivity implements IDiaryActivity{
 
     @Override
     public Date getDate(Date d) {
-        return null;
+        return d;
     }
 
     @Override

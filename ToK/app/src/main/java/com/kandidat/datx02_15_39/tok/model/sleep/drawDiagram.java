@@ -10,10 +10,10 @@ import android.widget.ImageView;
 /**
  * Created by tomashasselquist on 25/02/15.
  */
-public class DrawDiagram extends View {
+public class drawDiagram extends View {
     Paint paint = new Paint();
 
-    public DrawDiagram(Context context) {
+    public drawDiagram(Context context) {
         super(context);
         paint.setColor(Color.BLACK);
     }

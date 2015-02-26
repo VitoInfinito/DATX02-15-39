@@ -6,10 +6,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TimePicker;
 
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
+import com.kandidat.datx02_15_39.tok.model.sleep.SleepActivity;
+import com.kandidat.datx02_15_39.tok.model.sleep.SleepDiary;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class AddSleepActivity extends ActionBarActivity {
+
+	private Sleep newSleep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +50,32 @@ public class AddSleepActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+	public void addNewSleep(){
+		Calendar cal = Calendar.getInstance();
+
+		TimePicker startTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
+		TimePicker endTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
+
+		int startHours = startTimePicker.getCurrentHour();
+		int startMinutes = startTimePicker.getCurrentMinute();
+
+		int stopHours = endTimePicker.getCurrentHour();
+		int stopMinutes = endTimePicker.getCurrentMinute();
+
+		Date startDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), startHours, startMinutes).getTime();
+		Date stopDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), stopHours, stopMinutes).getTime();
+
+		Sleep sleep = new Sleep(startDate, stopDate);
+
+		SleepActivity sleepActivity = new SleepActivity("id4", sleep);
+
+		SleepDiary sleepDiary = (SleepDiary) SleepDiary.getInstance();
+
+		sleepDiary.addActivity(startDate, sleepActivity);
+	}
+
     public void addButtonOnClick(View view){
+		addNewSleep();
         startActivity(new Intent(this, SleepHomeActivity.class));
     }
 }

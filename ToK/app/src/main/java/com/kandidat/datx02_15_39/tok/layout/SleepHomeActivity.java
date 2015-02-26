@@ -27,7 +27,7 @@ import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.jjoe64.graphview.series.Series;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
-import com.kandidat.datx02_15_39.tok.model.sleep.DrawDiagram;
+import com.kandidat.datx02_15_39.tok.model.sleep.drawDiagram;
 import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepActivity;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepDiary;
@@ -256,16 +256,24 @@ public class SleepHomeActivity extends ActionBarActivity {
 	private void fillListWithDummyData(){
 		ListView lv = (ListView) findViewById(R.id.sleepFeed);
 
-		// Instanciating an array list (you don't need to do this,
-		// you already have yours).
+		List<IDiaryActivity> acts = diary.showDaysActivities(Calendar.getInstance());
 		List<String> sleepList = new ArrayList<String>();
+
+		for(int i=0; i<acts.size(); i++) {
+			SleepActivity CIDA = (SleepActivity) acts.get(i);
+			sleepList.add("Started " + sdfShowFullTime.format(CIDA.getSleep().getStartTime()) + " and stopped " + sdfShowFullTime.format(CIDA.getSleep().getStopTime()));
+		}
+
+
+		// Instanciating an array list
+		/*List<String> sleepList = new ArrayList<String>();
 		sleepList.add("Badger");
 		sleepList.add("Badger");
 		sleepList.add("Badger");
 		sleepList.add("Badger");
 		sleepList.add("Mushroom");
 		sleepList.add("Mushroom");
-		sleepList.add("Sn-a-a-a-a-ke");
+		sleepList.add("Sn-a-a-a-a-ke");*/
 
 		// This is the array adapter, it takes the context of the activity as a
 		// first parameter, the type of list view as a second parameter and your
