@@ -12,9 +12,10 @@ import java.util.List;
  */
 public class DietActivity implements IDiaryActivity {
 
-	private final String id;
+	private final String id; //Should be date and the a static number from 0-999
 	private List<Food> foodList;
 	private float calorieCount, proteinCount, fatCount, carbCount;
+	private Date date;
 
 	public DietActivity(){
 		this.id ="";
@@ -42,8 +43,8 @@ public class DietActivity implements IDiaryActivity {
 	}
 
 	@Override
-	public Date getDate(Date d) {
-		return null;
+	public Date getDate() {
+		return date;
 	}
 
 	@Override

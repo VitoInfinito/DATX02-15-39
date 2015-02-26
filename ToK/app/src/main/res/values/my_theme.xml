@@ -1,3 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="MyTheme" parent="android:Theme.Holo.Light">
+        <item name="actionButtonStyle">@style/MyActionButtonStyle</item>
+    </style>
+
+    <style name="MyActionButtonStyle" parent="Widget.AppCompat.ActionButton">
+        <item name="android:minWidth">28dip</item>
+    </style>
 </resources>

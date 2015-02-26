@@ -10,9 +10,49 @@
     <string name="title_activity_sleep_home">Sleep</string>
     <string name="TrainingAndDiet">Träning Och Kost</string>
     <string name="title_activity_add_sleep">AddSleepActivity</string>
-    <string name="title_activity_add_diet">AddDietActivity</string>
+    <string name="title_activity_add_diet">Lägg till kost</string>
     <string name="title_activity_work_out">WorkOutActivity</string>
     <string name="title_activity_workout_home">WorkoutHomeActivity</string>
     <string name="title_add_diet">Lägg till mat</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="Workout">Träning</string>
+
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_top_items">
+        <item>@string/Home</item>
+    </string-array>
+
+    <string-array name="nav_drawer_diary_items">
+        <item>@string/Workout</item>
+        <item>@string/Diet</item>
+        <item>@string/Sleep</item>
+        <item>@string/Weight</item>
+    </string-array>
+
+    <string-array name="nav_drawer_settingsinformation_item">
+        <item>@string/Settings</item>
+        <item>@string/Device</item>
+        <item>@string/About</item>
+    </string-array>
+
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons"></array>
+
+    <!-- Content Description -->
+    <string name="desc_list_item_icon">Item Icon</string>
+    <string name="title_activity_main_activity2">MainActivity2</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="action_example">Example action</string>
+    <string name="Home">Hem</string>
+    <string name="Diet">Kost</string>
+    <string name="Sleep">Sömn</string>
+    <string name="Weight">Vikt</string>
+    <string name="Settings">Inställningar</string>
+    <string name="Device">Koppla tillbehör</string>
+    <string name="About">Om</string>
 
 </resources>
