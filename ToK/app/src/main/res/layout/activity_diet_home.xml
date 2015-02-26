@@ -33,7 +33,8 @@
                 android:layout_row="0"
                 android:layout_column="0"
                 android:layout_gravity="top|left|bottom|right"
-                android:text="Meny" />
+                android:text="Meny"
+                android:textSize="15sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -53,7 +54,8 @@
                 android:layout_row="0"
                 android:layout_column="2"
                 android:maxWidth="70dp"
-                android:text="+" />
+                android:text="+"
+                android:textSize="30sp"/>
         </GridLayout>
 
         <FrameLayout
@@ -76,30 +78,42 @@
                     <RadioGroup
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:id="@+id/toggleGroup">
 
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <Button
+                        <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal" />
+                            android:id="@+id/day_radioButton"
+                            android:text="Visa dag"
+                            android:checked="true"
+                            android:onClick="onDayViewClick"
+                            />
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            android:text="Visa vecka"
+                            android:id="@+id/week_radiobutton"
+                            android:onClick="onWeekViewClick"/>
+
 
                     </RadioGroup>
 
                 </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView2"
+                    android:src="@drawable/diet_graph"/>
 
                 <FrameLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/graph_frame">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/imageView" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -112,10 +126,11 @@
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
-                        android:id="@+id/button3"
+                        android:id="@+id/left_button"
                         android:text="&lt;"
                         android:textSize="20sp"
                         android:background="@android:color/transparent"
+                        android:onClick="onLeftButtonClick"
                          />
 
                     <Button
@@ -123,15 +138,18 @@
                         android:layout_height="wrap_content"
                         android:text="Idag"
                         android:textSize="20sp"
-                        android:id="@+id/textView2" />
+                        android:id="@+id/dateButton"
+                        />
+
                     <Button
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:text=">"
                         android:textSize="20sp"
-                        android:id="@+id/button5"
+                        android:id="@+id/right_button"
                         android:background="@android:color/transparent"
+                        android:onClick="onRightButtonClick"
                         />
 
                 </LinearLayout>

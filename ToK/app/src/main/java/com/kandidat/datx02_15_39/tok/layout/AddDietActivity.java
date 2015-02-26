@@ -4,8 +4,11 @@ package com.kandidat.datx02_15_39.tok.layout;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,10 +20,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.View;
+import android.widget.Toast;
 
 import com.kandidat.datx02_15_39.tok.R;
 
-public class AddDietActivity extends CustomActionBarActivity {
+public class AddDietActivity extends ActionBarActivity {
 
 	private int activatedObject = R.id.food_button;
 	private ListView searchResultList;
@@ -82,6 +87,7 @@ public class AddDietActivity extends CustomActionBarActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
+
 		//noinspection SimplifiableIfStatement
 		if (id == R.id.action_settings) {
 			return true;

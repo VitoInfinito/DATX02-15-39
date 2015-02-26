@@ -5,7 +5,10 @@ import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiary;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 
+<<<<<<< Updated upstream
 import java.util.Calendar;
+=======
+>>>>>>> Stashed changes
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +36,7 @@ public class SleepDiary extends AbstractDiary {
 
     }
 
+<<<<<<< Updated upstream
 	@Override
 	public List<IDiaryActivity> showDaysActivities(Calendar day) {
 		return null;
@@ -44,6 +48,19 @@ public class SleepDiary extends AbstractDiary {
 	}
 
 	@Override
+=======
+    @Override
+    public List<IDiaryActivity> showDaysActivities(Date day) {
+        return null;
+    }
+
+    @Override
+    public List<IDiaryActivity> showWeekActivities(Date start, Date end) {
+        return null;
+    }
+
+    @Override
+>>>>>>> Stashed changes
     public void editActivity(String id, EditActivityParams eap) {
 
     }

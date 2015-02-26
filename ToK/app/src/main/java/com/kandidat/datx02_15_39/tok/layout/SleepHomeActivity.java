@@ -1,14 +1,22 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
 import android.content.Intent;
+<<<<<<< Updated upstream
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+=======
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+>>>>>>> Stashed changes
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.jjoe64.graphview.GraphView;
+<<<<<<< Updated upstream
 import com.jjoe64.graphview.series.BarGraphSeries;
+=======
+>>>>>>> Stashed changes
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.kandidat.datx02_15_39.tok.R;
