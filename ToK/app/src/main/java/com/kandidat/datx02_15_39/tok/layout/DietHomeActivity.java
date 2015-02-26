@@ -1,10 +1,8 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
-<<<<<<< Updated upstream
+
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-=======
->>>>>>> Stashed changes
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -34,10 +32,9 @@ public class DietHomeActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diet_home);
-<<<<<<< Updated upstream
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.hide();
-=======
+
 
         dayRadioButton = (RadioButton) findViewById(R.id.day_radioButton);
         weekRadioButton = (RadioButton) findViewById(R.id.week_radiobutton);
@@ -79,7 +76,6 @@ public class DietHomeActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
->>>>>>> Stashed changes
     }
 
     public void onLeftButtonClick(View view) {
