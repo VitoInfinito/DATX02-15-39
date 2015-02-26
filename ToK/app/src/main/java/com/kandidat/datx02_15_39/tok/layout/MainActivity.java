@@ -2,7 +2,6 @@ package com.kandidat.datx02_15_39.tok.layout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,23 +9,22 @@ import android.view.View;
 import com.kandidat.datx02_15_39.tok.R;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends CustomActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hello_world);
+        setContentView(R.layout.activity_main_activity);
+		initMenu(R.layout.activity_main_activity);
     }
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_with_add, menu);
+		return true;
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_hello_world, menu);
-        return true;
-    }
-
-    @Override
+	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -48,9 +46,6 @@ public class MainActivity extends ActionBarActivity {
         Intent dietIntent = new Intent(this, DietHomeActivity.class);
 
         startActivity(dietIntent);
-
-
-
     }
 
     /**
