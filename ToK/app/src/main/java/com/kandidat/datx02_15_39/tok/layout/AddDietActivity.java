@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import com.kandidat.datx02_15_39.tok.R;
 
-public class AddDietActivity extends ActionBarActivity {
+public class AddDietActivity extends CustomActionBarActivity {
 
 	private int activatedObject = R.id.food_button;
 	private ListView searchResultList;
