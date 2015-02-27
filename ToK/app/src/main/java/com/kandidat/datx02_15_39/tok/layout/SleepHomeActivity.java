@@ -40,7 +40,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-
 public class SleepHomeActivity extends ActionBarActivity {
     private SleepDiary diary;
     private GregorianCalendar currentCalendar;
@@ -81,7 +80,11 @@ public class SleepHomeActivity extends ActionBarActivity {
 
 
         graph.addSeries(series);
-        //series.setColor(Color.BLUE);
+
+
+
+
+        series.setColor(Color.BLACK);
         series.setTitle(sdfShowDay.format(activeDate));
         setGraphXBounds(activeDate, graph);
        // series.setSpacing(0);
@@ -237,8 +240,6 @@ public class SleepHomeActivity extends ActionBarActivity {
     public Context getActivity() {
         return this;
     }
-
-
 
     private DataPoint[] fetchDataPoints(Date date) {
         SleepActivity activity = (SleepActivity) diary.getActivityFromDate(date);
