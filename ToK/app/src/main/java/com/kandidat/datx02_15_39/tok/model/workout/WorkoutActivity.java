@@ -29,7 +29,7 @@ public class WorkoutActivity implements IDiaryActivity {
     }
 
     @Override
-    public Date getDate(Date d) {
+    public Date getDate() {
         return null;
     }
 
