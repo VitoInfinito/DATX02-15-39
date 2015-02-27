@@ -17,7 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class AddSleepActivity extends ActionBarActivity {
+public class AddSleepActivity extends CustomActionBarActivity {
 
 	private Sleep newSleep;
 
@@ -25,6 +25,7 @@ public class AddSleepActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_sleep);
+		initMenu(R.layout.activity_add_sleep);
     }
 
 

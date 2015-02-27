@@ -15,7 +15,7 @@ import com.kandidat.datx02_15_39.tok.R;
 
 import java.util.ArrayList;
 
-public class DietHomeActivity extends ActionBarActivity {
+public class DietHomeActivity extends CustomActionBarActivity {
 
     RadioButton dayRadioButton;
     RadioButton weekRadioButton;
@@ -32,10 +32,7 @@ public class DietHomeActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diet_home);
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.hide();
-
-
+		initMenu(R.layout.activity_diet_home);
         dayRadioButton = (RadioButton) findViewById(R.id.day_radioButton);
         weekRadioButton = (RadioButton) findViewById(R.id.week_radiobutton);
         dateButton = (Button) findViewById(R.id.dateButton);

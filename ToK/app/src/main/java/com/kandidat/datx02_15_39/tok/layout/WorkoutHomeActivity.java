@@ -25,7 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class WorkoutHomeActivity extends ActionBarActivity {
+public class WorkoutHomeActivity extends CustomActionBarActivity {
     private WorkoutDiary diary;
 
 
@@ -37,6 +37,9 @@ public class WorkoutHomeActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_workout_home);
+		initMenu(R.layout.activity_workout_home);
+
         diary = (WorkoutDiary) WorkoutDiary.getInstance();
 
         Calendar cal = Calendar.getInstance();
@@ -48,8 +51,6 @@ public class WorkoutHomeActivity extends ActionBarActivity {
         Workout workout = new Workout (start, end, 5.0);
         WorkoutActivity activity = new WorkoutActivity("id", workout);
         diary.addActivity(activeDate, activity);
-
-        setContentView(R.layout.activity_workout_home);
 
         GraphView graph = (GraphView) findViewById(R.id.workout_graph);
 

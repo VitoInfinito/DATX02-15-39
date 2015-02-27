@@ -37,7 +37,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-public class SleepHomeActivity extends ActionBarActivity {
+public class SleepHomeActivity extends CustomActionBarActivity {
     private SleepDiary diary;
     private GregorianCalendar currentCalendar;
     private Date activeDate;
@@ -52,7 +52,8 @@ public class SleepHomeActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+		setContentView(R.layout.activity_sleep_home);
+		initMenu(R.layout.activity_sleep_home);
         diary = (SleepDiary) SleepDiary.getInstance();
 
         //TODO change to not account for specific times i.e seconds and minutes
@@ -61,11 +62,6 @@ public class SleepHomeActivity extends ActionBarActivity {
         activeDate = currentCalendar.getTime();
         //Used for testing
         produceFakeData();
-
-
-
-        setContentView(R.layout.activity_sleep_home);
-
         //View viewGraph = findViewById(R.id.imageViewGraph);
         //DrawDiagram graphDiagram = new DrawDiagram(viewGraph.getContext());
 

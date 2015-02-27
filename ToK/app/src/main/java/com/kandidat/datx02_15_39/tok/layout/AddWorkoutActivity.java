@@ -20,7 +20,7 @@ import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.workout.AddWorkoutDialogFragment;
 
 
-public class AddWorkoutActivity extends FragmentActivity {
+public class AddWorkoutActivity extends CustomActionBarActivity {
 
     ImageButton yogaButton;
     ImageButton runnerButton;
@@ -30,7 +30,7 @@ public class AddWorkoutActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_workout);
-
+		initMenu(R.layout.activity_add_workout);
         yogaButton = (ImageButton) findViewById(R.id.yoga_button);
         runnerButton = (ImageButton) findViewById(R.id.sprint_button);
 
