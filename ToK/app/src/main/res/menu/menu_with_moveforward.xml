@@ -7,5 +7,5 @@
           android:icon="@drawable/next"
           android:orderInCategory="100"
           app:showAsAction="ifRoom"
-          android:title="gula"/>
+          android:title="Går vidare till nästa"/>
 </menu>

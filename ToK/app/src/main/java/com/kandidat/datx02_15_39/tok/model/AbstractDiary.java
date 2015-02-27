@@ -33,7 +33,7 @@ public abstract class AbstractDiary implements IDiary {
         }
 
         idl.add(ida);
-
+        //activities.put(sdf.format(d), ida);
     }
 
     protected void removeDate(Date d) {

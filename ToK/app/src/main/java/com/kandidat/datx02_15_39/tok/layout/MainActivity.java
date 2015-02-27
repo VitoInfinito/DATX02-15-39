@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,12 +14,13 @@ import android.widget.Spinner;
 import com.kandidat.datx02_15_39.tok.R;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends CustomActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hello_world);
+        setContentView(R.layout.activity_main_activity);
+		initMenu(R.layout.activity_main_activity);
     }
 
 

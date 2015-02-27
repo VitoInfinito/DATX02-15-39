@@ -11,7 +11,7 @@ public interface IDiaryActivity {
 
 	public void setDate(Date d);
 
-	public Date getDate(Date d);
+	public Date getDate();
 
 	public void edit(EditActivityParams eap);
 

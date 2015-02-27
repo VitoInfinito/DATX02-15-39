@@ -47,15 +47,16 @@ public class WorkoutDiary extends AbstractDiary {
 
     }
 
-    @Override
-    public List<IDiaryActivity> showDaysActivities(Calendar day) {
-        return null;
-    }
+	@Override
+	public List<IDiaryActivity> showDaysActivities(Calendar day) {
+		return null;
+	}
 
-    @Override
-    public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end) {
-        return null;
-    }
+	@Override
+	public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end) {
+		return null;
+	}
+
     @Override
     public void editActivity(String id, EditActivityParams eap) {
 
