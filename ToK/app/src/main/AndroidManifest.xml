@@ -44,6 +44,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kandidat.datx02_15_39.tok.layout.MainActivity" />
         </activity>
+        <activity
+            android:name=".layout.AddWorkoutActivity"
+            android:label="@string/title_activity_add_workout"
+            android:parentActivityName=".layout.WorkoutHomeActivity">
+            </activity>
     </application>
 
 </manifest>

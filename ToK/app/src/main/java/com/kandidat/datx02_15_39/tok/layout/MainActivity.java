@@ -64,16 +64,19 @@ public class MainActivity extends ActionBarActivity {
         startActivity(new Intent(this, SleepHomeActivity.class));
     }
 
+    public void OnWorkOutButtonClick(View view){
+        startActivity(new Intent(this, WorkoutHomeActivity.class));
+    }
+
+
 	/**
 	 * Creates a popup with a numberpicker inside it to register your weight for the day.
 	 *
 	 * @param view View to get context from for the alert dialog
 	 */
 	public void registerWeightOnClick(View view){
-		// 1. Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
-		// 2. Chain together various setter methods to set the dialog characteristics
 		builder.setTitle("Weight");
 		builder.setIcon(R.drawable.weigth_scale);
 
@@ -85,7 +88,6 @@ public class MainActivity extends ActionBarActivity {
 
 		builder.setView(weightPicker);
 
-		// 3. Add the buttons
 		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				// User clicked OK button
@@ -98,9 +100,9 @@ public class MainActivity extends ActionBarActivity {
 		});
 
 
-		// 4. Get the AlertDialog from create()
 		AlertDialog dialog = builder.create();
 
 		dialog.show();
 	}
+
 }
