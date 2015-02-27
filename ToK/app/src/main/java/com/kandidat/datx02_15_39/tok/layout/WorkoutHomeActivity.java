@@ -67,7 +67,7 @@ public class WorkoutHomeActivity extends ActionBarActivity {
              */
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(v.getContext(), detailedSleepActivity.class));
+                
             }
         });
     }
