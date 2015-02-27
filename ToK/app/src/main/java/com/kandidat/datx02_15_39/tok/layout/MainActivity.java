@@ -1,11 +1,16 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.NumberPicker;
+import android.widget.SeekBar;
+import android.widget.Spinner;
 
 import com.kandidat.datx02_15_39.tok.R;
 
@@ -41,16 +46,13 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+	/**
+	 * Navigates to diet activity overview.
+	 *
+	 * @param view Not used.
+	 */
     public void OnDietButtonClick(View view) {
-
-        //kostButton = (Button) findViewById(R.id.diet_button);
-
-        Intent dietIntent = new Intent(this, DietHomeActivity.class);
-
-        startActivity(dietIntent);
-
-
-
+        startActivity(new Intent(this, DietHomeActivity.class));
     }
 
     /**
@@ -61,7 +63,46 @@ public class MainActivity extends ActionBarActivity {
     public void OnSleepButtonClick(View view) {
         startActivity(new Intent(this, SleepHomeActivity.class));
     }
+
     public void OnWorkOutButtonClick(View view){
         startActivity(new Intent(this, WorkoutHomeActivity.class));
     }
+
+
+	/**
+	 * Creates a popup with a numberpicker inside it to register your weight for the day.
+	 *
+	 * @param view View to get context from for the alert dialog
+	 */
+	public void registerWeightOnClick(View view){
+		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+		builder.setTitle("Weight");
+		builder.setIcon(R.drawable.weigth_scale);
+
+		NumberPicker weightPicker = new NumberPicker(this);
+
+		weightPicker.setMinValue(25);
+		weightPicker.setMaxValue(200);
+		weightPicker.setValue(80);
+
+		builder.setView(weightPicker);
+
+		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				// User clicked OK button
+			}
+		});
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				// User cancelled the dialog
+			}
+		});
+
+
+		AlertDialog dialog = builder.create();
+
+		dialog.show();
+	}
+
 }
