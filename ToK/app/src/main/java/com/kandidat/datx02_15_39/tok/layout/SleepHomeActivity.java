@@ -11,7 +11,10 @@ import android.view.View;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.Series;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
@@ -22,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 
 public class SleepHomeActivity extends ActionBarActivity {
     private SleepDiary diary;
@@ -57,6 +59,7 @@ public class SleepHomeActivity extends ActionBarActivity {
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(fetchDataPoints(activeDate));
 
         graph.addSeries(series);
+
         series.setColor(Color.BLACK);
         series.setTitle(sdfShowDay.format(activeDate));
 
@@ -71,7 +74,6 @@ public class SleepHomeActivity extends ActionBarActivity {
                 startActivity(new Intent(v.getContext(), detailedSleepActivity.class));
             }
         });
-
     }
 
     @Override
@@ -117,8 +119,6 @@ public class SleepHomeActivity extends ActionBarActivity {
     public Context getActivity() {
         return this;
     }
-
-
 
     private DataPoint[] fetchDataPoints(Date date) {
         SleepActivity activity = (SleepActivity) diary.getActivityFromDate(date);
