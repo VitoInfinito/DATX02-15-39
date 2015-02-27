@@ -1,5 +1,6 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
