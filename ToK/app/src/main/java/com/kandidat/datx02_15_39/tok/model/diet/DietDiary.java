@@ -35,27 +35,13 @@ public class DietDiary extends AbstractDiary {
 	}
 
 	@Override
-	public IDiaryActivity getActivity(String id) {
-		Calendar mydate = new GregorianCalendar();
-		Date thedate = null;
-		try {
-			thedate = new SimpleDateFormat("MMMM d, yyyy").parse(id);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		mydate.setTime(thedate);
-		List<IDiaryActivity> tmp = getActivitiesFromTable(mydate.getTime());
-		for(IDiaryActivity ida: tmp){
-			if(ida.getID() == id){
-				return ida;
-			}
-		}
+	public IDiaryActivity getActivity(Calendar c, String id) {
 		return null;
 	}
 
 	@Override
-	public void removeActivity(String id) {
-		removeActivity(getActivity(id).getDate(), getActivity(id));
+	public void removeActivity(Calendar c, String id) {
+		removeActivity(c.getTime(), getActivity(c, id));
 	}
 
 	@Override
@@ -82,8 +68,8 @@ public class DietDiary extends AbstractDiary {
 	}
 
 	@Override
-	public void editActivity(String id, EditActivityParams eap) {
-		getActivity(id).edit(eap);
+	public void editActivity(Calendar c, String id, EditActivityParams eap) {
+		getActivity(c, id).edit(eap);
 	}
 
 }
