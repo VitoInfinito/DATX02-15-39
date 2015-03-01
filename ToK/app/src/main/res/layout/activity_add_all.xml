@@ -18,7 +18,7 @@
         android:layout_gravity="top|center"
         android:layout_margin="10dp"
         android:background="@drawable/round_button"
-        android:onClick="onButtonRightClick"/>
+        android:onClick="onAlertAddButtonClick"/>
 
     <ImageButton
         android:layout_width="40dp"
@@ -29,7 +29,7 @@
         android:layout_toEndOf="@+id/alert_weight_button"
         android:layout_gravity="bottom|center"
         android:background="@drawable/round_button"
-        />
+        android:onClick="onAlertAddButtonClick"/>
 
     <ImageButton
         android:layout_width="40dp"
@@ -39,7 +39,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/round_button"
-        />
+        android:onClick="onAlertAddButtonClick"/>
 
     <ImageButton
         android:layout_width="40dp"
@@ -50,5 +50,6 @@
         android:layout_toLeftOf="@+id/alert_weight_button"
         android:layout_toStartOf="@+id/alert_weight_button"
         android:background="@drawable/round_button"
-        android:src="@drawable/scale"/>
+        android:src="@drawable/scale"
+        android:onClick="onAlertAddButtonClick"/>
 </FrameLayout>
