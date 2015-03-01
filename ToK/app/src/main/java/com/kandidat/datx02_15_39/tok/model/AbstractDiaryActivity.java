@@ -9,15 +9,15 @@ import java.util.Date;
 public abstract class AbstractDiaryActivity implements IDiaryActivity{
 
 	private final String id;
-	private static int idCount = 0;
+	private static int idCount = 1;
 	private Calendar date;
 
 	public AbstractDiaryActivity(){ id = generateID();}
 
 	private String generateID() {
-		return String.format("st%06d", idCount++);
+		return String.format("%06d", idCount++);
 	}
-	
+
 	@Override
 	public String getID(){
 		return id;

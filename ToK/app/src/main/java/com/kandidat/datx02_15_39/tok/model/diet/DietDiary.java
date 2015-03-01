@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 
 /**
@@ -27,6 +28,10 @@ public class DietDiary extends AbstractDiary {
 		}
 		return instance;
 	}
+	/*
+
+	 */
+	protected DietDiary(){}
 
 	@Override
 	public void addActivity(Date d, IDiaryActivity activity) {
@@ -36,7 +41,12 @@ public class DietDiary extends AbstractDiary {
 
 	@Override
 	public IDiaryActivity getActivity(Calendar c, String id) {
-		return null;
+		List<IDiaryActivity> tmp = super.getActivitiesFromTable(c.getTime());
+		for (IDiaryActivity ida: tmp){
+			if(ida.getID().equals(id))
+				return ida;
+		}
+		throw new IllegalArgumentException();
 	}
 
 	@Override

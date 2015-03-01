@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,8 +39,13 @@ public class CustomActionBarActivity extends ActionBarActivity{
 	protected DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private MenuItemAdapter miaTop, miaDiary, miaSetting;
+	protected int screenWidth,screenheight;
 
 	protected void initMenu(int layout){
+		DisplayMetrics dm = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(dm);
+		this.screenheight = dm.heightPixels;
+		this.screenWidth = dm.widthPixels;
 		// Set up your ActionBar
 		final ActionBar actionBar = getSupportActionBar();
 		final int actionBarColor = getResources().getColor(R.color.action_bar);
@@ -297,5 +303,10 @@ public class CustomActionBarActivity extends ActionBarActivity{
 
 			return convertView;
 		}
+	}
+
+	public void onAlertAddButtonClick(View view){
+		view.getContext();
+		startActivity(new Intent(view.getContext(), MainActivity.class));
 	}
 }

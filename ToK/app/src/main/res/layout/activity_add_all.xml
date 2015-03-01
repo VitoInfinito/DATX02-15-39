@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:orientation="vertical"
+             android:layout_width="150dp"
+             android:layout_height="150dp"
+             android:minHeight="200dp"
+             android:minWidth="200dp"
+             android:id="@+id/add_all_menu"
+             android:background="#00000000"
+>
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/alert_training_button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="top|center"
+        android:layout_margin="10dp"
+        android:background="@drawable/round_button"
+        android:onClick="onButtonRightClick"/>
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/alert_sleep_button"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/alert_weight_button"
+        android:layout_toEndOf="@+id/alert_weight_button"
+        android:layout_gravity="bottom|center"
+        android:background="@drawable/round_button"
+        />
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/alert_weight_button"
+        android:layout_gravity="left|center"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/round_button"
+        />
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/alert_diet_button"
+        android:layout_gravity="center|right"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/alert_weight_button"
+        android:layout_toStartOf="@+id/alert_weight_button"
+        android:background="@drawable/round_button"
+        android:src="@drawable/scale"/>
+</FrameLayout>
