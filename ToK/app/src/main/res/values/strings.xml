@@ -2,19 +2,19 @@
 <resources>
 
     <string name="app_name">ToK</string>
-    <string name="title_activity_hello_world">HelloWorld</string>
+    <string name="title_activity_hello_world">ToK</string>
     <string name="hello_world">Hejsan världen!</string>
     <string name="action_settings">Inställningar</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_diet_home">DietHomeActivity</string>
-    <string name="title_activity_sleep_home">Sömn</string>
+    <string name="title_activity_diet_home">Kostdagbok</string>
+    <string name="title_activity_sleep_home">Sömndagbok</string>
     <string name="TrainingAndDiet">Träning Och Kost</string>
     <string name="title_activity_add_sleep">AddSleepActivity</string>
     <string name="title_activity_add_diet">Lägg till kost</string>
-    <string name="title_activity_work_out">WorkOutActivity</string>
-    <string name="title_activity_workout_home">WorkoutHomeActivity</string>
+    <string name="title_activity_work_out">Träningsdagbok</string>
+    <string name="title_activity_workout_home">Träningsdagbok</string>
 
-    <string name="title_activity_add_workout">AddWorkoutActivity</string>
+    <string name="title_activity_add_workout">Lägg till träning</string>
     <string name="title_activity_add_work_out">Lägg till träning</string>
     <string name="title_workout_diary">Träningsdagbok</string>
     <string name="title_activity_detailed_sleep">Sömn - Detaljvy</string>
@@ -59,7 +59,6 @@
     <string name="Settings">Inställningar</string>
     <string name="Device">Koppla tillbehör</string>
     <string name="About">Om</string>
-
     <string name="add_intensity">Välj intensitet</string>
     <string name="save">Spara</string>
     <string name="cancel">Cancel</string>

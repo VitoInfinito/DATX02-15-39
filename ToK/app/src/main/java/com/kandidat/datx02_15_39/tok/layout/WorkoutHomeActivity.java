@@ -73,7 +73,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_workout_home, menu);
+        getMenuInflater().inflate(R.menu.menu_with_add, menu);
         return true;
     }
 
@@ -85,7 +85,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.right_corner_button_add) {
+            startActivity(new Intent(this, AddWorkoutActivity.class));
             return true;
         }
 

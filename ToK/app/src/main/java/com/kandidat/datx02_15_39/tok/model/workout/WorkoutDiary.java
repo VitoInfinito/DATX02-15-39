@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class WorkoutDiary extends AbstractDiary {
     private static IDiary instance;
+    private List <IDiaryActivity> listByW;
 
     protected WorkoutDiary(){
         super();
