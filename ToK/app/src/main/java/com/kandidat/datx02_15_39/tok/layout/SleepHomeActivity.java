@@ -2,6 +2,8 @@ package com.kandidat.datx02_15_39.tok.layout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -71,8 +73,81 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         series = new PointsGraphSeries<DataPoint>(fetchDataPoints(activeDate));
 
         graph.addSeries(series);
-        graph.setTitle("Sleep");
-        graph.canScrollHorizontally(1);
+        series.setTitle(sdfShowDay.format(activeDate));
+        setGraphXBounds(activeDate, graph);
+
+        graph.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Handles clicks on the graph.
+             *
+             * @param v The view to reference as current.
+             */
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX) {
+                    int hours = (int) value;
+                    int minutes = (int) ((value - hours)*100);
+                    if(minutes > 60) {
+                        minutes -= 60;
+                        hours++;
+                    }
+
+                    return super.formatLabel(hours, true) + ":" + (minutes < 10 ? '0' + minutes : minutes);
+                } else {
+                    return super.formatLabel(value, false);
+                }
+            }
+        });
+
+        series.setCustomShape(new PointsGraphSeries.CustomShape() {
+            @Override
+            public void draw(Canvas canvas, Paint paint, float x, float y) {
+                //Sleep drawSleep = ((SleepActivity) diary.getActivityFromDate(activeDate)).getSleepThatStarts(earlierDate);
+                //System.out.println("DrawSleep at " + x + " starts at time " + drawSleep);
+
+                paint.setStrokeWidth(10);
+                canvas.drawLine(x-20, y-20, x+20, y+20, paint);
+                canvas.drawLine(x+20, y-20, x-20, y+20, paint);
+            }
+        });
+
+
+        fillListWithDummyData();
+      /* // styling
+       series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+           @Override
+           public int get(DataPoint data) {
+               //return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+               if(data.getY() == 3) {
+                   return Color.rgb(255, 0, 0);
+               }else if(data.getY() == 2) {
+                   return Color.rgb(0, 255, 0);
+               }
+
+               return Color.rgb(0, 0, 255);
+           }
+       });*/
+
+
+ /*      StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
+       staticLabelsFormatter.setVerticalLabels(new String[] {"V", "L", "D"});
+       graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+
+*/
+
+        series.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPoint) {
+                Toast.makeText(getActivity(), "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
