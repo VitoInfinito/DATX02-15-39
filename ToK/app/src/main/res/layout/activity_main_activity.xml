@@ -96,11 +96,13 @@ android:orientation="vertical"
 <ListView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/left_drawer_list_diary"/>
+    android:id="@+id/left_drawer_list_diary"
+    android:layout_marginTop="10dp"/>
 <ListView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/left_drawer_list_setting"/>
+    android:id="@+id/left_drawer_list_setting"
+    android:layout_marginTop="10dp"/>
 </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>
