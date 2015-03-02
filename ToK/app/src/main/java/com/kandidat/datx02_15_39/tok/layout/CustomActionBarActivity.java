@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
 
 /**
  * Created by Lagerstedt on 2015-02-24.
@@ -38,8 +40,13 @@ public class CustomActionBarActivity extends ActionBarActivity{
 	protected DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private MenuItemAdapter miaTop, miaDiary, miaSetting;
+	protected int screenWidth,screenheight;
 
 	protected void initMenu(int layout){
+		DisplayMetrics dm = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(dm);
+		this.screenheight = dm.heightPixels;
+		this.screenWidth = dm.widthPixels;
 		// Set up your ActionBar
 		final ActionBar actionBar = getSupportActionBar();
 		final int actionBarColor = getResources().getColor(R.color.action_bar);
@@ -246,7 +253,7 @@ public class CustomActionBarActivity extends ActionBarActivity{
 					.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
 						public void onClick(DialogInterface arg0, int arg1) {
-							CustomActionBarActivity.super.onBackPressed();
+							System.exit(0);
 						}
 					}).create().show();
 		}else{
@@ -296,6 +303,22 @@ public class CustomActionBarActivity extends ActionBarActivity{
 			// Return the completed view to render on screen
 
 			return convertView;
+		}
+	}
+
+	public void onAlertAddButtonClick(View view){
+		switch(view.getId()) {
+			case R.id.alert_diet_button:
+				startActivity(new Intent(this, AddDietActivity.class));
+				break;
+			case R.id.alert_sleep_button:
+				startActivity(new Intent(this, AddSleepActivity.class));
+				break;
+			case R.id.alert_training_button:
+				startActivity(new Intent(this, AddWorkoutActivity.class));
+				break;
+			case R.id.alert_weight_button:
+				break;
 		}
 	}
 }

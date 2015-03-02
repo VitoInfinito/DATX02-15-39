@@ -34,7 +34,7 @@ public class WorkoutDiary extends AbstractDiary {
     }
 
     @Override
-    public IDiaryActivity getActivity(String id) {
+    public IDiaryActivity getActivity(Calendar c,String id) {
         return null;
     }
 
@@ -43,7 +43,7 @@ public class WorkoutDiary extends AbstractDiary {
     }
 
     @Override
-    public void removeActivity(String id) {
+    public void removeActivity(Calendar c,String id) {
 
     }
 
@@ -58,7 +58,7 @@ public class WorkoutDiary extends AbstractDiary {
 	}
 
     @Override
-    public void editActivity(String id, EditActivityParams eap) {
+    public void editActivity(Calendar c,String id, EditActivityParams eap) {
 
     }
 }

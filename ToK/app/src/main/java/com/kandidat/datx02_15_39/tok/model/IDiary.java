@@ -26,13 +26,13 @@ public interface IDiary {
 	 * @param id
 	 * @return A Activity with the id if such a Activity exist
 	 */
-    public IDiaryActivity getActivity(String id);
+    public IDiaryActivity getActivity(Calendar c, String id);
 
 	/**
 	 * Removes a id depending on its id
 	 * @param id
 	 */
-    public void removeActivity(String id);
+    public void removeActivity(Calendar c, String id);
 
 	/**
 	 * Method to show the data of a days activities
@@ -49,8 +49,8 @@ public interface IDiary {
 
 	/**
 	 * Method used when a already created Activity needs to be changed
-	 * @param id - The id of the specific Activity you want to edit
+	 *
 	 * @param eap - Contains the Attributes you want to edit
 	 */
-	public void editActivity(String id, EditActivityParams eap);
+	public void editActivity(Calendar c, String id, EditActivityParams eap);
 }

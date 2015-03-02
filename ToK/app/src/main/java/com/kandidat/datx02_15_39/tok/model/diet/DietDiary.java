@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 
 /**
@@ -27,6 +28,10 @@ public class DietDiary extends AbstractDiary {
 		}
 		return instance;
 	}
+	/*
+
+	 */
+	protected DietDiary(){}
 
 	@Override
 	public void addActivity(Date d, IDiaryActivity activity) {
@@ -35,27 +40,18 @@ public class DietDiary extends AbstractDiary {
 	}
 
 	@Override
-	public IDiaryActivity getActivity(String id) {
-		Calendar mydate = new GregorianCalendar();
-		Date thedate = null;
-		try {
-			thedate = new SimpleDateFormat("MMMM d, yyyy").parse(id);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		mydate.setTime(thedate);
-		List<IDiaryActivity> tmp = getActivitiesFromTable(mydate.getTime());
-		for(IDiaryActivity ida: tmp){
-			if(ida.getID() == id){
+	public IDiaryActivity getActivity(Calendar c, String id) {
+		List<IDiaryActivity> tmp = super.getActivitiesFromTable(c.getTime());
+		for (IDiaryActivity ida: tmp){
+			if(ida.getID().equals(id))
 				return ida;
-			}
 		}
-		return null;
+		throw new IllegalArgumentException();
 	}
 
 	@Override
-	public void removeActivity(String id) {
-		removeActivity(getActivity(id).getDate(), getActivity(id));
+	public void removeActivity(Calendar c, String id) {
+		removeActivity(c.getTime(), getActivity(c, id));
 	}
 
 	@Override
@@ -82,8 +78,8 @@ public class DietDiary extends AbstractDiary {
 	}
 
 	@Override
-	public void editActivity(String id, EditActivityParams eap) {
-		getActivity(id).edit(eap);
+	public void editActivity(Calendar c, String id, EditActivityParams eap) {
+		getActivity(c, id).edit(eap);
 	}
 
 }

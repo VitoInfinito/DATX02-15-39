@@ -2,13 +2,12 @@ package com.kandidat.datx02_15_39.tok.layout;
 
 
 
-import android.app.SearchManager;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,17 +18,23 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.view.View;
-import android.widget.Toast;
 
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
+import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
+import com.kandidat.datx02_15_39.tok.model.diet.EditDietActivityParams;
+import com.kandidat.datx02_15_39.tok.model.diet.Food;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class AddDietActivity extends CustomActionBarActivity {
 
 	private int activatedObject = R.id.food_button;
 	private ListView searchResultList;
 	private SearchResultAdapter sra;
+	private DietDiary diary;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +42,15 @@ public class AddDietActivity extends CustomActionBarActivity {
 		setContentView(R.layout.activity_add_diet);
 		initMenu(R.layout.activity_add_diet);
 		findViewById(activatedObject).setActivated(true);
-		addItemToSearchResult("Kyckling", "2000");
+		diary = DietDiary.getInstance();
+		Calendar c = Calendar.getInstance();
+		List<Food> tmp = new ArrayList<Food>();
+		tmp.add(new Food(200, 300,400,500, "Gunnar", "höger lår på kyckling"));
+		DietActivity da = new DietActivity(c);
+		diary.addActivity(c.getTime(), da);
+		EditDietActivityParams edap = new EditDietActivityParams(c.getTime(), tmp);
+		diary.editActivity(c, "000001", edap);
+		addItemToSearchResult(((DietActivity) diary.getActivity(c, "000001")).getFoodList().get(0).getName(), ((DietActivity) diary.getActivity(c, "000001")).getFoodList().get(0).getCalorieAmount() + "");
 	}
 
 	@Override
@@ -89,8 +102,7 @@ public class AddDietActivity extends CustomActionBarActivity {
 		int id = item.getItemId();
 
 		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings) {
-			return true;
+		if (id == R.id.right_corner_button) {
 		}
 		//This will be called to be able to see if you pressed the menu
 		return super.onOptionsItemSelected(item);
