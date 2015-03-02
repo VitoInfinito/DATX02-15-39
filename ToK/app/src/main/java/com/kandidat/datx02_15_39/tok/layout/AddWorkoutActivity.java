@@ -1,24 +1,17 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.support.v4.app.DialogFragment;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
 
 
 import com.kandidat.datx02_15_39.tok.R;
-import com.kandidat.datx02_15_39.tok.model.workout.AddWorkoutDialogFragment;
 
 
 public class AddWorkoutActivity extends CustomActionBarActivity {
