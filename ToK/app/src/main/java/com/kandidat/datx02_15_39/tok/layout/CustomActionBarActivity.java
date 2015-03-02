@@ -245,7 +245,7 @@ public class CustomActionBarActivity extends ActionBarActivity{
 
 	@Override
 	public void onBackPressed() {
-		if(this.getParent() == null) {
+		if(this.getClass() == MainActivity.class) {
 			new AlertDialog.Builder(this)
 					.setTitle("Really Exit?")
 					.setMessage("Are you sure you want to exit?")
@@ -299,7 +299,7 @@ public class CustomActionBarActivity extends ActionBarActivity{
 			// Lookup view for data population
 			TextView item1 = (TextView) convertView.findViewById(R.id.menu_item);
 			// Populate the data into the template view using the data object
-			item1.setHint(getItem(position).menuName);
+			item1.setText(getItem(position).menuName);
 			// Return the completed view to render on screen
 
 			return convertView;
