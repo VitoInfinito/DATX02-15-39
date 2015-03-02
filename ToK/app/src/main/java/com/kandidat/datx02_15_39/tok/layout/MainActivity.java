@@ -27,7 +27,7 @@ public class MainActivity extends CustomActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_hello_world, menu);
+        getMenuInflater().inflate(R.menu.menu_with_add, menu);
         return true;
     }
 
@@ -39,8 +39,12 @@ public class MainActivity extends CustomActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.right_corner_button_add) {
+			View add = getLayoutInflater().inflate(R.layout.activity_add_all, null);
+			AlertDialog ad = new AlertDialog.Builder(this, R.style.CustomDialog)
+					.create();
+			ad.setView(add);
+			ad.show();
         }
 
         return super.onOptionsItemSelected(item);

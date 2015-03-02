@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
 
 /**
  * Created by Lagerstedt on 2015-02-24.
@@ -306,7 +307,18 @@ public class CustomActionBarActivity extends ActionBarActivity{
 	}
 
 	public void onAlertAddButtonClick(View view){
-		view.getContext();
-		startActivity(new Intent(view.getContext(), MainActivity.class));
+		switch(view.getId()) {
+			case R.id.alert_diet_button:
+				startActivity(new Intent(this, AddDietActivity.class));
+				break;
+			case R.id.alert_sleep_button:
+				startActivity(new Intent(this, AddSleepActivity.class));
+				break;
+			case R.id.alert_training_button:
+				startActivity(new Intent(this, AddWorkoutActivity.class));
+				break;
+			case R.id.alert_weight_button:
+				break;
+		}
 	}
 }

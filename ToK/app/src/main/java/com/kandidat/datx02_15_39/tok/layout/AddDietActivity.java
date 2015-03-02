@@ -103,11 +103,6 @@ public class AddDietActivity extends CustomActionBarActivity {
 
 		//noinspection SimplifiableIfStatement
 		if (id == R.id.right_corner_button) {
-			View add = getLayoutInflater().inflate(R.layout.activity_add_all, null);
-			AlertDialog ad = new AlertDialog.Builder(this, R.style.CustomDialog)
-					.create();
-			ad.setView(add);
-			ad.show();
 		}
 		//This will be called to be able to see if you pressed the menu
 		return super.onOptionsItemSelected(item);
