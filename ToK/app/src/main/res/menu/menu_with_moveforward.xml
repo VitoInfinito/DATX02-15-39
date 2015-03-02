@@ -3,9 +3,9 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.kandidat.datx02_15_39.tok.layout.AddDietActivity">
 
-    <item android:id="@+id/right_corner_button"
+    <item android:id="@+id/right_corner_button_moveforward"
           android:icon="@drawable/next"
           android:orderInCategory="100"
           app:showAsAction="ifRoom"
-          android:title="gula"/>
+          android:title="Går vidare till nästa"/>
 </menu>

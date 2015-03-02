@@ -5,8 +5,14 @@ import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiary;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 
 /**
@@ -22,35 +28,58 @@ public class DietDiary extends AbstractDiary {
 		}
 		return instance;
 	}
+	/*
+
+	 */
+	protected DietDiary(){}
 
 	@Override
 	public void addActivity(Date d, IDiaryActivity activity) {
-
+		activity.setDate(d);
+		addActivityToTable(d, activity);
 	}
 
 	@Override
-	public IDiaryActivity getActivity(String id) {
-		return null;
+	public IDiaryActivity getActivity(Calendar c, String id) {
+		List<IDiaryActivity> tmp = super.getActivitiesFromTable(c.getTime());
+		for (IDiaryActivity ida: tmp){
+			if(ida.getID().equals(id))
+				return ida;
+		}
+		throw new IllegalArgumentException();
 	}
 
 	@Override
-	public void removeActivity(String id) {
-
+	public void removeActivity(Calendar c, String id) {
+		removeActivity(c.getTime(), getActivity(c, id));
 	}
 
 	@Override
 	public List<IDiaryActivity> showDaysActivities(Calendar day) {
-		return null;
+		return getActivitiesFromTable(day.getTime());
 	}
 
 	@Override
 	public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end) {
-		return null;
+		if(!start.before(end)){
+			throw new IllegalArgumentException();
+		}
+		List<IDiaryActivity> returnValue = new ArrayList<IDiaryActivity>();
+		while(start.before(end)){
+			List<IDiaryActivity> tmp = getActivitiesFromTable(start.getTime());
+			for(IDiaryActivity ida: tmp){
+				if(ida instanceof DietActivity){
+					returnValue.add((DietActivity)ida);
+				}
+			}
+			start.add(Calendar.DATE, 1);
+		}
+		return returnValue;
 	}
 
 	@Override
-	public void editActivity(String id, EditActivityParams eap) {
-
+	public void editActivity(Calendar c, String id, EditActivityParams eap) {
+		getActivity(c, id).edit(eap);
 	}
 
 }
