@@ -65,7 +65,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
              */
             @Override
             public void onClick(View v) {
-                
+
             }
         });
     }

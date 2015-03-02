@@ -21,6 +21,9 @@ Thumbs.db
 # OSX files
 .DS_Store
 
+#Log Files
+*.log
+
 # Eclipse project files
 .classpath
 .project
@@ -30,3 +33,4 @@ Thumbs.db
 #.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
 .gradle
 build/
+/*/build/
