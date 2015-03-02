@@ -85,24 +85,50 @@ android:layout_width="240dp"
 android:layout_height="match_parent"
 android:layout_gravity="start"
 android:divider="@android:color/transparent"
-android:background="@android:color/black"
+android:background="#dd000000"
 android:orientation="vertical"
     >
 
 <ListView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/left_drawer_list_top"/>
-<ListView
+    android:id="@+id/left_drawer_list_top"
+    android:choiceMode="singleChoice"
+    android:divider="@color/off_white"
+    android:dividerHeight="1dp"
+    android:drawSelectorOnTop="false"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:id="@+id/textView"
+        android:background="#80FFFFFF"/>
+
+    <ListView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:id="@+id/left_drawer_list_diary"
-    android:layout_marginTop="10dp"/>
-<ListView
+    android:choiceMode="singleChoice"
+    android:divider="@color/off_white"
+    android:dividerHeight="1dp"
+    android:drawSelectorOnTop="false"
+        />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:id="@+id/textView2"
+        android:background="#80FFFFFF"/>
+
+    <ListView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:id="@+id/left_drawer_list_setting"
-    android:layout_marginTop="10dp"/>
+    android:choiceMode="singleChoice"
+    android:divider="@color/off_white"
+    android:dividerHeight="1dp"
+    android:drawSelectorOnTop="false"
+    />
 </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>
