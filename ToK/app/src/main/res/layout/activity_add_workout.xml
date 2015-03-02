@@ -21,50 +21,6 @@
         android:layout_height="fill_parent"
         android:id="@+id/linearLayout">
 
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:minHeight="70dp"
-            android:id="@+id/gridLayout"
-            android:columnCount="3"
-            android:orientation="horizontal"
-            android:layout_gravity="center_horizontal"
-            android:useDefaultMargins="true">
-
-            <ImageButton
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                android:id="@+id/menu_button"
-                android:layout_row="0"
-                android:layout_column="0"
-                android:src="@drawable/menu"
-                android:scaleType="fitCenter"
-                android:background="@android:color/transparent"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/title_activity_add_work_out"
-                android:id="@+id/menu_bar_title"
-                android:layout_row="0"
-                android:layout_column="1"
-                android:layout_gravity="left|center_horizontal|right"
-                android:textSize="20sp"
-                android:gravity="center_vertical|center_horizontal"/>
-
-            <ImageButton
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                android:id="@+id/button4"
-                android:layout_row="0"
-                android:layout_column="2"
-                android:maxWidth="70dp"
-                android:src="@drawable/check"
-                android:scaleType="fitCenter"
-                android:background="@android:color/transparent"
-                android:padding="10dp"/>
-
-        </GridLayout>
 
             <LinearLayout
                 android:orientation="vertical"
@@ -98,7 +54,7 @@
                         android:layout_marginTop="8dp"
                         android:background="@drawable/border_transparent_background"
                         android:padding="10dp"
-                        android:onClick="addWorkOut"
+                        android:onClick="registerWorkOutOnClick"
                         android:text="@string/title_activity_add_work_out"/>
 
                     <Space
@@ -117,7 +73,8 @@
                         android:scaleType="fitCenter"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/border_transparent_background"
-                        android:padding="10dp"/>
+                        android:padding="10dp"
+                        android:onClick="registerWorkOutOnClick"/>
 
                     <Space
                         android:layout_width="wrap_content"
@@ -136,6 +93,7 @@
                         android:layout_marginTop="8dp"
                         android:background="@drawable/border_transparent_background"
                         android:padding="10dp"
+                        android:onClick="registerWorkOutOnClick"
                         />
 
                 </LinearLayout>
@@ -164,7 +122,8 @@
                         android:scaleType="fitCenter"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/border_transparent_background"
-                        android:padding="10dp"/>
+                        android:padding="10dp"
+                        android:onClick="registerWorkOutOnClick"/>
 
                     <Space
                         android:layout_width="wrap_content"
@@ -182,7 +141,8 @@
                         android:scaleType="fitCenter"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/border_transparent_background"
-                        android:padding="10dp"/>
+                        android:padding="10dp"
+                        android:onClick="registerWorkOutOnClick"/>
                     <Space
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
@@ -199,7 +159,8 @@
                         android:scaleType="fitCenter"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/border_transparent_background"
-                        android:padding="10dp"/>
+                        android:padding="10dp"
+                        android:onClick="registerWorkOutOnClick"/>
                     </LinearLayout>
 
             </LinearLayout>

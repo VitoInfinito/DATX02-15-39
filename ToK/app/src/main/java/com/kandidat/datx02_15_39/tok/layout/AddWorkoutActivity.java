@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.NumberPicker;
 
 
 import com.kandidat.datx02_15_39.tok.R;
@@ -34,17 +35,42 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         yogaButton = (ImageButton) findViewById(R.id.yoga_button);
         runnerButton = (ImageButton) findViewById(R.id.sprint_button);
 
-        yogaButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        yogaButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                 DialogFragment dialogFragment = new DialogFragment();
+//                 dialogFragment.show(fm, "Hej hopp!");
+//            }
+//        });
 
-                 DialogFragment dialogFragment = new DialogFragment();
-                 dialogFragment.show(fm, "Hej hopp!");
+    }
+    public void registerWorkOutOnClick(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+        builder.setTitle("Välj intensitet");
+        builder.setIcon(R.drawable.yoga);
+        NumberPicker intensityPicker = new NumberPicker(this);
+
+        intensityPicker.setMinValue(1);
+        intensityPicker.setMaxValue(10);
+        intensityPicker.setValue(5);
+
+        builder.setView(intensityPicker);
+        builder.setPositiveButton("ok", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int id){
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
             }
         });
 
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
