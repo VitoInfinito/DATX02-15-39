@@ -9,7 +9,7 @@
     <string name="title_activity_diet_home">Kostdagbok</string>
     <string name="title_activity_sleep_home">Sömndagbok</string>
     <string name="TrainingAndDiet">Träning Och Kost</string>
-    <string name="title_activity_add_sleep">AddSleepActivity</string>
+    <string name="title_activity_add_sleep">Lägg till sömn</string>
     <string name="title_activity_add_diet">Lägg till kost</string>
     <string name="title_activity_work_out">Träningsdagbok</string>
     <string name="title_activity_workout_home">Träningsdagbok</string>
