@@ -27,6 +27,12 @@ public class WeightDiary extends AbstractDiary {
         return instance;
     }
 
+    //Currently returns first element for testing
+    public IDiaryActivity getActivityFromDate(Date d) {
+        List<IDiaryActivity> act = getActivitiesFromTable(d);
+        return act != null ? act.get(0) : null;
+    }
+
     @Override
     public void addActivity(Date d, IDiaryActivity activity) {
         addActivityToTable(d, activity);

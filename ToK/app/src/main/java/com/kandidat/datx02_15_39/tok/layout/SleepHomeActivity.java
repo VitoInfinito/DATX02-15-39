@@ -47,6 +47,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
     private LineGraphSeries<DataPoint> series;
 
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("yyyyMMdd");
+    private SimpleDateFormat sdfShowMonthDay = new SimpleDateFormat("MM-dd");
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
     private SimpleDateFormat sdfShowHour = new SimpleDateFormat("HH");
     private SimpleDateFormat sdfShowMinutes = new SimpleDateFormat("mm");
@@ -75,7 +76,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
         graph.addSeries(series);
         series.setTitle(sdfShowDay.format(activeDate));
-        setGraphXBounds(activeDate, graph);
+       // setGraphXBounds(activeDate, graph);
 
         series.setColor(Color.BLUE);
         series.setDrawBackground(true);
@@ -94,7 +95,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             }
         });
 
-        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+        /*graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
             @Override
             public String formatLabel(double value, boolean isValueX) {
                 if (isValueX) {
@@ -112,6 +113,18 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                     return super.formatLabel(hours, true) + ":" + (minutes < 10 ? '0' + minutes : minutes);
                 } else {
                     return super.formatLabel(value, false);
+                }
+            }
+        });*/
+
+        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX) {
+                    // transform number to time
+                    return sdfShowTime.format(new Date((long) value));
+                } else {
+                    return super.formatLabel(value, isValueX);
                 }
             }
         });
@@ -155,7 +168,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         series.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
-                Toast.makeText(getActivity(), "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Series1: On Data Point clicked: " + sdfShowFullTime.format(new Date((long) dataPoint.getX())), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -214,7 +227,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
         series.resetData(fetchDataPoints(newDate));
 
-        setGraphXBounds(newDate, (GraphView) findViewById(R.id.graph));
+        //setGraphXBounds(newDate, (GraphView) findViewById(R.id.graph));
 
         String newDateSDFDay = sdfShowDay.format(newDate);
         if(newDateSDFDay.equals(sdfShowDay.format(Calendar.getInstance().getTime()))) {
@@ -238,6 +251,9 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             Date stopTime = sleep.getStopTime();
             Date time = new Date(stopTime.getTime() - startTime.getTime());
 
+            System.out.println(startTime);
+            System.out.println(stopTime);
+
             //Integer.parseInt(sdfShowHour.format(startTime))-1
             double merfelherder = Double.parseDouble(sdfShowMinutes.format(startTime)) / 100;
             merfelherder += Double.parseDouble(sdfShowHour.format(startTime));
@@ -251,10 +267,10 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
             //Still purely for testing
             return new DataPoint[]{
-                    new DataPoint(merfelherder, 0),
-                    new DataPoint(merfelherder, 3),
-                    new DataPoint(herfelmerder, 3),
-                    new DataPoint(herfelmerder, 0)};
+                    new DataPoint(startTime.getTime(), 0),
+                    new DataPoint(startTime.getTime(), 3),
+                    new DataPoint(stopTime.getTime(), 3),
+                    new DataPoint(stopTime.getTime(), 0)};
         }
 
         //If activity was not found we return an empty list.

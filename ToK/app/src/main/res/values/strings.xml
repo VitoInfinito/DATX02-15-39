@@ -18,6 +18,9 @@
     <string name="title_workout_diary">Träningsdagbok</string>
     <string name="title_activity_detailed_sleep">Sömn - Detaljvy</string>
     <string name="title_add_diet">Lägg till mat</string>
+    <string name="title_activity_goal">GoalActivity</string>
+    <string name="title_activity_account_home">Konto</string>
+    <string name="title_activity_weight_home">Vikt</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="Workout">Träning</string>
@@ -60,7 +63,5 @@
     <string name="save">Spara</string>
     <string name="cancel">Cancel</string>
     <string name="intensity">add_intensity</string>
-    <string name="title_activity_goal">GoalActivity</string>
-    <string name="title_activity_account_home">Konto</string>
 
 </resources>

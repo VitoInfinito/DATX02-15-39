@@ -13,10 +13,16 @@ public class WeightActivity implements IDiaryActivity {
 
     private final String id;
     private Weight weight;
+    private Date date;
 
-    public WeightActivity(String id, Weight weight) {
+    public WeightActivity(String id, Weight weight, Date date) {
         this.id = id;
         this.weight = weight;
+        this.date = date;
+    }
+
+    public Weight getWeight() {
+        return weight;
     }
 
     @Override
@@ -26,12 +32,12 @@ public class WeightActivity implements IDiaryActivity {
 
     @Override
     public void setDate(Date d) {
-
+        date = d;
     }
 
     @Override
     public Date getDate() {
-        return null;
+        return date;
     }
 
     @Override

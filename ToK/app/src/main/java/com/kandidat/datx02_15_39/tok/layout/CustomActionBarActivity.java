@@ -154,7 +154,7 @@ public class CustomActionBarActivity extends ActionBarActivity{
 					startActivity(new Intent(this, SleepHomeActivity.class));
 					break;
 				case 3:
-					//TODO
+                    startActivity(new Intent(this, WeightHomeActivity.class));
 					break;
 				default:
 					Toast.makeText(this, "Please Report this button is not implemented, Diary", Toast.LENGTH_SHORT).show();
