@@ -107,15 +107,6 @@ public class SleepHomeActivity extends CustomActionBarActivity {
     }
 
     /**
-     * Navigates back to the main activity.
-     *
-     * @param view Not used.
-     */
-    public void backButtonOnClick(View view){
-        startActivity(new Intent(this, MainActivity.class));
-    }
-
-    /**
      * Updates the graph with and earlier sleep date
      * @param view
      */
