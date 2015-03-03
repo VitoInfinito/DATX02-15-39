@@ -5,6 +5,7 @@ package com.kandidat.datx02_15_39.tok.layout;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -102,7 +103,8 @@ public class AddDietActivity extends CustomActionBarActivity {
 		int id = item.getItemId();
 
 		//noinspection SimplifiableIfStatement
-		if (id == R.id.right_corner_button) {
+		if (id == R.id.right_corner_button_moveforward) {
+			startActivity(new Intent(this, MainActivity.class));
 		}
 		//This will be called to be able to see if you pressed the menu
 		return super.onOptionsItemSelected(item);
