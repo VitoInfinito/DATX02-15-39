@@ -61,5 +61,6 @@
     <string name="cancel">Cancel</string>
     <string name="intensity">add_intensity</string>
     <string name="title_activity_goal">GoalActivity</string>
+    <string name="title_activity_account_home">Konto</string>
 
 </resources>

@@ -162,7 +162,7 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		}else if(parent.getId() == R.id.left_drawer_list_setting){
 			switch(position){
 				case 0:
-					//TODO
+                    startActivity(new Intent(this, AccountHomeActivity.class));
 					break;
 				case 1:
 					//TODO
