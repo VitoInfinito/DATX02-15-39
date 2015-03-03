@@ -1,6 +1,5 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,13 +8,15 @@ import android.widget.TextView;
 
 import com.kandidat.datx02_15_39.tok.R;
 
-public class GoalActivity extends ActionBarActivity {
+public class GoalActivity extends CustomActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_goal);
+		initMenu(R.layout.activity_goal);
 
+		//Just a wierd thing that I'm trying to fix so I'm writing something super wierd right now.
 		//Food sliders and textview
 		SeekBar foodSlider = (SeekBar) findViewById(R.id.foodSlider);
 		final TextView foodText = (TextView) findViewById(R.id.nbrOfCalsText);

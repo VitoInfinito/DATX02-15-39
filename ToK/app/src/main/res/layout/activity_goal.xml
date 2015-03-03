@@ -1,120 +1,154 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                tools:context="com.kandidat.datx02_15_39.tok.layout.GoalActivity">
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.kandidat.datx02_15_39.tok.layout.GoalActivity">
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    tools:context="com.kandidat.datx02_15_39.tok.layout.GoalActivity">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
 
-            <RelativeLayout
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="100dp">
+                android:layout_height="fill_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Food Goal:"
-                    android:id="@+id/foodText"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/nbrOfCalsText"
-                    android:layout_alignParentRight="true"
-                    android:text="Värde:"/>
-
-                <SeekBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/foodSlider"
-                    android:indeterminate="false"
-                    android:layout_centerInParent="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentRight="true"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="100dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Workout Goal:"
-                    android:id="@+id/workoutText"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/nbrOfCalsBurnedText"
-                    android:layout_alignParentRight="true"
-                    android:text="Värde:"/>
-
-                <SeekBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/workoutSlider"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerInParent="true"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="100dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Sleep Goal:"
-                    android:id="@+id/sleepText"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/nbrOfHoursText"
-                    android:layout_alignParentRight="true"
-                    android:text="Värde:"/>
-
-                <SeekBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/sleepSlider"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal">
-
-                <Button
+                <RelativeLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:text="Save goals"
-                    android:id="@+id/saveGoalsButton"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"/>
-            </RelativeLayout>
-        </LinearLayout>
-    </FrameLayout>
-</RelativeLayout>
+                    android:layout_height="100dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Food Goal:"
+                        android:id="@+id/foodText"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:id="@+id/nbrOfCalsText"
+                        android:layout_alignParentRight="true"
+                        android:text="Värde:"/>
+
+                    <SeekBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/foodSlider"
+                        android:indeterminate="false"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="100dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Workout Goal:"
+                        android:id="@+id/workoutText"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:id="@+id/nbrOfCalsBurnedText"
+                        android:layout_alignParentRight="true"
+                        android:text="Värde:"/>
+
+                    <SeekBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/workoutSlider"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerInParent="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="100dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Sleep Goal:"
+                        android:id="@+id/sleepText"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:id="@+id/nbrOfHoursText"
+                        android:layout_alignParentRight="true"
+                        android:text="Värde:"/>
+
+                    <SeekBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/sleepSlider"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal">
+
+                    <Button
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:text="Save goals"
+                        android:id="@+id/saveGoalsButton"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </FrameLayout>
+    </RelativeLayout>
+    <!-- The navigation drawer -->
+    <LinearLayout
+        android:id="@+id/left_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:divider="@android:color/transparent"
+        android:background="@android:color/black"
+        android:orientation="vertical"
+        android:choiceMode="singleChoice">
+
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/left_drawer_list_top"
+            android:choiceMode="singleChoice"/>
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/left_drawer_list_diary"
+            android:choiceMode="singleChoice"/>
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/left_drawer_list_setting"
+            android:choiceMode="singleChoice"/>
+    </LinearLayout>
+</android.support.v4.widget.DrawerLayout>
