@@ -46,7 +46,7 @@ public class AddDietActivity extends CustomActionBarActivity {
 		diary = DietDiary.getInstance();
 		Calendar c = Calendar.getInstance();
 		List<Food> tmp = new ArrayList<Food>();
-		tmp.add(new Food(200, 300,400,500, "Gunnar", "höger lår på kyckling"));
+		tmp.add(new Food(200, 300,400,500, "Gunnar", "höger lår på kyckling", Food.FoodPrefix.g, 100));
 		DietActivity da = new DietActivity(c);
 		diary.addActivity(c.getTime(), da);
 		EditDietActivityParams edap = new EditDietActivityParams(c.getTime(), tmp);
@@ -104,7 +104,7 @@ public class AddDietActivity extends CustomActionBarActivity {
 
 		//noinspection SimplifiableIfStatement
 		if (id == R.id.right_corner_button_moveforward) {
-			startActivity(new Intent(this, MainActivity.class));
+			startActivity(new Intent(this, ViewAddDietActivity.class));
 		}
 		//This will be called to be able to see if you pressed the menu
 		return super.onOptionsItemSelected(item);

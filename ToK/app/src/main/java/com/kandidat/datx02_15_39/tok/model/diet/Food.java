@@ -9,6 +9,19 @@ public class Food {
 	private final double fatAmount;
 	private final double carbAmount;
 	private final String name, description;
+	private double amount;
+	private final FoodPrefix prefix;
+
+	public Food(double calorieAmount, double proteinAmount, double fatAmount, double carbAmount, String name, String description, FoodPrefix prefix, double amount) {
+		this(calorieAmount,proteinAmount,fatAmount,carbAmount,name,description,prefix);
+	this.amount = amount;
+	}
+
+	public static enum FoodPrefix{
+		ml,
+		g,
+		st,
+	};
 
 	protected Food(){
 		calorieAmount = 0;
@@ -17,9 +30,10 @@ public class Food {
 		carbAmount = 0;
 		name ="default name";
 		description = "default desc";
+		prefix = FoodPrefix.g;
 	}
 
-	public Food(double calorieAmount, double proteinAmount, double fatAmount, double carbAmount, String name, String description){
+	public Food(double calorieAmount, double proteinAmount, double fatAmount, double carbAmount, String name, String description, FoodPrefix prefix){
 		if(calorieAmount >= 0)
 			this.calorieAmount = calorieAmount;
 		else
@@ -36,25 +50,41 @@ public class Food {
 			this.carbAmount = carbAmount;
 		else
 			this.carbAmount = 0;
+		this.prefix = prefix;
 		this.name = name;
 		this.description = description;
 	}
 
-	public double getCalorieAmount() {
-		return calorieAmount;
+	public void setAmount(double amount){
+		if(amount < 0){
+			this.amount = 0;
+		}else {
+			this.amount = amount;
+		}
 	}
 
+	private double getAmountMultiplier(double d){
+		if(this.prefix == FoodPrefix.g || this.prefix == FoodPrefix.ml){
+			return (d/100.0);
+		}else{
+			return d;
+		}
+	}
+
+	public double getCalorieAmount() {
+		return calorieAmount * getAmountMultiplier(amount);
+	}
 
 	public double getProteinAmount() {
-		return proteinAmount;
+		return proteinAmount * getAmountMultiplier(amount);
 	}
 
 	public double getFatAmount() {
-		return fatAmount;
+		return fatAmount* getAmountMultiplier(amount);
 	}
 
 	public double getCarbAmount() {
-		return carbAmount;
+		return carbAmount* getAmountMultiplier(amount);
 	}
 
 	public String getName() {
