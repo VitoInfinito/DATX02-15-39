@@ -29,7 +29,7 @@ public class WeightDiary extends AbstractDiary {
 
     @Override
     public void addActivity(Date d, IDiaryActivity activity) {
-
+        addActivityToTable(d, activity);
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.kandidat.datx02_15_39.tok.model.IDiary;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepDiary;
+import com.kandidat.datx02_15_39.tok.model.weight.WeightDiary;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutDiary;
 
 /**
@@ -46,5 +47,13 @@ public class Account {
      */
     public WorkoutDiary getWorkoutDiary() {
         return (WorkoutDiary) WorkoutDiary.getInstance();
+    }
+
+    /**
+     * Fetch the instance of weight diary
+     * @return
+     */
+    public WeightDiary getWeightDiary() {
+        return (WeightDiary) WeightDiary.getInstance();
     }
 }
