@@ -3,7 +3,6 @@ package com.kandidat.datx02_15_39.tok.layout;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,9 +12,7 @@ import android.view.View;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 import com.kandidat.datx02_15_39.tok.R;
-import com.kandidat.datx02_15_39.tok.model.workout.AddWorkoutDialogFragment;
 import com.kandidat.datx02_15_39.tok.model.workout.Workout;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutActivity;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutDiary;
@@ -76,7 +73,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_workout_home, menu);
+        getMenuInflater().inflate(R.menu.menu_with_add, menu);
         return true;
     }
 
@@ -88,7 +85,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.right_corner_button_add) {
+            startActivity(new Intent(this, AddWorkoutActivity.class));
             return true;
         }
 

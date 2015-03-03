@@ -25,47 +25,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:minHeight="70dp"
-            android:id="@+id/menu_bar"
-            android:columnCount="3"
-            android:orientation="horizontal"
-            android:layout_gravity="top|left|center|right">
-
-            <Button
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                android:id="@+id/menu_button"
-                android:layout_row="0"
-                android:layout_column="0"
-                android:layout_gravity="top|left|bottom|right"
-                android:text="Meny"
-                android:textSize="15sp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/TrainingAndDiet"
-                android:id="@+id/menu_bar_title"
-                android:layout_row="0"
-                android:layout_column="1"
-                android:layout_gravity="top|left|bottom|right"
-                android:textSize="20sp"
-                android:gravity="center_vertical|center_horizontal"/>
-
-            <Button
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                android:id="@+id/add_activity_button"
-                android:layout_row="0"
-                android:layout_column="2"
-                android:maxWidth="70dp"
-                android:text="+"
-                android:textSize="30sp"/>
-        </GridLayout>
-
         <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
