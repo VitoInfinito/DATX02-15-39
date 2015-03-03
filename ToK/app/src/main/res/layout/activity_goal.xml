@@ -40,7 +40,7 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:id="@+id/nbrOfCalsText"
                         android:layout_alignParentRight="true"
-                        android:text="Värde:"/>
+                        android:text="Äta 0 kalorier om dagen"/>
 
                     <SeekBar
                         android:layout_width="wrap_content"
@@ -69,7 +69,7 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:id="@+id/nbrOfCalsBurnedText"
                         android:layout_alignParentRight="true"
-                        android:text="Värde:"/>
+                        android:text="Bränna 0 kalorier om dagen"/>
 
                     <SeekBar
                         android:layout_width="wrap_content"
@@ -97,7 +97,7 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:id="@+id/nbrOfHoursText"
                         android:layout_alignParentRight="true"
-                        android:text="Värde:"/>
+                        android:text="Sova 0 timmar varje natt"/>
 
                     <SeekBar
                         android:layout_width="wrap_content"
