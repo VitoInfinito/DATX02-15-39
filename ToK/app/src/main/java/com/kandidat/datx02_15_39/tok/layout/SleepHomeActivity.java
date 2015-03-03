@@ -3,6 +3,7 @@ package com.kandidat.datx02_15_39.tok.layout;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -43,7 +44,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
     private SleepDiary diary;
     private GregorianCalendar currentCalendar;
     private Date activeDate;
-    private PointsGraphSeries<DataPoint> series;
+    private LineGraphSeries<DataPoint> series;
 
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("yyyyMMdd");
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
@@ -70,11 +71,16 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
 
-        series = new PointsGraphSeries<DataPoint>(fetchDataPoints(activeDate));
+        series = new LineGraphSeries<DataPoint>(fetchDataPoints(activeDate));
 
         graph.addSeries(series);
         series.setTitle(sdfShowDay.format(activeDate));
         setGraphXBounds(activeDate, graph);
+
+        series.setColor(Color.BLUE);
+        series.setDrawBackground(true);
+        series.setBackgroundColor(Color.BLUE);
+
 
         graph.setOnClickListener(new View.OnClickListener() {
             /**
@@ -93,10 +99,14 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             public String formatLabel(double value, boolean isValueX) {
                 if (isValueX) {
                     int hours = (int) value;
-                    int minutes = (int) ((value - hours)*100);
-                    if(minutes > 60) {
+                    int minutes = (int) ((value - hours) * 100);
+                    if (minutes > 60) {
                         minutes -= 60;
                         hours++;
+                    }
+
+                    if(hours > 24) {
+                        hours -= 24;
                     }
 
                     return super.formatLabel(hours, true) + ":" + (minutes < 10 ? '0' + minutes : minutes);
@@ -106,7 +116,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             }
         });
 
-        series.setCustomShape(new PointsGraphSeries.CustomShape() {
+/*        series.setCustomShape(new PointsGraphSeries.CustomShape() {
             @Override
             public void draw(Canvas canvas, Paint paint, float x, float y) {
                 //Sleep drawSleep = ((SleepActivity) diary.getActivityFromDate(activeDate)).getSleepThatStarts(earlierDate);
@@ -116,7 +126,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 canvas.drawLine(x-20, y-20, x+20, y+20, paint);
                 canvas.drawLine(x+20, y-20, x-20, y+20, paint);
             }
-        });
+        });*/
 
 
         fillListWithDummyData();
@@ -153,7 +163,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_sleep_home, menu);
+        getMenuInflater().inflate(R.menu.menu_with_add, menu);
         return true;
     }
 
@@ -165,7 +175,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.right_corner_button_add) {
+            startActivity(new Intent(this, AddSleepActivity.class));
             return true;
         }
 
@@ -249,10 +260,10 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
             //Still purely for testing
             return new DataPoint[]{
-                    new DataPoint(merfelherder - 1, 0),
+                    new DataPoint(merfelherder, 0),
                     new DataPoint(merfelherder, 3),
-                    new DataPoint(herfelmerder, 2),
-                    new DataPoint(herfelmerder + 5, 0)};
+                    new DataPoint(herfelmerder, 3),
+                    new DataPoint(herfelmerder, 0)};
         }
 
         //If activity was not found we return an empty list.
