@@ -28,6 +28,14 @@
                     android:text="Food Goal:"
                     android:id="@+id/foodText"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/nbrOfCalsText"
+                    android:layout_alignParentRight="true"
+                    android:text="Värde:"/>
+
                 <SeekBar
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -49,6 +57,14 @@
                     android:text="Workout Goal:"
                     android:id="@+id/workoutText"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/nbrOfCalsBurnedText"
+                    android:layout_alignParentRight="true"
+                    android:text="Värde:"/>
+
                 <SeekBar
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -68,6 +84,14 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Sleep Goal:"
                     android:id="@+id/sleepText"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/nbrOfHoursText"
+                    android:layout_alignParentRight="true"
+                    android:text="Värde:"/>
 
                 <SeekBar
                     android:layout_width="wrap_content"

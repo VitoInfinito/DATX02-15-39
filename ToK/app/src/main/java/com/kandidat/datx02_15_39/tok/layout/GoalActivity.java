@@ -4,6 +4,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.kandidat.datx02_15_39.tok.R;
 
@@ -14,7 +16,73 @@ public class GoalActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_goal);
 
+		//Food sliders and textview
+		SeekBar foodSlider = (SeekBar) findViewById(R.id.foodSlider);
+		final TextView foodText = (TextView) findViewById(R.id.nbrOfCalsText);
+		foodSlider.setMax(140);
 
+
+		//Workout sliders and textview
+		SeekBar workoutSlider = (SeekBar) findViewById(R.id.workoutSlider);
+		final TextView workoutText = (TextView) findViewById(R.id.nbrOfCalsBurnedText);
+		workoutSlider.setMax(100);
+
+		//Sleep sliders and textview
+		SeekBar sleepSlider = (SeekBar) findViewById(R.id.sleepSlider);
+		final TextView sleepText = (TextView) findViewById(R.id.nbrOfHoursText);
+		sleepSlider.setMax(24);
+
+		foodSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				int foodValue = seekBar.getProgress()*100;
+				foodText.setText("Äta " + Integer.toString(foodValue) + " kalorier om dagen");
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+			}
+		});
+		workoutSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				int workoutValue = seekBar.getProgress()*100;
+				workoutText.setText("Bränna " + Integer.toString(workoutValue) + " kalorier om dagen");
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+			}
+		});
+		sleepSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				int sleepValue = seekBar.getProgress();
+				sleepText.setText("Sova " + Integer.toString(sleepValue) + " timmar varje natt");
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+			}
+		});
 	}
 
 
