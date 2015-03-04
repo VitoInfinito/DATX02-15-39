@@ -68,8 +68,22 @@
                         android:text="Today"
                         android:id="@+id/diet_choose_date_button"
                         android:background="@drawable/border_transparent_background"
-                        />
+                        android:onClick="onDietDateClick"/>
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:text="Välj typ av måltid"
+                        android:id="@+id/meal_selector_button"
+                        android:onClick="onMealSelectorClick"/>
                 </LinearLayout>
 
             </LinearLayout>
