@@ -53,26 +53,38 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:divider="@android:color/transparent"
-        android:background="@android:color/black"
+        android:background="#fe111111"
         android:orientation="vertical"
-        android:choiceMode="singleChoice">
+        >
 
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_top"
-            android:choiceMode="singleChoice"/>
+            android:choiceMode="singleChoice"
+            android:divider="#99000000"
+            android:dividerHeight="1dp"
+            android:drawSelectorOnTop="false"/>
+
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_diary"
-            android:choiceMode="singleChoice"/>
+            android:choiceMode="singleChoice"
+            android:divider="#99000000"
+            android:dividerHeight="1dp"
+            android:drawSelectorOnTop="false"
+            android:layout_marginTop="10dp"/>
+
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_setting"
-            android:choiceMode="singleChoice"/>
+            android:choiceMode="singleChoice"
+            android:divider="#99000000"
+            android:dividerHeight="1dp"
+            android:drawSelectorOnTop="false"
+            android:layout_marginTop="10dp"/>
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>
