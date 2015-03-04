@@ -11,7 +11,9 @@
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="true">
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
 
         <LinearLayout
@@ -26,21 +28,14 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/name_date_container"
-                android:weightSum="2">
+                >
 
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/mealname"
-                    android:layout_weight="1"
-                    android:inputType="textAutoComplete"/>
-
-                <CalendarView
-                    android:layout_width="1dp"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/calendarView"
-                    android:layout_weight="1"
-                    android:clickable="true"/>
+                    android:inputType="textAutoComplete"
+                    android:hint="Döp din måltid......."/>
 
             </LinearLayout>
 
@@ -48,7 +43,34 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_gravity="center_horizontal">
+                android:layout_gravity="center_horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:text="Datum:"
+                        android:id="@+id/textView2"
+                        android:textSize="25sp"
+                        android:gravity="center_vertical"/>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:text="Today"
+                        android:id="@+id/diet_choose_date_button"
+                        android:background="@drawable/border_transparent_background"
+                        />
+
+                </LinearLayout>
 
             </LinearLayout>
 
