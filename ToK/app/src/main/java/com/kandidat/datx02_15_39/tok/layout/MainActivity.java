@@ -55,7 +55,7 @@ public class MainActivity extends CustomActionBarActivity {
 	 *
 	 * @param view Not used.
 	 */
-    public void OnDietButtonClick(View view) {
+    public void onDietButtonClick(View view) {
         startActivity(new Intent(this, DietHomeActivity.class));
     }
 
@@ -64,11 +64,11 @@ public class MainActivity extends CustomActionBarActivity {
      *
      * @param view Not used.
      */
-    public void OnSleepButtonClick(View view) {
+    public void onSleepButtonClick(View view) {
         startActivity(new Intent(this, SleepHomeActivity.class));
     }
 
-    public void OnWorkOutButtonClick(View view){
+    public void onWorkOutButtonClick(View view){
         startActivity(new Intent(this, WorkoutHomeActivity.class));
     }
 
@@ -109,4 +109,7 @@ public class MainActivity extends CustomActionBarActivity {
 		dialog.show();
 	}
 
+	public void goalsButtonOnClick(View view){
+		startActivity(new Intent(this, GoalActivity.class));
+	}
 }

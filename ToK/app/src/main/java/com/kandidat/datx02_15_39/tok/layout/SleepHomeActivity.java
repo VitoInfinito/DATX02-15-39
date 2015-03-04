@@ -2,6 +2,9 @@ package com.kandidat.datx02_15_39.tok.layout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -41,9 +44,10 @@ public class SleepHomeActivity extends CustomActionBarActivity {
     private SleepDiary diary;
     private GregorianCalendar currentCalendar;
     private Date activeDate;
-    private PointsGraphSeries<DataPoint> series;
+    private LineGraphSeries<DataPoint> series;
 
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("yyyyMMdd");
+    private SimpleDateFormat sdfShowMonthDay = new SimpleDateFormat("MM-dd");
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
     private SimpleDateFormat sdfShowHour = new SimpleDateFormat("HH");
     private SimpleDateFormat sdfShowMinutes = new SimpleDateFormat("mm");
@@ -68,17 +72,111 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
 
-        series = new PointsGraphSeries<DataPoint>(fetchDataPoints(activeDate));
+        series = new LineGraphSeries<DataPoint>(fetchDataPoints(activeDate));
 
         graph.addSeries(series);
-        graph.setTitle("Sleep");
-        graph.canScrollHorizontally(1);
+        series.setTitle(sdfShowDay.format(activeDate));
+       // setGraphXBounds(activeDate, graph);
+
+        series.setColor(Color.BLUE);
+        series.setDrawBackground(true);
+        series.setBackgroundColor(Color.BLUE);
+
+
+        graph.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Handles clicks on the graph.
+             *
+             * @param v The view to reference as current.
+             */
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        /*graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX) {
+                    int hours = (int) value;
+                    int minutes = (int) ((value - hours) * 100);
+                    if (minutes > 60) {
+                        minutes -= 60;
+                        hours++;
+                    }
+
+                    if(hours > 24) {
+                        hours -= 24;
+                    }
+
+                    return super.formatLabel(hours, true) + ":" + (minutes < 10 ? '0' + minutes : minutes);
+                } else {
+                    return super.formatLabel(value, false);
+                }
+            }
+        });*/
+
+        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX) {
+                    // transform number to time
+                    return sdfShowTime.format(new Date((long) value));
+                } else {
+                    return super.formatLabel(value, isValueX);
+                }
+            }
+        });
+
+/*        series.setCustomShape(new PointsGraphSeries.CustomShape() {
+            @Override
+            public void draw(Canvas canvas, Paint paint, float x, float y) {
+                //Sleep drawSleep = ((SleepActivity) diary.getActivityFromDate(activeDate)).getSleepThatStarts(earlierDate);
+                //System.out.println("DrawSleep at " + x + " starts at time " + drawSleep);
+
+                paint.setStrokeWidth(10);
+                canvas.drawLine(x-20, y-20, x+20, y+20, paint);
+                canvas.drawLine(x+20, y-20, x-20, y+20, paint);
+            }
+        });*/
+
+
+        fillListWithDummyData();
+      /* // styling
+       series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+           @Override
+           public int get(DataPoint data) {
+               //return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+               if(data.getY() == 3) {
+                   return Color.rgb(255, 0, 0);
+               }else if(data.getY() == 2) {
+                   return Color.rgb(0, 255, 0);
+               }
+
+               return Color.rgb(0, 0, 255);
+           }
+       });*/
+
+
+ /*      StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
+       staticLabelsFormatter.setVerticalLabels(new String[] {"V", "L", "D"});
+       graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+
+*/
+
+        series.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPoint) {
+                Toast.makeText(getActivity(), "Series1: On Data Point clicked: " + sdfShowFullTime.format(new Date((long) dataPoint.getX())), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_sleep_home, menu);
+        getMenuInflater().inflate(R.menu.menu_with_add, menu);
         return true;
     }
 
@@ -90,7 +188,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.right_corner_button_add) {
+            startActivity(new Intent(this, AddSleepActivity.class));
             return true;
         }
 
@@ -104,15 +203,6 @@ public class SleepHomeActivity extends CustomActionBarActivity {
      */
     public void addSleepButtonOnClick(View view){
         startActivity(new Intent(this, AddSleepActivity.class));
-    }
-
-    /**
-     * Navigates back to the main activity.
-     *
-     * @param view Not used.
-     */
-    public void backButtonOnClick(View view){
-        startActivity(new Intent(this, MainActivity.class));
     }
 
     /**
@@ -137,7 +227,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
         series.resetData(fetchDataPoints(newDate));
 
-        setGraphXBounds(newDate, (GraphView) findViewById(R.id.graph));
+        //setGraphXBounds(newDate, (GraphView) findViewById(R.id.graph));
 
         String newDateSDFDay = sdfShowDay.format(newDate);
         if(newDateSDFDay.equals(sdfShowDay.format(Calendar.getInstance().getTime()))) {
@@ -161,6 +251,9 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             Date stopTime = sleep.getStopTime();
             Date time = new Date(stopTime.getTime() - startTime.getTime());
 
+            System.out.println(startTime);
+            System.out.println(stopTime);
+
             //Integer.parseInt(sdfShowHour.format(startTime))-1
             double merfelherder = Double.parseDouble(sdfShowMinutes.format(startTime)) / 100;
             merfelherder += Double.parseDouble(sdfShowHour.format(startTime));
@@ -174,10 +267,10 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
             //Still purely for testing
             return new DataPoint[]{
-                    new DataPoint(merfelherder - 1, 0),
-                    new DataPoint(merfelherder, 3),
-                    new DataPoint(herfelmerder, 2),
-                    new DataPoint(herfelmerder + 5, 0)};
+                    new DataPoint(startTime.getTime(), 0),
+                    new DataPoint(startTime.getTime(), 3),
+                    new DataPoint(stopTime.getTime(), 3),
+                    new DataPoint(stopTime.getTime(), 0)};
         }
 
         //If activity was not found we return an empty list.

@@ -29,14 +29,6 @@
             android:layout_height="fill_parent"
             android:layout_gravity="left|top">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal">
-
-            </LinearLayout>
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

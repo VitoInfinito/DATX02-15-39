@@ -21,7 +21,7 @@
         android:layout_height="100dp"
         android:id="@+id/button"
         android:background="@drawable/heart288"
-        android:onClick="OnWorkOutButtonClick"
+        android:onClick="onWorkOutButtonClick"
         android:maxHeight="100dp"
         android:width="100dp"
         android:maxWidth="100dp"
@@ -39,7 +39,7 @@
         android:maxWidth="100dp"
         android:scaleType="fitCenter"
         android:padding="15dp"
-        android:onClick="OnDietButtonClick"
+        android:onClick="onDietButtonClick"
         android:layout_above="@+id/relativeLayout"
         android:layout_centerHorizontal="true" />
 
@@ -52,7 +52,7 @@
         android:width="100dp"
         android:maxWidth="100dp"
         android:scaleType="fitCenter"
-        android:onClick="OnSleepButtonClick"
+        android:onClick="onSleepButtonClick"
         android:padding="15dp"
         android:layout_alignTop="@+id/button"
         android:layout_alignParentRight="true"
@@ -70,10 +70,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/weightButton"
-            android:layout_centerHorizontal="true"
             android:src="@drawable/weigth_scale"
+            android:onClick="registerWeightOnClick"
+            android:layout_centerInParent="true"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Goals"
+            android:id="@+id/dummyButton"
+            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:onClick="registerWeightOnClick"/>
+            android:layout_alignParentEnd="false"
+            android:onClick="goalsButtonOnClick"/>
     </RelativeLayout>
 
 </RelativeLayout>
