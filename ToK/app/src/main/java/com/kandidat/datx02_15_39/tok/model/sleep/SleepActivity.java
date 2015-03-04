@@ -13,10 +13,18 @@ public class SleepActivity implements IDiaryActivity{
 
     private final String id;
     private Sleep sleep;
+    private Date date;
 
     public SleepActivity(String id, Sleep sleep) {
         this.id = id;
         this.sleep = sleep;
+        date = new Date();
+    }
+
+    public SleepActivity(String id, Sleep sleep, Date date) {
+        this.id = id;
+        this.sleep = sleep;
+        this.date = date;
     }
 
     public Sleep getSleep() {
@@ -41,12 +49,12 @@ public class SleepActivity implements IDiaryActivity{
 
     @Override
     public void setDate(Date d) {
-
+        date = d;
     }
 
     @Override
     public Date getDate() {
-        return null;
+        return date;
     }
 
     @Override
