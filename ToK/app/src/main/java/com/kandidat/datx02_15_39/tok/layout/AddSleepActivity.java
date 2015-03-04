@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TimePicker;
 
 import com.kandidat.datx02_15_39.tok.R;
@@ -15,13 +17,18 @@ import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepActivity;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepDiary;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class AddSleepActivity extends CustomActionBarActivity {
 
 	private Sleep newSleep;
+
+	ArrayAdapter<String> arrayAdapter;
+	List<String> sleepData;
 
 	private Date startDate;
 	private int startHours;
@@ -40,18 +47,45 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	    startHours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 	    startMinutes = Calendar.getInstance().get(Calendar.MINUTE);
 
-	    Button fromButton = (Button) findViewById(R.id.fromButton);
-	    fromButton.setText("From | " + startHours + ":" + startMinutes);
-
 	    stopHours = startHours+1;
-	    stopMinutes = startMinutes+20;
+	    stopMinutes = startMinutes;
 
-	    Button toButton = (Button) findViewById(R.id.toButton);
-	    toButton.setText("To | " + stopHours + ":" + stopMinutes);
+	    ListView listview = (ListView) findViewById(R.id.sleepProperties);
+	    sleepData = new ArrayList<>();
+
+
+	    sleepData.add("Datum: 2015-03-04");
+	    sleepData.add("Start: " + startHours + ":" + startMinutes);
+	    sleepData.add("Slut: " + stopHours + ":" + stopMinutes);
+
+	    arrayAdapter = new ArrayAdapter<>(
+			    this,
+			    android.R.layout.simple_list_item_1,
+			    sleepData );
+
+	    listview.setAdapter(arrayAdapter);
+
+	    listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		    @Override
+		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			    switch(position){
+				    case 0:
+					    dateListItemOnClick(view);
+				        break;
+				    case 1:
+					    fromListItemOnClick(view);
+					    break;
+				    case 2:
+					    toListItemOnClick(view);
+					    break;
+				    default:
+					    break;
+			    }
+		    }
+	    });
     }
 
-
-    @Override
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_add_sleep, menu);
@@ -73,21 +107,10 @@ public class AddSleepActivity extends CustomActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+	/**
+	 * Adds a new sleep entry into the diary such that it can be viewed in other activities
+	 */
 	public void addNewSleep(){
-		/*Calendar cal = Calendar.getInstance();
-
-		TimePicker startTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
-		TimePicker endTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
-
-		int startHours = startTimePicker.getCurrentHour();
-		int startMinutes = startTimePicker.getCurrentMinute();
-
-		int stopHours = endTimePicker.getCurrentHour();
-		int stopMinutes = endTimePicker.getCurrentMinute();
-
-		Date startDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), startHours, startMinutes).getTime();
-		Date stopDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), stopHours, stopMinutes).getTime();*/
-
 		Sleep sleep = new Sleep(startDate, stopDate);
 
 		SleepActivity sleepActivity = new SleepActivity("id4", sleep);
@@ -97,15 +120,29 @@ public class AddSleepActivity extends CustomActionBarActivity {
 		sleepDiary.addActivity(startDate, sleepActivity);
 	}
 
-	public void fromButtonOnClick(View view){
+	/**
+	 * Creates an alertdialog and gives the user the option to change the date of which the
+	 * new sleep should start.
+	 *
+	 * @param view
+	 */
+	private void dateListItemOnClick(View view) {
+		
+	}
+
+	/**
+	 * Creates an alertdialog and gives the user the option to change the time of which the
+	 * new sleep should start.
+	 *
+	 * @param view
+	 */
+	public void fromListItemOnClick(View view){
 		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
 		builder.setTitle("Började sova");
 		builder.setIcon(R.drawable.zzz);
 
-		//NumberPicker weightPicker = new NumberPicker(this);
 		TimePicker startTimePicker = new TimePicker(this);
-
 		startTimePicker.setCurrentHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
 		startTimePicker.setCurrentMinute(Calendar.getInstance().get(Calendar.MINUTE));
 
@@ -115,6 +152,10 @@ public class AddSleepActivity extends CustomActionBarActivity {
 			public void onClick(DialogInterface dialog, int id) {
 				Calendar cal = Calendar.getInstance();
 				startDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), startHours, startMinutes).getTime();
+
+				ListView listview = (ListView) findViewById(R.id.sleepProperties);
+				sleepData.set(1, "Start: " + startHours + ":" + startMinutes);
+				listview.setAdapter(arrayAdapter);
 			}
 		});
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -127,9 +168,6 @@ public class AddSleepActivity extends CustomActionBarActivity {
 			public void onTimeChanged(TimePicker timepicker, int hours, int minutes){
 				startHours = hours;
 				startMinutes = minutes;
-
-				Button fromButton = (Button) findViewById(R.id.fromButton);
-				fromButton.setText("From | " + startHours + ":" + startMinutes);
 			}
 		});
 
@@ -137,15 +175,58 @@ public class AddSleepActivity extends CustomActionBarActivity {
 		dialog.show();
 	}
 
+	/**
+	 * Creates an alertdialog and gives the user the option to change the time of which the
+	 * new sleep should stop.
+	 *
+	 * @param view
+	 */
+	public void toListItemOnClick(View view){
+		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
-	public void toButtonOnClick(View view){
-		//Date stopDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), stopHours, stopMinutes).getTime();
+		builder.setTitle("Slutade sova");
+		builder.setIcon(R.drawable.zzz);
 
+		TimePicker stopTimePicker = new TimePicker(this);
+		stopTimePicker.setCurrentHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + 1);
+		stopTimePicker.setCurrentMinute(Calendar.getInstance().get(Calendar.MINUTE));
+
+		builder.setView(stopTimePicker);
+
+		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				Calendar cal = Calendar.getInstance();
+				stopDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), stopHours, stopMinutes).getTime();
+
+				ListView listview = (ListView) findViewById(R.id.sleepProperties);
+				sleepData.set(2, "Slut: " + stopHours + ":" + stopMinutes);
+				listview.setAdapter(arrayAdapter);
+			}
+		});
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				// User cancelled the dialog
+			}
+		});
+		stopTimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener(){
+			@Override
+			public void onTimeChanged(TimePicker timepicker, int hours, int minutes){
+				stopHours = hours;
+				stopMinutes = minutes;
+			}
+		});
+
+		AlertDialog dialog = builder.create();
+		dialog.show();
 	}
 
+	/**
+	 * Adds a new sleep and redirects to another actitity.
+	 *
+	 * @param view
+	 */
     public void addButtonOnClick(View view){
-
-		//addNewSleep();
+		addNewSleep();
         startActivity(new Intent(this, SleepHomeActivity.class));
     }
 }

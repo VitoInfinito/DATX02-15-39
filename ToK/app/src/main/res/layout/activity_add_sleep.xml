@@ -27,32 +27,18 @@
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="100dp"
-                android:gravity="center_vertical">
+                android:layout_height="200dp">
 
-                <Button
+                <ListView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="From |"
-                    android:id="@+id/fromButton"
-                    android:onClick="fromButtonOnClick"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="100dp"
-                android:gravity="center_vertical">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="To |"
-                    android:id="@+id/toButton"/>
+                    android:id="@+id/sleepProperties"/>
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
+                android:layout_height="match_parent"
+                >
 
                 <Button
                     android:layout_width="wrap_content"
