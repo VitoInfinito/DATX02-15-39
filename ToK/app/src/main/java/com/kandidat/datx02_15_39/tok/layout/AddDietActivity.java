@@ -39,6 +39,7 @@ public class AddDietActivity extends CustomActionBarActivity {
 	private ArrayList<Food> searchResultFood, foodItemAdded;
 	private SearchResultAdapter sra;
 	private DietDiary diary;
+	public static String itemsList = "List";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class AddDietActivity extends CustomActionBarActivity {
 		diary.addActivity(c.getTime(), da);
 		EditDietActivityParams edap = new EditDietActivityParams(c.getTime(), tmp);
 		diary.editActivity(c, "000001", edap);
+		foodItemAdded.add(tmp.get(0));
 		updateSearchList();
 	}
 
@@ -127,7 +129,11 @@ public class AddDietActivity extends CustomActionBarActivity {
 		int id = item.getItemId();
 		//noinspection SimplifiableIfStatement
 		if (id == R.id.right_corner_button_moveforward) {
-			startActivity(new Intent(this, ViewAddDietActivity.class));
+			Intent intent = new Intent(this, ViewAddDietActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putSerializable(this.itemsList, foodItemAdded);
+			intent.putExtras(bundle);
+			startActivity(intent);
 		}
 		//This will be called to be able to see if you pressed the menu
 		return super.onOptionsItemSelected(item);

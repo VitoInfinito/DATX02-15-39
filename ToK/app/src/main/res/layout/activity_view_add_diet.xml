@@ -65,7 +65,7 @@
                     <Button
                         android:layout_width="match_parent"
                         android:layout_height="fill_parent"
-                        android:text="Today"
+                        android:text="Idag"
                         android:id="@+id/diet_choose_date_button"
                         android:background="@drawable/border_transparent_background"
                         android:onClick="onDietDateClick"/>
@@ -76,30 +76,51 @@
                     android:orientation="horizontal"
                     android:layout_width="1dp"
                     android:layout_height="fill_parent"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
 
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:text="Välj typ av måltid"
                         android:id="@+id/meal_selector_button"
-                        android:onClick="onMealSelectorClick"/>
+                        android:onClick="onMealSelectorClick"
+                        android:background="@drawable/border_transparent_background"
+                        android:drawableRight="@drawable/arrow_down"/>
                 </LinearLayout>
 
             </LinearLayout>
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_gravity="center_horizontal">
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical">
 
                 <TextView
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:text="Innehåll i din måltid"
                     android:id="@+id/textView"
-                    android:textSize="30sp"/>
-            </FrameLayout>
+                    android:textSize="30sp"
+                    android:gravity="center_vertical"/>
+
+                <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:text="Spara"
+                        android:id="@+id/save_meal"
+                        android:checked="false"
+                        android:layout_gravity="right|center_vertical"
+                        />
+                </FrameLayout>
+
+            </LinearLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -107,9 +128,9 @@
                 android:layout_gravity="center_horizontal">
 
                 <ListView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/listView2"
+                    android:id="@+id/food_item_added_container"
                     android:choiceMode="singleChoice"/>
             </FrameLayout>
 

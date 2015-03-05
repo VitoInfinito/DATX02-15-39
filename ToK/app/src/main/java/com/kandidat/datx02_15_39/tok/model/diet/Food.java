@@ -1,9 +1,11 @@
 package com.kandidat.datx02_15_39.tok.model.diet;
 
+import java.io.Serializable;
+
 /**
  * Created by Lagerstedt on 2015-02-16.
  */
-public class Food {
+public class Food implements Serializable {
 	private final double calorieAmount;
 	private final double proteinAmount;
 	private final double fatAmount;
