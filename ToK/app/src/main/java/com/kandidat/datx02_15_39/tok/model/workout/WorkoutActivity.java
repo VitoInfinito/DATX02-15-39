@@ -1,5 +1,6 @@
 package com.kandidat.datx02_15_39.tok.model.workout;
 
+import com.kandidat.datx02_15_39.tok.model.AbstractDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.AddToActivity;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
@@ -9,7 +10,7 @@ import java.util.Date;
 /**
  * Created by emma on 2015-02-24.
  */
-public class WorkoutActivity implements IDiaryActivity {
+public class WorkoutActivity extends AbstractDiaryActivity {
     private final String id;
     private Workout workout;
 

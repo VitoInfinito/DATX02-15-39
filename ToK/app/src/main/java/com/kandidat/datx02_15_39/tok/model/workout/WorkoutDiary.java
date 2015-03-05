@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class WorkoutDiary extends AbstractDiary {
     private static IDiary instance;
-    private List <IDiaryActivity> listByW;
+    private List <IDiaryActivity> list;
 
     protected WorkoutDiary(){
         super();
@@ -31,15 +31,18 @@ public class WorkoutDiary extends AbstractDiary {
 
     @Override
     public void addActivity(Date d, IDiaryActivity activity) {
+
         addActivityToTable(d, activity);
     }
 
     @Override
     public IDiaryActivity getActivity(Calendar c,String id) {
+
         return null;
     }
 
     public IDiaryActivity getActivityFromDate(Date d) {
+
         return getActivitiesFromTable(d).get(0);
     }
 
@@ -55,7 +58,12 @@ public class WorkoutDiary extends AbstractDiary {
 
 	@Override
 	public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end) {
-		return null;
+       // List <IDiaryActivity> tmp = super.getActivitiesFromTable();
+
+
+
+
+        return null;
 	}
 
     @Override
