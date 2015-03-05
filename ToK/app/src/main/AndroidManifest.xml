@@ -50,6 +50,14 @@
             android:parentActivityName=".layout.WorkoutHomeActivity" >
         </activity>
         <activity
+            android:name=".layout.ViewAddDietActivity"
+            android:label="@string/title_activity_view_add_diet"
+            android:parentActivityName=".layout.CustomActionBarActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.kandidat.datx02_15_39.tok.layout.CustomActionBarActivity" />
+        </activity>
+        <activity
             android:name=".layout.GoalActivity"
             android:label="@string/title_activity_goal"
             android:parentActivityName=".layout.MainActivity" >
