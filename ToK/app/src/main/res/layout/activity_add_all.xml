@@ -7,7 +7,7 @@
              android:minWidth="200dp"
              android:id="@+id/add_all_menu"
              android:background="#00000000"
->
+             android:foreground="#00000000">
 
     <ImageButton
         android:layout_width="40dp"

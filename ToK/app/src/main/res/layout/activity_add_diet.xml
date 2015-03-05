@@ -62,7 +62,7 @@
                     <ImageButton
                         android:layout_width="70dp"
                         android:layout_height="fill_parent"
-                        android:id="@+id/food_button"
+                        android:id="@+id/food_button_view_diet"
                         android:maxHeight="100dp"
                         android:width="100dp"
                         android:maxWidth="100dp"
@@ -82,7 +82,7 @@
                     <ImageButton
                         android:layout_width="70dp"
                         android:layout_height="fill_parent"
-                        android:id="@+id/scale_button"
+                        android:id="@+id/scale_button_view_diet"
                         android:maxHeight="100dp"
                         android:width="100dp"
                         android:maxWidth="100dp"
@@ -102,7 +102,7 @@
                     <ImageButton
                         android:layout_width="70dp"
                         android:layout_height="fill_parent"
-                        android:id="@+id/recipe_button"
+                        android:id="@+id/recipe_button_view_diet"
                         android:maxHeight="100dp"
                         android:width="100dp"
                         android:maxWidth="100dp"
@@ -111,8 +111,8 @@
                         android:padding="10dp"
                         android:scaleType="fitCenter"
                         android:clickable="true"
-                        android:onClick="onDietSelectorClick"
-                        android:focusableInTouchMode="false"/>
+                        android:focusableInTouchMode="false"
+                        android:onClick="onDietSelectorClick"/>
 
                     <Space
                         android:layout_width="wrap_content"
@@ -122,7 +122,7 @@
                     <ImageButton
                         android:layout_width="70dp"
                         android:layout_height="fill_parent"
-                        android:id="@+id/barcode_button"
+                        android:id="@+id/barcode_button_view_diet"
                         android:maxHeight="100dp"
                         android:width="100dp"
                         android:maxWidth="100dp"
@@ -149,13 +149,15 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/food_search_item_container"
-                        android:choiceMode="singleChoice"/>
+                        android:choiceMode="singleChoice"
+                        />
                 </FrameLayout>
 
             </LinearLayout>
 
         </FrameLayout>
     </RelativeLayout>
+
     <!-- The navigation drawer -->
     <LinearLayout
         android:id="@+id/left_drawer"
@@ -163,37 +165,43 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="#fe111111"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical"    >
 
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_top"
             android:choiceMode="singleChoice"
-            android:divider="#99000000"
+            android:divider="#11ffffff"
             android:dividerHeight="1dp"
             android:drawSelectorOnTop="false"/>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:id="@+id/view_divider_1"/>
 
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_diary"
             android:choiceMode="singleChoice"
-            android:divider="#99000000"
+            android:divider="#11ffffff"
             android:dividerHeight="1dp"
-            android:drawSelectorOnTop="false"
-            android:layout_marginTop="10dp"/>
+            android:drawSelectorOnTop="false"/>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:id="@+id/view_divider_2"/>
 
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_setting"
             android:choiceMode="singleChoice"
-            android:divider="#99000000"
+            android:divider="#11ffffff"
             android:dividerHeight="1dp"
-            android:drawSelectorOnTop="false"
-            android:layout_marginTop="10dp"/>
+            android:drawSelectorOnTop="false"/>
     </LinearLayout>
-
 </android.support.v4.widget.DrawerLayout>

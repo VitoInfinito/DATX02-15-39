@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
@@ -26,16 +27,19 @@ import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
 import com.kandidat.datx02_15_39.tok.model.diet.EditDietActivityParams;
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class AddDietActivity extends CustomActionBarActivity {
 
-	private int activatedObject = R.id.food_button;
+	private int activatedObject = R.id.food_button_view_diet;
 	private ListView searchResultList;
+	private ArrayList<Food> searchResultFood, foodItemAdded;
 	private SearchResultAdapter sra;
 	private DietDiary diary;
+	public static String itemsList = "List";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +47,43 @@ public class AddDietActivity extends CustomActionBarActivity {
 		setContentView(R.layout.activity_add_diet);
 		initMenu(R.layout.activity_add_diet);
 		findViewById(activatedObject).setActivated(true);
+		searchResultFood = new ArrayList<Food>();
+		foodItemAdded = new ArrayList<Food>();
 		diary = DietDiary.getInstance();
 		Calendar c = Calendar.getInstance();
 		List<Food> tmp = new ArrayList<Food>();
-		tmp.add(new Food(200, 300,400,500, "Gunnar", "höger lår på kyckling"));
+		tmp.add(new Food(200, 300,400,500, "Gunnar", "höger lår på kyckling", Food.FoodPrefix.g, 100));
+		searchResultFood.add(tmp.get(0));
 		DietActivity da = new DietActivity(c);
 		diary.addActivity(c.getTime(), da);
 		EditDietActivityParams edap = new EditDietActivityParams(c.getTime(), tmp);
 		diary.editActivity(c, "000001", edap);
-		addItemToSearchResult(((DietActivity) diary.getActivity(c, "000001")).getFoodList().get(0).getName(), ((DietActivity) diary.getActivity(c, "000001")).getFoodList().get(0).getCalorieAmount() + "");
+		foodItemAdded.add(tmp.get(0));
+		updateSearchList();
+	}
+
+	private void updateSearchList(List<Food> foodList){
+		searchResultFood = new ArrayList<Food>(foodList);
+		updateSearchList();
+	}
+
+	private void updateSearchList(){
+		searchResultList = (ListView) findViewById(R.id.food_search_item_container);
+		searchResultList.removeAllViewsInLayout();
+		sra = new SearchResultAdapter(this);
+		for (Food f: searchResultFood){
+			sra.add(new SearchItems(f.getName(), f.getCalorieAmount() +""));
+		}
+		if(searchResultList != null){
+			searchResultList.setAdapter(sra);
+		}
+		searchResultList.setOnItemClickListener(new SearchItemClickListener());
+	}
+
+	private List<Food> searchForItems(String searchWord){
+		ArrayList<Food> tmp = new ArrayList<Food>();
+		//TODO the search
+		return tmp;
 	}
 
 	@Override
@@ -59,20 +91,14 @@ public class AddDietActivity extends CustomActionBarActivity {
 		super.onPostCreate(savedInstanceState);
 	}
 
-	public void addItemToSearchResult(String name, String kcal){
-		searchResultList = (ListView) findViewById(R.id.food_search_item_container);
-		 sra = new SearchResultAdapter(this);
-		sra.add(new SearchItems(name, kcal));
-		if(searchResultList != null){
-			searchResultList.setAdapter(sra);
-		}
-		searchResultList.setOnItemClickListener(new SearchItemClickListener());
+	private void addItemToSearchResult(String name, String kcal){
+
 	}
 
 	public void onDietSelectorClick(View view) {
 		if(view instanceof ImageButton) {
 			ImageButton ib = (ImageButton) view;
-			if (ib.getId() == R.id.barcode_button) {
+			if (ib.getId() == R.id.barcode_button_view_diet) {
 				//TODO Change View to a Barcode app
 			}else{
 				int amount = ((LinearLayout) findViewById(R.id.button_container)).getChildCount();
@@ -101,10 +127,13 @@ public class AddDietActivity extends CustomActionBarActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-
 		//noinspection SimplifiableIfStatement
 		if (id == R.id.right_corner_button_moveforward) {
-			startActivity(new Intent(this, MainActivity.class));
+			Intent intent = new Intent(this, ViewAddDietActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putSerializable(this.itemsList, foodItemAdded);
+			intent.putExtras(bundle);
+			startActivity(intent);
 		}
 		//This will be called to be able to see if you pressed the menu
 		return super.onOptionsItemSelected(item);
@@ -150,7 +179,18 @@ public class AddDietActivity extends CustomActionBarActivity {
 	private class SearchItemClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView parent, View view, int position, long id) {
-			//TODO
+			selectedItem(position);
 		}
+	}
+
+	private void selectedItem(int position) {
+		if(findViewById(R.id.recipe_button_view_diet).isActivated()){
+			Toast.makeText(this, "Diet_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
+		}else if(findViewById(R.id.scale_button_view_diet).isActivated()){
+			Toast.makeText(this, "Scale_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
+		}else if(findViewById(R.id.food_button_view_diet).isActivated()){
+			Toast.makeText(this, "Food_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
+		}
+
 	}
 }
