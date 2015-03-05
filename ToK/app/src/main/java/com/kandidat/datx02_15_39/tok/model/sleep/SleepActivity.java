@@ -4,7 +4,9 @@ import com.kandidat.datx02_15_39.tok.model.AddToActivity;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by tomashasselquist on 20/02/15.
@@ -12,32 +14,45 @@ import java.util.Date;
 public class SleepActivity implements IDiaryActivity{
 
     private final String id;
-    private Sleep sleep;
+    //private Sleep sleep;
+    private List<Sleep> sleepList;
     private Date date;
 
     public SleepActivity(String id, Sleep sleep) {
         this.id = id;
-        this.sleep = sleep;
+        sleepList = new ArrayList<Sleep>();
+        sleepList.add(sleep);
+        //this.sleep = sleep;
         date = new Date();
     }
 
     public SleepActivity(String id, Sleep sleep, Date date) {
         this.id = id;
-        this.sleep = sleep;
+
+        sleepList = new ArrayList<Sleep>();
+        sleepList.add(sleep);
+        //this.sleep = sleep;
+
         this.date = date;
     }
 
-    public Sleep getSleep() {
-        return sleep;
+    public SleepActivity(String id, List<Sleep> sleeps, Date date) {
+        this.id = id;
+        sleepList = sleeps;
+        this.date = date;
+    }
+
+    public List<Sleep> getSleepList() {
+        return sleepList;
     }
 
     public Sleep getSleepThatStarts(Date date) {
        // System.out.println("Got into getSleepThatStarts with date " + date + " and sleep starts at " + sleep.getStartTime());
        // System.out.println("The compare gives " + sleep.getStartTime().compareTo(date));
-        //TODO For later when we have list of sleep
-       // for(int i=0; i<)
-        if(sleep.getStartTime().compareTo(date) == 0){
-            return sleep;
+        for(int i=0; i<sleepList.size(); i++) {
+            if (sleepList.get(i).getStartTime().compareTo(date) == 0) {
+                return sleepList.get(i);
+            }
         }
         return null;
      }
