@@ -32,8 +32,7 @@ import java.util.logging.Logger;
 
 public class ViewAddDietActivity extends CustomActionBarActivity {
 
-	Calendar calendar = Calendar.getInstance();
-	Calendar today = Calendar.getInstance();
+	Calendar calendar, today;
 	ArrayList<Food> itemsAdded;
 	private ListView searchResultList;
 	private SearchResultAdapter sra;
@@ -43,6 +42,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_add_diet);
 		initMenu(R.layout.activity_view_add_diet);
+		initCalendar();
 		savedInstanceState = this.getIntent().getExtras();
 		if(savedInstanceState != null){
 			itemsAdded = (ArrayList<Food>)savedInstanceState.getSerializable(AddDietActivity.itemsList);
@@ -50,6 +50,20 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 			itemsAdded = new ArrayList<Food>();
 		}
 		updateList();
+	}
+
+	private void initCalendar(){
+		calendar = setupCalendar();
+		today = setupCalendar();
+	}
+
+	private Calendar setupCalendar(){
+		Calendar tmp = Calendar.getInstance();
+		tmp.set(Calendar.HOUR_OF_DAY, 0);
+		tmp.set(Calendar.MINUTE, 0);
+		tmp.set(Calendar.SECOND,0);
+		tmp.set(Calendar.MILLISECOND,0);
+		return tmp;
 	}
 
 	private void updateList(){
@@ -83,8 +97,8 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 	}
 
 	private boolean setDateOnButton(){
-		Calendar tmp = Calendar.getInstance();
-		tmp.setTime(calendar.getTime());
+		Calendar tmp = setupCalendar();
+		tmp.set(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
 		tmp.add(Calendar.DAY_OF_MONTH, -1);
 		if(calendar.equals(tmp)){
 			((Button)findViewById(R.id.diet_choose_date_button)).setText("Igår");
@@ -102,10 +116,10 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 		@Override
 		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-			Calendar tmp = Calendar.getInstance();
+			Calendar tmp = setupCalendar();
 			tmp.set(year, monthOfYear, dayOfMonth);
-			if(today.after(tmp))
-				calendar.setTime(tmp.getTime());
+			if(!today.before(tmp))
+				calendar.set(year, monthOfYear, dayOfMonth);
 			setDateOnButton();
 		}
 	}
