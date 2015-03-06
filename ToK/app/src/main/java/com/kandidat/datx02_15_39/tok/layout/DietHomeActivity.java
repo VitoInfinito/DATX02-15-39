@@ -1,10 +1,7 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
 
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +10,8 @@ import android.widget.RadioButton;
 
 import com.kandidat.datx02_15_39.tok.R;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class DietHomeActivity extends CustomActionBarActivity {
 
@@ -21,34 +19,27 @@ public class DietHomeActivity extends CustomActionBarActivity {
     RadioButton weekRadioButton;
     Button dateButton;
 
-    ArrayList<String> days;
-    ArrayList<String> weeks;
+    private Calendar cal;
 
-    private int dayIndex = 1;
-    private int weekIndex = 1;
+    private int dayOffset = 0;
+    private int weekOffset = 0;
+
+    private SimpleDateFormat sdfShowFullDate = new SimpleDateFormat("yyyy-MM-dd");
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_diet_home);
-		initMenu(R.layout.activity_diet_home);
+        initMenu(R.layout.activity_diet_home);
+
         dayRadioButton = (RadioButton) findViewById(R.id.day_radioButton);
         weekRadioButton = (RadioButton) findViewById(R.id.week_radiobutton);
         dateButton = (Button) findViewById(R.id.dateButton);
 
-        days = new ArrayList<String>(){ {
-            add("Igår");
-            add("Idag");
-            add("Imorgon");
-        }};
-
-        weeks = new ArrayList<String>(){ {
-            add("Förra veckan");
-            add("Denna vecka");
-            add("Nästa vecka");
-        }};
-
+        cal = Calendar.getInstance();
 
     }
 
@@ -62,12 +53,8 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -75,48 +62,97 @@ public class DietHomeActivity extends CustomActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private boolean isDayView() {
+        return dayRadioButton.isChecked();
+    }
+
     public void onLeftButtonClick(View view) {
 
+        if (isDayView()) {
 
-        if (dayRadioButton.isChecked()) {
-            if (dayIndex > 0) {
-                dayIndex--;
-            }
-            dateButton.setText(days.get(dayIndex));
-        }
+            dayOffset--;
+            cal.add(Calendar.DATE, -1); //Sets the date to one day from the current date
+            String chosenDate = sdfShowFullDate.format(cal.getTime()); // sets to yyyy-mm-dd format
 
-        else if (weekRadioButton.isChecked()) {
-            if (weekIndex > 0) {
-                weekIndex--;
+            if (dayOffset == -1) {
+                dateButton.setText("Igår");
+            } else if (dayOffset == 0) {
+                dateButton.setText("Idag");
+            } else {
+                dateButton.setText(chosenDate);
             }
-            dateButton.setText(weeks.get(weekIndex));
+
+        } else {
+            weekOffset--;
+            cal.add(Calendar.DATE, -7);
+
+            if (weekOffset == -1) {
+                dateButton.setText("Förgående vecka");
+            } else if (weekOffset == 0) {
+                dateButton.setText("Denna vecka");
+            } else {
+                dateButton.setText("Vecka " + cal.get(Calendar.WEEK_OF_YEAR));
+            }
         }
     }
 
     public void onRightButtonClick(View view) {
 
-        if (dayRadioButton.isChecked()) {
-            if (dayIndex < days.size() - 1) {
-                dayIndex++;
-            }
-            dateButton.setText(days.get(dayIndex));
+        if (isDayView() && dayOffset != 0) { // makes sure that you can't proceed past today's date
 
-        }
+            dayOffset++;
+            cal.add(Calendar.DATE, 1);
+            String updatedDate = sdfShowFullDate.format(cal.getTime());
 
-        else if (weekRadioButton.isChecked()) {
-            if (weekIndex < weeks.size() - 1 ) {
-                weekIndex++;
+            if (dayOffset == -1) {
+                dateButton.setText("Igår");
+            } else if (dayOffset == 0) {
+                dateButton.setText("Idag");
+            } else {
+                dateButton.setText(updatedDate);
             }
-            dateButton.setText(weeks.get(weekIndex));
+
+        } else if (!isDayView() && weekOffset != 0) {
+            weekOffset++;
+            cal.add(Calendar.DATE, 7);
+
+            if (weekOffset == -1) {
+                dateButton.setText("Förgående vecka");
+            } else if (weekOffset == 0) {
+                dateButton.setText("Denna vecka");
+            } else {
+                dateButton.setText("Vecka " + cal.get(Calendar.WEEK_OF_YEAR));
+            }
         }
     }
 
-
     public void onDayViewClick(View view) {
-        dateButton.setText("Idag");
+        resetDay();
     }
 
     public void onWeekViewClick(View view) {
+        resetWeek();
+    }
+
+
+    public void onDateButtonClick(View view) {
+        if (isDayView()) {
+            resetDay();
+        } else {
+            resetWeek();
+        }
+    }
+
+    private void resetDay() {
+        dayOffset = 0;
+        cal.setTime(Calendar.getInstance().getTime());
+        dateButton.setText("Idag");
+    }
+
+    private void resetWeek() {
+        weekOffset = 0;
+        cal.setTime(Calendar.getInstance().getTime());
         dateButton.setText("Denna vecka");
     }
+
 }

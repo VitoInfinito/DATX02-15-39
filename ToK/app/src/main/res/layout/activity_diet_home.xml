@@ -101,10 +101,11 @@
                          />
 
                     <Button
-                        android:layout_width="wrap_content"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:text="Idag"
                         android:textSize="20sp"
+                        android:onClick="onDateButtonClick"
                         android:id="@+id/dateButton"
                         />
 
@@ -249,6 +250,7 @@
 
     </LinearLayout>
     </RelativeLayout>
+
     <!-- The navigation drawer -->
     <LinearLayout
         android:id="@+id/left_drawer"
@@ -256,37 +258,43 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="#fe111111"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical"    >
 
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_top"
             android:choiceMode="singleChoice"
-            android:divider="#99000000"
+            android:divider="#11ffffff"
             android:dividerHeight="1dp"
             android:drawSelectorOnTop="false"/>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:id="@+id/view_divider_1"/>
 
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_diary"
             android:choiceMode="singleChoice"
-            android:divider="#99000000"
+            android:divider="#11ffffff"
             android:dividerHeight="1dp"
-            android:drawSelectorOnTop="false"
-            android:layout_marginTop="10dp"/>
+            android:drawSelectorOnTop="false"/>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:id="@+id/view_divider_2"/>
 
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_setting"
             android:choiceMode="singleChoice"
-            android:divider="#99000000"
+            android:divider="#11ffffff"
             android:dividerHeight="1dp"
-            android:drawSelectorOnTop="false"
-            android:layout_marginTop="10dp"/>
+            android:drawSelectorOnTop="false"/>
     </LinearLayout>
-
 </android.support.v4.widget.DrawerLayout>

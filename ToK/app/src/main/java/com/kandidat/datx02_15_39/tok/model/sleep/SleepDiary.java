@@ -33,6 +33,10 @@ public class SleepDiary extends AbstractDiary {
         addActivityToTable(d, activity);
     }
 
+    public void addActivity(IDiaryActivity act) {
+        addActivityToTable(act.getDate(), act);
+    }
+
     @Override
     public IDiaryActivity getActivity(Calendar c,String id) {
         return null;
