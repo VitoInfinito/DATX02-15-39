@@ -48,9 +48,10 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         intensityPicker.setMinValue(1);
         intensityPicker.setMaxValue(10);
         intensityPicker.setValue(5);
+        intensityPicker.setWrapSelectorWheel(false);
 
         builder.setView(intensityPicker);
-        builder.setPositiveButton("ok", new DialogInterface.OnClickListener(){
+        builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int id){
 
             }
@@ -63,6 +64,12 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+    public void registerWorkOutTimeOnClick(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+        builder.setTitle("Välj starttid:");
+        builder.setIcon(R.drawable.yoga);
     }
 
     @Override
