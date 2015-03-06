@@ -18,9 +18,11 @@ import com.kandidat.datx02_15_39.tok.model.workout.WorkoutActivity;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutDiary;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class WorkoutHomeActivity extends CustomActionBarActivity {
     private WorkoutDiary diary;
@@ -46,7 +48,9 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         Date end = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
 
         Workout workout = new Workout (start, end, 5.0, 500);
-        WorkoutActivity activity = new WorkoutActivity(, workout);
+        List<Workout> workoutList = new ArrayList<Workout>();
+        workoutList.add(0,workout);
+        WorkoutActivity activity = new WorkoutActivity(workoutList, cal, workout.getCalorieBurn());
         diary.addActivity(activeDate, activity);
 
         GraphView graph = (GraphView) findViewById(R.id.workout_graph);

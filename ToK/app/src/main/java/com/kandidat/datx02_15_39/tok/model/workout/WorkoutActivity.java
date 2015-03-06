@@ -16,13 +16,13 @@ public class WorkoutActivity extends AbstractDiaryActivity {
 //denna klass ska innehålla flera workouts ifall man gör flera saker på gymmet
     // då behövs det flera typer av träningar
     private List<Workout> workoutList;
-    private int intensity;
+//    private int intensity;
     private double burnedCalCount;
 
-    public WorkoutActivity(int intensity, List<Workout> workoutList, Calendar calendar, double calCount){
+    public WorkoutActivity(List<Workout> workoutList, Calendar calendar, double calCount){
         super();
         this.workoutList=workoutList;
-        this.intensity=intensity;
+//        this.intensity=intensity;
         this.burnedCalCount = calCount;
         setDate(calendar.getTime());
         update();
