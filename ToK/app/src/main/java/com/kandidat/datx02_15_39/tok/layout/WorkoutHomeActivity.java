@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.List;
 
 public class WorkoutHomeActivity extends CustomActionBarActivity {
@@ -108,27 +107,23 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     }
 
     private DataPoint[] fetchDataPoints(Date date) {
+
+//        WorkoutActivity activity = (WorkoutActivity) diary.getActivityFromDate(date);
+//        Workout workout = activity.getWorkoutList().get(0);
+//        Date startTime = workout.getStartTime();
+//        Date stopTime = workout.getEndTime();
+
+        List <DataPoint> dataPoints = new ArrayList<DataPoint>();
         WorkoutActivity activity = (WorkoutActivity) diary.getActivityFromDate(date);
-        Workout workout = activity.getWorkoutList().get(0);
-        Date startTime = workout.getStartTime();
-        Date stopTime = workout.getEndTime();
-
-        List <WorkoutActivity> workoutList = diary.getWorkoutActivityList();
-        DataPoint dp [] = new DataPoint[7];//7 for a week
-
-
-        for(WorkoutActivity wa : workoutList) {
-            wa.getDate();
+        if(activity!=null){
+            List <Workout> workoutList = activity.getWorkoutList();
         }
 
-        System.out.println(sdfShowFullTime.format(startTime));
-        System.out.println(sdfShowFullTime.format(stopTime));
-
         //Still purely for testing
-        return new DataPoint[] {
-                new DataPoint(Integer.parseInt(sdfShowHour.format(startTime))-1, 0),
-                new DataPoint(Integer.parseInt(sdfShowHour.format(startTime)), 3),
-                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime)), 3),
-                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime))+1, 0)};
-    }
+//        return new DataPoint[] {
+//                new DataPoint(Integer.parseInt(sdfShowHour.format(startTime))-1, 0),
+//                new DataPoint(Integer.parseInt(sdfShowHour.format(startTime)), 3),
+//                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime)), 3),
+//                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime))+1, 0)};
+//    }
 }

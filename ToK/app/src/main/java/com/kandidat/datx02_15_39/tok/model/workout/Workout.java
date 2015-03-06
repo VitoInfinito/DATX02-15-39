@@ -34,4 +34,10 @@ public class Workout {
     public void setIntensity(double intensity){
         this.intensity=intensity;
     }
+    public void setStartTime(Date startTime){
+        this.startDate = startTime;
+    }
+    public void setEndDate(Date endDate){
+        this.endDate = endDate;
+    }
 }
