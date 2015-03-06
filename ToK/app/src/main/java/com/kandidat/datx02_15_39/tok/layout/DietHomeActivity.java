@@ -1,6 +1,5 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,11 +10,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
+import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
 
 import java.text.SimpleDateFormat;
@@ -33,13 +32,13 @@ public class DietHomeActivity extends CustomActionBarActivity {
     private BarGraphSeries<DataPoint> series;
     ArrayList<Food> foodList;
 
-    private int foodCal = 500, foodProt = 30, foodFat = 50, foodCarb = 50;
+    DietDiary myDiary;
+    DietActivity myActivity;
 
     private int dayOffset = 0;
     private int weekOffset = 0;
 
     private SimpleDateFormat sdfShowFullDate = new SimpleDateFormat("yyyy-MM-dd");
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,6 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
         setContentView(R.layout.activity_diet_home);
         initMenu(R.layout.activity_diet_home);
-
 
         dietGraph = (GraphView) findViewById(R.id.diet_graph);
         series = new BarGraphSeries<>();
@@ -80,18 +78,18 @@ public class DietHomeActivity extends CustomActionBarActivity {
                 return true;
             }
         };
-        fillGraph(200, 30, 40, 50);
+
+        createTestFoodList();
+
+        myActivity = new DietActivity(foodList, Calendar.getInstance());
+        myDiary = DietDiary.getInstance();
+        myDiary.addActivity(myActivity.getDate(), myActivity);
+//        fillGraph();
 
         dayRadioButton.setPressed(true);
         dayRadioButton.setOnTouchListener(dayAndWeekListener);
         weekRadioButton.setOnTouchListener(dayAndWeekListener);
-
-        createTestFoodList();
-
-        DietActivity dietActivity = new DietActivity(foodList, cal);
-        dietActivity.getFoodList();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -107,7 +105,6 @@ public class DietHomeActivity extends CustomActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -119,32 +116,33 @@ public class DietHomeActivity extends CustomActionBarActivity {
         foodList.add(testFoodTwo);
     }
 
-    private void fillGraph(int cal, int carb, int prot, int fat) {
+    private void fillGraph() {
+
+        ArrayList<DietActivity> list = (ArrayList) myDiary.showDaysActivities(cal);
+
+        int calSum = 10, carbSum = 10 , protSum = 10, fatSum = 10;
+        for (DietActivity act : list) {
+            calSum += act.getCalorieCount();
+            carbSum += act.getCarbCount();
+            protSum += act.getProteinCount();
+            fatSum += act.getFatCount();
+        }
 
         series.resetData(new DataPoint[] {
-                new DataPoint(10,cal),
-                new DataPoint(20, carb),
-                new DataPoint(30, prot),
-                new DataPoint(40, fat)
+            new DataPoint(10, calSum),
+            new DataPoint(20, carbSum),
+            new DataPoint(30, protSum),
+            new DataPoint(40, fatSum)
         });
 
         series.setSpacing(10);
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.RED);
-        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(dietGraph);
-        staticLabelsFormatter.setHorizontalLabels(new String[]{"low", "middle", "high"});
-        dietGraph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+//        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(dietGraph);
+//        staticLabelsFormatter.setHorizontalLabels(new String[]{"low", "middle", "high"});
+//        dietGraph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
         dietGraph.addSeries(series);
-
-
     }
-
-//    private void printNutrients(int kcal, int carb, int prot, int fat) {
-//        kcalText.setText(kcal + " kcal");
-//        carbText.setText(carb + " g");
-//        protText.setText(prot + " g");
-//        fatText.setText(fat + "g ");
-//    }
 
     private boolean isDayView() {
         return dayRadioButton.isPressed();
@@ -177,6 +175,9 @@ public class DietHomeActivity extends CustomActionBarActivity {
                 dateButton.setText("Vecka " + cal.get(Calendar.WEEK_OF_YEAR));
             }
         }
+
+        fillGraph();
+
     }
 
     public void onRightButtonClick(View view) {
@@ -207,6 +208,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
                 dateButton.setText("Vecka " + cal.get(Calendar.WEEK_OF_YEAR));
             }
         }
+        fillGraph();
     }
 
     public void onDateButtonClick(View view) {
