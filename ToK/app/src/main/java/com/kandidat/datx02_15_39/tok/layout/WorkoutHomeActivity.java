@@ -114,6 +114,12 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         Date stopTime = workout.getEndTime();
 
         List <WorkoutActivity> workoutList = diary.getWorkoutActivityList();
+        DataPoint dp [] = new DataPoint[7];//7 for a week
+
+
+        for(WorkoutActivity wa : workoutList) {
+            wa.getDate();
+        }
 
         System.out.println(sdfShowFullTime.format(startTime));
         System.out.println(sdfShowFullTime.format(stopTime));
