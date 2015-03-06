@@ -45,8 +45,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         Date start = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 1, cal.get(Calendar.MINUTE)).getTime();
         Date end = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
 
-        Workout workout = new Workout (start, end, 5.0);
-        WorkoutActivity activity = new WorkoutActivity("id", workout);
+        Workout workout = new Workout (start, end, 5.0, 500);
+        WorkoutActivity activity = new WorkoutActivity(, workout);
         diary.addActivity(activeDate, activity);
 
         GraphView graph = (GraphView) findViewById(R.id.workout_graph);
@@ -104,7 +104,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
     private DataPoint[] fetchDataPoints(Date date) {
         WorkoutActivity activity = (WorkoutActivity) diary.getActivityFromDate(date);
-        Workout workout = activity.getWorkout();
+        Workout workout = activity.getWorkoutList().get(0);
         Date startTime = workout.getStartTime();
         Date stopTime = workout.getEndTime();
 

@@ -10,11 +10,13 @@ public class Workout {
     private Date startDate;
     private Date endDate;
     private double intensity;
+    private double calorieBurn;
 
-    public Workout(Date start, Date end, double intensity){
+    public Workout(Date start, Date end, double intensity, double calorieBurn){
         this.startDate = start;
         this.endDate = end;
         this.intensity = intensity;
+        this.calorieBurn = calorieBurn;
     }
 
     public Date getStartTime(){
@@ -23,5 +25,10 @@ public class Workout {
     public Date getEndTime(){
         return this.endDate;
     }
-
+    public double getIntensity (){
+        return this.intensity;
+    }
+    public double getCalorieBurn(){
+        return this.calorieBurn;
+    }
 }
