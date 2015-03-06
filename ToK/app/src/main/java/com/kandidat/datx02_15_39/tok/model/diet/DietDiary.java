@@ -2,17 +2,11 @@ package com.kandidat.datx02_15_39.tok.model.diet;
 
 import com.kandidat.datx02_15_39.tok.model.AbstractDiary;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
-import com.kandidat.datx02_15_39.tok.model.IDiary;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 
 /**
@@ -28,9 +22,7 @@ public class DietDiary extends AbstractDiary {
 		}
 		return instance;
 	}
-	/*
 
-	 */
 	protected DietDiary(){}
 
 	@Override
