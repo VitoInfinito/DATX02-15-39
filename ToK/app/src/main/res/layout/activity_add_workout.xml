@@ -55,7 +55,7 @@
                         android:layout_marginTop="8dp"
                         android:background="@drawable/border_transparent_background"
                         android:padding="10dp"
-                        android:onClick="registerWorkOutOnClick"
+                        android:onClick="registerWorkoutOnClick"
                         android:text="@string/title_activity_add_work_out"/>
 
                     <Space
@@ -75,7 +75,7 @@
                         android:layout_marginTop="8dp"
                         android:background="@drawable/border_transparent_background"
                         android:padding="10dp"
-                        android:onClick="registerWorkOutOnClick"/>
+                        android:onClick="registerWorkoutOnClick"/>
 
                     <Space
                         android:layout_width="wrap_content"
@@ -94,7 +94,7 @@
                         android:layout_marginTop="8dp"
                         android:background="@drawable/border_transparent_background"
                         android:padding="10dp"
-                        android:onClick="registerWorkOutOnClick"
+                        android:onClick="registerWorkoutOnClick"
                         />
 
                     </LinearLayout>
@@ -124,7 +124,7 @@
                         android:layout_marginTop="8dp"
                         android:background="@drawable/border_transparent_background"
                         android:padding="10dp"
-                        android:onClick="registerWorkOutOnClick"/>
+                        android:onClick="registerWorkoutOnClick"/>
 
                     <Space
                         android:layout_width="wrap_content"
@@ -143,7 +143,7 @@
                         android:layout_marginTop="8dp"
                         android:background="@drawable/border_transparent_background"
                         android:padding="10dp"
-                        android:onClick="registerWorkOutOnClick"/>
+                        android:onClick="registerWorkoutOnClick"/>
                     <Space
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
@@ -161,7 +161,7 @@
                         android:layout_marginTop="8dp"
                         android:background="@drawable/border_transparent_background"
                         android:padding="10dp"
-                        android:onClick="registerWorkOutOnClick"/>
+                        android:onClick="registerWorkoutOnClick"/>
                     </LinearLayout>
 
             </LinearLayout>
