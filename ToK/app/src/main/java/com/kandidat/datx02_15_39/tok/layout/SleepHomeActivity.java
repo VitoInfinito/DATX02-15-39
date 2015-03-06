@@ -46,7 +46,9 @@ public class SleepHomeActivity extends CustomActionBarActivity {
     private SleepDiary diary;
     private GregorianCalendar currentCalendar;
     private Date activeDate;
-    private LineGraphSeries<DataPoint> series;
+
+    private LineGraphSeries<DataPoint> lightSleepSeries;
+    private LineGraphSeries<DataPoint> deepSleepSeries;
 
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("yyyyMMdd");
     private SimpleDateFormat sdfShowMonthDay = new SimpleDateFormat("MM-dd");
@@ -74,10 +76,12 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
 
-        series = new LineGraphSeries<DataPoint>(fetchDataPoints(activeDate));
+        DataPoint[] lightSleepDps = fetchDataPoints(activeDate).get(0);
 
-        graph.addSeries(series);
-        series.setTitle(sdfShowDay.format(activeDate));
+        lightSleepSeries = new LineGraphSeries<DataPoint>(lightSleepDps);
+
+        graph.addSeries(lightSleepSeries);
+        lightSleepSeries.setTitle(sdfShowDay.format(activeDate));
        // setGraphXBounds(activeDate, graph);
 
         //Y Axis bounds
@@ -85,9 +89,9 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         graph.getViewport().setMinY(0);
         graph.getViewport().setMaxY(4);
 
-        series.setColor(Color.BLUE);
-        series.setDrawBackground(true);
-        series.setBackgroundColor(Color.BLUE);
+        lightSleepSeries.setColor(Color.BLUE);
+        lightSleepSeries.setDrawBackground(true);
+        lightSleepSeries.setBackgroundColor(Color.BLUE);
 
 
         graph.setOnClickListener(new View.OnClickListener() {
@@ -172,7 +176,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
 */
 
-        series.setOnDataPointTapListener(new OnDataPointTapListener() {
+        lightSleepSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
                 Toast.makeText(getActivity(), "Series1: On Data Point clicked: " + sdfShowFullTime.format(new Date((long) dataPoint.getX())), Toast.LENGTH_SHORT).show();
@@ -232,7 +236,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         currentCalendar.set(Calendar.DAY_OF_MONTH, currentCalendar.get(Calendar.DAY_OF_MONTH) + offset);
         Date newDate = currentCalendar.getTime();
 
-        series.resetData(fetchDataPoints(newDate));
+        lightSleepSeries.resetData(fetchDataPoints(newDate).get(0));
 
         //setGraphXBounds(newDate, (GraphView) findViewById(R.id.graph));
 
@@ -250,8 +254,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         return this;
     }
 
-    private DataPoint[] fetchDataPoints(Date date) {
-        List<DataPoint> datapoints = new ArrayList<>();
+    private List<DataPoint[]> fetchDataPoints(Date date) {
+        List<DataPoint> datapoints = new ArrayList<DataPoint>();
         SleepActivity activity = (SleepActivity) diary.getActivityFromDate(date);
         if(activity != null) {
             List<Sleep> sleepList = activity.getSleepList();
@@ -288,7 +292,10 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             //System.out.println("X: " + dp[i].getX() + " Y: " + dp[i].getY());
         }
 
-        return datapoints.toArray(new DataPoint[]{});
+        List<DataPoint[]> dataPointsList = new ArrayList<DataPoint[]>();
+        dataPointsList.add(datapoints.toArray(new DataPoint[]{}));
+
+        return new ArrayList<DataPoint[]>(dataPointsList);
 
         //If activity was not found we return an empty list.
         /*return new DataPoint[]{
