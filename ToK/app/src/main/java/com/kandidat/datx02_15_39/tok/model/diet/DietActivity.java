@@ -77,4 +77,20 @@ public class DietActivity extends AbstractDiaryActivity {
 		}
 		update();
 	}
+
+	public double getCalorieCount() {
+		return calorieCount;
+	}
+
+	public double getCarbCount() {
+		return carbCount;
+	}
+
+	public double getFatCount() {
+		return fatCount;
+	}
+
+	public double getProteinCount() {
+		return proteinCount;
+	}
 }
