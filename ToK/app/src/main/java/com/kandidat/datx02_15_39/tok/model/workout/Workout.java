@@ -31,4 +31,7 @@ public class Workout {
     public double getCalorieBurn(){
         return this.calorieBurn;
     }
+    public void setIntensity(double intensity){
+        this.intensity=intensity;
+    }
 }
