@@ -71,7 +71,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		searchResultList.removeAllViewsInLayout();
 		sra = new SearchResultAdapter(this);
 		for (Food f: itemsAdded){
-			sra.add(new SearchItems(f.getName(), f.getCalorieAmount() +""));
+			sra.add(f);
 		}
 		if(searchResultList != null){
 			searchResultList.setAdapter(sra);
@@ -138,7 +138,6 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 				return true;
 			}
 		});
-
 		popup.show(); //showing popup menu
 	}
 
@@ -178,7 +177,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		}
 	}
 
-	public class SearchResultAdapter extends ArrayAdapter<SearchItems>
+	public class SearchResultAdapter extends ArrayAdapter<Food>
 	{
 		public SearchResultAdapter  (Context context)
 		{
@@ -190,15 +189,14 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 			if (convertView == null)
 			{
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.search_food_item, null);
-
 			}
 
 			// Lookup view for data population
 			TextView food_item_name = (TextView) convertView.findViewById(R.id.food_item_name);
 			TextView food_item_calorie = (TextView) convertView.findViewById(R.id.food_calorie_amount);
 			// Populate the data into the template view using the data object
-			food_item_name.setHint(getItem(position).name);
-			food_item_calorie.setHint(getItem(position).kcal);
+			food_item_name.setHint(getItem(position).getName());
+			food_item_calorie.setHint(getItem(position).getCalorieAmount() + "");
 			// Return the completed view to render on screen
 
 			return convertView;

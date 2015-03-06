@@ -123,7 +123,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
         dietGraph.addSeries(series);
 
 
-    } 
+    }
 
 //    private void printNutrients(int kcal, int carb, int prot, int fat) {
 //        kcalText.setText(kcal + " kcal");
