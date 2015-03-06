@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 
 public class WorkoutHomeActivity extends CustomActionBarActivity {
@@ -112,11 +113,10 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         Date startTime = workout.getStartTime();
         Date stopTime = workout.getEndTime();
 
+        List <WorkoutActivity> workoutList = diary.getWorkoutActivityList();
 
         System.out.println(sdfShowFullTime.format(startTime));
         System.out.println(sdfShowFullTime.format(stopTime));
-
-
 
         //Still purely for testing
         return new DataPoint[] {
