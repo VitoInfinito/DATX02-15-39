@@ -52,8 +52,7 @@
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:orientation="horizontal"
-                    android:layout_weight="1"
-                    android:paddingRight="2dp">
+                    android:layout_weight="1">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -73,6 +72,7 @@
 
                 </LinearLayout>
 
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="1dp"
@@ -80,16 +80,19 @@
                     android:layout_weight="1"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
-                    android:paddingLeft="2dp">
+                    android:paddingStart="5dp"
+                    >
 
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
+                        android:layout_gravity="end"
                         android:text="Välj typ av måltid"
                         android:gravity="left|center_vertical"
                         android:id="@+id/meal_selector_button"
                         android:onClick="onMealSelectorClick"
-                        android:background="@drawable/combo_box_button"/>
+                        android:background="@drawable/combo_box_button"
+                        android:paddingLeft="3dp"/>
                 </LinearLayout>
 
             </LinearLayout>

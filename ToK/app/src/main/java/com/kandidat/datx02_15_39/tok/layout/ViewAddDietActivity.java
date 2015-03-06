@@ -57,6 +57,11 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		today = setupCalendar();
 	}
 
+	/*
+	 * Sets upp a calender that can be compared only between 2 dates!
+	 * The Hour, Minute, Seconds, and milliseconds is set to 0.
+	 * @return
+	 */
 	private Calendar setupCalendar(){
 		Calendar tmp = Calendar.getInstance();
 		tmp.set(Calendar.HOUR_OF_DAY, 0);
@@ -66,6 +71,9 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		return tmp;
 	}
 
+	/*
+	Updates the list that is show so that new items appear
+	 */
 	private void updateList(){
 		searchResultList = (ListView) findViewById(R.id.food_item_added_container);
 		searchResultList.removeAllViewsInLayout();
@@ -87,6 +95,12 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		}
 	}
 
+
+	/**
+	 * Call this when A date button is pressed and you want to show a DatePicker
+	 * to add a new date (The show date will be the choosen date, so first it will be today)
+	 * @param view
+	 */
 	public void onDietDateClick(View view){
 		DatePickerDialog picker = new DatePickerDialog(this, 0, new DatePickerListener(),
 				calendar.get(Calendar.YEAR),
@@ -96,6 +110,10 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		picker.show();
 	}
 
+	/*
+	 * This method sets the current choosen date to a specific button
+	 * @return
+	 */
 	private boolean setDateOnButton(){
 		Calendar tmp = setupCalendar();
 		tmp.set(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
@@ -124,6 +142,10 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		}
 	}
 
+	/**
+	 * This method will give you a popup menu under the meal selector on the view
+	 * @param view
+	 */
 	public void onMealSelectorClick(View view){
 		//Creating the instance of PopupMenu
 		PopupMenu popup = new PopupMenu(this, (Button)view);
@@ -140,6 +162,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		});
 		popup.show(); //showing popup menu
 	}
+
 
 	private void mealSelector(MenuItem item){
 		Toast.makeText(this, "You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();
@@ -167,16 +190,9 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public class SearchItems{
-		public String name;
-		public String kcal;
-		public SearchItems(String name, String kcal)
-		{
-			this.name = name;
-			this.kcal = kcal;
-		}
-	}
-
+	/**
+	 * This Class is added and extends ArrayAdapter and it lets me draw what i want to the list item
+	 */
 	public class SearchResultAdapter extends ArrayAdapter<Food>
 	{
 		public SearchResultAdapter  (Context context)

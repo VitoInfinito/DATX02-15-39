@@ -50,7 +50,10 @@ public abstract class AbstractDiary implements IDiary {
     }
 
     protected List<IDiaryActivity> getActivitiesFromTable(Date d) {
-        return activities.get(sdf.format(d));
+		List<IDiaryActivity> tmp = activities.get(sdf.format(d));
+		if(tmp == null)
+			tmp = new ArrayList<IDiaryActivity>();
+        return tmp;
     }
 
 

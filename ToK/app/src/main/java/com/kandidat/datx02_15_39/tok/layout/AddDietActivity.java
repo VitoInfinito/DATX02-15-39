@@ -67,12 +67,15 @@ public class AddDietActivity extends CustomActionBarActivity {
 		updateSearchList();
 	}
 
+	/*
+	Updates the list that is show so that new items appear
+	 */
 	private void updateSearchList(){
 		searchResultList = (ListView) findViewById(R.id.food_search_item_container);
 		searchResultList.removeAllViewsInLayout();
 		sra = new SearchResultAdapter(this);
 		for (Food f: searchResultFood){
-			sra.add(new SearchItems(f.getName(), f.getCalorieAmount() +""));
+			sra.add(f);
 		}
 		if(searchResultList != null){
 			searchResultList.setAdapter(sra);
@@ -91,9 +94,6 @@ public class AddDietActivity extends CustomActionBarActivity {
 		super.onPostCreate(savedInstanceState);
 	}
 
-	private void addItemToSearchResult(String name, String kcal){
-
-	}
 
 	public void onDietSelectorClick(View view) {
 		if(view instanceof ImageButton) {
@@ -139,17 +139,10 @@ public class AddDietActivity extends CustomActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public class SearchItems{
-		public String name;
-		public String kcal;
-		public SearchItems(String name, String kcal)
-		{
-			this.name = name;
-			this.kcal = kcal;
-		}
-	}
-
-	public class SearchResultAdapter extends ArrayAdapter<SearchItems>
+	/**
+	 * This Class is added and extends ArrayAdapter and it lets me draw what i want to the list item
+	 */
+	public class SearchResultAdapter extends ArrayAdapter<Food>
 	{
 		public SearchResultAdapter  (Context context)
 		{
@@ -168,8 +161,8 @@ public class AddDietActivity extends CustomActionBarActivity {
 			TextView food_item_name = (TextView) convertView.findViewById(R.id.food_item_name);
 			TextView food_item_calorie = (TextView) convertView.findViewById(R.id.food_calorie_amount);
 			// Populate the data into the template view using the data object
-			food_item_name.setHint(getItem(position).name);
-			food_item_calorie.setHint(getItem(position).kcal);
+			food_item_name.setHint(getItem(position).getName());
+			food_item_calorie.setHint(getItem(position).getCalorieAmount() + "");
 			// Return the completed view to render on screen
 
 			return convertView;
