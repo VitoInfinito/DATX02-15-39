@@ -3,6 +3,7 @@ package com.kandidat.datx02_15_39.tok.layout;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +14,10 @@ import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TimePicker;
 
+import com.jjoe64.graphview.DefaultLabelFormatter;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepActivity;
@@ -31,10 +36,12 @@ public class AddSleepActivity extends CustomActionBarActivity {
 
 	ArrayAdapter<String> arrayAdapter;
 	List<String> sleepData;
+	private LineGraphSeries<DataPoint> series;
 
 	private SimpleDateFormat sdfShowDate = new SimpleDateFormat("yyyy-MM-dd");
 	private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
 
+	TimePicker startTimePicker;
 	private Date startDate;
 	private int startHours;
 	private int startMinutes;
@@ -42,6 +49,8 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	private Date stopDate;
 	private int stopHours;
 	private int stopMinutes;
+	TimePicker stopTimePicker;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +60,21 @@ public class AddSleepActivity extends CustomActionBarActivity {
 
 	    Calendar currentCalendar = Calendar.getInstance();
 
-		startDate = currentCalendar.getTime();
 	    stopDate = currentCalendar.getTime();
 
-	    startHours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+	    startHours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) - 7;
 	    startMinutes = Calendar.getInstance().get(Calendar.MINUTE);
 
-	    stopHours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + 1;
+	    currentCalendar.set(Calendar.HOUR_OF_DAY, startHours);
+	    currentCalendar.set(Calendar.MINUTE, startMinutes);
+		startDate = currentCalendar.getTime();
+
+	    stopHours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 	    stopMinutes = Calendar.getInstance().get(Calendar.MINUTE);
 
 	    ListView listview = (ListView) findViewById(R.id.sleepProperties);
 	    sleepData = new ArrayList<>();
+
 
 
 	    sleepData.add("Datum: " + sdfShowDate.format(startDate));
@@ -74,6 +87,34 @@ public class AddSleepActivity extends CustomActionBarActivity {
 			    sleepData );
 
 	    listview.setAdapter(arrayAdapter);
+
+
+	    GraphView graphView = (GraphView) findViewById(R.id.addNewSleepGraph);
+
+	    series = new LineGraphSeries<>(fetchDataPoints());
+
+	    graphView.addSeries(series);
+
+	    //Y Axis bounds
+	    graphView.getViewport().setYAxisBoundsManual(true);
+	    graphView.getViewport().setMinY(0);
+	    graphView.getViewport().setMaxY(4);
+
+	    series.setColor(Color.BLUE);
+	    series.setDrawBackground(true);
+	    series.setBackgroundColor(Color.BLUE);
+
+	    graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+		    @Override
+		    public String formatLabel(double value, boolean isValueX) {
+			    if (isValueX) {
+				    // transform number to time
+				    return sdfShowTime.format(new Date((long) value));
+			    } else {
+				    return super.formatLabel(value, isValueX);
+			    }
+		    }
+	    });
 
 	    listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		    @Override
@@ -179,7 +220,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 		builder.setTitle("Började sova");
 		builder.setIcon(R.drawable.zzz);
 
-		TimePicker startTimePicker = new TimePicker(this);
+		startTimePicker = new TimePicker(this);
 		startTimePicker.setCurrentHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
 		startTimePicker.setCurrentMinute(Calendar.getInstance().get(Calendar.MINUTE));
 
@@ -195,6 +236,8 @@ public class AddSleepActivity extends CustomActionBarActivity {
 				ListView listview = (ListView) findViewById(R.id.sleepProperties);
 				sleepData.set(1, "Start: " + sdfShowTime.format(startDate));
 				listview.setAdapter(arrayAdapter);
+
+				series.resetData(fetchDataPoints());
 			}
 		});
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -226,7 +269,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 		builder.setTitle("Slutade sova");
 		builder.setIcon(R.drawable.zzz);
 
-		TimePicker stopTimePicker = new TimePicker(this);
+		stopTimePicker = new TimePicker(this);
 		stopTimePicker.setCurrentHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + 1);
 		stopTimePicker.setCurrentMinute(Calendar.getInstance().get(Calendar.MINUTE));
 
@@ -242,6 +285,8 @@ public class AddSleepActivity extends CustomActionBarActivity {
 				ListView listview = (ListView) findViewById(R.id.sleepProperties);
 				sleepData.set(2, "Slut: " + sdfShowTime.format(stopDate));
 				listview.setAdapter(arrayAdapter);
+
+				series.resetData(fetchDataPoints());
 			}
 		});
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -270,4 +315,36 @@ public class AddSleepActivity extends CustomActionBarActivity {
 		addNewSleep();
         startActivity(new Intent(this, SleepHomeActivity.class));
     }
+
+	private DataPoint[] fetchDataPoints() {
+		//System.out.println("------------------------------------------------HERFELMERDER----------------------------------------------------");
+		List<DataPoint> datapoints = new ArrayList<>();
+
+		Calendar tmpCal = Calendar.getInstance();
+
+		tmpCal.setTime(startDate);
+		tmpCal.set(Calendar.HOUR_OF_DAY, startHours);
+		tmpCal.set(Calendar.MINUTE, startMinutes);
+
+		Date startTime = tmpCal.getTime();
+		//System.out.println(startTime);
+
+		tmpCal.setTime(stopDate);
+		tmpCal.set(Calendar.HOUR_OF_DAY, stopHours);
+		tmpCal.set(Calendar.MINUTE, stopMinutes);
+
+		Date stopTime = tmpCal.getTime();
+		//System.out.println(stopTime);
+
+		datapoints.add(new DataPoint(startTime.getTime(), 0));
+		datapoints.add(new DataPoint(startTime.getTime(), 2));
+		datapoints.add(new DataPoint(stopTime.getTime(), 2));
+		datapoints.add(new DataPoint(stopTime.getTime(), 0));
+
+		/*for(int i = 0; i<datapoints.size(); i++){
+			System.out.println(datapoints.get(i));
+		}
+		System.out.println("------------------------------------------------MERFELHERDER----------------------------------------------------");*/
+		return datapoints.toArray(new DataPoint[]{});
+	}
 }

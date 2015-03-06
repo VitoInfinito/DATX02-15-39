@@ -251,7 +251,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
     }
 
     private DataPoint[] fetchDataPoints(Date date) {
-        List<DataPoint> datapoints = new ArrayList<DataPoint>();
+        List<DataPoint> datapoints = new ArrayList<>();
         SleepActivity activity = (SleepActivity) diary.getActivityFromDate(date);
         if(activity != null) {
             List<Sleep> sleepList = activity.getSleepList();
@@ -330,17 +330,6 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 sleepList.add("Started " + sdfShowFullTime.format(list.get(j).getStartTime()) + " and stopped " + sdfShowFullTime.format(list.get(j).getStopTime()));
             }
 		}
-
-
-		// Instanciating an array list
-		/*List<String> sleepList = new ArrayList<String>();
-		sleepList.add("Badger");
-		sleepList.add("Badger");
-		sleepList.add("Badger");
-		sleepList.add("Badger");
-		sleepList.add("Mushroom");
-		sleepList.add("Mushroom");
-		sleepList.add("Sn-a-a-a-a-ke");*/
 
 		// This is the array adapter, it takes the context of the activity as a
 		// first parameter, the type of list view as a second parameter and your
