@@ -8,10 +8,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.workout.Workout;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutActivity;
@@ -26,7 +26,9 @@ import java.util.List;
 
 public class WorkoutHomeActivity extends CustomActionBarActivity {
     private WorkoutDiary diary;
-
+    private Date todaysDate;
+    private GregorianCalendar calendar;
+    private LineGraphSeries<DataPoint> series;
 
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("yyyyMMdd");
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
@@ -55,10 +57,24 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         GraphView graph = (GraphView) findViewById(R.id.workout_graph);
 
-        BarGraphSeries<DataPoint> series = new BarGraphSeries<DataPoint>(fetchDataPoints(activeDate));
+        series = new LineGraphSeries<DataPoint>(fetchDataPoints(activeDate));
 
         graph.addSeries(series);
-        series.setColor(Color.BLACK);
+
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(10);
+
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setMinX(0);
+        graph.getViewport().setMaxX(7);
+
+        graph.getGridLabelRenderer().setNumVerticalLabels(6);
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Intensitet");
+        graph.getGridLabelRenderer().setNumHorizontalLabels(8);
+        graph.getGridLabelRenderer().setHorizontalAxisTitle("Vecka " + cal.WEEK_OF_YEAR);
+
+        series.setColor(Color.GREEN);
         series.setTitle(sdfShowDay.format(activeDate));
 
         graph.setOnClickListener(new View.OnClickListener() {
@@ -108,22 +124,17 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
     private DataPoint[] fetchDataPoints(Date date) {
 
-//        WorkoutActivity activity = (WorkoutActivity) diary.getActivityFromDate(date);
-//        Workout workout = activity.getWorkoutList().get(0);
-//        Date startTime = workout.getStartTime();
-//        Date stopTime = workout.getEndTime();
-
-        List <DataPoint> dataPoints = new ArrayList<DataPoint>();
         WorkoutActivity activity = (WorkoutActivity) diary.getActivityFromDate(date);
-        if(activity!=null){
-            List <Workout> workoutList = activity.getWorkoutList();
-        }
+        Workout workout = activity.getWorkoutList().get(0);
+        Date startTime = workout.getStartTime();
+        Date stopTime = workout.getEndTime();
+
 
         //Still purely for testing
-//        return new DataPoint[] {
-//                new DataPoint(Integer.parseInt(sdfShowHour.format(startTime))-1, 0),
-//                new DataPoint(Integer.parseInt(sdfShowHour.format(startTime)), 3),
-//                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime)), 3),
-//                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime))+1, 0)};
-//    }
+        return new DataPoint[] {
+                new DataPoint(Integer.parseInt(sdfShowHour.format(startTime))-1, 0),
+                new DataPoint(Integer.parseInt(sdfShowHour.format(startTime)), 3),
+                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime)), 3),
+                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime))+1, 0)};
+    }
 }

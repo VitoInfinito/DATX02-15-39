@@ -68,6 +68,11 @@ public class MainActivity extends CustomActionBarActivity {
         startActivity(new Intent(this, SleepHomeActivity.class));
     }
 
+    /**
+     * Navigates to workout activity overview.
+     *
+     * @param view Not used.
+     */
     public void onWorkOutButtonClick(View view){
         startActivity(new Intent(this, WorkoutHomeActivity.class));
     }
