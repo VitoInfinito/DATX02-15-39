@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
+import android.widget.TimePicker;
 
 
 import com.kandidat.datx02_15_39.tok.R;
@@ -38,7 +39,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 //        });
 
     }
-    public void registerWorkOutOnClick(View view){
+    public void registerWorkOutOnClick(final View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
         builder.setTitle("Välj intensitet");
@@ -53,7 +54,8 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         builder.setView(intensityPicker);
         builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int id){
-
+                //Spara undan värde för intensitet
+                registerWorkOutStartTimeOnClick(view);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -65,10 +67,36 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-    public void registerWorkOutTimeOnClick(View view){
+    public void registerWorkOutStartTimeOnClick(final View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
         builder.setTitle("Välj starttid:");
+        builder.setIcon(R.drawable.yoga);
+
+        TimePicker timePicker = new TimePicker(this);
+
+        timePicker.setIs24HourView(true);
+
+        builder.setView(timePicker);
+        builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //Spara undan värde för intensitet
+                registerWorkOutEndTimeOnClick(view);
+            }
+        });
+        builder.setNegativeButton("Tillbaka", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                registerWorkOutOnClick(view);
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    public void registerWorkOutEndTimeOnClick(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+        builder.setTitle("Välj sluttid:");
         builder.setIcon(R.drawable.yoga);
     }
 
