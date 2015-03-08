@@ -55,10 +55,10 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int id){
                 //Spara undan värde för intensitet
-                registerWorkoutStartTimeOnClick(view);
+                //registerWorkoutStartTimeOnClick(view);
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User cancelled the dialog
             }
@@ -67,7 +67,8 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-    public void registerWorkoutStartTimeOnClick(final View view){
+    /*public void registerWorkoutStartTimeOnClick(final View view){
+
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
         builder.setTitle("Välj starttid:");
