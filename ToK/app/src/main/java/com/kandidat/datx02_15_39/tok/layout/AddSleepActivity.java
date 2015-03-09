@@ -172,7 +172,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	 * Creates an alertdialog and gives the user the option to change the date of which the
 	 * new sleep should start.
 	 *
-	 * @param view
+	 * @param view Not used.
 	 */
 	private void dateListItemOnClick(View view) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
@@ -309,15 +309,19 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	/**
 	 * Adds a new sleep and redirects to another actitity.
 	 *
-	 * @param view
+	 * @param view Not used.
 	 */
     public void addButtonOnClick(View view){
 		addNewSleep();
         startActivity(new Intent(this, SleepHomeActivity.class));
     }
 
+	/**
+	 * Creates and returns datapoints that will be displayed in the graph.
+	 *
+	 * @return A list of datapoints to be displayed in the graph.
+	 */
 	private DataPoint[] fetchDataPoints() {
-		//System.out.println("------------------------------------------------HERFELMERDER----------------------------------------------------");
 		List<DataPoint> datapoints = new ArrayList<>();
 
 		Calendar tmpCal = Calendar.getInstance();

@@ -273,8 +273,6 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         }
     }
 
-
-
     public Context getActivity() {
         return this;
     }
