@@ -5,6 +5,7 @@ import com.kandidat.datx02_15_39.tok.model.AddToActivity;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -18,19 +19,20 @@ public class WorkoutActivity extends AbstractDiaryActivity {
     private List<Workout> workoutList;
 //    private int intensity;
     private double burnedCalCount;
+    private Date date;
+    private final String id;
 
-    public WorkoutActivity(List<Workout> workoutList, Calendar calendar, double calCount){
-        super();
-        this.workoutList=workoutList;
-//        this.intensity=intensity;
-        this.burnedCalCount = calCount;
-        setDate(calendar.getTime());
-        update();
+    public WorkoutActivity(String id, Workout workout) {
+        this.id=id;
+        workoutList = new ArrayList<Workout>();
+        workoutList.add(workout);
+        date = new Date();
     }
+
 
     @Override
     public void setDate(Date d) {
-
+        date = d;
     }
     private void update(){
         burnedCalCount = 0;
@@ -41,7 +43,7 @@ public class WorkoutActivity extends AbstractDiaryActivity {
 
     @Override
     public Date getDate() {
-        return null;
+        return this.date;
     }
 
     @Override
@@ -51,11 +53,13 @@ public class WorkoutActivity extends AbstractDiaryActivity {
 
     @Override
     public void add(AddToActivity addToActivity) {
-
     }
 
     public List <Workout> getWorkoutList(){
         return workoutList;
     }
 
+    public double getBurnedCalCount() {
+        return this.burnedCalCount;
+    }
 }

@@ -40,4 +40,7 @@ public class Workout {
     public void setEndDate(Date endDate){
         this.endDate = endDate;
     }
+    public void setCalorieBurn(double calories){
+        this.calorieBurn = calories;
+    }
 }

@@ -33,6 +33,7 @@ public class WorkoutDiary extends AbstractDiary {
     public void addActivity(Date d, IDiaryActivity activity) {
 
         addActivityToTable(d, activity);
+        list.add(activity);
     }
 
     @Override

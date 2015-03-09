@@ -40,7 +40,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_workout_home);
 		initMenu(R.layout.activity_workout_home);
-
+        todaysDate = new Date();
+       // calendar = GregorianCalendar.getInstance();
         diary = (WorkoutDiary) WorkoutDiary.getInstance();
 
         Calendar cal = Calendar.getInstance();
@@ -49,29 +50,39 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         Date start = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 1, cal.get(Calendar.MINUTE)).getTime();
         Date end = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
 
-        Workout workout = new Workout (start, end, 5.0, 500);
-        List<Workout> workoutList = new ArrayList<Workout>();
-        workoutList.add(0,workout);
-        WorkoutActivity activity = new WorkoutActivity(workoutList, cal, workout.getCalorieBurn());
+        Workout workout = new Workout (start, end, 5.0, 200);
+        String id = "01";
+        WorkoutActivity activity = new WorkoutActivity(id, workout);
+        activity.setDate(workout.getStartTime());
         diary.addActivity(activeDate, activity);
+
+        Date d1 = cal.getTime();
+        cal.add(Calendar.DATE, 1);
+        Date d2 = cal.getTime();
+        cal.add(Calendar.DATE, 1);
+        Date d3 = cal.getTime();
 
         GraphView graph = (GraphView) findViewById(R.id.workout_graph);
 
         series = new LineGraphSeries<DataPoint>(fetchDataPoints(activeDate));
-
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
+                new DataPoint(d1, 1),
+                new DataPoint(d2, 5),
+                new DataPoint(d3, 3)
+        });
         graph.addSeries(series);
 
-        graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setMinY(0);
-        graph.getViewport().setMaxY(10);
-
-        graph.getViewport().setXAxisBoundsManual(true);
-        graph.getViewport().setMinX(0);
-        graph.getViewport().setMaxX(7);
-
-        graph.getGridLabelRenderer().setNumVerticalLabels(6);
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Intensitet");
-        graph.getGridLabelRenderer().setNumHorizontalLabels(8);
+//        graph.getViewport().setYAxisBoundsManual(true);
+//        graph.getViewport().setMinY(0);
+//        graph.getViewport().setMaxY(10);
+//
+//        graph.getViewport().setXAxisBoundsManual(true);
+//        graph.getViewport().setMinX(0);
+//        graph.getViewport().setMaxX(7);
+//
+        graph.getGridLabelRenderer().setNumVerticalLabels(5);
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Kalorier brända");
+        graph.getGridLabelRenderer().setNumHorizontalLabels(7);
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Vecka " + cal.WEEK_OF_YEAR);
 
         series.setColor(Color.GREEN);
@@ -124,17 +135,23 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
     private DataPoint[] fetchDataPoints(Date date) {
 
-        WorkoutActivity activity = (WorkoutActivity) diary.getActivityFromDate(date);
-        Workout workout = activity.getWorkoutList().get(0);
-        Date startTime = workout.getStartTime();
-        Date stopTime = workout.getEndTime();
-
-
+//        WorkoutActivity activity = (WorkoutActivity) diary.getActivityFromDate(date);
+//        Workout workout = activity.getWorkoutList().get(0);
+//        Date startTime = workout.getStartTime();
+//        Date stopTime = workout.getEndTime();
+//        Double burnedCalCount = activity.getBurnedCalCount();
+          Double burnedCalCount = 1313.0;
+        Double day = 4.0;
+        
+        return new DataPoint[]{
+            new DataPoint(day, burnedCalCount )};
+        }
+        
         //Still purely for testing
-        return new DataPoint[] {
-                new DataPoint(Integer.parseInt(sdfShowHour.format(startTime))-1, 0),
-                new DataPoint(Integer.parseInt(sdfShowHour.format(startTime)), 3),
-                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime)), 3),
-                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime))+1, 0)};
-    }
+//        return new DataPoint[] {
+//                new DataPoint(Integer.parseInt(sdfShowHour.format(startTime))-1, 0),
+//                new DataPoint(Integer.parseInt(sdfShowHour.format(startTime)), 3),
+//                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime)), 3),
+//                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime))+1, 0)};
+//    }
 }
