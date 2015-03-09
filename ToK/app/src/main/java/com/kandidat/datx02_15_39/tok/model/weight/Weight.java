@@ -15,5 +15,7 @@ public class Weight {
         return weight;
     }
 
+	public void setWeight(double weight){this.weight = weight;}
+
 
 }

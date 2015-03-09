@@ -79,7 +79,7 @@ public class MainActivity extends CustomActionBarActivity {
 	 * @param view View to get context from for the alert dialog
 	 */
 	public void registerWeightOnClick(View view){
-		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+		/*AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
 		builder.setTitle("Weight");
 		builder.setIcon(R.drawable.weigth_scale);
@@ -94,7 +94,7 @@ public class MainActivity extends CustomActionBarActivity {
 
 		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				// User clicked OK button
+
 			}
 		});
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -103,10 +103,11 @@ public class MainActivity extends CustomActionBarActivity {
 			}
 		});
 
-
 		AlertDialog dialog = builder.create();
 
-		dialog.show();
+		dialog.show();*/
+
+		startActivity(new Intent(this, WeightHomeActivity.class));
 	}
 
 	public void goalsButtonOnClick(View view){
