@@ -1,6 +1,7 @@
 package com.kandidat.datx02_15_39.tok.model.diet;
 
 import com.kandidat.datx02_15_39.tok.model.AbstractDiary;
+import com.kandidat.datx02_15_39.tok.model.AddToActivity;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 
@@ -51,6 +52,8 @@ public class DietDiary extends AbstractDiary {
 		return getActivitiesFromTable(day.getTime());
 	}
 
+
+
 	@Override
 	public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end) {
 		if(!start.before(end)){
@@ -71,7 +74,18 @@ public class DietDiary extends AbstractDiary {
 
 	@Override
 	public void editActivity(Calendar c, String id, EditActivityParams eap) {
-		getActivity(c, id).edit(eap);
+		if(eap instanceof EditDietActivityParams)
+			getActivity(c, id).edit(eap);
+		else
+			throw new IllegalArgumentException("Error");
+	}
+
+	@Override
+	public void addActivity(Calendar c, String id, AddToActivity ata) {
+		if(ata instanceof AddToDietActivity)
+			getActivity(c,id).add(ata);
+		else
+			throw new IllegalArgumentException("Error");
 	}
 
 }

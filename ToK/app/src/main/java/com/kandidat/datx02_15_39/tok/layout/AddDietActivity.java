@@ -3,6 +3,8 @@ package com.kandidat.datx02_15_39.tok.layout;
 
 
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,6 +33,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 public class AddDietActivity extends CustomActionBarActivity {
 
@@ -40,6 +43,8 @@ public class AddDietActivity extends CustomActionBarActivity {
 	private SearchResultAdapter sra;
 	private DietDiary diary;
 	public static String itemsList = "List";
+	public static int REQUEST_ENABLE_BT = 1;
+	private BluetoothAdapter mBluetoothAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +64,42 @@ public class AddDietActivity extends CustomActionBarActivity {
 		EditDietActivityParams edap = new EditDietActivityParams(c.getTime(), tmp);
 		diary.editActivity(c, "000001", edap);
 		foodItemAdded.add(tmp.get(0));
-		updateSearchList();
+		//updateSearchList();
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		//BLUETOOTH CONNECT
+		this.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		if(mBluetoothAdapter == null){
+
+		}
+		if(!mBluetoothAdapter.isEnabled()){
+			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+		}
+
+		Toast.makeText(this, "" + mBluetoothAdapter.getName(), Toast.LENGTH_SHORT).show();
+		bluetooth();
+	}
+
+	private void bluetooth(){
+		ArrayAdapter mArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1);
+		Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+
+		ListView lv = (ListView) findViewById(R.id.food_search_item_container);
+
+		if(pairedDevices.size() > 0){
+			for (BluetoothDevice bd: pairedDevices){
+				mArrayAdapter.add(bd.getName() + "\n" + bd.getAddress());
+				if(bd.getName().equals("Beurer KS800")){
+					Toast.makeText(this, "" + bd.describeContents(), Toast.LENGTH_SHORT).show();
+				}
+			}
+		}
+		lv.setAdapter(mArrayAdapter);
+
 	}
 
 	private void updateSearchList(List<Food> foodList){
@@ -142,7 +182,7 @@ public class AddDietActivity extends CustomActionBarActivity {
 	/**
 	 * This Class is added and extends ArrayAdapter and it lets me draw what i want to the list item
 	 */
-	public class SearchResultAdapter extends ArrayAdapter<Food>
+	private class SearchResultAdapter extends ArrayAdapter<Food>
 	{
 		public SearchResultAdapter  (Context context)
 		{

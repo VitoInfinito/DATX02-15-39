@@ -7,15 +7,19 @@ import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -84,15 +88,18 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		if(searchResultList != null){
 			searchResultList.setAdapter(sra);
 		}
-		searchResultList.setOnItemClickListener(new SearchItemClickListener());
+		searchResultList.setOnItemClickListener(new ItemClickListener());
 	}
 
-
-	private class SearchItemClickListener implements ListView.OnItemClickListener {
+	private class ItemClickListener implements AdapterView.OnItemClickListener {
 		@Override
-		public void onItemClick(AdapterView parent, View view, int position, long id) {
-
+		public void onItemClick(AdapterView<?> list, View view, int position, long id) {
+			foodListItemPressed(position);
 		}
+	}
+
+	private void foodListItemPressed( int position) {
+		Toast.makeText(this,"Clicked" + position , Toast.LENGTH_SHORT).show();
 	}
 
 
@@ -193,7 +200,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 	/**
 	 * This Class is added and extends ArrayAdapter and it lets me draw what i want to the list item
 	 */
-	public class SearchResultAdapter extends ArrayAdapter<Food>
+	private class SearchResultAdapter extends ArrayAdapter<Food>
 	{
 		public SearchResultAdapter  (Context context)
 		{
@@ -204,18 +211,97 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		{
 			if (convertView == null)
 			{
-				convertView = LayoutInflater.from(getContext()).inflate(R.layout.search_food_item, null);
+				convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_meal_item_editable, null);
 			}
-
+			convertView.setOnTouchListener(new ItemSwipeListener(position));
+			convertView.setClickable(true);
 			// Lookup view for data population
 			TextView food_item_name = (TextView) convertView.findViewById(R.id.food_item_name);
-			TextView food_item_calorie = (TextView) convertView.findViewById(R.id.food_calorie_amount);
+			Button food_amount = (Button) convertView.findViewById(R.id.btn_food_amount);
+			Button food_prefix = (Button) convertView.findViewById(R.id.btn_food_prefix);
+			ImageButton food_more = (ImageButton) convertView.findViewById(R.id.food_item_more_information);
 			// Populate the data into the template view using the data object
 			food_item_name.setHint(getItem(position).getName());
-			food_item_calorie.setHint(getItem(position).getCalorieAmount() + "");
+			food_amount.setText(getItem(position).getAmount() + "");
+			food_prefix.setText(getItem(position).getPrefix() + "");
+			food_more.setFocusable(false);
+			food_more.setOnClickListener(new OnMoreInfoClickListener());
+
 			// Return the completed view to render on screen
 
 			return convertView;
+		}
+	}
+
+	private class FoodItemDragedListener implements View.OnDragListener {
+		@Override
+		public boolean onDrag(View v, DragEvent event) {
+			foodItemDraged(v, event);
+			return true;
+		}
+	}
+
+	private void foodItemDraged(View v, DragEvent event) {
+		Toast.makeText(this, "dragen", Toast.LENGTH_SHORT).show();
+	}
+
+	private class OnMoreInfoClickListener implements View.OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			openExtendedInfo(v);
+		}
+	}
+
+	private void openExtendedInfo(View v) {
+		Toast.makeText(this, "dragen", Toast.LENGTH_SHORT).show();
+	}
+
+	private class  ItemSwipeListener implements AdapterView.OnTouchListener{
+
+		private static final int MIN_DISTANCE = 50;
+		private float downX, upX;
+		private int position;
+
+		public ItemSwipeListener(int position) {
+			super();
+			this.position = position;
+		}
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			switch (event.getAction()) {
+				case MotionEvent.ACTION_DOWN: {
+					downX = event.getX();
+					return false; // allow other events like Click to be processed
+				}
+				case MotionEvent.ACTION_MOVE: {
+					upX = event.getX();
+
+					float deltaX = downX - upX;
+
+					// horizontal swipe detection
+					if (Math.abs(deltaX) > MIN_DISTANCE) {
+						// left or right
+						if (deltaX < 0) {
+							foodListItemPressed((int)v.getX());
+							v.setX(-106);
+							return true;
+						}
+						if (deltaX > 0 && v.getLeft() > (-106) && deltaX < 106) {
+							v.setX(0);
+							return true;
+						}
+					}
+					return true;
+				}
+				case MotionEvent.ACTION_UP:{
+					if(v.getLeft() < (-53)){
+					}else{
+					}
+				}
+			}
+			return false;
 		}
 	}
 }

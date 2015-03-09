@@ -53,4 +53,12 @@ public interface IDiary {
 	 * @param eap - Contains the Attributes you want to edit
 	 */
 	public void editActivity(Calendar c, String id, EditActivityParams eap);
+
+	/**
+	 * Method used when a already created Activity needs something more
+	 *
+	 * @param ata - Contains the Attributes you want to add
+	 * @throws java.lang.IllegalArgumentException - if ata isn't of the right kind
+	 */
+	public void addActivity(Calendar c, String id, AddToActivity ata);
 }
