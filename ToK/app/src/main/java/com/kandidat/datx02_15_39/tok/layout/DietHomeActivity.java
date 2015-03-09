@@ -1,13 +1,20 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
@@ -34,6 +41,9 @@ public class DietHomeActivity extends CustomActionBarActivity {
     private BarGraphSeries<DataPoint> series;
     ArrayList<Food> foodList;
     ArrayList<Food> foodListTwo;
+    ArrayList<DietActivity> acitivityList;
+    private ListView mealList;
+    private SearchResultAdapter sra;
 
     DietDiary myDiary;
     DietActivity myActivity;
@@ -115,6 +125,33 @@ public class DietHomeActivity extends CustomActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public class SearchResultAdapter extends ArrayAdapter<DietActivity>
+    {
+        public SearchResultAdapter(Context context)
+        {
+            super(context,0);
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent)
+        {
+            if (convertView == null)
+            {
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.meal_item, null);
+
+            }
+
+            // Lookup view for data population
+            TextView meal_item_name = (TextView) convertView.findViewById(R.id.food_item_name);
+            TextView meal_item_calories = (TextView) convertView.findViewById(R.id.food_calorie_amount);
+            // Populate the data into the template view using the data object
+            meal_item_name.setHint(getItem(position).getName());
+            meal_item_calories.setHint(getItem(position).getCalorieCount() + "");
+            // Return the completed view to render on screen
+
+            return convertView;
+        }
+    }
+
     private ArrayList<Food> createTestFoodList() {
         Food testFood = new Food(500, 30, 20, 40, "Test", "Mat att testa med", Food.FoodPrefix.g, 200);
         Food testFoodTwo = new Food(300, 24, 15, 45, "Test Två", "Nu testar vi ännu", Food.FoodPrefix.g, 250);
@@ -133,10 +170,42 @@ public class DietHomeActivity extends CustomActionBarActivity {
         return foodList;
     }
 
+    private void updateSearchList(){
+        mealList = (ListView) findViewById(R.id.food_search_item_container);
+        mealList.removeAllViewsInLayout();
+        sra = new SearchResultAdapter(this);
+        for (DietActivity da: acitivityList){
+            sra.add(da);
+        }
+        if(mealList != null){
+            mealList.setAdapter(sra);
+        }
+        mealList.setOnItemClickListener(new SearchItemClickListener());
+    }
+
+    private class SearchItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView parent, View view, int position, long id) {
+            selectedItem(position);
+        }
+    }
+
+    private void selectedItem(int position) {
+        if(findViewById(R.id.recipe_button_view_diet).isActivated()){
+            Toast.makeText(this, "Diet_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
+        }else if(findViewById(R.id.scale_button_view_diet).isActivated()){
+            Toast.makeText(this, "Scale_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
+        }else if(findViewById(R.id.food_button_view_diet).isActivated()){
+            Toast.makeText(this, "Food_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
     private void fillGraph(Calendar cal) {
 
 
         ArrayList<DietActivity> list = (ArrayList) myDiary.showDaysActivities(cal);
+
 
         double calSum = 10, carbSum = 10 , protSum = 10, fatSum = 10;
         for (DietActivity act : list) {
