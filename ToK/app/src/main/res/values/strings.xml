@@ -13,7 +13,6 @@
     <string name="title_activity_add_diet">Lägg till kost</string>
     <string name="title_activity_work_out">Träningsdagbok</string>
     <string name="title_activity_workout_home">Träningsdagbok</string>
-
     <string name="title_activity_add_workout">Lägg till träning</string>
     <string name="title_activity_add_work_out">Lägg till träning</string>
     <string name="title_workout_diary">Träningsdagbok</string>
@@ -30,14 +29,12 @@
     <string-array name="nav_drawer_top_items">
         <item>@string/Home</item>
     </string-array>
-
     <string-array name="nav_drawer_diary_items">
         <item>@string/Workout</item>
         <item>@string/Diet</item>
         <item>@string/Sleep</item>
         <item>@string/Weight</item>
     </string-array>
-
     <string-array name="nav_drawer_settingsinformation_item">
         <item>@string/Settings</item>
         <item>@string/Device</item>
@@ -46,7 +43,7 @@
 
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
-    <array name="nav_drawer_icons"></array>
+    <array name="nav_drawer_icons" />
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
@@ -67,5 +64,6 @@
     <string name="cancel">Cancel</string>
     <string name="intensity">add_intensity</string>
     <string name="title_activity_view_add_diet">ViewAddDietActivity</string>
+    <string name="title_activity_create_user">CreateUserActivity</string>
 
 </resources>
