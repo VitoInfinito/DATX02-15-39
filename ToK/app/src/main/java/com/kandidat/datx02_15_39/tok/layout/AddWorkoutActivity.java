@@ -14,12 +14,18 @@ import android.widget.TimePicker;
 
 import com.kandidat.datx02_15_39.tok.R;
 
+import java.util.Calendar;
+
 
 public class AddWorkoutActivity extends CustomActionBarActivity {
 
     ImageButton yogaButton;
     ImageButton runnerButton;
     android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+    Calendar cal = Calendar.getInstance();
+
+    private int hour = cal.get(Calendar.HOUR_OF_DAY);
+    private int min = cal.get(Calendar.MINUTE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,17 +35,8 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         yogaButton = (ImageButton) findViewById(R.id.yoga_button);
         runnerButton = (ImageButton) findViewById(R.id.sprint_button);
 
-//        yogaButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                 DialogFragment dialogFragment = new DialogFragment();
-//                 dialogFragment.show(fm, "Hej hopp!");
-//            }
-//        });
-
     }
-    public void registerWorkoutOnClick(final View view){
+    public void registerWorkoutIntensityOnClick(final View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
         builder.setTitle("Välj intensitet");
@@ -55,7 +52,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int id){
                 //Spara undan värde för intensitet
-                //registerWorkoutStartTimeOnClick(view);
+                registerWorkoutStartTimeOnClick(view);
             }
         });
         builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
@@ -67,9 +64,9 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-    /*public void registerWorkoutStartTimeOnClick(final View view){
+    public void registerWorkoutStartTimeOnClick(final View view){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Välj starttid:");
         builder.setIcon(R.drawable.yoga);
@@ -77,29 +74,53 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         TimePicker timePicker = new TimePicker(this);
 
         timePicker.setIs24HourView(true);
+        timePicker.setCurrentHour(hour);
+        timePicker.setCurrentMinute(min);
 
         builder.setView(timePicker);
         builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //Spara undan värde för starttid
-                //Anropa sluttiden
+                registerWorkoutEndTimeOnClick(view);
             }
         });
         builder.setNegativeButton("Tillbaka", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                registerWorkoutOnClick(view);
+                registerWorkoutIntensityOnClick(view);
             }
         });
 
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-   /* public void registerWorkoutEndTimeOnClick(View view){
-        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+   public void registerWorkoutEndTimeOnClick(final View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Välj sluttid:");
         builder.setIcon(R.drawable.yoga);
-    }*/
+
+       TimePicker timePicker = new TimePicker(this);
+
+       timePicker.setIs24HourView(true);
+       timePicker.setCurrentHour(hour);
+       timePicker.setCurrentMinute(min);
+
+       builder.setView(timePicker);
+       builder.setPositiveButton("Spara träning", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int id) {
+               //Spara undan värde för sluttid
+               //Lägg till ny träning
+           }
+       });
+       builder.setNegativeButton("Tillbaka", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int id) {
+               registerWorkoutStartTimeOnClick(view);
+           }
+       });
+
+       AlertDialog dialog = builder.create();
+       dialog.show();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
