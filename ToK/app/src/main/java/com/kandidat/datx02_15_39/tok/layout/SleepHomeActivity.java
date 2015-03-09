@@ -95,23 +95,27 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
 
 
-        lightSleepSeries.setColor(Color.BLUE);
+        lightSleepSeries.setColor(Color.rgb(0, 0, 153));
         lightSleepSeries.setDrawBackground(true);
-        lightSleepSeries.setBackgroundColor(Color.rgb(194, 223, 0));
+        lightSleepSeries.setBackgroundColor(Color.rgb(0, 0, 153));
+        lightSleepSeries.setThickness(0);
 
-        deepSleepSeries.setColor(Color.RED);
+        deepSleepSeries.setColor(Color.rgb(204, 82, 0));
         deepSleepSeries.setDrawBackground(true);
-        deepSleepSeries.setBackgroundColor(Color.rgb(194, 0, 255));
+        deepSleepSeries.setBackgroundColor(Color.rgb(204, 82, 0));
+        deepSleepSeries.setThickness(0);
 
-        coverSleepSeries.setColor(Color.GREEN);
+        coverSleepSeries.setColor(Color.rgb(0, 0, 0));
         coverSleepSeries.setDrawBackground(true);
-        coverSleepSeries.setBackgroundColor(Color.rgb(0, 223, 255));
+        coverSleepSeries.setBackgroundColor(Color.rgb(0, 0, 0));
+        coverSleepSeries.setThickness(0);
+
 
         //Y Axis bounds
         graph.getViewport().setScalable(true);
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setMinY(0);
-        graph.getViewport().setMaxY(4);
+        graph.getViewport().setMaxY(2);
 
 
 
@@ -128,28 +132,6 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             }
         });
 
-        /*graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
-            @Override
-            public String formatLabel(double value, boolean isValueX) {
-                if (isValueX) {
-                    int hours = (int) value;
-                    int minutes = (int) ((value - hours) * 100);
-                    if (minutes > 60) {
-                        minutes -= 60;
-                        hours++;
-                    }
-
-                    if(hours > 24) {
-                        hours -= 24;
-                    }
-
-                    return super.formatLabel(hours, true) + ":" + (minutes < 10 ? '0' + minutes : minutes);
-                } else {
-                    return super.formatLabel(value, false);
-                }
-            }
-        });*/
-
         graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
             @Override
             public String formatLabel(double value, boolean isValueX) {
@@ -157,46 +139,24 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                     // transform number to time
                     return sdfShowTime.format(new Date((long) value));
                 } else {
-                    return super.formatLabel(value, isValueX);
+                    if(value == 0) {
+                        return "V";
+                    }else if(value == 1) {
+                        return "L";
+                    }else if(value == 2) {
+                        return "D";
+                    }else {
+                        return "";
+                    }
                 }
             }
         });
 
-/*        series.setCustomShape(new PointsGraphSeries.CustomShape() {
-            @Override
-            public void draw(Canvas canvas, Paint paint, float x, float y) {
-                //Sleep drawSleep = ((SleepActivity) diary.getActivityFromDate(activeDate)).getSleepThatStarts(earlierDate);
-                //System.out.println("DrawSleep at " + x + " starts at time " + drawSleep);
-
-                paint.setStrokeWidth(10);
-                canvas.drawLine(x-20, y-20, x+20, y+20, paint);
-                canvas.drawLine(x+20, y-20, x-20, y+20, paint);
-            }
-        });*/
+        //TODO make a better solution than simply making grid white (Either transparent, remove it or make background white as well)
+        graph.getGridLabelRenderer().setGridColor(Color.rgb(255,255,255));
 
 
         fillListWithDummyData();
-      /* // styling
-       series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
-           @Override
-           public int get(DataPoint data) {
-               //return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
-               if(data.getY() == 3) {
-                   return Color.rgb(255, 0, 0);
-               }else if(data.getY() == 2) {
-                   return Color.rgb(0, 255, 0);
-               }
-
-               return Color.rgb(0, 0, 255);
-           }
-       });*/
-
-
- /*      StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
-       staticLabelsFormatter.setVerticalLabels(new String[] {"V", "L", "D"});
-       graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
-
-*/
 
         lightSleepSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
@@ -281,9 +241,17 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         List<DataPoint> lightSleep = new ArrayList<DataPoint>();
         List<DataPoint> deepSleep = new ArrayList<DataPoint>();
         List<DataPoint> coverSleep = new ArrayList<DataPoint>();
-        SleepActivity activity = (SleepActivity) diary.getActivityFromDate(date);
-        if(activity != null) {
-            List<Sleep> sleepList = activity.getSleepList();
+        //SleepActivity activity = (SleepActivity) diary.getActivityFromDate(date);
+        //List<IDiaryActivity> activities = diary.getActivitiesFromDate(date);
+        List<Sleep> sleepList = diary.getSleepListFromDate(date);
+        //if(activity != null) {
+        //if(activities != null) {
+        if(sleepList.size() > 0) {
+            //List<Sleep> sleepList = activity.getSleepList();
+            //List<Sleep> sleepList = new ArrayList<Sleep>();
+
+
+
             if(sleepList.size() > 0) {
                 coverSleep.add(new DataPoint(sleepList.get(0).getStartTime().getTime(), 0));
                 coverSleep.add(new DataPoint(sleepList.get(sleepList.size() - 1).getStopTime().getTime(), 0));
@@ -291,7 +259,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 for (int i = 0; i < sleepList.size(); i++) {
                     Sleep sleep = sleepList.get(i);
                     List<DataPoint> addList;
-                    if (sleep.getSleepLevel() == 2) {
+                    if (sleep.getSleepLevel() == 1) {
                         addList = lightSleep;
                     } else {
                         addList = deepSleep;
@@ -327,9 +295,9 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
             if (coverSleep.size() == 0) {
                 dpCal.set(Calendar.HOUR_OF_DAY, 0);
-                deepSleep.add(new DataPoint(dpCal.getTime(), 0));
+                coverSleep.add(new DataPoint(dpCal.getTime(), 0));
                 dpCal.set(Calendar.HOUR_OF_DAY, 24);
-                deepSleep.add(new DataPoint(dpCal.getTime(), 0));
+                coverSleep.add(new DataPoint(dpCal.getTime(), 0));
             }
         }
 
@@ -412,19 +380,19 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                     new Sleep(
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 7, cal.get(Calendar.MINUTE)).getTime(),
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 6, cal.get(Calendar.MINUTE)).getTime(),
-                            2),
+                            1),
                     new Sleep(
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 6, cal.get(Calendar.MINUTE)).getTime(),
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 3, cal.get(Calendar.MINUTE)).getTime(),
-                            3),
+                            2),
                     new Sleep(
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 3, cal.get(Calendar.MINUTE)).getTime(),
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 2, cal.get(Calendar.MINUTE)).getTime(),
-                            2),
+                            1),
                     new Sleep(
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 2, cal.get(Calendar.MINUTE)).getTime(),
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime(),
-                            3)
+                            2)
                     ));
             diary.addActivity(new SleepActivity("id1", todaysSleep, todaysDate));
 
@@ -434,11 +402,11 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                     new Sleep(
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) - 1, cal.get(Calendar.HOUR_OF_DAY) - 6, cal.get(Calendar.MINUTE)).getTime(),
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) - 1, cal.get(Calendar.HOUR_OF_DAY) - 2, cal.get(Calendar.MINUTE)).getTime(),
-                            2),
+                            1),
                     new Sleep(
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) - 1, cal.get(Calendar.HOUR_OF_DAY) - 2, cal.get(Calendar.MINUTE)).getTime(),
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) - 1, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime(),
-                            2)
+                            1)
                     ));
             diary.addActivity(new SleepActivity("id2", yesterdaysSleep ,yesterdaysDate));
 
@@ -447,15 +415,15 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                     new Sleep(
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + 1, cal.get(Calendar.HOUR_OF_DAY) - 5, cal.get(Calendar.MINUTE)).getTime(),
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + 1, cal.get(Calendar.HOUR_OF_DAY) - 3, cal.get(Calendar.MINUTE)).getTime(),
-                            2),
+                            1),
                     new Sleep(
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + 1, cal.get(Calendar.HOUR_OF_DAY) - 2, cal.get(Calendar.MINUTE)).getTime(),
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + 1, cal.get(Calendar.HOUR_OF_DAY) + 3, cal.get(Calendar.MINUTE)).getTime(),
-                            3),
+                            2),
                     new Sleep(
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + 1, cal.get(Calendar.HOUR_OF_DAY) + 4, cal.get(Calendar.MINUTE)).getTime(),
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + 1, cal.get(Calendar.HOUR_OF_DAY) + 5, cal.get(Calendar.MINUTE)).getTime(),
-                            3)
+                            2)
                     ));
             diary.addActivity(new SleepActivity("id3", tomorrowsSleep, tomorrowsDate));
 

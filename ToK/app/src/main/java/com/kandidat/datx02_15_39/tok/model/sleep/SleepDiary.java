@@ -5,6 +5,7 @@ import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiary;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -46,6 +47,23 @@ public class SleepDiary extends AbstractDiary {
     public IDiaryActivity getActivityFromDate(Date d) {
         List<IDiaryActivity> act = getActivitiesFromTable(d);
         return act != null ? act.get(0) : null;
+    }
+
+    public List<IDiaryActivity> getActivitiesFromDate(Date d) {
+        List<IDiaryActivity> lida = getActivitiesFromTable(d);
+        return lida != null ? new ArrayList<>(lida) : null;
+    }
+
+    public List<Sleep> getSleepListFromDate(Date d) {
+        List<IDiaryActivity> activities = getActivitiesFromDate(d);
+        List<Sleep> sleepList = new ArrayList<>();
+        if(activities != null) {
+            for(int i=0; i<activities.size(); i++) {
+                List<Sleep> isl = ((SleepActivity) activities.get(i)).getSleepList();
+                sleepList.addAll(isl);
+            }
+        }
+        return sleepList;
     }
 
     @Override
