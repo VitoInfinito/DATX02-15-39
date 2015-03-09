@@ -191,14 +191,6 @@ public class DietHomeActivity extends CustomActionBarActivity {
     }
 
     private void selectedItem(int position) {
-        if(findViewById(R.id.recipe_button_view_diet).isActivated()){
-            Toast.makeText(this, "Diet_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
-        }else if(findViewById(R.id.scale_button_view_diet).isActivated()){
-            Toast.makeText(this, "Scale_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
-        }else if(findViewById(R.id.food_button_view_diet).isActivated()){
-            Toast.makeText(this, "Food_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
-        }
-
     }
 
     private void fillGraph(Calendar cal) {

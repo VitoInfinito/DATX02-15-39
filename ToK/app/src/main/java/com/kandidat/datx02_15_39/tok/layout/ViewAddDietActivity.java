@@ -283,21 +283,22 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 					// horizontal swipe detection
 					if (Math.abs(deltaX) > MIN_DISTANCE) {
 						// left or right
-						if (deltaX < 0) {
-							foodListItemPressed((int)v.getX());
-							v.setX(-106);
+						if (deltaX < 0 && deltaX >(-106)) {
+							v.setX((int)deltaX *(-1));
 							return true;
 						}
-						if (deltaX > 0 && v.getLeft() > (-106) && deltaX < 106) {
-							v.setX(0);
+						if (deltaX > 0 && deltaX < 106) {
+							v.setX((int)deltaX *(-1));
 							return true;
 						}
 					}
 					return true;
 				}
 				case MotionEvent.ACTION_UP:{
-					if(v.getLeft() < (-53)){
+					if(v.getX() < (-53)){
+						v.setX(-106);
 					}else{
+						v.setX(0);
 					}
 				}
 			}
