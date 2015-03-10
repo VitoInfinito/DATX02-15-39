@@ -101,6 +101,6 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:text="Radera"
-        android:id="@+id/button3"
+        android:id="@+id/btn_remove_item_from_meal"
         android:background="#ffff000d"/>
 </LinearLayout>

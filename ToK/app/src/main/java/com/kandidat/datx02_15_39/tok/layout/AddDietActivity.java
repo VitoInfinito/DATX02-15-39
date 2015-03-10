@@ -102,57 +102,13 @@ public class AddDietActivity extends CustomActionBarActivity {
 
 	}
 
-	private void updateSearchList(List<Food> foodList){
-		searchResultFood = new ArrayList<Food>(foodList);
-		updateSearchList();
-	}
-
-	/*
-	Updates the list that is show so that new items appear
-	 */
-	private void updateSearchList(){
-		searchResultList = (ListView) findViewById(R.id.food_search_item_container);
-		searchResultList.removeAllViewsInLayout();
-		sra = new SearchResultAdapter(this);
-		for (Food f: searchResultFood){
-			sra.add(f);
-		}
-		if(searchResultList != null){
-			searchResultList.setAdapter(sra);
-		}
-		searchResultList.setOnItemClickListener(new SearchItemClickListener());
-	}
-
-	private List<Food> searchForItems(String searchWord){
-		ArrayList<Food> tmp = new ArrayList<Food>();
-		//TODO the search
-		return tmp;
+	private void connectBluetooth(){
+		//TODO
 	}
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-	}
-
-
-	public void onDietSelectorClick(View view) {
-		if(view instanceof ImageButton) {
-			ImageButton ib = (ImageButton) view;
-			if (ib.getId() == R.id.barcode_button_view_diet) {
-				//TODO Change View to a Barcode app
-			}else{
-				int amount = ((LinearLayout) findViewById(R.id.button_container)).getChildCount();
-				View child;
-				for (int i = 0; i < amount; i++) {
-					child = ((LinearLayout) findViewById(R.id.button_container)).getChildAt(i);
-					if (child instanceof ImageButton) {
-						child.setActivated(false);
-						child.setFocusableInTouchMode(false);
-					}
-				}
-				ib.setActivated(true);
-			}
-		}
 	}
 
 	@Override
@@ -177,6 +133,64 @@ public class AddDietActivity extends CustomActionBarActivity {
 		}
 		//This will be called to be able to see if you pressed the menu
 		return super.onOptionsItemSelected(item);
+	}
+
+	private List<Food> searchForItems(String searchWord){
+		ArrayList<Food> tmp = new ArrayList<Food>();
+		//TODO the search
+		return tmp;
+	}
+
+	/**
+	 * When the barcode button is pressed the Barcode app will open and we will ask for the EAN,
+	 * this will not activate the button and therefore Barcode cant give a search result.
+	 * The Scale button will try to connect to the the scale and recive some information
+	 * if its connected or not.
+	 * All but Barcode is activatable
+	 * @param view
+	 */
+	public void onDietSelectorClick(View view) {
+		if(view instanceof ImageButton) {
+			ImageButton ib = (ImageButton) view;
+			if (ib.getId() == R.id.barcode_button_view_diet) {
+				//TODO Change View to a Barcode app
+			}else{
+				if(ib.getId() == R.id.scale_button_view_diet) {
+					this.connectBluetooth();
+				}
+				int amount = ((LinearLayout) findViewById(R.id.button_container)).getChildCount();
+				View child;
+				for (int i = 0; i < amount; i++) {
+					child = ((LinearLayout) findViewById(R.id.button_container)).getChildAt(i);
+					if (child instanceof ImageButton) {
+						child.setActivated(false);
+						child.setFocusableInTouchMode(false);
+					}
+				}
+				ib.setActivated(true);
+			}
+		}
+	}
+
+	/*
+	Updates the list that is show so that new items appear
+	 */
+	private void updateSearchList(){
+		searchResultList = (ListView) findViewById(R.id.food_search_item_container);
+		searchResultList.removeAllViewsInLayout();
+		sra = new SearchResultAdapter(this);
+		for (Food f: searchResultFood){
+			sra.add(f);
+		}
+		if(searchResultList != null){
+			searchResultList.setAdapter(sra);
+		}
+		searchResultList.setOnItemClickListener(new SearchItemClickListener());
+	}
+
+	private void updateSearchList(List<Food> foodList){
+		searchResultFood = new ArrayList<Food>(foodList);
+		updateSearchList();
 	}
 
 	/**
@@ -209,6 +223,9 @@ public class AddDietActivity extends CustomActionBarActivity {
 		}
 	}
 
+	/**
+	 * This class is handel all the clicks on the listview
+	 */
 	private class SearchItemClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView parent, View view, int position, long id) {
@@ -218,11 +235,19 @@ public class AddDietActivity extends CustomActionBarActivity {
 
 	private void selectedItem(int position) {
 		if(findViewById(R.id.recipe_button_view_diet).isActivated()){
-			Toast.makeText(this, "Diet_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
+			//TODO when we implement so we have a database and can store food
+			Toast.makeText(this, "Diet_button"
+					+ searchResultFood.get(position).getName()
+					, Toast.LENGTH_SHORT).show();
 		}else if(findViewById(R.id.scale_button_view_diet).isActivated()){
+			//TODO Can only be made when we have connected with the scale
 			Toast.makeText(this, "Scale_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
 		}else if(findViewById(R.id.food_button_view_diet).isActivated()){
-			Toast.makeText(this, "Food_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
+			foodItemAdded.add(sra.getItem(position));
+			Toast.makeText(this, "Diet_button"
+					+ searchResultFood.get(position).getName()
+					+ "Item added"
+					, Toast.LENGTH_SHORT).show();
 		}
 
 	}
