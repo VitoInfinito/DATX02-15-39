@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
@@ -41,9 +40,9 @@ public class DietHomeActivity extends CustomActionBarActivity {
     private BarGraphSeries<DataPoint> series;
     ArrayList<Food> foodList;
     ArrayList<Food> foodListTwo;
-    ArrayList<DietActivity> acitivityList;
+    ArrayList<DietActivity> activityList;
     private ListView mealList;
-    private SearchResultAdapter sra;
+    private MealListAdapter mla;
 
     DietDiary myDiary;
     DietActivity myActivity;
@@ -95,10 +94,13 @@ public class DietHomeActivity extends CustomActionBarActivity {
         };
 
         Calendar tempCal = Calendar.getInstance();
-        tempCal.add(Calendar.DATE, -1); // temp calemdar to see if the acitivity having this calendar will show on yesterday.
+        tempCal.add(Calendar.DATE, -1); // temp calendar to see if the acitivity having this calendar will show on yesterday.
 
         myActivity = new DietActivity(foodList, tempCal);
         mySecondActivity = new DietActivity(foodListTwo, Calendar.getInstance());
+        activityList.add(myActivity);
+        activityList.add(mySecondActivity);
+
         myDiary = DietDiary.getInstance();
         myDiary.addActivity(myActivity.getDate(), myActivity);
         myDiary.addActivity(mySecondActivity.getDate(), mySecondActivity);
@@ -125,9 +127,9 @@ public class DietHomeActivity extends CustomActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class SearchResultAdapter extends ArrayAdapter<DietActivity>
+    public class MealListAdapter extends ArrayAdapter<DietActivity>
     {
-        public SearchResultAdapter(Context context)
+        public MealListAdapter(Context context)
         {
             super(context,0);
         }
@@ -173,17 +175,17 @@ public class DietHomeActivity extends CustomActionBarActivity {
     private void updateSearchList(){
         mealList = (ListView) findViewById(R.id.food_search_item_container);
         mealList.removeAllViewsInLayout();
-        sra = new SearchResultAdapter(this);
-        for (DietActivity da: acitivityList){
-            sra.add(da);
+        mla = new MealListAdapter(this);
+        for (DietActivity da: activityList){
+            mla.add(da);
         }
         if(mealList != null){
-            mealList.setAdapter(sra);
+            mealList.setAdapter(mla);
         }
-        mealList.setOnItemClickListener(new SearchItemClickListener());
+        mealList.setOnItemClickListener(new MealItemClickListener());
     }
 
-    private class SearchItemClickListener implements ListView.OnItemClickListener {
+    private class MealItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
             selectedItem(position);
@@ -191,21 +193,11 @@ public class DietHomeActivity extends CustomActionBarActivity {
     }
 
     private void selectedItem(int position) {
-        if(findViewById(R.id.recipe_button_view_diet).isActivated()){
-            Toast.makeText(this, "Diet_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
-        }else if(findViewById(R.id.scale_button_view_diet).isActivated()){
-            Toast.makeText(this, "Scale_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
-        }else if(findViewById(R.id.food_button_view_diet).isActivated()){
-            Toast.makeText(this, "Food_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
-        }
 
     }
 
     private void fillGraph(Calendar cal) {
-
-
         ArrayList<DietActivity> list = (ArrayList) myDiary.showDaysActivities(cal);
-
 
         double calSum = 10, carbSum = 10 , protSum = 10, fatSum = 10;
         for (DietActivity act : list) {
