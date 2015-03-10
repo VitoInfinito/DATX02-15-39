@@ -41,9 +41,9 @@ public class DietHomeActivity extends CustomActionBarActivity {
     private BarGraphSeries<DataPoint> series;
     ArrayList<Food> foodList;
     ArrayList<Food> foodListTwo;
-    ArrayList<DietActivity> acitivityList;
+    ArrayList<DietActivity> activityList;
     private ListView mealList;
-    private SearchResultAdapter sra;
+    private MealListAdapter mla;
 
     DietDiary myDiary;
     DietActivity myActivity;
@@ -95,10 +95,13 @@ public class DietHomeActivity extends CustomActionBarActivity {
         };
 
         Calendar tempCal = Calendar.getInstance();
-        tempCal.add(Calendar.DATE, -1); // temp calemdar to see if the acitivity having this calendar will show on yesterday.
+        tempCal.add(Calendar.DATE, -1); // temp calendar to see if the acitivity having this calendar will show on yesterday.
 
         myActivity = new DietActivity(foodList, tempCal);
         mySecondActivity = new DietActivity(foodListTwo, Calendar.getInstance());
+        activityList.add(myActivity);
+        activityList.add(mySecondActivity);
+
         myDiary = DietDiary.getInstance();
         myDiary.addActivity(myActivity.getDate(), myActivity);
         myDiary.addActivity(mySecondActivity.getDate(), mySecondActivity);
@@ -125,9 +128,9 @@ public class DietHomeActivity extends CustomActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class SearchResultAdapter extends ArrayAdapter<DietActivity>
+    public class MealListAdapter extends ArrayAdapter<DietActivity>
     {
-        public SearchResultAdapter(Context context)
+        public MealListAdapter(Context context)
         {
             super(context,0);
         }
@@ -173,9 +176,9 @@ public class DietHomeActivity extends CustomActionBarActivity {
     private void updateSearchList(){
         mealList = (ListView) findViewById(R.id.food_search_item_container);
         mealList.removeAllViewsInLayout();
-        sra = new SearchResultAdapter(this);
-        for (DietActivity da: acitivityList){
-            sra.add(da);
+        mla = new MealListAdapter(this);
+        for (DietActivity da: activityList){
+            mla.add(da);
         }
         if(mealList != null){
             mealList.setAdapter(sra);
@@ -194,10 +197,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
     }
 
     private void fillGraph(Calendar cal) {
-
-
         ArrayList<DietActivity> list = (ArrayList) myDiary.showDaysActivities(cal);
-
 
         double calSum = 10, carbSum = 10 , protSum = 10, fatSum = 10;
         for (DietActivity act : list) {
