@@ -181,7 +181,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
             mla.add(da);
         }
         if(mealList != null){
-            mealList.setAdapter(sra);
+            mealList.setAdapter(mla);
         }
         mealList.setOnItemClickListener(new SearchItemClickListener());
     }
