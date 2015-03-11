@@ -99,8 +99,6 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
         myActivity = new DietActivity(foodList, tempCal);
         mySecondActivity = new DietActivity(foodListTwo, Calendar.getInstance());
-        activityList.add(myActivity);
-        activityList.add(mySecondActivity);
 
         myDiary = DietDiary.getInstance();
         myDiary.addActivity(myActivity.getDate(), myActivity);
