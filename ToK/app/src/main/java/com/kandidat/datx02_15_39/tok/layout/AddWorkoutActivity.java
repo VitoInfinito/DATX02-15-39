@@ -14,6 +14,8 @@ import android.widget.TimePicker;
 
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.workout.Workout;
+import com.kandidat.datx02_15_39.tok.model.workout.WorkoutActivity;
+import com.kandidat.datx02_15_39.tok.model.workout.WorkoutDiary;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -169,7 +171,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
        builder.setPositiveButton("Spara träning", new DialogInterface.OnClickListener() {
            public void onClick(DialogInterface dialog, int id) {
                //Spara undan värde för sluttid
-               //Lägg till ny träning
+               addNewWorkout();
            }
        });
        builder.setNegativeButton("Tillbaka", new DialogInterface.OnClickListener() {
@@ -185,7 +187,12 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
 
     public void addNewWorkout(){
-        Workout workout = new Workout(startDate, stopDate, intensity, calorieBurn);
+        //Workout workout = new Workout(startDate, stopDate, intensity, calorieBurn);
+       // WorkoutActivity workoutActivity = new WorkoutActivity("workout", workout);
+        WorkoutHomeActivity workoutHomeActivity = new WorkoutHomeActivity();
+        //WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
+        //workoutDiary.addActivity(startDate, workoutActivity);
+       // workoutHomeActivity.fillListWithData();
     }
 
     @Override

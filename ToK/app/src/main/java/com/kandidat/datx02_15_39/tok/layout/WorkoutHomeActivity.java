@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.BarGraphSeries;
@@ -154,10 +156,27 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
             count++;
 
         }
+
         List<DataPoint[]> dataPointsList = new ArrayList<DataPoint[]>();
         dataPointsList.add(addList.toArray(new DataPoint[]{}));
 
         return new ArrayList<DataPoint[]>(dataPointsList);
     }
 
+
+
+
+      public void fillListWithData(){
+          ListView listV = (ListView) findViewById(R.id.listView);
+          List <String> workoutList = new ArrayList<String>();
+
+          ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                  this,
+                  android.R.layout.simple_list_item_1,
+                  workoutList );
+
+          listV.setAdapter(arrayAdapter);
+
+          workoutList.add("Starttime: ");
+      }
 }
