@@ -140,11 +140,26 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 //        Date startTime = workout.getStartTime();
 //        Date stopTime = workout.getEndTime();
 //        Double burnedCalCount = activity.getBurnedCalCount();
-          Double burnedCalCount = 1313.0;
-        Double day = 4.0;
-        
-        return new DataPoint[]{
-            new DataPoint(day, burnedCalCount )};
+//          Double burnedCalCount = 1313.0;
+//          Double day = 4.0;
+
+
+        calendar.setTime(date);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+        List <WorkoutActivity> list = diary.getWorkoutActivityList();
+        int count = 0;
+        List <DataPoint> tmp = new ArrayList<>(list.size());
+        for( WorkoutActivity w :list ){
+
+            DataPoint dp = new DataPoint((double)dayOfWeek, w.getBurnedCalCount()));
+            tmp.add(dp);
+            count++;
+        }
+
+        return null;
+//        return new DataPoint[]{
+//            new DataPoint(day, burnedCalCount )};
         }
         
         //Still purely for testing
