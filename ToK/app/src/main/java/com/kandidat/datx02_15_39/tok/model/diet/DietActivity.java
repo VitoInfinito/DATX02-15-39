@@ -3,11 +3,9 @@ package com.kandidat.datx02_15_39.tok.model.diet;
 import com.kandidat.datx02_15_39.tok.model.AbstractDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.AddToActivity;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
-import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,6 +15,7 @@ public class DietActivity extends AbstractDiaryActivity {
 
 	private List<Food> foodList;
 	private double calorieCount, proteinCount, fatCount, carbCount;
+    private String name;
 
 	public DietActivity(Calendar calendar){
 		this(new ArrayList<Food>(), calendar);
@@ -77,4 +76,26 @@ public class DietActivity extends AbstractDiaryActivity {
 		}
 		update();
 	}
+
+	public double getCalorieCount() {
+		return calorieCount;
+	}
+
+	public double getCarbCount() {
+		return carbCount;
+	}
+
+	public double getFatCount() {
+		return fatCount;
+	}
+
+	public double getProteinCount() {
+		return proteinCount;
+	}
+
+    public String getName() { return name;  }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

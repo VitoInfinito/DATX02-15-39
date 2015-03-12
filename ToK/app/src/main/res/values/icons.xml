@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in the Drawer List Item-->
+    <array name="nav_drawer_top_icon">
+        <item>@drawable/home</item>
+    </array>
+
+    <array name="nav_drawer_diary_icon">
+        <item>@drawable/heart288</item>
+        <item>@drawable/scale</item>
+        <item>@drawable/zzz</item>
+        <item>@drawable/scale</item>
+    </array>
+
+    <array name="nav_drawer_settingsinformation_icon">
+        <item>@drawable/account</item>
+        <item>@drawable/device</item>
+        <item>@drawable/about</item>
+    </array>
+
+</resources>

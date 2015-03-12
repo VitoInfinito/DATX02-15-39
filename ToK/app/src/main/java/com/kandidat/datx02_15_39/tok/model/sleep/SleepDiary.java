@@ -1,6 +1,7 @@
 package com.kandidat.datx02_15_39.tok.model.sleep;
 
 import com.kandidat.datx02_15_39.tok.model.AbstractDiary;
+import com.kandidat.datx02_15_39.tok.model.AddToActivity;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiary;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
@@ -85,4 +86,9 @@ public class SleepDiary extends AbstractDiary {
     public void editActivity(Calendar c,String id, EditActivityParams eap) {
 
     }
+
+	@Override
+	public void addActivity(Calendar c, String id, AddToActivity ata) {
+
+	}
 }

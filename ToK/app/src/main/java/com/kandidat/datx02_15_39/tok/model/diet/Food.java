@@ -96,4 +96,12 @@ public class Food implements Serializable {
 	public String getDescription() {
 		return description;
 	}
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public FoodPrefix getPrefix() {
+		return prefix;
+	}
 }
