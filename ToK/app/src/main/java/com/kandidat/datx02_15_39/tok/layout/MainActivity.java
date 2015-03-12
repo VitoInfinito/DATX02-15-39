@@ -10,17 +10,30 @@ import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.model.account.Account;
 
 
 public class MainActivity extends CustomActionBarActivity {
+    private Account account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity);
 		initMenu(R.layout.activity_main_activity);
+
+        account = Account.getInstance();
+        String accountName = account.getName();
+        if(accountName != null) {
+            ((TextView) findViewById(R.id.homeUsername)).setText(accountName);
+        }else {
+            startActivity(new Intent(this, CreateUserActivity.class));
+        }
+
+
     }
 
 

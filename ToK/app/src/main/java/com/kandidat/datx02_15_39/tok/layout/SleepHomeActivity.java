@@ -227,7 +227,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
         String newDateSDFDay = sdfShowDay.format(newDate);
         if(newDateSDFDay.equals(sdfShowDay.format(Calendar.getInstance().getTime()))) {
-            ((TextView) findViewById(R.id.textDay)).setText("Today");
+            //TODO change setText to use strings.xml
+            ((TextView) findViewById(R.id.textDay)).setText("Idag");
         }else {
             ((TextView) findViewById(R.id.textDay)).setText(newDateSDFDay);
         }

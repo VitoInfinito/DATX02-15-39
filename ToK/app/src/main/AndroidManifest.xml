@@ -81,6 +81,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kandidat.datx02_15_39.tok.layout.MainActivity" />
         </activity>
+        <activity
+            android:name=".layout.CreateUserActivity"
+            android:label="@string/title_activity_create_user" >
+        </activity>
     </application>
 
 </manifest>
