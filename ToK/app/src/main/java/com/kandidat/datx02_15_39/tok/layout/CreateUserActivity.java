@@ -1,13 +1,17 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.model.account.Account;
 
-public class CreateUserActivity extends CustomActionBarActivity {
+public class CreateUserActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,26 +19,12 @@ public class CreateUserActivity extends CustomActionBarActivity {
         setContentView(R.layout.activity_create_user);
     }
 
+    public void onClickcreateUserSignup(View view){
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_create_user, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        String newName = ((EditText)findViewById(R.id.createUserUsername)).getText().toString();
+        if(!newName.equals("")) {
+            Account.getInstance().setName(newName);
+            startActivity(new Intent(this, MainActivity.class));
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }

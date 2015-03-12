@@ -41,6 +41,13 @@
         <item>@string/About</item>
     </string-array>
 
+    <string-array name="gender">
+        <item>@string/unset</item>
+        <item>@string/male</item>
+        <item>@string/female</item>
+    </string-array>
+
+
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
     <array name="nav_drawer_icons" />
@@ -63,6 +70,10 @@
     <string name="save">Spara</string>
     <string name="cancel">Cancel</string>
     <string name="intensity">add_intensity</string>
+    <string name="signup">Just sign up already</string>
+    <string name="unset">Ej vald</string>
+    <string name="male">Man</string>
+    <string name="female">Kvinna</string>
     <string name="title_activity_view_add_diet">ViewAddDietActivity</string>
     <string name="title_activity_create_user">CreateUserActivity</string>
 
