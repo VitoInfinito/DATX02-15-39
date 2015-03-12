@@ -44,25 +44,6 @@
         <item>@string/About</item>
     </string-array>
 
-    <!-- Nav Drawer List Item Icons -->
-    <!-- Keep them in order as the titles are in -->
-    <array name="nav_drawer_top_icon">
-        <item>@drawable/home</item>
-    </array>
-
-    <array name="nav_drawer_diary_icon">
-        <item>@drawable/heart288</item>
-        <item>@drawable/scale</item>
-        <item>@drawable/zzz</item>
-        <item>@drawable/scale</item>
-    </array>
-
-    <array name="nav_drawer_settingsinformation_icon">
-        <item>@drawable/account</item>
-        <item>@drawable/device</item>
-        <item>@drawable/about</item>
-    </array>
-
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
