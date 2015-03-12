@@ -27,7 +27,7 @@ import java.util.List;
 public class WorkoutHomeActivity extends CustomActionBarActivity {
     private WorkoutDiary diary;
     private Date todaysDate;
-    private GregorianCalendar calendar;
+//    private GregorianCalendar calendar;
     private LineGraphSeries<DataPoint> series;
 
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("yyyyMMdd");
@@ -54,7 +54,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         String id = "01";
         WorkoutActivity activity = new WorkoutActivity(id, workout);
         activity.setDate(workout.getStartTime());
-        diary.addActivity(activeDate, activity);
+//        diary.addActivity(activeDate, activity);
 
         Date d1 = cal.getTime();
         cal.add(Calendar.DATE, 1);
@@ -64,8 +64,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         GraphView graph = (GraphView) findViewById(R.id.workout_graph);
 
-        series = new LineGraphSeries<DataPoint>(fetchDataPoints(activeDate));
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
+//         series = new LineGraphSeries<>(fetchDataPoints(activeDate));
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
                 new DataPoint(d1, 1),
                 new DataPoint(d2, 5),
                 new DataPoint(d3, 3)
@@ -143,23 +143,24 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 //          Double burnedCalCount = 1313.0;
 //          Double day = 4.0;
 
-
-        calendar.setTime(date);
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-
-        List <WorkoutActivity> list = diary.getWorkoutActivityList();
-        int count = 0;
-        List <DataPoint> tmp = new ArrayList<>(list.size());
-        for( WorkoutActivity w :list ){
-
-            DataPoint dp = new DataPoint((double)dayOfWeek, w.getBurnedCalCount()));
-            tmp.add(dp);
-            count++;
-        }
-
+//        GregorianCalendar calendar = new GregorianCalendar();
+//        calendar.setTime(date);
+//        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+//
+//        List <WorkoutActivity> list = diary.getWorkoutActivityList();
+//        int count = 0;
+//        List <DataPoint> tmp = new ArrayList<>(list.size());
+//        for( WorkoutActivity w :list ){
+//
+//            DataPoint dp = new DataPoint((double)dayOfWeek, w.getBurnedCalCount());
+//            tmp.add(dp);
+//            count++;
+//        }
+//
         return null;
 //        return new DataPoint[]{
 //            new DataPoint(day, burnedCalCount )};
+
         }
         
         //Still purely for testing

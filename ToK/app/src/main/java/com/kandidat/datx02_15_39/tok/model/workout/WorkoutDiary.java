@@ -32,8 +32,8 @@ public class WorkoutDiary extends AbstractDiary {
     @Override
     public void addActivity(Date d, IDiaryActivity activity) {
 
-        addActivityToTable(d, activity);
-        list.add(activity);
+//        addActivityToTable(d, activity);
+//        list.add(activity);
     }
 
     @Override
