@@ -14,25 +14,35 @@ import java.util.List;
  * Created by emma on 2015-02-24.
  */
 public class WorkoutActivity extends AbstractDiaryActivity {
-//denna klass ska innehålla flera workouts ifall man gör flera saker på gymmet
-    // då behövs det flera typer av träningar
+
     private List<Workout> workoutList;
-//    private int intensity;
+
     private double burnedCalCount;
-    private Date date;
+    private Date startTime;
+    private Date stopTime;
     private final String id;
 
     public WorkoutActivity(String id, Workout workout) {
         this.id=id;
         workoutList = new ArrayList<Workout>();
         workoutList.add(workout);
-        date = new Date();
+        startTime = workout.getStartTime();
+        stopTime = workout.getEndTime();
     }
 
 
-    @Override
-    public void setDate(Date d) {
-        date = d;
+//    public void setStartTime(Date d) {
+//        startTime = d;
+//    }
+//    public void setStopTime(Date d){
+//        stopTime = d;
+//    }
+
+    public Date getStartTime (){
+        return this.startTime;
+    }
+    public Date getStopTime(){
+        return this.stopTime;
     }
     private void update(){
         burnedCalCount = 0;
@@ -41,10 +51,6 @@ public class WorkoutActivity extends AbstractDiaryActivity {
         }
     }
 
-    @Override
-    public Date getDate() {
-        return this.date;
-    }
 
     @Override
     public void edit(EditActivityParams eap) {
@@ -62,4 +68,6 @@ public class WorkoutActivity extends AbstractDiaryActivity {
     public double getBurnedCalCount() {
         return this.burnedCalCount;
     }
+
+
 }

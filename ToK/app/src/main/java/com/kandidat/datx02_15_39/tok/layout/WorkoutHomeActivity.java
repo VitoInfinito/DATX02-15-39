@@ -54,7 +54,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         String id = "01";
         WorkoutActivity activity = new WorkoutActivity(id, workout);
         activity.setDate(workout.getStartTime());
-//        diary.addActivity(activeDate, activity);
+        diary.addActivity(activeDate, activity);
 
         Date d1 = cal.getTime();
         cal.add(Calendar.DATE, 1);
@@ -70,7 +70,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
                 new DataPoint(d2, 5),
                 new DataPoint(d3, 3)
         });
-        graph.addSeries(series);
+        graph.addSeries(this.fetchDataPoints(activeDate));
 
 //        graph.getViewport().setYAxisBoundsManual(true);
 //        graph.getViewport().setMinY(0);
@@ -133,41 +133,31 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         return this;
     }
 
-    private DataPoint[] fetchDataPoints(Date date) {
+    private List<DataPoint[]> fetchDataPoints(Date date) {
 
-//        WorkoutActivity activity = (WorkoutActivity) diary.getActivityFromDate(date);
-//        Workout workout = activity.getWorkoutList().get(0);
-//        Date startTime = workout.getStartTime();
-//        Date stopTime = workout.getEndTime();
-//        Double burnedCalCount = activity.getBurnedCalCount();
-//          Double burnedCalCount = 1313.0;
-//          Double day = 4.0;
+        List <DataPoint> dpList = new ArrayList<DataPoint>();
+        List <WorkoutActivity> wList = diary.getWorkoutActivityList();
 
-//        GregorianCalendar calendar = new GregorianCalendar();
-//        calendar.setTime(date);
-//        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-//
-//        List <WorkoutActivity> list = diary.getWorkoutActivityList();
-//        int count = 0;
-//        List <DataPoint> tmp = new ArrayList<>(list.size());
-//        for( WorkoutActivity w :list ){
-//
-//            DataPoint dp = new DataPoint((double)dayOfWeek, w.getBurnedCalCount());
-//            tmp.add(dp);
-//            count++;
-//        }
-//
-        return null;
-//        return new DataPoint[]{
-//            new DataPoint(day, burnedCalCount )};
+        List <DataPoint> tmp = new ArrayList<DataPoint>();
+        tmp.add(new DataPoint((wList.get(0).getWorkoutList().get(0).getStartTime()),0));
+        tmp.add(new DataPoint(wList.get(wList.size()-1).getWorkoutList().get(wList.size()-1).getEndTime().getTime(), 0));
+        int count = 0;
+        List <DataPoint> addList = new ArrayList<DataPoint>();
+
+        for( WorkoutActivity w :wList ){
+            WorkoutActivity wa = wList.get(count);
+            Date startTime = w.getStartTime();
+            Date stopTime = w.getStopTime();
+
+            addList.add(new DataPoint(startTime.getTime(),0));
+            addList.add(new DataPoint(stopTime.getTime(),0));
+            count++;
 
         }
-        
-        //Still purely for testing
-//        return new DataPoint[] {
-//                new DataPoint(Integer.parseInt(sdfShowHour.format(startTime))-1, 0),
-//                new DataPoint(Integer.parseInt(sdfShowHour.format(startTime)), 3),
-//                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime)), 3),
-//                new DataPoint(Integer.parseInt(sdfShowHour.format(stopTime))+1, 0)};
-//    }
+        List<DataPoint[]> dataPointsList = new ArrayList<DataPoint[]>();
+        dataPointsList.add(addList.toArray(new DataPoint[]{}));
+
+        return new ArrayList<DataPoint[]>(dataPointsList);
+    }
+
 }
