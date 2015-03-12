@@ -54,7 +54,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         String id = "01";
         WorkoutActivity activity = new WorkoutActivity(id, workout);
         activity.setDate(workout.getStartTime());
-        diary.addActivity(activeDate, activity);
+//        diary.addActivity(activeDate, activity);
 
         Date d1 = cal.getTime();
         cal.add(Calendar.DATE, 1);
@@ -70,7 +70,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
                 new DataPoint(d2, 5),
                 new DataPoint(d3, 3)
         });
-        graph.addSeries(this.fetchDataPoints(activeDate));
+        graph.addSeries(series);
 
 //        graph.getViewport().setYAxisBoundsManual(true);
 //        graph.getViewport().setMinY(0);
