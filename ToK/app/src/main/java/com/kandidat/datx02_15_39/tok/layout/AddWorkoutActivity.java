@@ -192,7 +192,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         WorkoutHomeActivity workoutHomeActivity = new WorkoutHomeActivity();
         //WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
         //workoutDiary.addActivity(startDate, workoutActivity);
-       // workoutHomeActivity.fillListWithData();
+       //workoutHomeActivity.fillListWithData();
     }
 
     @Override

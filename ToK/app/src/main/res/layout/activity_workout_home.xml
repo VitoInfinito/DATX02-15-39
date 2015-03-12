@@ -27,7 +27,7 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="205dp"
-        android:id="@+id/listView"
+        android:id="@+id/workoutFeed"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -38,7 +38,7 @@
         android:layout_below="@+id/linearLayout2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/listView">
+        android:layout_above="@+id/workoutFeed">
 
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"

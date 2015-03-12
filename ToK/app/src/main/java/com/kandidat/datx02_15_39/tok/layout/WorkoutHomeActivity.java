@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.kandidat.datx02_15_39.tok.R;
@@ -167,16 +166,14 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
 
       public void fillListWithData(){
-          ListView listV = (ListView) findViewById(R.id.listView);
           List <String> workoutList = new ArrayList<String>();
+          ListView listV = (ListView) findViewById(R.id.workoutFeed);
+          ArrayAdapter<String> myarrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, workoutList);
+          listV.setAdapter(myarrayAdapter);
+          listV.setTextFilterEnabled(true);
+          myarrayAdapter.notifyDataSetChanged();
 
-          ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                  this,
-                  android.R.layout.simple_list_item_1,
-                  workoutList );
+          workoutList.add("Hej");
 
-          listV.setAdapter(arrayAdapter);
-
-          workoutList.add("Starttime: ");
       }
 }
