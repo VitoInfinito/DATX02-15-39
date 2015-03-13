@@ -1,13 +1,10 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,20 +16,18 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
+import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Logger;
 
 public class ViewAddDietActivity extends CustomActionBarActivity {
 
@@ -61,6 +56,36 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		today = setupCalendar();
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.menu_with_confirm, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+
+		//noinspection SimplifiableIfStatement
+		if (id == R.id.right_corner_button_confirm) {
+			DietActivity da = createDietActivity();
+			DietDiary.getInstance().addActivity(da.getDate(), da);
+			startActivity(new Intent(this, MainActivity.class));
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+
+	private DietActivity createDietActivity() {
+		DietActivity tmp = new DietActivity(itemsAdded, calendar);
+		//TODO Make the enum mealtype in DietActivity that can be set!
+		return tmp;
+	}
+
 	/*
 	 * Sets upp a calender that can be compared only between 2 dates!
 	 * The Hour, Minute, Seconds, and milliseconds is set to 0.
@@ -75,33 +100,17 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		return tmp;
 	}
 
-	/*
-	Updates the list that is show so that new items appear
-	 */
-	private void updateList(){
-		searchResultList = (ListView) findViewById(R.id.food_item_added_container);
-		searchResultList.removeAllViewsInLayout();
-		sra = new SearchResultAdapter(this);
-		for (Food f: itemsAdded){
-			sra.add(f);
-		}
-		if(searchResultList != null){
-			searchResultList.setAdapter(sra);
-		}
-		searchResultList.setOnItemClickListener(new ItemClickListener());
-	}
+	private class DatePickerListener implements DatePickerDialog.OnDateSetListener {
 
-	private class ItemClickListener implements AdapterView.OnItemClickListener {
 		@Override
-		public void onItemClick(AdapterView<?> list, View view, int position, long id) {
-			foodListItemPressed(position);
+		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+			Calendar tmp = setupCalendar();
+			tmp.set(year, monthOfYear, dayOfMonth);
+			if(!today.before(tmp))
+				calendar.set(year, monthOfYear, dayOfMonth);
+			setDateOnButton();
 		}
 	}
-
-	private void foodListItemPressed( int position) {
-		Toast.makeText(this,"Clicked" + position , Toast.LENGTH_SHORT).show();
-	}
-
 
 	/**
 	 * Call this when A date button is pressed and you want to show a DatePicker
@@ -137,16 +146,23 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		return true;
 	}
 
-	private class DatePickerListener implements DatePickerDialog.OnDateSetListener {
-
-		@Override
-		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-			Calendar tmp = setupCalendar();
-			tmp.set(year, monthOfYear, dayOfMonth);
-			if(!today.before(tmp))
-				calendar.set(year, monthOfYear, dayOfMonth);
-			setDateOnButton();
+	/*
+	Updates the list that is show so that new items appear
+	 */
+	private void updateList(){
+		searchResultList = (ListView) findViewById(R.id.food_item_added_container);
+		searchResultList.removeAllViewsInLayout();
+		sra = new SearchResultAdapter(this);
+		for (Food f: itemsAdded){
+			sra.add(f);
 		}
+		if(searchResultList != null){
+			searchResultList.setAdapter(sra);
+		}
+	}
+
+	private void mealSelector(MenuItem item){
+		((Button)findViewById(R.id.meal_selector_button)).setText(item.getTitle());
 	}
 
 	/**
@@ -171,32 +187,6 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 	}
 
 
-	private void mealSelector(MenuItem item){
-		Toast.makeText(this, "You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_with_confirm, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-
-		//noinspection SimplifiableIfStatement
-		if (id == R.id.right_corner_button_confirm) {
-			return true;
-		}
-
-		return super.onOptionsItemSelected(item);
-	}
-
 	/**
 	 * This Class is added and extends ArrayAdapter and it lets me draw what i want to the list item
 	 */
@@ -213,39 +203,95 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 			{
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_meal_item_editable, null);
 			}
-			convertView.setOnTouchListener(new ItemSwipeListener(position));
+			convertView.setOnTouchListener(new ItemSwipeListener(position,
+					getResources().getDisplayMetrics().density));
 			convertView.setClickable(true);
 			// Lookup view for data population
 			TextView food_item_name = (TextView) convertView.findViewById(R.id.food_item_name);
 			Button food_amount = (Button) convertView.findViewById(R.id.btn_food_amount);
 			Button food_prefix = (Button) convertView.findViewById(R.id.btn_food_prefix);
 			ImageButton food_more = (ImageButton) convertView.findViewById(R.id.food_item_more_information);
+			Button delete_food = (Button) convertView.findViewById(R.id.btn_remove_item_from_meal);
 			// Populate the data into the template view using the data object
 			food_item_name.setHint(getItem(position).getName());
 			food_amount.setText(getItem(position).getAmount() + "");
 			food_prefix.setText(getItem(position).getPrefix() + "");
+			food_amount.setOnClickListener(new OnAmountClickListener(position));
+			food_prefix.setOnClickListener(new OnPrefixClickListener(position));
 			food_more.setFocusable(false);
-			food_more.setOnClickListener(new OnMoreInfoClickListener());
-
+			food_more.setOnClickListener(new OnMoreInfoClickListener(position));
+			delete_food.setOnClickListener(new OnDeleteClickListener(position));
 			// Return the completed view to render on screen
-
 			return convertView;
 		}
 	}
 
-	private class FoodItemDragedListener implements View.OnDragListener {
+	private class OnPrefixClickListener implements View.OnClickListener{
+
+		private final int position;
+
+		public OnPrefixClickListener(int position) {
+			super();
+			this.position = position;
+		}
+
 		@Override
-		public boolean onDrag(View v, DragEvent event) {
-			foodItemDraged(v, event);
-			return true;
+		public void onClick(View v) {
+			changePrefix(v, position);
 		}
 	}
 
-	private void foodItemDraged(View v, DragEvent event) {
-		Toast.makeText(this, "dragen", Toast.LENGTH_SHORT).show();
+	private void changePrefix(View v, int position) {
+		//TODO
+	}
+
+	private class OnAmountClickListener implements View.OnClickListener{
+
+		private final int position;
+
+		public OnAmountClickListener(int position) {
+			super();
+			this.position = position;
+		}
+
+		@Override
+		public void onClick(View v) {
+			changeAmount(v, position);
+		}
+	}
+
+	private void changeAmount(View v, int position) {
+		//TODO
+	}
+
+	private class OnDeleteClickListener implements View.OnClickListener{
+
+
+		private final int position;
+
+		public OnDeleteClickListener(int position) {
+			super();
+			this.position = position;
+		}
+
+		@Override
+		public void onClick(View v) {
+			deleteItem(v, position);
+		}
+	}
+
+	private void deleteItem(View v, int position) {
+		//TODO
 	}
 
 	private class OnMoreInfoClickListener implements View.OnClickListener {
+
+		private final int position;
+
+		public OnMoreInfoClickListener(int position) {
+			super();
+			this.position = position;
+		}
 
 		@Override
 		public void onClick(View v) {
@@ -255,17 +301,20 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 	private void openExtendedInfo(View v) {
 		Toast.makeText(this, "dragen", Toast.LENGTH_SHORT).show();
+		//TODO
 	}
 
-	private class  ItemSwipeListener implements AdapterView.OnTouchListener{
+	private class ItemSwipeListener implements AdapterView.OnTouchListener{
 
-		private static final int MIN_DISTANCE = 50;
+		private static final int MIN_DISTANCE = 20;
 		private float downX, upX;
 		private int position;
+		private float scale;
 
-		public ItemSwipeListener(int position) {
+		public ItemSwipeListener(int position, float scale) {
 			super();
 			this.position = position;
+			this.scale = scale;
 		}
 
 		@Override
@@ -281,24 +330,26 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 					float deltaX = downX - upX;
 
 					// horizontal swipe detection
-					if (Math.abs(deltaX) > MIN_DISTANCE) {
+					if (Math.abs(deltaX / scale) > MIN_DISTANCE) {
 						// left or right
-						if (deltaX < 0) {
-							foodListItemPressed((int)v.getX());
-							v.setX(-106);
-							return true;
+						if (deltaX < 0 && (deltaX/scale) >(-96)) {
+							v.setLeft((96) + (int)(deltaX));
+							return false;
 						}
-						if (deltaX > 0 && v.getLeft() > (-106) && deltaX < 106) {
-							v.setX(0);
-							return true;
+						if (deltaX > 0 && (deltaX/scale) < 96) {
+							v.setLeft((int)(deltaX) *(-1));
+							return false;
 						}
 					}
 					return true;
 				}
-				case MotionEvent.ACTION_UP:{
-					if(v.getLeft() < (-53)){
+				case MotionEvent.ACTION_CANCEL:{
+					if((v.getLeft()/scale) <= (-47)){
+						v.setLeft((int) ((-88) * scale));
 					}else{
+						v.setLeft(0);
 					}
+					return true;
 				}
 			}
 			return false;

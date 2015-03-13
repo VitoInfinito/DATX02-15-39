@@ -6,12 +6,13 @@ import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiary;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 /**
- * Created by tomashasselquist on 03/03/15.
+ * Created by tomasharselquist on 03/03/15.
  */
 public class WeightDiary extends AbstractDiary {
 
@@ -36,13 +37,23 @@ public class WeightDiary extends AbstractDiary {
 
     @Override
     public void addActivity(Date d, IDiaryActivity activity) {
-        addActivityToTable(d, activity);
+	    List<IDiaryActivity> act = getActivitiesFromTable(d);
+		if(act == null){
+			addActivityToTable(d, activity);
+		}else{
+			act.set(0, activity);
+	    }
     }
 
     @Override
     public IDiaryActivity getActivity(Calendar c, String id) {
         return null;
     }
+
+	public List<IDiaryActivity> getActivitiesFromDate(Date d){
+		List<IDiaryActivity> list = getActivitiesFromTable(d);
+		return list != null ? new ArrayList<>(list) : null;
+	}
 
     @Override
     public void removeActivity(Calendar c, String id) {

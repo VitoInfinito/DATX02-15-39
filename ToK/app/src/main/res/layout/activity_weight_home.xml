@@ -34,6 +34,62 @@
                         android:id="@+id/graph" />
                 </FrameLayout>
 
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="200dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Nuvarande vikt"
+                        android:id="@+id/currentWeightText"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="50dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="-------------------------"
+                        android:id="@+id/divider"
+                        android:layout_below="@+id/currentWeightText"
+                        android:layout_centerHorizontal="true"/>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="80 kg"
+                        android:id="@+id/weightText"
+                        android:layout_below="@+id/divider"
+                        android:layout_centerHorizontal="true"
+                        android:onClick="changeWeightOnClick"/>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Datum:"
+                        android:id="@+id/dateButton"
+                        android:layout_below="@+id/weightText"
+                        android:layout_centerHorizontal="true"
+                        android:onClick="changeDateOnClick"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    >
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Save changes"
+                        android:id="@+id/button3"
+                        android:layout_centerInParent="true"
+                        android:onClick="saveChangesOnClick"/>
+                </RelativeLayout>
+
             </LinearLayout>
 
         </FrameLayout>

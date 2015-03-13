@@ -18,7 +18,7 @@ public abstract class AbstractDiary implements IDiary {
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
     protected AbstractDiary() {
-        activities = new Hashtable<String, List<IDiaryActivity>>();
+        activities = new Hashtable<>();
     }
 
     protected void addActivityToTable(Date d, IDiaryActivity ida){
@@ -28,7 +28,7 @@ public abstract class AbstractDiary implements IDiary {
         if(activities.containsKey(key)) {
             idl = activities.get(key);
         }else {
-            idl = new ArrayList<IDiaryActivity>();
+            idl = new ArrayList<>();
             activities.put(sdf.format(d), idl);
         }
 

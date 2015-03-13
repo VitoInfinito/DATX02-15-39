@@ -21,6 +21,10 @@ public class WeightActivity implements IDiaryActivity {
         this.date = date;
     }
 
+	public void setWeight(Weight weight){
+		this.weight = weight;
+	}
+
     public Weight getWeight() {
         return weight;
     }
