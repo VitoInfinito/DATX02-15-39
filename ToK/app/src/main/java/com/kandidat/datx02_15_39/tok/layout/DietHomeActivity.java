@@ -98,8 +98,8 @@ public class DietHomeActivity extends CustomActionBarActivity {
         tempCal.add(Calendar.DATE, -1); // temp calendar to see if the acitivity having this calendar will show on yesterday.
 
         activityList = new ArrayList<>();
-        myActivity = new DietActivity("myActivity", foodList, tempCal);
-        mySecondActivity = new DietActivity("secondActivity", foodListTwo, Calendar.getInstance());
+        myActivity = new DietActivity(foodList, tempCal);
+        mySecondActivity = new DietActivity(foodListTwo, Calendar.getInstance());
         activityList.add(myActivity);
         activityList.add(mySecondActivity);
 

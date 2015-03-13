@@ -18,12 +18,11 @@ public class DietActivity extends AbstractDiaryActivity {
     private String name;
 
 	public DietActivity(Calendar calendar){
-		this("Default activity name", new ArrayList<Food>(), calendar);
+		this(new ArrayList<Food>(), calendar);
 	}
 
-	public DietActivity(String name, List<Food> listOfFood, Calendar calendar){
+	public DietActivity(List<Food> listOfFood, Calendar calendar){
 		this.foodList = listOfFood;
-        this.name = name;
 		setDate(calendar.getTime());
 		update();
 	}
