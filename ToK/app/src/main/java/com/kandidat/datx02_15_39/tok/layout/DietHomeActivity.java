@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
@@ -43,7 +44,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
     ArrayList<DietActivity> activityList;
     private ListView mealList;
     private MealListAdapter mla;
-
+                                    //TODO make it constructor of dietActivity take name as a paramenter.
     DietDiary myDiary;
     DietActivity myActivity;
     DietActivity mySecondActivity;
@@ -96,8 +97,9 @@ public class DietHomeActivity extends CustomActionBarActivity {
         Calendar tempCal = Calendar.getInstance();
         tempCal.add(Calendar.DATE, -1); // temp calendar to see if the acitivity having this calendar will show on yesterday.
 
-        myActivity = new DietActivity(foodList, tempCal);
-        mySecondActivity = new DietActivity(foodListTwo, Calendar.getInstance());
+        activityList = new ArrayList<>();
+        myActivity = new DietActivity("myActivity", foodList, tempCal);
+        mySecondActivity = new DietActivity("secondActivity", foodListTwo, Calendar.getInstance());
         activityList.add(myActivity);
         activityList.add(mySecondActivity);
 
@@ -108,6 +110,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
         dayRadioButton.setPressed(true);
         dayRadioButton.setOnTouchListener(dayAndWeekListener);
         weekRadioButton.setOnTouchListener(dayAndWeekListener);
+        updateSearchList();
     }
 
     @Override
@@ -143,8 +146,8 @@ public class DietHomeActivity extends CustomActionBarActivity {
             }
 
             // Lookup view for data population
-            TextView meal_item_name = (TextView) convertView.findViewById(R.id.food_item_name);
-            TextView meal_item_calories = (TextView) convertView.findViewById(R.id.food_calorie_amount);
+            TextView meal_item_name = (TextView) convertView.findViewById(R.id.meal_item_name);
+            TextView meal_item_calories = (TextView) convertView.findViewById(R.id.meal_item_calories);
             // Populate the data into the template view using the data object
             meal_item_name.setHint(getItem(position).getName());
             meal_item_calories.setHint(getItem(position).getCalorieCount() + "");
@@ -173,7 +176,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
     }
 
     private void updateSearchList(){
-        mealList = (ListView) findViewById(R.id.food_search_item_container);
+        mealList = (ListView) findViewById(R.id.meal_list_view);
         mealList.removeAllViewsInLayout();
         mla = new MealListAdapter(this);
         for (DietActivity da: activityList){
@@ -193,6 +196,8 @@ public class DietHomeActivity extends CustomActionBarActivity {
     }
 
     private void selectedItem(int position) {
+        Toast t = Toast.makeText(this, "Item selected", Toast.LENGTH_SHORT);
+        t.show();
 
     }
 
@@ -259,9 +264,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
                 dateButton.setText("Vecka " + cal.get(Calendar.WEEK_OF_YEAR));
             }
         }
-
         fillGraph(cal);
-
     }
 
     public void onRightButtonClick(View view) {
