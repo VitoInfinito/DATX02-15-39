@@ -40,14 +40,12 @@ public class DietHomeActivity extends CustomActionBarActivity {
     private Calendar cal;
     private BarGraphSeries<DataPoint> series;
     ArrayList<Food> foodList;
-    ArrayList<Food> foodListTwo;
     ArrayList<DietActivity> activityList;
     private ListView mealList;
     private MealListAdapter mla;
                                     //TODO make it constructor of dietActivity take name as a paramenter.
     DietDiary myDiary;
     DietActivity myActivity;
-    DietActivity mySecondActivity;
 
     private int dayOffset = 0;
     private int weekOffset = 0;
@@ -64,15 +62,14 @@ public class DietHomeActivity extends CustomActionBarActivity {
         dietGraph = (GraphView) findViewById(R.id.diet_graph);
         series = new BarGraphSeries<>();
         foodList = createTestFoodList();
-        foodListTwo = createSeccondTestFoodList();
 
         dayRadioButton = (Button) findViewById(R.id.day_radioButton);
         weekRadioButton = (Button) findViewById(R.id.week_radiobutton);
         dateButton = (Button) findViewById(R.id.dateButton);
-//        kcalText = (TextView) findViewById(R.id.kcal_text_view);
-//        carbText = (TextView) findViewById(R.id.carb_text_view);
-//        protText = (TextView) findViewById(R.id.protein_text_view);
-//        fatText = (TextView) findViewById(R.id.fat_text_view);
+        kcalText = (TextView) findViewById(R.id.kcal_text_view);
+        carbText = (TextView) findViewById(R.id.carb_text_view);
+        protText = (TextView) findViewById(R.id.protein_text_view);
+        fatText = (TextView) findViewById(R.id.fat_text_view);
 
         cal = Calendar.getInstance();
 
@@ -99,13 +96,11 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
         activityList = new ArrayList<>();
         myActivity = new DietActivity(foodList, tempCal);
-        mySecondActivity = new DietActivity(foodListTwo, Calendar.getInstance());
+        myActivity.setName("Mosbricka");
         activityList.add(myActivity);
-        activityList.add(mySecondActivity);
 
         myDiary = DietDiary.getInstance();
         myDiary.addActivity(myActivity.getDate(), myActivity);
-        myDiary.addActivity(mySecondActivity.getDate(), mySecondActivity);
 
         dayRadioButton.setPressed(true);
         dayRadioButton.setOnTouchListener(dayAndWeekListener);
@@ -148,30 +143,26 @@ public class DietHomeActivity extends CustomActionBarActivity {
             // Lookup view for data population
             TextView meal_item_name = (TextView) convertView.findViewById(R.id.meal_item_name);
             TextView meal_item_calories = (TextView) convertView.findViewById(R.id.meal_item_calories);
+            TextView meal_item_date = (TextView) convertView.findViewById(R.id.meal_item_date);
             // Populate the data into the template view using the data object
             meal_item_name.setHint(getItem(position).getName());
             meal_item_calories.setHint(getItem(position).getCalorieCount() + "");
+            meal_item_date.setHint(sdfShowFullDate.format(getItem(position).getDate()));
             // Return the completed view to render on screen
+
 
             return convertView;
         }
     }
 
     private ArrayList<Food> createTestFoodList() {
-        Food testFood = new Food(500, 30, 20, 40, "Test", "Mat att testa med", Food.FoodPrefix.g, 200);
-        Food testFoodTwo = new Food(300, 24, 15, 45, "Test Två", "Nu testar vi ännu", Food.FoodPrefix.g, 250);
+        Food testFood = new Food(460, 120, 20, 40, "Kokt potatis", "Mjölig potatis som är kokt", Food.FoodPrefix.g, 200);
+        Food testFoodTwo = new Food(300, 24, 15, 45, "Kokt Wienerkorv", "Wienerkorv som är kokt", Food.FoodPrefix.g, 250);
+        Food testFoodThree = new Food(150, 24, 15, 45, "Bostongurka", "Finns inget mer att säga", Food.FoodPrefix.g, 250);
         ArrayList<Food> foodList = new ArrayList<>();
         foodList.add(testFood);
         foodList.add(testFoodTwo);
-        return foodList;
-    }
-
-    private ArrayList<Food> createSeccondTestFoodList() {
-        Food testFood = new Food(1200, 150, 55, 70, "Pirre", "Kebabpizza med massa extra kött", Food.FoodPrefix.g, 200);
-        Food testFoodTwo = new Food(455, 4.5, 23, 50, "Schtek", "Fistpump-schtek med x-tra allt", Food.FoodPrefix.g, 156);
-        ArrayList<Food> foodList = new ArrayList<>();
-        foodList.add(testFood);
-        foodList.add(testFoodTwo);
+        foodList.add(testFoodThree);
         return foodList;
     }
 
@@ -201,7 +192,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
     }
 
-    private void fillGraph(Calendar cal) {
+    private void updateScreen(Calendar cal) {
         ArrayList<DietActivity> list = (ArrayList) myDiary.showDaysActivities(cal);
 
         double calSum = 10, carbSum = 10 , protSum = 10, fatSum = 10;
@@ -218,6 +209,11 @@ public class DietHomeActivity extends CustomActionBarActivity {
             new DataPoint(30, protSum),
             new DataPoint(40, fatSum)
         });
+
+        kcalText.setText(calSum + "");
+        carbText.setText(carbSum + "");
+        protText.setText(protSum + "");
+        fatText.setText(fatSum + "");
 
         series.setSpacing(10);
         series.setDrawValuesOnTop(true);
@@ -264,7 +260,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
                 dateButton.setText("Vecka " + cal.get(Calendar.WEEK_OF_YEAR));
             }
         }
-        fillGraph(cal);
+        updateScreen(cal);
     }
 
     public void onRightButtonClick(View view) {
@@ -295,7 +291,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
                 dateButton.setText("Vecka " + cal.get(Calendar.WEEK_OF_YEAR));
             }
         }
-        fillGraph(cal);
+        updateScreen(cal);
     }
 
     public void onDateButtonClick(View view) {
