@@ -3,6 +3,10 @@ package com.kandidat.datx02_15_39.tok.layout;
 
 
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothServerSocket;
+import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,10 +31,15 @@ import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
 import com.kandidat.datx02_15_39.tok.model.diet.EditDietActivityParams;
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public class AddDietActivity extends CustomActionBarActivity {
 
@@ -40,6 +49,9 @@ public class AddDietActivity extends CustomActionBarActivity {
 	private SearchResultAdapter sra;
 	private DietDiary diary;
 	public static String itemsList = "List";
+	public static int REQUEST_ENABLE_BT = 1;
+	private BluetoothAdapter mBluetoothAdapter;
+	public static UUID MY_UUID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,60 +71,51 @@ public class AddDietActivity extends CustomActionBarActivity {
 		EditDietActivityParams edap = new EditDietActivityParams(c.getTime(), tmp);
 		diary.editActivity(c, "000001", edap);
 		foodItemAdded.add(tmp.get(0));
-		updateSearchList();
+		//updateSearchList();
 	}
 
-	private void updateSearchList(List<Food> foodList){
-		searchResultFood = new ArrayList<Food>(foodList);
-		updateSearchList();
-	}
+	@Override
+	protected void onStart() {
+		super.onStart();
+		//BLUETOOTH CONNECT
+		this.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		if(mBluetoothAdapter == null){
 
-	private void updateSearchList(){
-		searchResultList = (ListView) findViewById(R.id.food_search_item_container);
-		searchResultList.removeAllViewsInLayout();
-		sra = new SearchResultAdapter(this);
-		for (Food f: searchResultFood){
-			sra.add(new SearchItems(f.getName(), f.getCalorieAmount() +""));
 		}
-		if(searchResultList != null){
-			searchResultList.setAdapter(sra);
+		if(!mBluetoothAdapter.isEnabled()){
+			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 		}
-		searchResultList.setOnItemClickListener(new SearchItemClickListener());
+
+		Toast.makeText(this, "" + mBluetoothAdapter.getName(), Toast.LENGTH_SHORT).show();
+		bluetooth();
 	}
 
-	private List<Food> searchForItems(String searchWord){
-		ArrayList<Food> tmp = new ArrayList<Food>();
-		//TODO the search
-		return tmp;
+	private void bluetooth(){
+		ArrayAdapter mArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1);
+		Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+
+		ListView lv = (ListView) findViewById(R.id.food_search_item_container);
+
+		if(pairedDevices.size() > 0){
+			for (BluetoothDevice bd: pairedDevices){
+				mArrayAdapter.add(bd.getName() + "\n" + bd.getAddress());
+				if(bd.getName().equals("Beurer KS800")){
+					new ConnectThread(bd);
+					Toast.makeText(this, "kontakt" + bd.describeContents(), Toast.LENGTH_SHORT).show();
+				}
+			}
+		}
+		lv.setAdapter(mArrayAdapter);
+	}
+
+	private void connectBluetooth(){
+		//TODO
 	}
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-	}
-
-	private void addItemToSearchResult(String name, String kcal){
-
-	}
-
-	public void onDietSelectorClick(View view) {
-		if(view instanceof ImageButton) {
-			ImageButton ib = (ImageButton) view;
-			if (ib.getId() == R.id.barcode_button_view_diet) {
-				//TODO Change View to a Barcode app
-			}else{
-				int amount = ((LinearLayout) findViewById(R.id.button_container)).getChildCount();
-				View child;
-				for (int i = 0; i < amount; i++) {
-					child = ((LinearLayout) findViewById(R.id.button_container)).getChildAt(i);
-					if (child instanceof ImageButton) {
-						child.setActivated(false);
-						child.setFocusableInTouchMode(false);
-					}
-				}
-				ib.setActivated(true);
-			}
-		}
 	}
 
 	@Override
@@ -139,17 +142,68 @@ public class AddDietActivity extends CustomActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public class SearchItems{
-		public String name;
-		public String kcal;
-		public SearchItems(String name, String kcal)
-		{
-			this.name = name;
-			this.kcal = kcal;
+	private List<Food> searchForItems(String searchWord){
+		ArrayList<Food> tmp = new ArrayList<Food>();
+		//TODO the search
+		return tmp;
+	}
+
+	/**
+	 * When the barcode button is pressed the Barcode app will open and we will ask for the EAN,
+	 * this will not activate the button and therefore Barcode cant give a search result.
+	 * The Scale button will try to connect to the the scale and recive some information
+	 * if its connected or not.
+	 * All but Barcode is activatable
+	 * @param view
+	 */
+	public void onDietSelectorClick(View view) {
+		if(view instanceof ImageButton) {
+			ImageButton ib = (ImageButton) view;
+			if (ib.getId() == R.id.barcode_button_view_diet) {
+				//TODO Change View to a Barcode app
+			}else{
+				if(ib.getId() == R.id.scale_button_view_diet) {
+					this.connectBluetooth();
+				}
+				int amount = ((LinearLayout) findViewById(R.id.button_container)).getChildCount();
+				View child;
+				for (int i = 0; i < amount; i++) {
+					child = ((LinearLayout) findViewById(R.id.button_container)).getChildAt(i);
+					if (child instanceof ImageButton) {
+						child.setActivated(false);
+						child.setFocusableInTouchMode(false);
+					}
+				}
+				ib.setActivated(true);
+			}
 		}
 	}
 
-	public class SearchResultAdapter extends ArrayAdapter<SearchItems>
+	/*
+	Updates the list that is show so that new items appear
+	 */
+	private void updateSearchList(){
+		searchResultList = (ListView) findViewById(R.id.food_search_item_container);
+		searchResultList.removeAllViewsInLayout();
+		sra = new SearchResultAdapter(this);
+		for (Food f: searchResultFood){
+			sra.add(f);
+		}
+		if(searchResultList != null){
+			searchResultList.setAdapter(sra);
+		}
+		searchResultList.setOnItemClickListener(new SearchItemClickListener());
+	}
+
+	private void updateSearchList(List<Food> foodList){
+		searchResultFood = new ArrayList<Food>(foodList);
+		updateSearchList();
+	}
+
+	/**
+	 * This Class is added and extends ArrayAdapter and it lets me draw what i want to the list item
+	 */
+	private class SearchResultAdapter extends ArrayAdapter<Food>
 	{
 		public SearchResultAdapter  (Context context)
 		{
@@ -163,19 +217,21 @@ public class AddDietActivity extends CustomActionBarActivity {
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.search_food_item, null);
 
 			}
-
 			// Lookup view for data population
 			TextView food_item_name = (TextView) convertView.findViewById(R.id.food_item_name);
 			TextView food_item_calorie = (TextView) convertView.findViewById(R.id.food_calorie_amount);
 			// Populate the data into the template view using the data object
-			food_item_name.setHint(getItem(position).name);
-			food_item_calorie.setHint(getItem(position).kcal);
+			food_item_name.setHint(getItem(position).getName());
+			food_item_calorie.setHint(getItem(position).getCalorieAmount() + "");
 			// Return the completed view to render on screen
 
 			return convertView;
 		}
 	}
 
+	/**
+	 * This class is handel all the clicks on the listview
+	 */
 	private class SearchItemClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView parent, View view, int position, long id) {
@@ -185,12 +241,177 @@ public class AddDietActivity extends CustomActionBarActivity {
 
 	private void selectedItem(int position) {
 		if(findViewById(R.id.recipe_button_view_diet).isActivated()){
-			Toast.makeText(this, "Diet_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
+			//TODO when we implement so we have a database and can store food
+			Toast.makeText(this, "Diet_button"
+					+ searchResultFood.get(position).getName()
+					, Toast.LENGTH_SHORT).show();
 		}else if(findViewById(R.id.scale_button_view_diet).isActivated()){
+			//TODO Can only be made when we have connected with the scale
 			Toast.makeText(this, "Scale_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
 		}else if(findViewById(R.id.food_button_view_diet).isActivated()){
-			Toast.makeText(this, "Food_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
+			foodItemAdded.add(sra.getItem(position));
+			Toast.makeText(this, "Diet_button"
+					+ searchResultFood.get(position).getName()
+					+ "Item added"
+					, Toast.LENGTH_SHORT).show();
 		}
 
+	}
+
+
+	//********************************************BLUETOOTH*****************************************
+
+	private class AcceptThread extends Thread {
+		private final BluetoothServerSocket mmServerSocket;
+
+		public AcceptThread() {
+			// Use a temporary object that is later assigned to mmServerSocket,
+			// because mmServerSocket is final
+			BluetoothServerSocket tmp = null;
+			try {
+				// MY_UUID is the app's UUID string, also used by the client code
+				tmp = mBluetoothAdapter.listenUsingRfcommWithServiceRecord("Test", MY_UUID);
+			} catch (IOException e) { }
+			mmServerSocket = tmp;
+		}
+
+		public void run() {
+			BluetoothSocket socket = null;
+			// Keep listening until exception occurs or a socket is returned
+			while (true) {
+				try {
+					socket = mmServerSocket.accept();
+				} catch (IOException e) {
+					break;
+				}
+				// If a connection was accepted
+				if (socket != null) {
+					// Do work to manage the connection (in a separate thread)
+					manageConnectedSocket(socket);
+					try {
+						mmServerSocket.close();
+					} catch (IOException e) {
+
+					}
+					break;
+				}
+			}
+		}
+
+		/** Will cancel the listening socket, and cause the thread to finish */
+		public void cancel() {
+			try {
+				mmServerSocket.close();
+			} catch (IOException e) { }
+		}
+	}
+
+	private class ConnectThread extends Thread {
+		private final BluetoothSocket mmSocket;
+		private final BluetoothDevice mmDevice;
+
+		public ConnectThread(BluetoothDevice device) {
+			// Use a temporary object that is later assigned to mmSocket,
+			// because mmSocket is final
+			BluetoothSocket tmp = null;
+			mmDevice = device;
+
+			// Get a BluetoothSocket to connect with the given BluetoothDevice
+			try {
+				// MY_UUID is the app's UUID string, also used by the server code
+				tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
+			} catch (IOException e) { }
+			mmSocket = tmp;
+		}
+
+		public void run() {
+			// Cancel discovery because it will slow down the connection
+			mBluetoothAdapter.cancelDiscovery();
+
+			try {
+				// Connect the device through the socket. This will block
+				// until it succeeds or throws an exception
+				mmSocket.connect();
+			} catch (IOException connectException) {
+				// Unable to connect; close the socket and get out
+				try {
+					mmSocket.close();
+				} catch (IOException closeException) { }
+				return;
+			}
+
+			// Do work to manage the connection (in a separate thread)
+			manageConnectedSocket(mmSocket);
+		}
+
+		/** Will cancel an in-progress connection, and close the socket */
+		public void cancel() {
+			try {
+				mmSocket.close();
+			} catch (IOException e) { }
+		}
+	}
+
+	void manageConnectedSocket(BluetoothSocket bs){
+		new ConnectedThread(bs);
+	}
+
+	private class ConnectedThread extends Thread {
+		private final BluetoothSocket mmSocket;
+		private final InputStream mmInStream;
+		private final OutputStream mmOutStream;
+
+		public ConnectedThread(BluetoothSocket socket) {
+			mmSocket = socket;
+			InputStream tmpIn = null;
+			OutputStream tmpOut = null;
+
+			// Get the input and output streams, using temp objects because
+			// member streams are final
+			try {
+				tmpIn = socket.getInputStream();
+				tmpOut = socket.getOutputStream();
+			} catch (IOException e) { }
+
+			mmInStream = tmpIn;
+			mmOutStream = tmpOut;
+		}
+
+		public void run() {
+			byte[] buffer = new byte[1024];  // buffer store for the stream
+			int bytes; // bytes returned from read()
+
+			// Keep listening to the InputStream until an exception occurs
+			while (true) {
+				try {
+					// Read from the InputStream
+					bytes = mmInStream.read(buffer);
+					// Send the obtained bytes to the UI activity
+					//mHandler.obtainMessage("", bytes, -1, buffer).sendToTarget();
+					message();
+				} catch (IOException e) {
+					break;
+				}
+			}
+		}
+
+		/* Call this from the main activity to send data to the remote device */
+		public void write(byte[] bytes) {
+			try {
+				mmOutStream.write(bytes);
+			} catch (IOException e) { }
+		}
+
+		/* Call this from the main activity to shutdown the connection */
+		public void cancel() {
+			try {
+				mmSocket.close();
+			} catch (IOException e) { }
+		}
+	}
+
+
+	void message(){
+		Toast.makeText(this, "Hej", Toast.LENGTH_SHORT).show();
 	}
 }

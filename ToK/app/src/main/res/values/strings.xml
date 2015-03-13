@@ -36,7 +36,7 @@
         <item>@string/Weight</item>
     </string-array>
     <string-array name="nav_drawer_settingsinformation_item">
-        <item>@string/Settings</item>
+        <item>@string/Account</item>
         <item>@string/Device</item>
         <item>@string/About</item>
     </string-array>
@@ -63,7 +63,7 @@
     <string name="Diet">Kost</string>
     <string name="Sleep">Sömn</string>
     <string name="Weight">Vikt</string>
-    <string name="Settings">Inställningar</string>
+    <string name="Account">Konto</string>
     <string name="Device">Koppla tillbehör</string>
     <string name="About">Om</string>
     <string name="add_intensity">Välj intensitet</string>
