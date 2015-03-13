@@ -19,15 +19,18 @@ public class DietActivity extends AbstractDiaryActivity {
 
 	public DietActivity(Calendar calendar){
 		this(new ArrayList<Food>(), calendar);
-		this.name = "Uidentified";
 	}
 
-	public DietActivity( List<Food> listOfFood, Calendar calendar){
-		this.foodList = listOfFood;
-       // this.name = name;
-		setDate(calendar.getTime());
-		update();
+	public DietActivity(List<Food> listOfFood, Calendar calendar){
+        this("Unidentified", listOfFood, calendar);
 	}
+
+    public DietActivity(String name, List<Food> listOfFood, Calendar calendar) {
+        this.foodList = listOfFood;
+        this.name = name;
+        setDate(calendar.getTime());
+        update();
+    }
 
 	private void addFood(Food food){
 		foodList.add(food);
