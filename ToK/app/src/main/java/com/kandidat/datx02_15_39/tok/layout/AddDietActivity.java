@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -51,6 +52,7 @@ public class AddDietActivity extends CustomActionBarActivity {
 	public static String itemsList = "List";
 	public static int REQUEST_ENABLE_BT = 1;
 	private BluetoothAdapter mBluetoothAdapter;
+	private ArrayAdapter mBluetoothArrayAdapter;
 	public static UUID MY_UUID;
 
 	@Override
@@ -71,12 +73,15 @@ public class AddDietActivity extends CustomActionBarActivity {
 		EditDietActivityParams edap = new EditDietActivityParams(c.getTime(), tmp);
 		diary.editActivity(c, "000001", edap);
 		foodItemAdded.add(tmp.get(0));
-		//updateSearchList();
+		updateSearchList();
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
+	}
+
+	private void startBluetooth(){
 		//BLUETOOTH CONNECT
 		this.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		if(mBluetoothAdapter == null){
@@ -88,26 +93,46 @@ public class AddDietActivity extends CustomActionBarActivity {
 		}
 
 		Toast.makeText(this, "" + mBluetoothAdapter.getName(), Toast.LENGTH_SHORT).show();
-		bluetooth();
+		bluetoothSearch();
 	}
 
-	private void bluetooth(){
-		ArrayAdapter mArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1);
+	private void bluetoothSearch(){
 		Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
 
-		ListView lv = (ListView) findViewById(R.id.food_search_item_container);
+		View add = getLayoutInflater().inflate(R.layout.bluetooth_list, null);
+		AlertDialog ad = new AlertDialog.Builder(this)
+				.create();
+		ad.setView(add);
+		ad.show();
+		ListView lv = (ListView) add.findViewById(R.id.bluetooth_list_discover);
+		mBluetoothArrayAdapter = new ArrayAdapter(ad.getContext(), android.R.layout.simple_list_item_1);
 
 		if(pairedDevices.size() > 0){
 			for (BluetoothDevice bd: pairedDevices){
-				mArrayAdapter.add(bd.getName() + "\n" + bd.getAddress());
+				mBluetoothArrayAdapter.add(bd.getName() + "\n" + bd.getAddress());
 				if(bd.getName().equals("Beurer KS800")){
 					new ConnectThread(bd);
 					Toast.makeText(this, "kontakt" + bd.describeContents(), Toast.LENGTH_SHORT).show();
 				}
 			}
 		}
-		lv.setAdapter(mArrayAdapter);
+		lv.setAdapter(mBluetoothArrayAdapter);
 	}
+
+
+	// Create a BroadcastReceiver for ACTION_FOUND
+	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			// When discovery finds a device
+			if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+				// Get the BluetoothDevice object from the Intent
+				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+				// Add the name and address to an array adapter to show in a ListView
+				mBluetoothArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+			}
+		}
+	};
 
 	private void connectBluetooth(){
 		//TODO
@@ -163,7 +188,7 @@ public class AddDietActivity extends CustomActionBarActivity {
 				//TODO Change View to a Barcode app
 			}else{
 				if(ib.getId() == R.id.scale_button_view_diet) {
-					this.connectBluetooth();
+					this.startBluetooth();
 				}
 				int amount = ((LinearLayout) findViewById(R.id.button_container)).getChildCount();
 				View child;
