@@ -20,6 +20,7 @@ import com.kandidat.datx02_15_39.tok.model.workout.WorkoutDiary;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import android.widget.Toast;
 
 
 public class AddWorkoutActivity extends CustomActionBarActivity {
@@ -184,12 +185,20 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
        dialog.show();
     }
 
-
+    /**
+     * Add new workout in the homeactivity list.
+     */
 
     public void addNewWorkout(){
-        //Workout workout = new Workout(startDate, stopDate, intensity, calorieBurn);
+        Workout workout = new Workout(startDate, stopDate, intensity, calorieBurn);
+        WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
+        WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
+
+        startActivity(new Intent(this, WorkoutHomeActivity.class));
+        Toast.makeText(getApplicationContext(), "Träning sparad", Toast.LENGTH_LONG).show();
+
        // WorkoutActivity workoutActivity = new WorkoutActivity("workout", workout);
-        WorkoutHomeActivity workoutHomeActivity = new WorkoutHomeActivity();
+       // WorkoutHomeActivity workoutHomeActivity = new WorkoutHomeActivity();
         //WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
         //workoutDiary.addActivity(startDate, workoutActivity);
        //workoutHomeActivity.fillListWithData();
