@@ -77,6 +77,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
+        ((TextView) findViewById(R.id.textDay)).setText("Idag");
 
         List<DataPoint[]> sleepList = fetchDataPoints(activeDate);
         DataPoint[] lightSleepDps = sleepList.get(0);
@@ -119,7 +120,6 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
 
 
-
         graph.setOnClickListener(new View.OnClickListener() {
             /**
              * Handles clicks on the graph.
@@ -153,7 +153,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         });
 
         //TODO make a better solution than simply making grid white (Either transparent, remove it or make background white as well)
-        graph.getGridLabelRenderer().setGridColor(Color.rgb(255,255,255));
+        graph.getGridLabelRenderer().setGridColor(Color.argb(0,255,255,255));
 
 
         fillListWithDummyData();
@@ -247,7 +247,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         List<Sleep> sleepList = diary.getSleepListFromDate(date);
         //if(activity != null) {
         //if(activities != null) {
-        if(sleepList.size() > 0) {
+        if(!sleepList.isEmpty()) {
             //List<Sleep> sleepList = activity.getSleepList();
             //List<Sleep> sleepList = new ArrayList<Sleep>();
 
@@ -278,23 +278,23 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             }
         }
 
-        if(lightSleep.size() == 0 || deepSleep.size() == 0 || coverSleep.size() == 0) {
+        if(coverSleep.isEmpty() || lightSleep.isEmpty() || deepSleep.isEmpty()) {
             Calendar dpCal = Calendar.getInstance();
             dpCal.setTime(date);
 
-            if (lightSleep.size() == 0) {
+            if (lightSleep.isEmpty()) {
                 lightSleep.add(new DataPoint(dpCal.getTime(), -1));
                 dpCal.set(Calendar.MINUTE, dpCal.get(Calendar.MINUTE) + 1);
                 lightSleep.add(new DataPoint(dpCal.getTime(), -1));
             }
 
-            if (deepSleep.size() == 0) {
+            if (deepSleep.isEmpty()) {
                 deepSleep.add(new DataPoint(dpCal.getTime(), -1));
                 dpCal.set(Calendar.MINUTE, dpCal.get(Calendar.MINUTE) + 1);
                 deepSleep.add(new DataPoint(dpCal.getTime(), -1));
             }
 
-            if (coverSleep.size() == 0) {
+            if (coverSleep.isEmpty()) {
                 dpCal.set(Calendar.HOUR_OF_DAY, 0);
                 coverSleep.add(new DataPoint(dpCal.getTime(), 0));
                 dpCal.set(Calendar.HOUR_OF_DAY, 24);
