@@ -161,19 +161,4 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         return new ArrayList<DataPoint[]>(dataPointsList);
     }
-
-
-
-
-      public void fillListWithData(){
-          List <String> workoutList = new ArrayList<String>();
-          ListView listV = (ListView) findViewById(R.id.workoutFeed);
-          ArrayAdapter<String> myarrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, workoutList);
-          listV.setAdapter(myarrayAdapter);
-          listV.setTextFilterEnabled(true);
-          myarrayAdapter.notifyDataSetChanged();
-
-          workoutList.add("Hej");
-
-      }
 }

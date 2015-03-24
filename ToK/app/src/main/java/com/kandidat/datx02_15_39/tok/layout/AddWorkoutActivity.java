@@ -84,7 +84,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int id){
                 intensity = intensityPicker.getValue();
-                registerWorkoutStartTimeOnClick(view);
+                registerWorkoutCalorieBurnOnClick(view);
             }
         });
         builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
@@ -114,12 +114,12 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //Spara undan värde för sluttid
-                //Lägg till ny träning
+                registerWorkoutStartTimeOnClick(view);
             }
         });
         builder.setNegativeButton("Tillbaka", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                registerWorkoutStartTimeOnClick(view);
+                registerWorkoutIntensityOnClick(view);
             }
         });
 
@@ -149,7 +149,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         });
         builder.setNegativeButton("Tillbaka", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                registerWorkoutIntensityOnClick(view);
+                registerWorkoutCalorieBurnOnClick(view);
             }
         });
 
@@ -186,22 +186,18 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
     }
 
     /**
-     * Add new workout in the homeactivity list.
+     * Add new workout in the WorkoutHomeActivity list.
      */
 
     public void addNewWorkout(){
-        Workout workout = new Workout(startDate, stopDate, intensity, calorieBurn);
+       /* Workout workout = new Workout(startDate, stopDate, intensity, calorieBurn);
         WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
         WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
+        workoutDiary.addActivity(startDate, workoutActivity);*/
+        //Här vill jag lägga till min träning i listan men vette fan hur jag ska göra..
 
         startActivity(new Intent(this, WorkoutHomeActivity.class));
         Toast.makeText(getApplicationContext(), "Träning sparad", Toast.LENGTH_LONG).show();
-
-       // WorkoutActivity workoutActivity = new WorkoutActivity("workout", workout);
-       // WorkoutHomeActivity workoutHomeActivity = new WorkoutHomeActivity();
-        //WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
-        //workoutDiary.addActivity(startDate, workoutActivity);
-       //workoutHomeActivity.fillListWithData();
     }
 
     @Override
