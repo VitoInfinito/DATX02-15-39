@@ -307,7 +307,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	}
 
 	/**
-	 * Adds a new sleep and redirects to another actitity.
+	 * Adds a new sleep and redirects to another activity.
 	 *
 	 * @param view Not used.
 	 */
