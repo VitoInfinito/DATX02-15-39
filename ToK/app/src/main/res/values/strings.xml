@@ -76,5 +76,7 @@
     <string name="female">Kvinna</string>
     <string name="title_activity_view_add_diet">ViewAddDietActivity</string>
     <string name="title_activity_create_user">CreateUserActivity</string>
+    <string name="title_activity_jawbone_setup">JawboneSetup</string>
+    <string name="title_activity_up_api_list">UpApiListActivity</string>
 
 </resources>
