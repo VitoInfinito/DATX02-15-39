@@ -78,5 +78,6 @@
     <string name="title_activity_create_user">CreateUserActivity</string>
     <string name="title_activity_jawbone_setup">JawboneSetup</string>
     <string name="title_activity_up_api_list">UpApiListActivity</string>
+    <string name="press_button_to_connect">Press button to connect</string>
 
 </resources>
