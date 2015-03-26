@@ -10,17 +10,30 @@ import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.model.account.Account;
 
 
 public class MainActivity extends CustomActionBarActivity {
+    private Account account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity);
 		initMenu(R.layout.activity_main_activity);
+
+        account = Account.getInstance();
+        String accountName = account.getName();
+        if(accountName != null) {
+            ((TextView) findViewById(R.id.homeUsername)).setText(accountName);
+        }else {
+            startActivity(new Intent(this, CreateUserActivity.class));
+        }
+
+
     }
 
 
@@ -84,7 +97,7 @@ public class MainActivity extends CustomActionBarActivity {
 	 * @param view View to get context from for the alert dialog
 	 */
 	public void registerWeightOnClick(View view){
-		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+		/*AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
 		builder.setTitle("Weight");
 		builder.setIcon(R.drawable.weigth_scale);
@@ -99,7 +112,7 @@ public class MainActivity extends CustomActionBarActivity {
 
 		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				// User clicked OK button
+
 			}
 		});
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -108,10 +121,11 @@ public class MainActivity extends CustomActionBarActivity {
 			}
 		});
 
-
 		AlertDialog dialog = builder.create();
 
-		dialog.show();
+		dialog.show();*/
+
+		startActivity(new Intent(this, WeightHomeActivity.class));
 	}
 
 	public void goalsButtonOnClick(View view){

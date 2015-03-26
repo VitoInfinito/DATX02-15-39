@@ -4,7 +4,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kandidat.datx02_15_39.tok.layout.AddDietActivity">
+    tools:context="com.kandidat.datx02_15_39.tok.layout.SleepHomeActivity">
     <!-- The main content view -->
 
     <RelativeLayout
@@ -72,27 +72,6 @@
                     android:layout_weight="1"
                     android:layout_toRightOf="@+id/textDay"
                     android:onClick="gotoLaterSleepDate" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageButton"
-                    android:src="@drawable/moon"
-                    android:layout_centerHorizontal="true"
-                    android:onClick="addSleepButtonOnClick"/>
             </RelativeLayout>
 
             <FrameLayout

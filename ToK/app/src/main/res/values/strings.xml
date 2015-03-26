@@ -13,7 +13,6 @@
     <string name="title_activity_add_diet">Lägg till kost</string>
     <string name="title_activity_work_out">Träningsdagbok</string>
     <string name="title_activity_workout_home">Träningsdagbok</string>
-
     <string name="title_activity_add_workout">Lägg till träning</string>
     <string name="title_activity_add_work_out">Lägg till träning</string>
     <string name="title_workout_diary">Träningsdagbok</string>
@@ -30,23 +29,28 @@
     <string-array name="nav_drawer_top_items">
         <item>@string/Home</item>
     </string-array>
-
     <string-array name="nav_drawer_diary_items">
         <item>@string/Workout</item>
         <item>@string/Diet</item>
         <item>@string/Sleep</item>
         <item>@string/Weight</item>
     </string-array>
-
     <string-array name="nav_drawer_settingsinformation_item">
-        <item>@string/Settings</item>
+        <item>@string/Account</item>
         <item>@string/Device</item>
         <item>@string/About</item>
     </string-array>
 
+    <string-array name="gender">
+        <item>@string/unset</item>
+        <item>@string/male</item>
+        <item>@string/female</item>
+    </string-array>
+
+
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
-    <array name="nav_drawer_icons"></array>
+    <array name="nav_drawer_icons" />
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
@@ -59,13 +63,18 @@
     <string name="Diet">Kost</string>
     <string name="Sleep">Sömn</string>
     <string name="Weight">Vikt</string>
-    <string name="Settings">Inställningar</string>
+    <string name="Account">Konto</string>
     <string name="Device">Koppla tillbehör</string>
     <string name="About">Om</string>
     <string name="add_intensity">Välj intensitet</string>
     <string name="save">Spara</string>
     <string name="cancel">Cancel</string>
     <string name="intensity">add_intensity</string>
+    <string name="signup">Just sign up already</string>
+    <string name="unset">Ej vald</string>
+    <string name="male">Man</string>
+    <string name="female">Kvinna</string>
     <string name="title_activity_view_add_diet">ViewAddDietActivity</string>
+    <string name="title_activity_create_user">CreateUserActivity</string>
 
 </resources>

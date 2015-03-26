@@ -2,6 +2,7 @@ package com.kandidat.datx02_15_39.tok.model.workout;
 
 import com.kandidat.datx02_15_39.tok.layout.AddWorkoutActivity;
 import com.kandidat.datx02_15_39.tok.model.AbstractDiary;
+import com.kandidat.datx02_15_39.tok.model.AddToActivity;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiary;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
@@ -79,4 +80,9 @@ public class WorkoutDiary extends AbstractDiary {
     public static List <WorkoutActivity> getWorkoutActivityList(){
         return null;
     }
+
+	@Override
+	public void addActivity(Calendar c, String id, AddToActivity ata) {
+
+	}
 }
