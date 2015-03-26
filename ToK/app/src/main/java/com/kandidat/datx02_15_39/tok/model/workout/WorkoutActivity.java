@@ -44,12 +44,6 @@ public class WorkoutActivity extends AbstractDiaryActivity {
     public Date getStopTime(){
         return this.stopTime;
     }
-    private void update(){
-        burnedCalCount = 0;
-        for(Workout w : workoutList){
-            burnedCalCount += w.getCalorieBurn();
-        }
-    }
 
 
     @Override
