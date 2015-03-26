@@ -1,5 +1,7 @@
 package com.kandidat.datx02_15_39.tok.model.workout;
 
+import android.support.annotation.NonNull;
+
 import com.kandidat.datx02_15_39.tok.layout.AddWorkoutActivity;
 import com.kandidat.datx02_15_39.tok.model.AbstractDiary;
 import com.kandidat.datx02_15_39.tok.model.AddToActivity;
@@ -10,8 +12,11 @@ import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by Emma on 2015-02-20.
@@ -64,10 +69,9 @@ public class WorkoutDiary extends AbstractDiary {
 	@Override
 	public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end) {
        // List <IDiaryActivity> tmp = super.getActivitiesFromTable();
+        List<IDiaryActivity> list = new ArrayList<IDiaryActivity>();
 
-
-
-        return null;
+        return list;
 	}
     public List <IDiaryActivity> getList(){
         return this.list;
