@@ -29,8 +29,11 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+
 public class WorkoutHomeActivity extends CustomActionBarActivity {
     private WorkoutDiary diary;
+    private WorkoutActivity workoutActivity;
+    private Workout workout;
     private Date todaysDate;
 //    private GregorianCalendar calendar;
     private LineGraphSeries<DataPoint> series;
@@ -42,6 +45,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     private SimpleDateFormat sdfShowHour = new SimpleDateFormat("HH");
     private SimpleDateFormat sdfShowFullTime = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +54,9 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         todaysDate = new Date();
        // calendar = GregorianCalendar.getInstance();
         diary = (WorkoutDiary) WorkoutDiary.getInstance();
+        workout = new Workout(todaysDate, todaysDate, 5.0);
+        workoutActivity = new WorkoutActivity("workout", workout);
+        diary.addActivity(todaysDate, workoutActivity);
 
         updateWorkoutList();
 
@@ -133,9 +140,9 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onAddWorkoutButtonClick(View view){
+    /*public void onAddWorkoutButtonClick(View view){
         startActivity(new Intent(this, AddWorkoutActivity.class));
-    }
+    }*/
 
     private void updateWorkoutList(){
     workoutList = (ListView) findViewById(R.id.show_workout);
