@@ -59,7 +59,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         Date start = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 1, cal.get(Calendar.MINUTE)).getTime();
         Date end = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
 
-        Workout workout = new Workout (start, end, 5.0, 200);
+        Workout workout = new Workout (start, end, 5.0);
         String id = "01";
         WorkoutActivity activity = new WorkoutActivity(id, workout);
         activity.setDate(workout.getStartTime());
@@ -138,7 +138,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     }
 
     private void updateWorkoutList(){
-    workoutList = (ListView) findViewById(R.id.show_workout_container);
+    workoutList = (ListView) findViewById(R.id.show_workout);
     workoutList.removeAllViewsInLayout();
 
     sra = new SearchResultAdapter(this);

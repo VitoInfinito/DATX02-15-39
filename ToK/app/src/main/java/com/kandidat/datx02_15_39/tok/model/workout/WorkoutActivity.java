@@ -45,10 +45,10 @@ public class WorkoutActivity extends AbstractDiaryActivity {
         return this.stopTime;
     }
     private void update(){
-        burnedCalCount = 0;
-        for(Workout w : workoutList){
-            burnedCalCount += w.getCalorieBurn();
-        }
+//        burnedCalCount = 0;
+//        for(Workout w : workoutList){
+//            burnedCalCount += w.getCalorieBurn();
+//        }
     }
 
 

@@ -1,11 +1,13 @@
 package com.kandidat.datx02_15_39.tok.model.workout;
 
+import com.kandidat.datx02_15_39.tok.layout.AddWorkoutActivity;
 import com.kandidat.datx02_15_39.tok.model.AbstractDiary;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiary;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -31,8 +33,9 @@ public class WorkoutDiary extends AbstractDiary {
 
     @Override
     public void addActivity(Date d, IDiaryActivity activity) {
-
-//        addActivityToTable(d, activity);
+        list = new ArrayList<IDiaryActivity>();
+        
+        addActivityToTable(d, activity);
         list.add(activity);
     }
 
