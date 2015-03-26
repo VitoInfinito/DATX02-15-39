@@ -1,5 +1,7 @@
 package com.kandidat.datx02_15_39.tok.model.diet;
 
+import android.content.Context;
+
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.AbstractDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.AddToActivity;
@@ -17,6 +19,7 @@ public class DietActivity extends AbstractDiaryActivity {
 	private List<Food> foodList;
 	private double calorieCount, proteinCount, fatCount, carbCount;
     private String name;
+	private MEALTYPE mealtype = MEALTYPE.SNACK;
 	public enum MEALTYPE{
 		BREAKFAST,
 		LUNCH,
@@ -24,23 +27,24 @@ public class DietActivity extends AbstractDiaryActivity {
 		NIGHTMEAL,
 		SNACK;
 
-		String getString(){
+		public String getString(Context context){
+			String[] array = context.getResources().getStringArray(R.array.ENUM_NAME);
 			String tmp = "";
 			switch(this){
 				case BREAKFAST:
-
+					tmp = array[0];
 					break;
 				case LUNCH:
-
+					tmp = array[1];
 					break;
 				case DINNER:
-
+					tmp = array[2];
 					break;
 				case NIGHTMEAL:
-
+					tmp = array[3];
 					break;
 				case SNACK:
-
+					tmp = array[4];
 					break;
 			}
 			return tmp;
@@ -132,4 +136,12 @@ public class DietActivity extends AbstractDiaryActivity {
     public void setName(String name) {
         this.name = name;
     }
+
+	public void setMealtype(MEALTYPE mealtype) {
+		this.mealtype = mealtype;
+	}
+
+	public MEALTYPE getMealtype() {
+		return mealtype;
+	}
 }

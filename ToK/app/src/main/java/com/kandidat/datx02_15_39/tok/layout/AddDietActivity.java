@@ -122,8 +122,8 @@ public class AddDietActivity extends CustomActionBarActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if(mBluetoothAdapter != null)
-			mBluetoothAdapter.cancelDiscovery();
+		//if(mBluetoothAdapter != null)
+			//mBluetoothAdapter.cancelDiscovery();
 	}
 
 	// Create a BroadcastReceiver for ACTION_FOUND

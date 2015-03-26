@@ -229,7 +229,7 @@ public class CustomActionBarActivity extends ActionBarActivity{
 					.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
 						public void onClick(DialogInterface arg0, int arg1) {
-							System.exit(0);
+							finish();
 						}
 					}).create().show();
 		}else{

@@ -39,6 +39,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 	private SearchResultAdapter sra;
 	private int extendedInfoOpenPosition = -1;
 	private static View swipedItemView = null;
+	private DietActivity.MEALTYPE mealType = DietActivity.MEALTYPE.SNACK;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +90,8 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 	private DietActivity createDietActivity() {
 		DietActivity tmp = new DietActivity(itemsAdded, calendar);
 		tmp.setName(((EditText) findViewById(R.id.mealname)).getText().toString());
-		Toast.makeText(this, "name of meal: " + tmp.getName(), Toast.LENGTH_SHORT).show();
-		//TODO Make the enum mealtype in DietActivity that can be set!
+		tmp.setMealtype(mealType);
+		Toast.makeText(this, "name of meal: " + tmp.getName() + "/" + mealType, Toast.LENGTH_SHORT).show();
 		return tmp;
 	}
 
@@ -171,6 +172,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 	private void mealSelector(MenuItem item){
 		((Button)findViewById(R.id.meal_selector_button)).setText(item.getTitle());
+		mealType = DietActivity.MEALTYPE.values()[item.getItemId()];
 	}
 
 	/**
@@ -181,6 +183,11 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		//Creating the instance of PopupMenu
 		PopupMenu popup = new PopupMenu(this, (Button)view);
 		//Inflating the Popup using xml file
+		int i = 0;
+		for(DietActivity.MEALTYPE m: DietActivity.MEALTYPE.values()){
+			popup.getMenu().add(i, i, i, m.getString(view.getContext()));
+			++i;
+		}
 		popup.getMenuInflater()
 				.inflate(R.menu.popup_menu_meal, popup.getMenu());
 
@@ -264,6 +271,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 	private void changeAmount(View v, int position) {
 		//TODO
+		itemsAdded.get(position).setAmount(154.2);
 	}
 
 	private class OnDeleteClickListener implements View.OnClickListener{

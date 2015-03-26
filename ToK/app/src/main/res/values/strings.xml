@@ -25,6 +25,7 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="Workout">Träning</string>
 
+    <!-- Enumerator Words to mealtype -->
     <string-array name="ENUM_NAME">
         <item>@string/diet_breakfast</item>
         <item>@string/diet_lunch</item>
@@ -60,11 +61,6 @@
         <item>@string/male</item>
         <item>@string/female</item>
     </string-array>
-
-
-    <!-- Nav Drawer List Item Icons -->
-    <!-- Keep them in order as the titles are in -->
-    <array name="nav_drawer_icons" />
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
