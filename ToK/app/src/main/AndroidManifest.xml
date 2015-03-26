@@ -87,25 +87,30 @@
             android:name=".layout.CreateUserActivity"
             android:label="@string/title_activity_create_user" >
         </activity>
-        /*Oauth activity*/
-        <activity android:name="com.jawbone.upplatformsdk.oauth.OauthWebViewActivity" >
-            <intent-filter>
-                <action android:name="com.jawbone.upplatformsdk.oauth.OauthWebViewActivity" />
 
+        /*Oauth activity*/
+        <activity
+            android:name=".jawbone.JawboneSetupActivity">
+            <intent-filter>
+                <action android:name="com.kandidat.datx02_15_39.tok.jawbone.JawboneSetupActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".utility.JawboneSetup"
-            android:label="@string/title_activity_jawbone_setup"
-            android:parentActivityName=".layout.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.kandidat.datx02_15_39.tok.layout.MainActivity" />
+            android:name="com.jawbone.upplatformsdk.oauth.OauthWebViewActivity">
+            <intent-filter>
+                <action android:name="com.jawbone.upplatformsdk.oauth.OauthWebViewActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
+
         <activity
-            android:name=".utility.UpApiListActivity"
-            android:label="@string/title_activity_up_api_list" >
+            android:name="jawbone.UpApiListActivity">
+            <intent-filter>
+                <action android:name="com.jawbone.helloup.UpApiListActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
     </application>
 

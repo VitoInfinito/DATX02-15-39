@@ -85,9 +85,12 @@
                 android:text="@string/save"
                 android:id="@+id/accountSaveButton"
                 android:layout_below="@+id/accountGender"
-                android:layout_centerHorizontal="true"
                 android:onClick="saveAccountSettings"
-                android:nestedScrollingEnabled="false" />
+                android:nestedScrollingEnabled="false"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -101,6 +104,19 @@
                 android:layout_alignParentStart="true" />
 
         </RelativeLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Il connecto"
+            android:id="@+id/button4"
+            android:layout_below="@+id/accountFrame"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="34dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:onClick="gotoJawboneConnection" />
 
     </RelativeLayout>
 

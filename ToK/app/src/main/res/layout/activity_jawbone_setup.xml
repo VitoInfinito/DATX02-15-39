@@ -13,18 +13,19 @@
         android:gravity="center"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
-        android:layout_marginBottom="15dp"
         android:text="@string/press_button_to_connect"
         android:textColor="#222"
-        android:textSize="22sp" />
+        android:textSize="22sp"
+        android:layout_above="@+id/authorizeButton"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/authorizeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:background="@drawable/jawbone_button" />
+        android:background="@drawable/jawbone_button"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/authorizeButton2"

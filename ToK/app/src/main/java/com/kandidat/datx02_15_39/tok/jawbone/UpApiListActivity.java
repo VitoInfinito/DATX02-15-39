@@ -3,7 +3,7 @@
  * Copyright 2014 (c) Jawbone. All rights reserved.
  *
  */
-package com.kandidat.datx02_15_39.tok.utility;
+package com.kandidat.datx02_15_39.tok.jawbone;
 
 import android.app.ListActivity;
 import android.content.Intent;
