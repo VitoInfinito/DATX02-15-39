@@ -192,7 +192,10 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     public List<IDiaryActivity> getListOfActivities(){
         Calendar cal = new GregorianCalendar();
         cal.setTime(todaysDate);
-        return WorkoutDiary.getInstance().showWeekActivities(cal,cal);
+
+        Calendar cal2 = new GregorianCalendar();
+        cal2.add(Calendar.DATE, 1);
+        return WorkoutDiary.getInstance().showWeekActivities(cal, cal2);
     }
 
     public class SearchResultAdapter extends ArrayAdapter<IDiaryActivity> {

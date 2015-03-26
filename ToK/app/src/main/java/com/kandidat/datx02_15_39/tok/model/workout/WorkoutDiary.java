@@ -8,6 +8,8 @@ import com.kandidat.datx02_15_39.tok.model.AddToActivity;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiary;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
+import com.kandidat.datx02_15_39.tok.model.diet.AddToDietActivity;
+import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -38,17 +40,19 @@ public class WorkoutDiary extends AbstractDiary {
     }
 
     @Override
-    public void addActivity(Date d, IDiaryActivity activity) {
-        list = new ArrayList<IDiaryActivity>();
-
+    public void addActivity(Date d, IDiaryActivity activity/*, double intensity*/) {
+        activity.setDate(d);
         addActivityToTable(d, activity);
-        list.add(activity);
     }
 
     @Override
     public IDiaryActivity getActivity(Calendar c,String id) {
-
-        return null;
+        List<IDiaryActivity> tmp = super.getActivitiesFromTable(c.getTime());
+        for (IDiaryActivity ida: tmp){
+            if(ida.getID().equals(id))
+                return ida;
+        }
+        throw new IllegalArgumentException();
     }
 
     public IDiaryActivity getActivityFromDate(Date d) {
@@ -58,20 +62,30 @@ public class WorkoutDiary extends AbstractDiary {
 
     @Override
     public void removeActivity(Calendar c,String id) {
-
+        removeActivity(c.getTime(), getActivity(c, id));
     }
 
 	@Override
 	public List<IDiaryActivity> showDaysActivities(Calendar day) {
-		return null;
+        return getActivitiesFromTable(day.getTime());
 	}
 
 	@Override
 	public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end) {
-       // List <IDiaryActivity> tmp = super.getActivitiesFromTable();
-        List<IDiaryActivity> list = new ArrayList<IDiaryActivity>();
-
-        return list;
+        if(!start.before(end)){
+            throw new IllegalArgumentException();
+        }
+        List<IDiaryActivity> returnValue = new ArrayList<IDiaryActivity>();
+        while(start.before(end)){
+            List<IDiaryActivity> tmp = getActivitiesFromTable(start.getTime());
+            for(IDiaryActivity ida: tmp){
+                if(ida instanceof WorkoutActivity){
+                    returnValue.add((WorkoutActivity)ida);
+                }
+            }
+            start.add(Calendar.DATE, 1);
+        }
+        return returnValue;
 	}
     public List <IDiaryActivity> getList(){
         return this.list;
@@ -87,6 +101,5 @@ public class WorkoutDiary extends AbstractDiary {
 
 	@Override
 	public void addActivity(Calendar c, String id, AddToActivity ata) {
-
 	}
 }
