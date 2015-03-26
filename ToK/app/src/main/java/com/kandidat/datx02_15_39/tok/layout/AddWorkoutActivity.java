@@ -42,7 +42,6 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
     private int stopMinutes;
 
     private double intensity;
-    private double calorieBurn;
 
     private int hour = cal.get(Calendar.HOUR_OF_DAY);
     private int min = cal.get(Calendar.MINUTE);
@@ -84,7 +83,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int id){
                 intensity = intensityPicker.getValue();
-                registerWorkoutCalorieBurnOnClick(view);
+                registerWorkoutStartTimeOnClick(view);
             }
         });
         builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
@@ -97,35 +96,6 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         dialog.show();
     }
 
-    public void registerWorkoutCalorieBurnOnClick(final View view){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle("Kalorier brända:");
-        builder.setIcon(R.drawable.yoga);
-
-        NumberPicker numberPicker = new NumberPicker(this);
-
-        numberPicker.setWrapSelectorWheel(false);
-        numberPicker.setValue(0);
-        numberPicker.setMinValue(0);
-        numberPicker.setMaxValue(10000);
-
-        builder.setView(numberPicker);
-        builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //Spara undan värde för sluttid
-                registerWorkoutStartTimeOnClick(view);
-            }
-        });
-        builder.setNegativeButton("Tillbaka", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                registerWorkoutIntensityOnClick(view);
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
 
     public void registerWorkoutStartTimeOnClick(final View view){
 
@@ -149,7 +119,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         });
         builder.setNegativeButton("Tillbaka", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                registerWorkoutCalorieBurnOnClick(view);
+                registerWorkoutIntensityOnClick(view);
             }
         });
 
@@ -190,7 +160,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
      */
 
     public void addNewWorkout(){
-        Workout workout = new Workout(startDate, stopDate, intensity, calorieBurn);
+        Workout workout = new Workout(startDate, stopDate, intensity);
         WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
         WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
         workoutDiary.addActivity(startDate, workoutActivity);
