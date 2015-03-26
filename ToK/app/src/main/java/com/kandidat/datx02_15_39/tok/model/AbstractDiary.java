@@ -31,8 +31,8 @@ public abstract class AbstractDiary implements IDiary {
             idl = new ArrayList<>();
             activities.put(sdf.format(d), idl);
         }
-
-        idl.add(ida);
+		if(ida != null)
+       		idl.add(ida);
         //activities.put(sdf.format(d), ida);
     }
 
@@ -51,10 +51,13 @@ public abstract class AbstractDiary implements IDiary {
 
     protected List<IDiaryActivity> getActivitiesFromTable(Date d) {
 		List<IDiaryActivity> tmp = activities.get(sdf.format(d));
-		if(tmp == null)
-			tmp = new ArrayList<IDiaryActivity>();
+		if(tmp == null) {
+			addActivityToTable(d, null);
+		}
+		tmp = activities.get(sdf.format(d));
         return tmp;
     }
 
+//36
 
 }
