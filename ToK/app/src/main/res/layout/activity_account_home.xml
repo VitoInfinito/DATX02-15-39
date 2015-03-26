@@ -14,36 +14,141 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingBottom="@dimen/activity_vertical_margin">
 
-        <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/accountAgeText"
+            android:id="@+id/accountFrame">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Namn"
+                android:id="@+id/accountUsernameText"
+                android:textSize="35dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/accountUsername"
+                android:hint="Lägg till namn"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_toRightOf="@+id/accountUsernameText"
+                android:layout_toEndOf="@+id/accountUsernameText" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Ålder"
+                android:id="@+id/accountAgeText"
+                android:textSize="35dp"
+                android:layout_below="@+id/accountUsername"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/accountAge"
+                android:hint="Lägg in ålder"
+                android:layout_below="@+id/accountUsernameText"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_toRightOf="@+id/accountUsernameText"
+                android:layout_toEndOf="@+id/accountUsernameText"
+                android:selectAllOnFocus="false" />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/accountGender"
+                android:layout_below="@+id/accountAgeText"
+                android:layout_alignLeft="@+id/accountAge"
+                android:layout_alignStart="@+id/accountAge" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:id="@+id/accountSaveButton"
+                android:layout_below="@+id/accountGender"
+                android:layout_centerHorizontal="true"
+                android:onClick="saveAccountSettings"
+                android:nestedScrollingEnabled="false" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Kön"
+                android:id="@+id/textView11"
+                android:textSize="35dp"
+                android:layout_below="@+id/accountAge"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
+    <!-- The navigation drawer -->
     <LinearLayout
         android:id="@+id/left_drawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:divider="@android:color/transparent"
-        android:background="@android:color/black"
-        android:orientation="vertical"
-        android:choiceMode="singleChoice">
+        android:background="#fe111111"
+        android:orientation="vertical"    >
 
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_top"
-            android:choiceMode="singleChoice"/>
+            android:choiceMode="singleChoice"
+            android:divider="#11ffffff"
+            android:dividerHeight="1dp"
+            android:drawSelectorOnTop="false"/>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:id="@+id/view_divider_1"/>
+
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_diary"
-            android:choiceMode="singleChoice"/>
+            android:choiceMode="singleChoice"
+            android:divider="#11ffffff"
+            android:dividerHeight="1dp"
+            android:drawSelectorOnTop="false"/>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:id="@+id/view_divider_2"/>
+
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_setting"
-            android:choiceMode="singleChoice"/>
+            android:choiceMode="singleChoice"
+            android:divider="#11ffffff"
+            android:dividerHeight="1dp"
+            android:drawSelectorOnTop="false"/>
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>

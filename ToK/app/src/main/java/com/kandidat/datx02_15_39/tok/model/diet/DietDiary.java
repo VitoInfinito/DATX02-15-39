@@ -1,18 +1,13 @@
 package com.kandidat.datx02_15_39.tok.model.diet;
 
 import com.kandidat.datx02_15_39.tok.model.AbstractDiary;
+import com.kandidat.datx02_15_39.tok.model.AddToActivity;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
-import com.kandidat.datx02_15_39.tok.model.IDiary;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 
 /**
@@ -28,9 +23,7 @@ public class DietDiary extends AbstractDiary {
 		}
 		return instance;
 	}
-	/*
 
-	 */
 	protected DietDiary(){}
 
 	@Override
@@ -59,6 +52,8 @@ public class DietDiary extends AbstractDiary {
 		return getActivitiesFromTable(day.getTime());
 	}
 
+
+
 	@Override
 	public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end) {
 		if(!start.before(end)){
@@ -79,7 +74,18 @@ public class DietDiary extends AbstractDiary {
 
 	@Override
 	public void editActivity(Calendar c, String id, EditActivityParams eap) {
-		getActivity(c, id).edit(eap);
+		if(eap instanceof EditDietActivityParams)
+			getActivity(c, id).edit(eap);
+		else
+			throw new IllegalArgumentException("Error");
+	}
+
+	@Override
+	public void addActivity(Calendar c, String id, AddToActivity ata) {
+		if(ata instanceof AddToDietActivity)
+			getActivity(c,id).add(ata);
+		else
+			throw new IllegalArgumentException("Error");
 	}
 
 }
