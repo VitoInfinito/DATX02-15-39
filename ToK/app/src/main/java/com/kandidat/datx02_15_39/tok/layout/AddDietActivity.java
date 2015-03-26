@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.model.Database;
 import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
 import com.kandidat.datx02_15_39.tok.model.diet.EditDietActivityParams;
@@ -61,19 +62,18 @@ public class AddDietActivity extends CustomActionBarActivity {
 		setContentView(R.layout.activity_add_diet);
 		initMenu(R.layout.activity_add_diet);
 		findViewById(activatedObject).setActivated(true);
-		searchResultFood = new ArrayList<Food>();
 		foodItemAdded = new ArrayList<Food>();
 		diary = DietDiary.getInstance();
 		Calendar c = Calendar.getInstance();
-		List<Food> tmp = new ArrayList<Food>();
-		tmp.add(new Food(200, 300,400,500, "Gunnar", "höger lår på kyckling", Food.FoodPrefix.g, 100));
-		searchResultFood.add(tmp.get(0));
-		DietActivity da = new DietActivity(c);
-		diary.addActivity(c.getTime(), da);
-		EditDietActivityParams edap = new EditDietActivityParams(c.getTime(), tmp);
-		diary.editActivity(c, da.getID(), edap);
-		foodItemAdded.add(tmp.get(0));
-		updateSearchList();
+		//List<Food> tmp = new ArrayList<Food>();
+		//tmp.add(new Food(200, 300,400,500, "Gunnar", "höger lår på kyckling", Food.FoodPrefix.g, 100));
+		//searchResultFood.add(tmp.get(0));
+		//DietActivity da = new DietActivity(c);
+		//diary.addActivity(c.getTime(), da);
+		//EditDietActivityParams edap = new EditDietActivityParams(c.getTime(), tmp);
+		//diary.editActivity(c, da.getID(), edap);
+		//foodItemAdded.add(tmp.get(0));
+		searchForItems("");
 	}
 
 	@Override
@@ -173,10 +173,9 @@ public class AddDietActivity extends CustomActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private List<Food> searchForItems(String searchWord){
-		ArrayList<Food> tmp = new ArrayList<Food>();
-		//TODO the search
-		return tmp;
+	private void searchForItems(String searchWord){
+		searchResultFood = new ArrayList<Food>(Database.getInstance().searchForFood(searchWord));
+		updateSearchList();
 	}
 
 	/**
