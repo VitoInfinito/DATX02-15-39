@@ -1,5 +1,6 @@
 package com.kandidat.datx02_15_39.tok.model.diet;
 
+import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.AbstractDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.AddToActivity;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
@@ -16,6 +17,35 @@ public class DietActivity extends AbstractDiaryActivity {
 	private List<Food> foodList;
 	private double calorieCount, proteinCount, fatCount, carbCount;
     private String name;
+	public enum MEALTYPE{
+		BREAKFAST,
+		LUNCH,
+		DINNER,
+		NIGHTMEAL,
+		SNACK;
+
+		String getString(){
+			String tmp = "";
+			switch(this){
+				case BREAKFAST:
+
+					break;
+				case LUNCH:
+
+					break;
+				case DINNER:
+
+					break;
+				case NIGHTMEAL:
+
+					break;
+				case SNACK:
+
+					break;
+			}
+			return tmp;
+		}
+	};
 
 	public DietActivity(Calendar calendar){
 		this(new ArrayList<Food>(), calendar);

@@ -71,7 +71,7 @@ public class AddDietActivity extends CustomActionBarActivity {
 		DietActivity da = new DietActivity(c);
 		diary.addActivity(c.getTime(), da);
 		EditDietActivityParams edap = new EditDietActivityParams(c.getTime(), tmp);
-		diary.editActivity(c, "000001", edap);
+		diary.editActivity(c, da.getID(), edap);
 		foodItemAdded.add(tmp.get(0));
 		updateSearchList();
 	}
@@ -119,6 +119,12 @@ public class AddDietActivity extends CustomActionBarActivity {
 		lv.setAdapter(mBluetoothArrayAdapter);
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if(mBluetoothAdapter != null)
+			mBluetoothAdapter.cancelDiscovery();
+	}
 
 	// Create a BroadcastReceiver for ACTION_FOUND
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {

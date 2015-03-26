@@ -54,7 +54,7 @@ public abstract class AbstractDiary implements IDiary {
 		if(tmp == null) {
 			addActivityToTable(d, null);
 		}
-		tmp =  activities.get(sdf.format(d));
+		tmp = activities.get(sdf.format(d));
         return tmp;
     }
 

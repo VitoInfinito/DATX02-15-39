@@ -25,6 +25,20 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="Workout">Träning</string>
 
+    <string-array name="ENUM_NAME">
+        <item>@string/diet_breakfast</item>
+        <item>@string/diet_lunch</item>
+        <item>@string/diet_dinner</item>
+        <item>@string/diet_nightmeal</item>
+        <item>@string/diet_snack</item>
+    </string-array>
+
+    <string name="diet_breakfast">Frukost</string>
+    <string name="diet_lunch">Lunch</string>
+    <string name="diet_dinner">Middag</string>
+    <string name="diet_nightmeal">Kvällsmat</string>
+    <string name="diet_snack">Mellanmål</string>
+
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_top_items">
         <item>@string/Home</item>
