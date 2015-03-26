@@ -9,9 +9,7 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,16 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kandidat.datx02_15_39.tok.R;
-import com.kandidat.datx02_15_39.tok.model.Database;
-import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
+import com.kandidat.datx02_15_39.tok.Utilis.Database;
 import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
-import com.kandidat.datx02_15_39.tok.model.diet.EditDietActivityParams;
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
