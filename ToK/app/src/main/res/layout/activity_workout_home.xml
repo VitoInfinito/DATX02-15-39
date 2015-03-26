@@ -24,13 +24,7 @@
 
     </LinearLayout>
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="205dp"
-        android:id="@+id/workoutFeed"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -45,6 +39,11 @@
             android:layout_height="200dip"
             android:id="@+id/workout_graph" />
 
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/show_workout_container"
+            />
     </FrameLayout>
     </RelativeLayout>
 
@@ -86,12 +85,15 @@
             android:id="@+id/view_divider_2"/>
 
         <ListView
+
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_setting"
             android:choiceMode="singleChoice"
             android:divider="#11ffffff"
             android:dividerHeight="1dp"
-            android:drawSelectorOnTop="false"/>
+            android:drawSelectorOnTop="false"
+
+            />
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

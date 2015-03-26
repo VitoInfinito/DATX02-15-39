@@ -4,16 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.workout.Workout;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutActivity;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutDiary;
@@ -30,6 +34,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     private Date todaysDate;
 //    private GregorianCalendar calendar;
     private LineGraphSeries<DataPoint> series;
+    private ListView workoutList;
+    private SearchResultAdapter sra;
 
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("yyyyMMdd");
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
@@ -44,6 +50,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         todaysDate = new Date();
        // calendar = GregorianCalendar.getInstance();
         diary = (WorkoutDiary) WorkoutDiary.getInstance();
+
+        updateWorkoutList();
 
         Calendar cal = Calendar.getInstance();
         Date activeDate = cal.getTime();
@@ -129,7 +137,19 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         startActivity(new Intent(this, AddWorkoutActivity.class));
     }
 
+    private void updateWorkoutList(){
+    workoutList = (ListView) findViewById(R.id.show_workout_container);
+    workoutList.removeAllViewsInLayout();
 
+    sra = new SearchResultAdapter(this);
+        for(IDiaryActivity w: getListOfActivities()){
+            sra.add(w);
+        }
+        if(workoutList != null){
+            workoutList.setAdapter(sra);
+        }
+
+    }
     public Context getActivity() {
         return this;
     }
@@ -141,7 +161,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         List <DataPoint> tmp = new ArrayList<DataPoint>();
         tmp.add(new DataPoint((wList.get(0).getWorkoutList().get(0).getStartTime()),0));
-        tmp.add(new DataPoint(wList.get(wList.size()-1).getWorkoutList().get(wList.size()-1).getEndTime().getTime(), 0));
+        tmp.add(new DataPoint(wList.get(wList.size() - 1).getWorkoutList().get(wList.size() - 1).getEndTime().getTime(), 0));
         int count = 0;
         List <DataPoint> addList = new ArrayList<DataPoint>();
 
@@ -160,5 +180,28 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         dataPointsList.add(addList.toArray(new DataPoint[]{}));
 
         return new ArrayList<DataPoint[]>(dataPointsList);
+    }
+
+    public List<IDiaryActivity> getListOfActivities(){
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(todaysDate);
+        return WorkoutDiary.getInstance().showWeekActivities(cal,cal);
+    }
+
+    public class SearchResultAdapter extends ArrayAdapter<IDiaryActivity> {
+        public SearchResultAdapter(Context context) {
+            super(context, 0);
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.show_workout, null);
+
+
+            }
+            TextView workout_type_name = (TextView) convertView.findViewById(R.id.workout_type);
+
+            return convertView;
+        }
     }
 }

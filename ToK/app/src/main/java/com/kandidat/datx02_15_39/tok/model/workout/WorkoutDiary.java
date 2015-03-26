@@ -65,13 +65,15 @@ public class WorkoutDiary extends AbstractDiary {
 
         return null;
 	}
-
+    public List <IDiaryActivity> getList(){
+        return this.list;
+    }
     @Override
     public void editActivity(Calendar c,String id, EditActivityParams eap) {
 
     }
 
-    public List <WorkoutActivity> getWorkoutActivityList(){
+    public static List <WorkoutActivity> getWorkoutActivityList(){
         return null;
     }
 }

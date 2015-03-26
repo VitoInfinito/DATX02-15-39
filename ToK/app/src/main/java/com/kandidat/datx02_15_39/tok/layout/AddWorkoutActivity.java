@@ -190,10 +190,10 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
      */
 
     public void addNewWorkout(){
-       /* Workout workout = new Workout(startDate, stopDate, intensity, calorieBurn);
+        Workout workout = new Workout(startDate, stopDate, intensity, calorieBurn);
         WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
         WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
-        workoutDiary.addActivity(startDate, workoutActivity);*/
+        workoutDiary.addActivity(startDate, workoutActivity);
         //Här vill jag lägga till min träning i listan men vette fan hur jag ska göra..
 
         startActivity(new Intent(this, WorkoutHomeActivity.class));
