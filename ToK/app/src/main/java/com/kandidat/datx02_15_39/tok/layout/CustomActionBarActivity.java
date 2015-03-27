@@ -51,17 +51,17 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		final ActionBar actionBar = getSupportActionBar();
 		final int actionBarColor = getResources().getColor(R.color.action_bar);
 
+		//Gets all the the array containing the menu, the array contains the name of the button
+		//Here we also creates the adapters that the info will be added to.
 		mPlanetTopTiles = getResources().getStringArray(R.array.nav_drawer_top_items);
-		//mPlanetTopTileIcons = getResources().obtainTypedArray(R.array.nav_drawer_top_icon);
 		mPlanetDiaryTiles = getResources().getStringArray(R.array.nav_drawer_diary_items);
-		//mPlanetDiaryTileIcons = getResources().obtainTypedArray(R.array.nav_drawer_diary_icon);
 		mPlanetSettingTiles = getResources().getStringArray(R.array.nav_drawer_settingsinformation_item);
-		//mPlanetSettingTileIcons = getResources().obtainTypedArray(R.array.nav_drawer_settingsinformation_icon);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer_list_top);
 		miaTop = new MenuItemAdapter(this);
 		miaDiary = new MenuItemAdapter(this);
 		miaSetting = new MenuItemAdapter(this);
 
+		//The first group of buttons in menu
 		mDrawerIcons = getResources().obtainTypedArray(R.array.nav_drawer_top_icon);
 		int icon;
 		for(int i = 0; i < mPlanetTopTiles.length; i++){
@@ -78,6 +78,8 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		}
 		// Set the list's click listener
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+		//The second group of buttons in menu
 		mDrawerList = (ListView) findViewById(R.id.left_drawer_list_diary);
 		mDrawerIcons = getResources().obtainTypedArray(R.array.nav_drawer_diary_icon);
 		for(int i = 0; i < mPlanetDiaryTiles.length; i++){
@@ -94,6 +96,8 @@ public class CustomActionBarActivity extends ActionBarActivity{
 			mDrawerList.setAdapter(miaDiary);
 		}
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+		//The third group of buttons in menu
 		mDrawerList = (ListView) findViewById(R.id.left_drawer_list_setting);
 		mDrawerIcons = getResources().obtainTypedArray(R.array.nav_drawer_settingsinformation_icon);
 		for(int i = 0; i < mPlanetSettingTiles.length; i++){
@@ -111,9 +115,11 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		}
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
+		//Enables the actionbar
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
-
+		//Added the drawerlayout that is a building stone for the swipeable menu that is located
+		// to the left and can be open with a button or a swipe to the right
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerToggle = new ActionBarDrawerToggle(
 				this,                  /* host Activity */
@@ -238,7 +244,7 @@ public class CustomActionBarActivity extends ActionBarActivity{
 	}
 
 	private void quitPrograme(){
-		finish();
+		this.finish();
 	}
 
 
