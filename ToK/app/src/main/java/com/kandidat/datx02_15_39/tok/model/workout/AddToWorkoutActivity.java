@@ -10,6 +10,7 @@ public class AddToWorkoutActivity extends AddToActivity {
     private double intensity;
 
     public AddToWorkoutActivity(double intensity){
+
         this.intensity = intensity;
     }
 }

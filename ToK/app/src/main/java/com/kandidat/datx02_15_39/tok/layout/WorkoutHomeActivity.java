@@ -18,6 +18,8 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
+import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
+import com.kandidat.datx02_15_39.tok.model.sleep.SleepActivity;
 import com.kandidat.datx02_15_39.tok.model.workout.Workout;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutActivity;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutDiary;
@@ -37,8 +39,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     private Date todaysDate;
 //    private GregorianCalendar calendar;
     private LineGraphSeries<DataPoint> series;
-    private ListView workoutList;
-    private SearchResultAdapter sra;
+    private ListView workoutListView;
+    //private SearchResultAdapter sra;
 
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("yyyyMMdd");
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
@@ -58,7 +60,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         workoutActivity = new WorkoutActivity("workout", workout);
         diary.addActivity(todaysDate, workoutActivity);
 
-        updateWorkoutList();
+        fillListWithDummyData();
 
         Calendar cal = Calendar.getInstance();
         Date activeDate = cal.getTime();
@@ -140,23 +142,49 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void fillListWithDummyData(){
+        ListView lv = (ListView) findViewById(R.id.show_workout);
+
+        List<IDiaryActivity> acts = diary.showDaysActivities(Calendar.getInstance());
+        List<String> workoutList = new ArrayList<String>();
+
+        for(int i=0; i<acts.size(); i++) {
+            List<Workout> list = ((WorkoutActivity) acts.get(i)).getWorkoutList();
+            for(int j=0; j<list.size(); j++) {
+                workoutList.add("Started " + sdfShowFullTime.format(list.get(j).getStartTime()) + " and stopped " + sdfShowFullTime.format(list.get(j).getEndTime()));
+            }
+        }
+
+        // This is the array adapter, it takes the context of the activity as a
+        // first parameter, the type of list view as a second parameter and your
+        // array as a third parameter.
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_list_item_1,
+                workoutList );
+
+        lv.setAdapter(arrayAdapter);
+    }
+
     /*public void onAddWorkoutButtonClick(View view){
         startActivity(new Intent(this, AddWorkoutActivity.class));
     }*/
 
-    private void updateWorkoutList(){
-    workoutList = (ListView) findViewById(R.id.show_workout);
-    workoutList.removeAllViewsInLayout();
 
-    sra = new SearchResultAdapter(this);
-        for(IDiaryActivity w: getListOfActivities()){
-            sra.add(w);
-        }
-        if(workoutList != null){
-            workoutList.setAdapter(sra);
-        }
+   /* private void updateWorkoutList(){
+        workoutListView = (ListView) findViewById(R.id.show_workout);
+        workoutListView.removeAllViewsInLayout();
 
-    }
+        sra = new SearchResultAdapter(this);
+            for(IDiaryActivity w: getListOfActivities()){
+                sra.add(w);
+            }
+            if(workoutListView != null){
+                workoutListView.setAdapter(sra);
+            }
+
+    }*/
+
     public Context getActivity() {
         return this;
     }
@@ -198,7 +226,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         return WorkoutDiary.getInstance().showWeekActivities(cal, cal2);
     }
 
-    public class SearchResultAdapter extends ArrayAdapter<IDiaryActivity> {
+   /* public class SearchResultAdapter extends ArrayAdapter<IDiaryActivity> {
         public SearchResultAdapter(Context context) {
             super(context, 0);
         }
@@ -213,5 +241,5 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
             return convertView;
         }
-    }
+    }*/
 }

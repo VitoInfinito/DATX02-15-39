@@ -32,7 +32,7 @@
         android:layout_below="@+id/linearLayout2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/workoutFeed">
+        android:layout_above="@+id/workout_graph">
 
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
@@ -41,9 +41,9 @@
 
         <ListView
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="201dp"
             android:id="@+id/show_workout"
-            />
+            android:layout_gravity="center_horizontal|bottom" />
     </FrameLayout>
     </RelativeLayout>
 
