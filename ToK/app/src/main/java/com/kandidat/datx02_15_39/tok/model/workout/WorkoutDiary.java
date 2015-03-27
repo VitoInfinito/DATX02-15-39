@@ -77,9 +77,6 @@ public class WorkoutDiary extends AbstractDiary {
 
     }
 
-    public static List <WorkoutActivity> getWorkoutActivityList(){
-        return null;
-    }
 
 	@Override
 	public void addActivity(Calendar c, String id, AddToActivity ata) {
