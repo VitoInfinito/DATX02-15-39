@@ -47,12 +47,14 @@ public class SleepDiary extends AbstractDiary {
     //Currently returns first element for testing
     public IDiaryActivity getActivityFromDate(Date d) {
         List<IDiaryActivity> act = getActivitiesFromTable(d);
-        return act != null ? act.get(0) : null;
+        return !act.isEmpty() ? act.get(0) : null;
     }
 
+    //TODO remove later on
     public List<IDiaryActivity> getActivitiesFromDate(Date d) {
-        List<IDiaryActivity> lida = getActivitiesFromTable(d);
-        return lida != null ? new ArrayList<>(lida) : null;
+        //List<IDiaryActivity> lida = getActivitiesFromTable(d);
+        //return lida != null ? new ArrayList<>(lida) : null;
+        return new ArrayList<>(getActivitiesFromTable(d));
     }
 
     public List<Sleep> getSleepListFromDate(Date d) {

@@ -9,9 +9,7 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,15 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kandidat.datx02_15_39.tok.R;
-import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
+import com.kandidat.datx02_15_39.tok.Utilis.Database;
 import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
-import com.kandidat.datx02_15_39.tok.model.diet.EditDietActivityParams;
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -61,19 +57,18 @@ public class AddDietActivity extends CustomActionBarActivity {
 		setContentView(R.layout.activity_add_diet);
 		initMenu(R.layout.activity_add_diet);
 		findViewById(activatedObject).setActivated(true);
-		searchResultFood = new ArrayList<Food>();
 		foodItemAdded = new ArrayList<Food>();
 		diary = DietDiary.getInstance();
 		Calendar c = Calendar.getInstance();
-		List<Food> tmp = new ArrayList<Food>();
-		tmp.add(new Food(200, 300,400,500, "Gunnar", "höger lår på kyckling", Food.FoodPrefix.g, 100));
-		searchResultFood.add(tmp.get(0));
-		DietActivity da = new DietActivity(c);
-		diary.addActivity(c.getTime(), da);
-		EditDietActivityParams edap = new EditDietActivityParams(c.getTime(), tmp);
-		diary.editActivity(c, "000001", edap);
-		foodItemAdded.add(tmp.get(0));
-		updateSearchList();
+		//List<Food> tmp = new ArrayList<Food>();
+		//tmp.add(new Food(200, 300,400,500, "Gunnar", "höger lår på kyckling", Food.FoodPrefix.g, 100));
+		//searchResultFood.add(tmp.get(0));
+		//DietActivity da = new DietActivity(c);
+		//diary.addActivity(c.getTime(), da);
+		//EditDietActivityParams edap = new EditDietActivityParams(c.getTime(), tmp);
+		//diary.editActivity(c, da.getID(), edap);
+		//foodItemAdded.add(tmp.get(0));
+		searchForItems("");
 	}
 
 	@Override
@@ -119,6 +114,12 @@ public class AddDietActivity extends CustomActionBarActivity {
 		lv.setAdapter(mBluetoothArrayAdapter);
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		//if(mBluetoothAdapter != null)
+			//mBluetoothAdapter.cancelDiscovery();
+	}
 
 	// Create a BroadcastReceiver for ACTION_FOUND
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -167,10 +168,9 @@ public class AddDietActivity extends CustomActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private List<Food> searchForItems(String searchWord){
-		ArrayList<Food> tmp = new ArrayList<Food>();
-		//TODO the search
-		return tmp;
+	private void searchForItems(String searchWord){
+		searchResultFood = new ArrayList<Food>(Database.getInstance().searchForFood(searchWord));
+		updateSearchList();
 	}
 
 	/**
