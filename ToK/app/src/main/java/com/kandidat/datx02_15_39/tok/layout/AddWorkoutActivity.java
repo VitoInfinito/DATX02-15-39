@@ -20,6 +20,8 @@ import com.kandidat.datx02_15_39.tok.model.workout.WorkoutDiary;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+
 import android.widget.Toast;
 
 
@@ -28,7 +30,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
     ImageButton yogaButton;
     ImageButton runnerButton;
     android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-    Calendar cal = Calendar.getInstance();
+    private Calendar cal = Calendar.getInstance();
 
     private SimpleDateFormat sdfShowDate = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
@@ -43,9 +45,6 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
     private double intensity;
 
-    private int hour = cal.get(Calendar.HOUR_OF_DAY);
-    private int min = cal.get(Calendar.MINUTE);
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +56,24 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
         Calendar currentCalendar = Calendar.getInstance();
 
-        startDate = currentCalendar.getTime();
-        stopDate = currentCalendar.getTime();
+
 
         startHours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         startMinutes = Calendar.getInstance().get(Calendar.MINUTE);
 
+        currentCalendar.set(Calendar.HOUR_OF_DAY, startHours);
+        currentCalendar.set(Calendar.MINUTE, startMinutes);
+        startDate = currentCalendar.getTime();
+
         stopHours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + 1;
         stopMinutes = Calendar.getInstance().get(Calendar.MINUTE);
+
+        currentCalendar.set(Calendar.HOUR_OF_DAY, stopHours);
+        currentCalendar.set(Calendar.MINUTE, stopMinutes);
+        stopDate = currentCalendar.getTime();
+
+        intensity = 0;
+
 
     }
     public void registerWorkoutIntensityOnClick(final View view){
@@ -104,16 +113,17 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         builder.setTitle("Välj starttid:");
         builder.setIcon(R.drawable.yoga);
 
-        TimePicker timePicker = new TimePicker(this);
+        final TimePicker timePicker = new TimePicker(this);
 
         timePicker.setIs24HourView(true);
-        timePicker.setCurrentHour(hour);
-        timePicker.setCurrentMinute(min);
 
         builder.setView(timePicker);
         builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //Spara undan värde för starttid
+                cal = Calendar.getInstance();
+                Date date = cal.getTime();
+                startHours = timePicker.getCurrentHour();
+                startMinutes = timePicker.getCurrentMinute();
                 registerWorkoutEndTimeOnClick(view);
             }
         });
@@ -132,16 +142,15 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         builder.setTitle("Välj sluttid:");
         builder.setIcon(R.drawable.yoga);
 
-       TimePicker timePicker = new TimePicker(this);
+       final TimePicker timePicker = new TimePicker(this);
 
        timePicker.setIs24HourView(true);
-       timePicker.setCurrentHour(hour);
-       timePicker.setCurrentMinute(min);
 
        builder.setView(timePicker);
        builder.setPositiveButton("Spara träning", new DialogInterface.OnClickListener() {
            public void onClick(DialogInterface dialog, int id) {
-               //Spara undan värde för sluttid
+               stopHours = timePicker.getCurrentHour();
+               stopMinutes = timePicker.getCurrentMinute();
                addNewWorkout();
            }
        });
@@ -155,16 +164,30 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
        dialog.show();
     }
 
+    private void updateDate(){
+        Calendar currentCalendar = Calendar.getInstance();
+
+        currentCalendar.set(Calendar.HOUR_OF_DAY, startHours);
+        currentCalendar.set(Calendar.MINUTE, startMinutes);
+        startDate = currentCalendar.getTime();
+
+
+        currentCalendar.set(Calendar.HOUR_OF_DAY, stopHours);
+        currentCalendar.set(Calendar.MINUTE, stopMinutes);
+        stopDate = currentCalendar.getTime();
+    }
+
+
     /**
      * Add new workout in the WorkoutHomeActivity list.
      */
 
     public void addNewWorkout(){
+        updateDate();
         Workout workout = new Workout(startDate, stopDate, intensity);
         WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
         WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
         workoutDiary.addActivity(startDate, workoutActivity);
-        //Här vill jag lägga till min träning i listan men vette fan hur jag ska göra..
 
         startActivity(new Intent(this, WorkoutHomeActivity.class));
         Toast.makeText(getApplicationContext(), "Träning sparad", Toast.LENGTH_LONG).show();
