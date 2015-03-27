@@ -33,10 +33,8 @@ import com.kandidat.datx02_15_39.tok.R;
 public class CustomActionBarActivity extends ActionBarActivity{
 
 	private ActionBarDrawerToggle mDrawerToggle;
-	private String mTitle="";
-	private String mDrawerTitle="hello";
 	private String[] mPlanetTopTiles, mPlanetDiaryTiles, mPlanetSettingTiles;
-	private TypedArray mDrawerIcons, mPlanetTopTileIcons, mPlanetDiaryTileIcons,mPlanetSettingTileIcons;
+	private TypedArray mDrawerIcons;
 	private ListView mDrawerList;
 	private MenuItemAdapter miaTop, miaDiary, miaSetting;
 	private DrawerLayout mDrawerLayout;
@@ -49,8 +47,6 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		this.screenWidth = dm.widthPixels;
 		// Set up your ActionBar
 		final ActionBar actionBar = getSupportActionBar();
-		final int actionBarColor = getResources().getColor(R.color.action_bar);
-
 		//Gets all the the array containing the menu, the array contains the name of the button
 		//Here we also creates the adapters that the info will be added to.
 		mPlanetTopTiles = getResources().getStringArray(R.array.nav_drawer_top_items);
@@ -253,7 +249,7 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		private int icon;
 
 		public MenuItems(){
-			this("",-1);
+			this("");
 		}
 
 		public MenuItems(String title){
