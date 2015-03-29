@@ -1,7 +1,9 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
@@ -19,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -251,7 +254,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 	}
 
 	private void changePrefix(View v, int position) {
-		//TODO
+		//TODO should i be able to do this ?
 	}
 
 	private class OnAmountClickListener implements View.OnClickListener{
@@ -271,7 +274,33 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 	private void changeAmount(View v, int position) {
 		//TODO
-		itemsAdded.get(position).setAmount(154.2);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		View view = getLayoutInflater().inflate(R.layout.number_picker_layout, null);
+		NumberPicker np = (NumberPicker)view.findViewById(R.id.number_picker_amount);
+		np.setMinValue(0);
+		np.setMaxValue(10000);
+		np.setValue((int) itemsAdded.get(position).getAmount());
+		builder.setPositiveButton("Spara", new ChangedAmountListener(np, position));
+		AlertDialog dialog = builder.create();
+		dialog.setView(view);
+		dialog.setCancelable(true);
+		dialog.show();
+	}
+
+	private class ChangedAmountListener implements DialogInterface.OnClickListener {
+
+		private NumberPicker np;
+		private int position;
+
+		public ChangedAmountListener(NumberPicker np, int position){
+			this.np = np;
+			this.position = position;
+		}
+
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			itemsAdded.get(position).setAmount(np.getValue());
+		}
 	}
 
 	private class OnDeleteClickListener implements View.OnClickListener{

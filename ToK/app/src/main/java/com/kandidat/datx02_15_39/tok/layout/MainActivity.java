@@ -57,6 +57,7 @@ public class MainActivity extends CustomActionBarActivity {
 			AlertDialog ad = new AlertDialog.Builder(this, R.style.CustomDialog)
 					.create();
 			ad.setView(add);
+			ad.setCanceledOnTouchOutside(true);
 			ad.show();
         }
 
