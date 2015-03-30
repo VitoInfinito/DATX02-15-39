@@ -60,6 +60,7 @@ public class DietDiary extends AbstractDiary {
 			throw new IllegalArgumentException();
 		}
 		List<IDiaryActivity> returnValue = new ArrayList<IDiaryActivity>();
+		end.add(Calendar.DATE, 1);
 		while(start.before(end)){
 			List<IDiaryActivity> tmp = getActivitiesFromTable(start.getTime());
 			for(IDiaryActivity ida: tmp){
@@ -67,7 +68,7 @@ public class DietDiary extends AbstractDiary {
 					returnValue.add(ida);
 				}
 			}
-			start.add(Calendar.DAY_OF_MONTH, 1);
+			start.add(Calendar.DATE, 1);
 		}
 		return returnValue;
 	}
