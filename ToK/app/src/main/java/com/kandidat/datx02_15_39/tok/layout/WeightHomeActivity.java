@@ -1,5 +1,6 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -35,21 +36,18 @@ import java.util.List;
 
 public class WeightHomeActivity extends CustomActionBarActivity {
     private WeightDiary diary;
-    private GregorianCalendar currentCalendar;
-    private Date activeDate;
-    private LineGraphSeries<DataPoint> series;
 
+	@SuppressLint("SimpleDateFormat")
     private SimpleDateFormat sdfShowYearMonthDay = new SimpleDateFormat("yyyy-MM-dd");
+	@SuppressLint("SimpleDateFormat")
     private SimpleDateFormat sdfShowMonthDay = new SimpleDateFormat("dd/MM");
-    private SimpleDateFormat sdfShowMonth = new SimpleDateFormat("MM");
-    private SimpleDateFormat sdfShowDay = new SimpleDateFormat("dd");
+	@SuppressLint("SimpleDateFormat")
     private SimpleDateFormat sdfShowFullTime = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 
 	private int selectedWeightValue = 95;
 	private Date selectedDate;
 
 	private Button weightText;
-	private Weight weight;
 	private WeightActivity weightActivity;
 	private Calendar cal = Calendar.getInstance();
 
@@ -62,8 +60,9 @@ public class WeightHomeActivity extends CustomActionBarActivity {
         diary = (WeightDiary) WeightDiary.getInstance();
 
         //TODO change to not account for specific times i.e seconds and minutes
-        currentCalendar = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
-        activeDate = currentCalendar.getTime();
+		GregorianCalendar currentCalendar = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
+
+		Date activeDate = currentCalendar.getTime();
         //Used for testing
         produceFakeData();
         //View viewGraph = findViewById(R.id.imageViewGraph);
@@ -71,7 +70,7 @@ public class WeightHomeActivity extends CustomActionBarActivity {
 
 	    weightText = (Button) findViewById(R.id.weightText);
 
-	    weight = new Weight(selectedWeightValue);
+	    Weight weight = new Weight(selectedWeightValue);
 	    weightActivity = new WeightActivity("id1", weight, activeDate);
 	    WeightDiary weightDiary = (WeightDiary) WeightDiary.getInstance();
 	    weightDiary.addActivity(activeDate, diary.getActivityFromDate(activeDate));
@@ -84,7 +83,7 @@ public class WeightHomeActivity extends CustomActionBarActivity {
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
 
-        series = new LineGraphSeries<>(fetchDataPoints());
+		LineGraphSeries<DataPoint> series = new LineGraphSeries<>(fetchDataPoints());
 
         graph.addSeries(series);
         series.setTitle(sdfShowYearMonthDay.format(activeDate));
@@ -121,7 +120,8 @@ public class WeightHomeActivity extends CustomActionBarActivity {
                     // transform number to time
                     return sdfShowMonthDay.format(new Date((long) value));
                 } else {
-                    return super.formatLabel(value, isValueX);
+	                return super.formatLabel(value, false);
+                    //return super.formatLabel(value, isValueX);
                 }
             }
         });
@@ -232,8 +232,8 @@ public class WeightHomeActivity extends CustomActionBarActivity {
 			for(int j=0; j<wal.size(); j++) {
 				Date pointDate = wal.get(j).getDate();
 
-				double pseudoDate = Double.parseDouble(sdfShowDay.format(pointDate)) / 100;
-				pseudoDate += Double.parseDouble(sdfShowMonth.format(pointDate));
+				/*double pseudoDate = Double.parseDouble(sdfShowDay.format(pointDate)) / 100;
+				pseudoDate += Double.parseDouble(sdfShowMonth.format(pointDate));*/
 
 				dp[j] = new DataPoint(pointDate.getTime(), wal.get(j).getWeight().getWeight());
 			}
@@ -246,7 +246,7 @@ public class WeightHomeActivity extends CustomActionBarActivity {
 				new DataPoint(0,0)
 		};
 	}
-
+	/*
     /**
      * Sets the x bounds in the graph between 20 days before the given calendar to the current calendar day
      *
@@ -281,8 +281,6 @@ public class WeightHomeActivity extends CustomActionBarActivity {
 
             Date todaysDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
 
-
-
             for(int i=-10; i<0; i++) {
                 diary.addActivity(new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + i, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime(),
                         new WeightActivity("id" + i, new Weight(100+i),
@@ -295,7 +293,7 @@ public class WeightHomeActivity extends CustomActionBarActivity {
     }
 
 	/**
-	 * Creates an alertdialog and gives the user the option to change the date that will be added
+	 * Creates an dialog and gives the user the option to change the date that will be added
 	 * to the weight diary.
 	 *
 	 * @param view Not used.
@@ -336,7 +334,7 @@ public class WeightHomeActivity extends CustomActionBarActivity {
 	}
 
 	/**
-	 * Creates an alertdialog and gives the user the option to change the weight in that will be
+	 * Creates an dialog and gives the user the option to change the weight in that will be
 	 * added to their weight diary.
 	 *
 	 * @param view Not used.
@@ -356,12 +354,14 @@ public class WeightHomeActivity extends CustomActionBarActivity {
 
 		builder.setView(weightPicker);
 
+		//What happens when "OK" is pressed
 		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				selectedWeightValue = weightPicker.getValue();
 				weightText.setText(selectedWeightValue + " kg");
 			}
 		});
+		//What happens when "Cancel" is pressed
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 
@@ -369,7 +369,6 @@ public class WeightHomeActivity extends CustomActionBarActivity {
 		});
 
 		AlertDialog dialog = builder.create();
-
 		dialog.show();
 	}
 
@@ -383,8 +382,5 @@ public class WeightHomeActivity extends CustomActionBarActivity {
 		weightActivity = new WeightActivity("id15", newWeight, selectedDate);
 		WeightDiary weightDiary = (WeightDiary) WeightDiary.getInstance();
 		weightDiary.addActivity(selectedDate, weightActivity);
-		//selectedDate, diary.getActivityFromDate(selectedDate)
-		//series.resetData(fetchDataPoints());
-		//startActivity(new Intent(this, MainActivity.class));
 	}
 }
