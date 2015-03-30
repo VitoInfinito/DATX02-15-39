@@ -300,25 +300,6 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             graph.getViewport().setMinX(list[0].getX());
             graph.getViewport().setMaxX(list[1].getX());
         }
-        //SleepActivity activity = (SleepActivity) diary.getActivityFromDate(date);
-       // if(activity != null) {
-            /*Sleep sleep = activity.getSleep();
-            Date startTime = sleep.getStartTime();
-            Date stopTime = sleep.getStopTime();
-
-            //Integer.parseInt(sdfShowHour.format(startTime))-1
-            double merfelherder = Double.parseDouble(sdfShowMinutes.format(startTime))/100;
-            merfelherder += Double.parseDouble(sdfShowHour.format(startTime));
-
-            double herfelmerder = Double.parseDouble(sdfShowMinutes.format(stopTime))/100;
-            herfelmerder += Double.parseDouble(sdfShowHour.format(stopTime));
-
-
-            // set manual X bounds
-            graph.getViewport().setXAxisBoundsManual(true);
-            graph.getViewport().setMinX(merfelherder-1);
-            graph.getViewport().setMaxX(herfelmerder+1);*/
-        //}
     }
 
 	private void fillListWithDummyData(){

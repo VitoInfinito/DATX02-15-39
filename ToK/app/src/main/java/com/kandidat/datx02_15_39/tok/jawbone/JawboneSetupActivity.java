@@ -47,6 +47,8 @@ public class JawboneSetupActivity extends Activity {
     // This has to be identical to the OAuth redirect url setup in Jawbone Developer Portal
     private static final String OAUTH_CALLBACK_URL = "up-platform://redirect";
     //private static final String OAUTH_CALLBACK_URL = "http://localhost/tok?";
+    //private static final String OAUTH_CALLBACK_URL = "http://lethe.se/authtok.html";
+
 
     private List<UpPlatformSdkConstants.UpPlatformAuthScope> authScope;
 
