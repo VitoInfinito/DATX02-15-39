@@ -163,7 +163,9 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 	 */
 	private void updateList(){
 		searchResultList = (ListView) findViewById(R.id.food_item_added_container);
-		searchResultList.removeAllViewsInLayout();
+		if(searchResultList.getChildCount() > 0) {
+			searchResultList.removeAllViewsInLayout();
+		}
 		sra = new SearchResultAdapter(this);
 		for (Food f: itemsAdded){
 			sra.add(f);
@@ -171,6 +173,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		if(searchResultList != null){
 			searchResultList.setAdapter(sra);
 		}
+		//searchResultList.setOnScrollListener();
 	}
 
 	private void mealSelector(MenuItem item){
@@ -233,6 +236,20 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 			food_more.setFocusable(false);
 			food_more.setOnClickListener(new OnMoreInfoClickListener(position));
 			delete_food.setOnClickListener(new OnDeleteClickListener(position));
+			//If this view is pressed show more details
+			if(position == extendedInfoOpenPosition){
+				LinearLayout extendedView = (LinearLayout)convertView.findViewById(R.id.extended_food_information);
+
+				View extendedInfoView = LayoutInflater.from(convertView.getContext()).inflate(R.layout.change_amount_on_food_view, null);
+				Button food_amount = (Button) extendedInfoView.findViewById(R.id.btn_food_amount);
+				Button food_prefix = (Button) extendedInfoView.findViewById(R.id.btn_food_prefix);
+
+				food_amount.setText(itemsAdded.get(position).getAmount() + "");
+				food_prefix.setText(itemsAdded.get(position).getPrefix() + "");
+				food_amount.setOnClickListener(new OnAmountClickListener(position));
+				food_prefix.setOnClickListener(new OnPrefixClickListener(position));
+				extendedView.addView(extendedInfoView);
+			}
 			// Return the completed view to render on screen
 			return convertView;
 		}
@@ -344,24 +361,27 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 	private void onMoreInfoClick(View v, int position){
 		if( this.extendedInfoOpenPosition == position){
-			closeExtendedInfo(v, position);
 			extendedInfoOpenPosition = -1;
+			closeExtendedInfo(v, position);
 		}else {
 			if(this.extendedInfoOpenPosition != -1){
 				closeExtendedInfo(v, extendedInfoOpenPosition);
 			}
-			openExtendedInfo(v, position);
 			extendedInfoOpenPosition = position;
+			openExtendedInfo(v, position);
 		}
 	}
 	private void closeExtendedInfo(View v, int position){
 		//TODO Make the opened information close
-		LinearLayout extendedView = (LinearLayout)searchResultList.getChildAt(position).findViewById(R.id.extended_food_information);
-		extendedView.removeAllViews();
+		//LinearLayout extendedView = (LinearLayout)searchResultList.getChildAt(position).findViewById(R.id.extended_food_information);
+		//extendedView.removeAllViews();
+		sra.getView(position,null,null);
 	}
 
 	private void openExtendedInfo(View v, int position) {
-		LinearLayout extendedView = (LinearLayout)searchResultList.getChildAt(position).findViewById(R.id.extended_food_information);
+		/*LinearLayout extendedView = (LinearLayout)searchResultList
+				.getChildAt(i)
+				.findViewById(R.id.extended_food_information);
 
 		View convertView = LayoutInflater.from(this).inflate(R.layout.change_amount_on_food_view, null);
 		Button food_amount = (Button) convertView.findViewById(R.id.btn_food_amount);
@@ -371,7 +391,9 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		food_prefix.setText(itemsAdded.get(position).getPrefix() + "");
 		food_amount.setOnClickListener(new OnAmountClickListener(position));
 		food_prefix.setOnClickListener(new OnPrefixClickListener(position));
-		extendedView.addView(convertView);
+		extendedView.addView(convertView);//*/
+		sra.getView(position, null, searchResultList);
+		//updateList();
 
 		Toast.makeText(this, "dragen"+ position, Toast.LENGTH_SHORT).show();
 		//TODO Make so that the new adapter is a adapter to handle click events
