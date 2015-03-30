@@ -64,10 +64,10 @@ public class DietDiary extends AbstractDiary {
 			List<IDiaryActivity> tmp = getActivitiesFromTable(start.getTime());
 			for(IDiaryActivity ida: tmp){
 				if(ida instanceof DietActivity){
-					returnValue.add((DietActivity)ida);
+					returnValue.add(ida);
 				}
 			}
-			start.add(Calendar.DATE, 1);
+			start.add(Calendar.DAY_OF_MONTH, 1);
 		}
 		return returnValue;
 	}
