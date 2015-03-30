@@ -3,6 +3,7 @@
     package="com.kandidat.datx02_15_39.tok" >
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -106,9 +107,9 @@
         </activity>
 
         <activity
-            android:name="jawbone.UpApiListActivity">
+            android:name=".jawbone.UpApiListActivity">
             <intent-filter>
-                <action android:name="com.jawbone.helloup.UpApiListActivity" />
+                <action android:name="com.kandidat.datx02_15_39.tok.jawbone.UpApiListActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

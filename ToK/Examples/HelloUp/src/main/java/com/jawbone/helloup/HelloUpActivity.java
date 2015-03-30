@@ -45,6 +45,7 @@ public class HelloUpActivity extends Activity {
 
     // This has to be identical to the OAuth redirect url setup in Jawbone Developer Portal
     private static final String OAUTH_CALLBACK_URL = "http://localhost/helloup?";
+    //private static final String OAUTH_CALLBACK_URL = "up-platform://redirect";
 
     private List<UpPlatformSdkConstants.UpPlatformAuthScope> authScope;
 
@@ -72,21 +73,24 @@ public class HelloUpActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("*************************** UP Checking request code");
         if (requestCode == UpPlatformSdkConstants.JAWBONE_AUTHORIZE_REQUEST_CODE && resultCode == RESULT_OK) {
+            System.out.println("*************************** UP Request code OK");
 
             String code = data.getStringExtra(UpPlatformSdkConstants.ACCESS_CODE);
             if (code != null) {
+                System.out.println("*************************** UP code != null");
                 //first clear older accessToken, if it exists..
                 ApiManager.getRequestInterceptor().clearAccessToken();
 
                 ApiManager.getRestApiInterface().getAccessToken(
-                    CLIENT_ID,
-                    CLIENT_SECRET,
-                    code,
-                    accessTokenRequestListener);
+                        CLIENT_ID,
+                        CLIENT_SECRET,
+                        code,
+                        accessTokenRequestListener);
             }
         }
-   }
+    }
 
     private Callback accessTokenRequestListener = new Callback<OauthAccessTokenResponse>() {
         @Override
