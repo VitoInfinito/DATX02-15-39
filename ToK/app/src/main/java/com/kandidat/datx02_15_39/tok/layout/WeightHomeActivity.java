@@ -3,7 +3,6 @@ package com.kandidat.datx02_15_39.tok.layout;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;

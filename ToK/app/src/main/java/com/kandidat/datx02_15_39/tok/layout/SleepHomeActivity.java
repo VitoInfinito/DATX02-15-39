@@ -2,10 +2,7 @@ package com.kandidat.datx02_15_39.tok.layout;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,23 +14,17 @@ import android.widget.Toast;
 
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.ValueDependentColor;
-import com.jjoe64.graphview.helper.StaticLabelsFormatter;
-import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.OnDataPointTapListener;
-import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.jjoe64.graphview.series.Series;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
-import com.kandidat.datx02_15_39.tok.model.sleep.drawDiagram;
 import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepActivity;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepDiary;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,7 +36,6 @@ import java.util.List;
 public class SleepHomeActivity extends CustomActionBarActivity {
     private SleepDiary diary;
     private GregorianCalendar currentCalendar;
-    private Date activeDate;
 
     private LineGraphSeries<DataPoint> lightSleepSeries;
     private LineGraphSeries<DataPoint> deepSleepSeries;
@@ -53,10 +43,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
     private LineGraphSeries<DataPoint> coverSleepSeries;
 
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("yyyyMMdd");
-    private SimpleDateFormat sdfShowMonthDay = new SimpleDateFormat("MM-dd");
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
-    private SimpleDateFormat sdfShowHour = new SimpleDateFormat("HH");
-    private SimpleDateFormat sdfShowMinutes = new SimpleDateFormat("mm");
     private SimpleDateFormat sdfShowFullTime = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 
     @Override
@@ -69,7 +56,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         //TODO change to not account for specific times i.e seconds and minutes
         Calendar cal = Calendar.getInstance();
         currentCalendar = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
-        activeDate = currentCalendar.getTime();
+        Date activeDate = currentCalendar.getTime();
         //Used for testing
         produceFakeData();
         //View viewGraph = findViewById(R.id.imageViewGraph);
@@ -190,17 +177,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
     }
 
     /**
-     * Navigates to the add sleep activity.
-     *
-     * @param view Not used.
-     */
-    public void addSleepButtonOnClick(View view){
-        startActivity(new Intent(this, AddSleepActivity.class));
-    }
-
-    /**
      * Updates the graph with and earlier sleep date
-     * @param view
+     * @param view Not used.
      */
     public void gotoEarlierSleepDate(View view){
         updateGraphSeries(-1);
@@ -208,7 +186,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
     /**
      * Updates the graph with and later sleep date
-     * @param view
+     * @param view Not used.
      */
     public void gotoLaterSleepDate(View view){
         updateGraphSeries(1);
@@ -239,9 +217,9 @@ public class SleepHomeActivity extends CustomActionBarActivity {
     }
 
     private List<DataPoint[]> fetchDataPoints(Date date) {
-        List<DataPoint> lightSleep = new ArrayList<DataPoint>();
-        List<DataPoint> deepSleep = new ArrayList<DataPoint>();
-        List<DataPoint> coverSleep = new ArrayList<DataPoint>();
+        List<DataPoint> lightSleep = new ArrayList<>();
+        List<DataPoint> deepSleep = new ArrayList<>();
+        List<DataPoint> coverSleep = new ArrayList<>();
         //SleepActivity activity = (SleepActivity) diary.getActivityFromDate(date);
         //List<IDiaryActivity> activities = diary.getActivitiesFromDate(date);
         List<Sleep> sleepList = diary.getSleepListFromDate(date);
@@ -302,12 +280,12 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             }
         }
 
-        List<DataPoint[]> dataPointsList = new ArrayList<DataPoint[]>();
+        List<DataPoint[]> dataPointsList = new ArrayList<>();
         dataPointsList.add(lightSleep.toArray(new DataPoint[]{}));
         dataPointsList.add(deepSleep.toArray(new DataPoint[]{}));
         dataPointsList.add(coverSleep.toArray(new DataPoint[]{}));
 
-        return new ArrayList<DataPoint[]>(dataPointsList);
+        return new ArrayList<>(dataPointsList);
 
         //If activity was not found we return an empty list.
         /*return new DataPoint[]{
@@ -347,7 +325,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 		ListView lv = (ListView) findViewById(R.id.sleepFeed);
 
 		List<IDiaryActivity> acts = diary.showDaysActivities(Calendar.getInstance());
-		List<String> sleepList = new ArrayList<String>();
+		List<String> sleepList = new ArrayList<>();
 
 		for(int i=0; i<acts.size(); i++) {
             List<Sleep> list = ((SleepActivity) acts.get(i)).getSleepList();
@@ -359,7 +337,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 		// This is the array adapter, it takes the context of the activity as a
 		// first parameter, the type of list view as a second parameter and your
 		// array as a third parameter.
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
 				this,
 				android.R.layout.simple_list_item_1,
 				sleepList );
@@ -376,7 +354,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             Date yesterdaysDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) - 1, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
             Date tomorrowsDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + 1, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
 
-            List<Sleep> todaysSleep = (new ArrayList<Sleep>());
+            List<Sleep> todaysSleep = (new ArrayList<>());
             todaysSleep.addAll(Arrays.asList(
                     new Sleep(
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 7, cal.get(Calendar.MINUTE)).getTime(),
@@ -398,7 +376,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             diary.addActivity(new SleepActivity("id1", todaysSleep, todaysDate));
 
 
-            List<Sleep> yesterdaysSleep = (new ArrayList<Sleep>());
+            List<Sleep> yesterdaysSleep = (new ArrayList<>());
             yesterdaysSleep.addAll(Arrays.asList(
                     new Sleep(
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) - 1, cal.get(Calendar.HOUR_OF_DAY) - 6, cal.get(Calendar.MINUTE)).getTime(),
@@ -411,7 +389,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                     ));
             diary.addActivity(new SleepActivity("id2", yesterdaysSleep ,yesterdaysDate));
 
-            List<Sleep> tomorrowsSleep = (new ArrayList<Sleep>());
+            List<Sleep> tomorrowsSleep = (new ArrayList<>());
             tomorrowsSleep.addAll(Arrays.asList(
                     new Sleep(
                             new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + 1, cal.get(Calendar.HOUR_OF_DAY) - 5, cal.get(Calendar.MINUTE)).getTime(),

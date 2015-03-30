@@ -32,8 +32,6 @@ import java.util.List;
 
 public class AddSleepActivity extends CustomActionBarActivity {
 
-	private Sleep newSleep;
-
 	ArrayAdapter<String> arrayAdapter;
 	List<String> sleepData;
 	private LineGraphSeries<DataPoint> series;
@@ -212,7 +210,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	 * Creates an alertdialog and gives the user the option to change the time of which the
 	 * new sleep should start.
 	 *
-	 * @param view
+	 * @param view Not used, maybe, don't know.
 	 */
 	public void fromListItemOnClick(View view){
 		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
@@ -261,7 +259,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	 * Creates an alertdialog and gives the user the option to change the time of which the
 	 * new sleep should stop.
 	 *
-	 * @param view
+	 * @param view Not used, maybe, don't know.
 	 */
 	public void toListItemOnClick(View view){
 		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
