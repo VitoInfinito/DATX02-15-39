@@ -55,7 +55,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         todaysDate = new Date();
        // calendar = GregorianCalendar.getInstance();
         diary = (WorkoutDiary) WorkoutDiary.getInstance();
-        workout = new Workout(todaysDate, todaysDate, 0, null);
+        workout = new Workout(todaysDate, todaysDate, 0);
         workoutActivity = new WorkoutActivity("workout", workout);
         //diary.addActivity(todaysDate, workoutActivity);
 
@@ -67,7 +67,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         Date start = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 1, cal.get(Calendar.MINUTE)).getTime();
         Date end = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
 
-        Workout workout = new Workout (start, end, 5, null);
+        Workout workout = new Workout (start, end, 5);
         String id = "01";
         WorkoutActivity activity = new WorkoutActivity(id, workout);
         activity.setDate(workout.getStartTime());
@@ -147,7 +147,6 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         List<IDiaryActivity> acts = diary.showDaysActivities(Calendar.getInstance());
         List<String> workoutList = new ArrayList<String>();
 
-       // if(findViewById(R.id.yoga_button))
             for(int i=0; i<acts.size(); i++) {
                 List<Workout> list = ((WorkoutActivity) acts.get(i)).getWorkoutList();
                 for(int j=0; j<list.size(); j++) {

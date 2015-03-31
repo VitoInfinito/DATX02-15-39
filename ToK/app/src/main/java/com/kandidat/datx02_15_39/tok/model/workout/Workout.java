@@ -11,32 +11,8 @@ public class Workout {
     private Date endDate;
     private int intensity;
 
-    static enum workoutType{
-        WORKOUT_YOGA("YOGA"),
-        WORKOUT_BIKE("BIKE"),
-        WORKOUT_RUN("RUN"),
-        WORKOUT_SOCCER("SOCCER"),
-        WORKOUT_TENNIS("TENNIS"),
-        WORKOUT_SWIM("SWIM");
 
-        private String value;
-
-        workoutType(final String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return this.getValue();
-        }
-    }
-
-
-    public Workout(Date start, Date end, int intensity, workoutType type){
+    public Workout(Date start, Date end, int intensity){
         this.startDate = start;
         this.endDate = end;
         this.intensity = intensity;
