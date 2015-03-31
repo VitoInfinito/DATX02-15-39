@@ -9,10 +9,34 @@ import java.util.Date;
 public class Workout {
     private Date startDate;
     private Date endDate;
-    private double intensity;
+    private int intensity;
+
+    static enum workoutType{
+        WORKOUT_YOGA("YOGA"),
+        WORKOUT_BIKE("BIKE"),
+        WORKOUT_RUN("RUN"),
+        WORKOUT_SOCCER("SOCCER"),
+        WORKOUT_TENNIS("TENNIS"),
+        WORKOUT_SWIM("SWIM");
+
+        private String value;
+
+        workoutType(final String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+    }
 
 
-    public Workout(Date start, Date end, double intensity){
+    public Workout(Date start, Date end, int intensity, workoutType type){
         this.startDate = start;
         this.endDate = end;
         this.intensity = intensity;
@@ -25,10 +49,10 @@ public class Workout {
     public Date getEndTime(){
         return this.endDate;
     }
-    public double getIntensity (){
+    public int getIntensity (){
         return this.intensity;
     }
-    public void setIntensity(double intensity){
+    public void setIntensity(int intensity){
         this.intensity=intensity;
     }
     public void setStartTime(Date startTime){

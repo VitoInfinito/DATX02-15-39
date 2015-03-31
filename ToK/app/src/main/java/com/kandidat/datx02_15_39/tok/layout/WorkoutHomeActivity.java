@@ -37,10 +37,9 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     private WorkoutActivity workoutActivity;
     private Workout workout;
     private Date todaysDate;
-//    private GregorianCalendar calendar;
     private LineGraphSeries<DataPoint> series;
     private ListView workoutListView;
-    //private SearchResultAdapter sra;
+
 
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("yyyyMMdd");
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
@@ -56,9 +55,9 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         todaysDate = new Date();
        // calendar = GregorianCalendar.getInstance();
         diary = (WorkoutDiary) WorkoutDiary.getInstance();
-        workout = new Workout(todaysDate, todaysDate, 5.0);
+        workout = new Workout(todaysDate, todaysDate, 0, null);
         workoutActivity = new WorkoutActivity("workout", workout);
-        diary.addActivity(todaysDate, workoutActivity);
+        //diary.addActivity(todaysDate, workoutActivity);
 
         fillListWithDummyData();
 
@@ -68,7 +67,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         Date start = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 1, cal.get(Calendar.MINUTE)).getTime();
         Date end = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
 
-        Workout workout = new Workout (start, end, 5.0);
+        Workout workout = new Workout (start, end, 5, null);
         String id = "01";
         WorkoutActivity activity = new WorkoutActivity(id, workout);
         activity.setDate(workout.getStartTime());
@@ -148,12 +147,13 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         List<IDiaryActivity> acts = diary.showDaysActivities(Calendar.getInstance());
         List<String> workoutList = new ArrayList<String>();
 
-        for(int i=0; i<acts.size(); i++) {
-            List<Workout> list = ((WorkoutActivity) acts.get(i)).getWorkoutList();
-            for(int j=0; j<list.size(); j++) {
-                workoutList.add("Started " + sdfShowFullTime.format(list.get(j).getStartTime()) + " and stopped " + sdfShowFullTime.format(list.get(j).getEndTime()));
+       // if(findViewById(R.id.yoga_button))
+            for(int i=0; i<acts.size(); i++) {
+                List<Workout> list = ((WorkoutActivity) acts.get(i)).getWorkoutList();
+                for(int j=0; j<list.size(); j++) {
+                    workoutList.add("YOGA -" + " Intensitet: " + list.get(j).getIntensity() + "\n" + "Start: " + sdfShowFullTime.format(list.get(j).getStartTime()) + "\n" + "Slut: " + sdfShowFullTime.format(list.get(j).getEndTime()));
+                }
             }
-        }
 
         // This is the array adapter, it takes the context of the activity as a
         // first parameter, the type of list view as a second parameter and your
