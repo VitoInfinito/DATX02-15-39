@@ -71,9 +71,9 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         DataPoint[] deepSleepDps = sleepList.get(1);
         DataPoint[] coverSleepDps = sleepList.get(2);
 
-        lightSleepSeries = new LineGraphSeries<DataPoint>(lightSleepDps);
-        deepSleepSeries = new LineGraphSeries<DataPoint>(deepSleepDps);
-        coverSleepSeries = new LineGraphSeries<DataPoint>(coverSleepDps);
+        lightSleepSeries = new LineGraphSeries<>(lightSleepDps);
+        deepSleepSeries = new LineGraphSeries<>(deepSleepDps);
+        coverSleepSeries = new LineGraphSeries<>(coverSleepDps);
 
         graph.addSeries(lightSleepSeries);
         graph.addSeries(deepSleepSeries);

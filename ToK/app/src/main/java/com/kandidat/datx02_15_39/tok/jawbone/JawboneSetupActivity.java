@@ -59,7 +59,7 @@ public class JawboneSetupActivity extends Activity {
 
         // Set required levels of permissions here, for demonstration purpose
         // we are requesting all permissions
-        authScope  = new ArrayList<UpPlatformSdkConstants.UpPlatformAuthScope>();
+        authScope  = new ArrayList<>();
         authScope.add(UpPlatformSdkConstants.UpPlatformAuthScope.ALL);
 
         Button oAuthAuthorizeButton = (Button) findViewById(R.id.authorizeButton);

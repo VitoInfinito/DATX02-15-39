@@ -36,7 +36,9 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	List<String> sleepData;
 	private LineGraphSeries<DataPoint> series;
 
+	@SuppressWarnings("SimpleDateFormat")
 	private SimpleDateFormat sdfShowDate = new SimpleDateFormat("yyyy-MM-dd");
+	@SuppressWarnings("SimpleDateFormat")
 	private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
 
 	TimePicker startTimePicker;
@@ -109,7 +111,8 @@ public class AddSleepActivity extends CustomActionBarActivity {
 				    // transform number to time
 				    return sdfShowTime.format(new Date((long) value));
 			    } else {
-				    return super.formatLabel(value, isValueX);
+				    return super.formatLabel(value, false);
+				    //return super.formatLabel(value, isValueX);
 			    }
 		    }
 	    });
@@ -346,7 +349,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 		/*for(int i = 0; i<datapoints.size(); i++){
 			System.out.println(datapoints.get(i));
 		}
-		System.out.println("------------------------------------------------MERFELHERDER----------------------------------------------------");*/
+		System.out.println("------------------------------------------------No thanks----------------------------------------------------");*/
 		return datapoints.toArray(new DataPoint[]{});
 	}
 }
