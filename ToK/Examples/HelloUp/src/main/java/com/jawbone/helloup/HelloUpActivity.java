@@ -40,11 +40,13 @@ public class HelloUpActivity extends Activity {
 
     // These are obtained after registering on Jawbone Developer Portal
     // Credentials used here are created for "Test-App1"
-    private static final String CLIENT_ID = "_W1Vw3ksfpQ";
-    private static final String CLIENT_SECRET = "ed46a27e5d3441317607bac4ea99de9617790637";
+    //private static final String CLIENT_ID = "_W1Vw3ksfpQ";
+    //private static final String CLIENT_SECRET = "ed46a27e5d3441317607bac4ea99de9617790637";
+    private static final String CLIENT_ID = "9qZV-Q8xius";
+    private static final String CLIENT_SECRET = "413cad28a2662f161a8de887fe2d43d38b88f834";
 
     // This has to be identical to the OAuth redirect url setup in Jawbone Developer Portal
-    private static final String OAUTH_CALLBACK_URL = "http://localhost/helloup?";
+    private static final String OAUTH_CALLBACK_URL = "http://localhost/tok?";
     //private static final String OAUTH_CALLBACK_URL = "up-platform://redirect";
 
     private List<UpPlatformSdkConstants.UpPlatformAuthScope> authScope;

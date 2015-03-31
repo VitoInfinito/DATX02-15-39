@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jawbone.upplatformsdk.utils.UpPlatformSdkConstants;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -34,6 +35,13 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 public class SleepHomeActivity extends CustomActionBarActivity {
+
+    private static final String TAG = SleepHomeActivity.class.getSimpleName();
+
+    private String mAccessToken;
+    private String mClientSecret;
+
+
     private SleepDiary diary;
     private GregorianCalendar currentCalendar;
 
@@ -52,6 +60,11 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 		setContentView(R.layout.activity_sleep_home);
 		initMenu(R.layout.activity_sleep_home);
         diary = (SleepDiary) SleepDiary.getInstance();
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            mClientSecret = intent.getStringExtra(UpPlatformSdkConstants.CLIENT_SECRET);
+        }
 
         //TODO change to not account for specific times i.e seconds and minutes
         Calendar cal = Calendar.getInstance();

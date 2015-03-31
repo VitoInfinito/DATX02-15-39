@@ -45,8 +45,9 @@ public class JawboneSetupActivity extends Activity {
     private static final String CLIENT_SECRET = "413cad28a2662f161a8de887fe2d43d38b88f834";
 
     // This has to be identical to the OAuth redirect url setup in Jawbone Developer Portal
-    private static final String OAUTH_CALLBACK_URL = "up-platform://redirect";
-    //private static final String OAUTH_CALLBACK_URL = "http://localhost/tok?";
+    //private static final String OAUTH_CALLBACK_URL = "up-platform://redirect";
+    //private static final String OAUTH_CALLBACK_URL = "http://localhost/helloup?";
+    private static final String OAUTH_CALLBACK_URL = "http://localhost/tok?";
     //private static final String OAUTH_CALLBACK_URL = "http://lethe.se/authtok.html";
 
 
