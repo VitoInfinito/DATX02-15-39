@@ -37,10 +37,9 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     private WorkoutActivity workoutActivity;
     private Workout workout;
     private Date todaysDate;
-//    private GregorianCalendar calendar;
     private LineGraphSeries<DataPoint> series;
     private ListView workoutListView;
-    //private SearchResultAdapter sra;
+
 
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("yyyyMMdd");
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
@@ -190,9 +189,14 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     }
 
     private List<DataPoint[]> fetchDataPoints(Date date) {
+        Calendar cal=Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal2.set(date.getTime();
+        );
+
 
         List <DataPoint> dpList = new ArrayList<DataPoint>();
-        List <WorkoutActivity> wList = diary.getWorkoutActivityList();
+        List <WorkoutActivity> wList = diary.showWeekActivities(cal, );
 
         List <DataPoint> tmp = new ArrayList<DataPoint>();
         tmp.add(new DataPoint((wList.get(0).getWorkoutList().get(0).getStartTime()),0));
