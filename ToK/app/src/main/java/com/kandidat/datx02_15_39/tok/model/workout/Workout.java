@@ -10,12 +10,18 @@ public class Workout {
     private Date startDate;
     private Date endDate;
     private int intensity;
+    private String workoutType;
 
+    public static final String WORKOUTTYPE_STRENGTH = "STYRKA -";
+    public static final String WORKOUTTYPE_CARDIO = "KONDITION -";
+    public static final String WORKOUTTYPE_FLEXIBILITY = "FLEXIBILITET -";
+    public static final String WORKOUTTYPE_SPORT = "SPORT -";
 
-    public Workout(Date start, Date end, int intensity){
+    public Workout(Date start, Date end, int intensity, String workoutType){
         this.startDate = start;
         this.endDate = end;
         this.intensity = intensity;
+        this.workoutType = workoutType;
 
     }
 
@@ -28,6 +34,7 @@ public class Workout {
     public int getIntensity (){
         return this.intensity;
     }
+    public String getWorkoutType(){return this.workoutType; }
     public void setIntensity(int intensity){
         this.intensity=intensity;
     }
