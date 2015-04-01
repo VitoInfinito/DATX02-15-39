@@ -86,6 +86,7 @@ public class WorkoutDiary extends AbstractDiary {
         }
         return returnValue;
 	}
+
     public List <IDiaryActivity> getList(){
         return this.list;
     }

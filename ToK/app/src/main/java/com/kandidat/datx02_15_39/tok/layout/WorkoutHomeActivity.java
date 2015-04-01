@@ -190,27 +190,25 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
     private List<DataPoint[]> fetchDataPoints(Date date) {
         Calendar cal=Calendar.getInstance();
-        Calendar cal2 = Calendar.getInstance();
-        cal2.set(date.getTime();
-        );
+        cal.setTime(date);
 
-
-        List <DataPoint> dpList = new ArrayList<DataPoint>();
-        List <WorkoutActivity> wList = diary.showWeekActivities(cal, );
+        List <IDiaryActivity> wList = diary.showWeekActivities(cal, cal );
 
         List <DataPoint> tmp = new ArrayList<DataPoint>();
-        tmp.add(new DataPoint((wList.get(0).getWorkoutList().get(0).getStartTime()),0));
-        tmp.add(new DataPoint(wList.get(wList.size() - 1).getWorkoutList().get(wList.size() - 1).getEndTime().getTime(), 0));
+        tmp.add(new DataPoint((wList.get(0).getDate().getTime()),0));
+//        tmp.add(new DataPoint(wList.get(wList.size() - 1).getWorkoutList().get(wList.size() - 1).getEndTime().getTime(), 0));
         int count = 0;
         List <DataPoint> addList = new ArrayList<DataPoint>();
 
-        for( WorkoutActivity w :wList ){
-            WorkoutActivity wa = wList.get(count);
-            Date startTime = w.getStartTime();
-            Date stopTime = w.getStopTime();
 
-            addList.add(new DataPoint(startTime.getTime(),0));
-            addList.add(new DataPoint(stopTime.getTime(),0));
+        for( IDiaryActivity w :wList ){
+            IDiaryActivity wa = wList.get(count);
+            List <IDiaryActivity> day = WorkoutDiary.getInstance().showDaysActivities(cal);
+//            Date startTime = w.getDate().getStartTime();
+//            Date stopTime = w.getStopTime();
+
+            addList.add(new DataPoint(cal.getTime(),0));
+//            addList.add(new DataPoint(stopTime.getTime(),0));
             count++;
 
         }
@@ -230,20 +228,4 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         return WorkoutDiary.getInstance().showWeekActivities(cal, cal2);
     }
 
-   /* public class SearchResultAdapter extends ArrayAdapter<IDiaryActivity> {
-        public SearchResultAdapter(Context context) {
-            super(context, 0);
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.show_workout, null);
-
-
-            }
-            TextView workout_type_name = (TextView) convertView.findViewById(R.id.workout_type);
-
-            return convertView;
-        }
-    }*/
 }
