@@ -20,15 +20,17 @@ import com.kandidat.datx02_15_39.tok.model.workout.WorkoutDiary;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import android.widget.Toast;
+
 
 
 public class AddWorkoutActivity extends CustomActionBarActivity {
 
     ImageButton yogaButton;
     ImageButton runnerButton;
+    //Create all image buttons..
+
     android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
     private Calendar cal = Calendar.getInstance();
 
@@ -43,7 +45,8 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
     private int stopHours;
     private int stopMinutes;
 
-    private double intensity;
+    private int intensity;
+    private String workoutType;
 
 
     @Override
@@ -52,7 +55,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         setContentView(R.layout.activity_add_workout);
 		initMenu(R.layout.activity_add_workout);
         yogaButton = (ImageButton) findViewById(R.id.yoga_button);
-        runnerButton = (ImageButton) findViewById(R.id.sprint_button);
+        //runnerButton = (ImageButton) findViewById(R.id.sprint_button);
 
         Calendar currentCalendar = Calendar.getInstance();
 
@@ -76,6 +79,29 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
 
     }
+    //Skriv medtoder som sätter knapparna till enums här..
+
+    public void onClickFlex(final View view){
+
+        registerWorkoutIntensityOnClick(view);
+    }
+
+    public void onClickStrength(final View view){
+
+        registerWorkoutIntensityOnClick(view);
+    }
+
+    public void onClickCardio(final View view){
+
+        registerWorkoutIntensityOnClick(view);
+    }
+    public void onClickSports(final View view){
+
+        registerWorkoutIntensityOnClick(view);
+    }
+
+
+
     public void registerWorkoutIntensityOnClick(final View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
@@ -92,6 +118,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int id){
                 intensity = intensityPicker.getValue();
+                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAA" + intensity);
                 registerWorkoutStartTimeOnClick(view);
             }
         });
@@ -184,6 +211,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
     public void addNewWorkout(){
         updateDate();
+        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBB" + intensity);
         Workout workout = new Workout(startDate, stopDate, intensity);
         WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
         WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();

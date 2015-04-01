@@ -27,25 +27,22 @@
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:weightSum="1">
 
                 <LinearLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="132dp"
                     android:id="@+id/button_container"
                     android:gravity="center_horizontal"
                     android:weightSum="6"
                     android:baselineAligned="false"
-                    android:orientation="horizontal">
-
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"/>
+                    android:orientation="horizontal"
+                    android:layout_weight="0.19">
 
                     <ImageButton
                         android:layout_width="100dp"
-                        android:layout_height="fill_parent"
+                        android:layout_height="159dp"
                         android:id="@+id/yoga_button"
                         android:maxHeight="100dp"
                         android:width="100dp"
@@ -56,7 +53,18 @@
                         android:background="@drawable/border_transparent_background"
                         android:padding="10dp"
                         android:onClick="registerWorkoutIntensityOnClick"
-                        android:text="@string/title_activity_add_work_out"/>
+                        android:text="@string/title_activity_add_work_out"
+                        android:layout_weight="1.34" />
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1"/>
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1"/>
 
                     <Space
                         android:layout_width="wrap_content"
@@ -65,27 +73,8 @@
 
                     <ImageButton
                         android:layout_width="100dp"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/bike_button"
-                        android:maxHeight="100dp"
-                        android:width="100dp"
-                        android:maxWidth="100dp"
-                        android:src="@drawable/bike"
-                        android:scaleType="fitCenter"
-                        android:layout_marginTop="8dp"
-                        android:background="@drawable/border_transparent_background"
-                        android:padding="10dp"
-                        android:onClick="registerWorkoutIntensityOnClick"/>
-
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"/>
-
-                    <ImageButton
-                        android:layout_width="100dp"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/sprint_button"
+                        android:layout_height="159dp"
+                        android:id="@+id/sprint"
                         android:maxHeight="100dp"
                         android:width="100dp"
                         android:maxWidth="100dp"
@@ -95,9 +84,18 @@
                         android:background="@drawable/border_transparent_background"
                         android:padding="10dp"
                         android:onClick="registerWorkoutIntensityOnClick"
-                        />
+                        android:text="@string/title_activity_add_work_out"
+                        android:layout_weight="1.34"/>
 
                     </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/space"/>
+
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="100dp"
@@ -105,17 +103,13 @@
                     android:gravity="center_horizontal"
                     android:weightSum="6"
                     android:baselineAligned="false"
-                    android:orientation="horizontal">
-
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"/>
+                    android:orientation="horizontal"
+                    android:layout_weight="0.45">
 
                     <ImageButton
                         android:layout_width="100dp"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/soccer_button"
+                        android:layout_height="159dp"
+                        android:id="@+id/soccer"
                         android:maxHeight="100dp"
                         android:width="100dp"
                         android:maxWidth="100dp"
@@ -124,7 +118,14 @@
                         android:layout_marginTop="8dp"
                         android:background="@drawable/border_transparent_background"
                         android:padding="10dp"
-                        android:onClick="registerWorkoutIntensityOnClick"/>
+                        android:onClick="registerWorkoutIntensityOnClick"
+                        android:text="@string/title_activity_add_work_out"
+                        android:layout_weight="1.34"/>
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1"/>
 
                     <Space
                         android:layout_width="wrap_content"
@@ -133,25 +134,7 @@
 
                     <ImageButton
                         android:layout_width="100dp"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/swim_button"
-                        android:maxHeight="100dp"
-                        android:width="100dp"
-                        android:maxWidth="100dp"
-                        android:src="@drawable/swim"
-                        android:scaleType="fitCenter"
-                        android:layout_marginTop="8dp"
-                        android:background="@drawable/border_transparent_background"
-                        android:padding="10dp"
-                        android:onClick="registerWorkoutIntensityOnClick"/>
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"/>
-
-                    <ImageButton
-                        android:layout_width="100dp"
-                        android:layout_height="fill_parent"
+                        android:layout_height="159dp"
                         android:id="@+id/tennis_button"
                         android:maxHeight="100dp"
                         android:width="100dp"
@@ -161,7 +144,9 @@
                         android:layout_marginTop="8dp"
                         android:background="@drawable/border_transparent_background"
                         android:padding="10dp"
-                        android:onClick="registerWorkoutIntensityOnClick"/>
+                        android:onClick="registerWorkoutIntensityOnClick"
+                        android:text="@string/title_activity_add_work_out"
+                        android:layout_weight="1.34"/>
                     </LinearLayout>
 
             </LinearLayout>
