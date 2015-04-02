@@ -2,8 +2,11 @@ package com.kandidat.datx02_15_39.tok.layout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jawbone.upplatformsdk.api.ApiManager;
 import com.jawbone.upplatformsdk.utils.UpPlatformSdkConstants;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
@@ -32,7 +36,12 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class SleepHomeActivity extends CustomActionBarActivity {
 
@@ -66,94 +75,18 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             mClientSecret = intent.getStringExtra(UpPlatformSdkConstants.CLIENT_SECRET);
         }
 
-        //TODO change to not account for specific times i.e seconds and minutes
-        Calendar cal = Calendar.getInstance();
-        currentCalendar = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
-        Date activeDate = currentCalendar.getTime();
-        //Used for testing
-        produceFakeData();
-        //View viewGraph = findViewById(R.id.imageViewGraph);
-        //DrawDiagram graphDiagram = new DrawDiagram(viewGraph.getContext());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mAccessToken = preferences.getString(UpPlatformSdkConstants.UP_PLATFORM_ACCESS_TOKEN, null);
+
+        if (mAccessToken != null) {
+            ApiManager.getRequestInterceptor().setAccessToken(mAccessToken);
+        }
+
+        fetchSleepFromUP();
+
+        setupGraph();
 
 
-        GraphView graph = (GraphView) findViewById(R.id.graph);
-        ((TextView) findViewById(R.id.textDay)).setText("Idag");
-
-        List<DataPoint[]> sleepList = fetchDataPoints(activeDate);
-        DataPoint[] lightSleepDps = sleepList.get(0);
-        DataPoint[] deepSleepDps = sleepList.get(1);
-        DataPoint[] coverSleepDps = sleepList.get(2);
-
-        lightSleepSeries = new LineGraphSeries<>(lightSleepDps);
-        deepSleepSeries = new LineGraphSeries<>(deepSleepDps);
-        coverSleepSeries = new LineGraphSeries<>(coverSleepDps);
-
-        graph.addSeries(lightSleepSeries);
-        graph.addSeries(deepSleepSeries);
-        graph.addSeries(coverSleepSeries);
-        //lightSleepSeries.setTitle(sdfShowDay.format(activeDate));
-        setGraphXBounds(coverSleepDps, graph);
-
-
-
-        lightSleepSeries.setColor(Color.rgb(0, 0, 153));
-        lightSleepSeries.setDrawBackground(true);
-        lightSleepSeries.setBackgroundColor(Color.rgb(0, 0, 153));
-        lightSleepSeries.setThickness(0);
-
-        deepSleepSeries.setColor(Color.rgb(204, 82, 0));
-        deepSleepSeries.setDrawBackground(true);
-        deepSleepSeries.setBackgroundColor(Color.rgb(204, 82, 0));
-        deepSleepSeries.setThickness(0);
-
-        coverSleepSeries.setColor(Color.rgb(0, 0, 0));
-        coverSleepSeries.setDrawBackground(true);
-        coverSleepSeries.setBackgroundColor(Color.rgb(0, 0, 0));
-        coverSleepSeries.setThickness(0);
-
-
-        //Y Axis bounds
-        graph.getViewport().setScalable(true);
-        graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setMinY(0);
-        graph.getViewport().setMaxY(2);
-
-
-
-        graph.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Handles clicks on the graph.
-             *
-             * @param v The view to reference as current.
-             */
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
-            @Override
-            public String formatLabel(double value, boolean isValueX) {
-                if (isValueX) {
-                    // transform number to time
-                    return sdfShowTime.format(new Date((long) value));
-                } else {
-                    if(value == 0) {
-                        return "V";
-                    }else if(value == 1) {
-                        return "L";
-                    }else if(value == 2) {
-                        return "D";
-                    }else {
-                        return "";
-                    }
-                }
-            }
-        });
-
-        //TODO make a better solution than simply making grid white (Either transparent, remove it or make background white as well)
-        graph.getGridLabelRenderer().setGridColor(Color.argb(0,255,255,255));
 
 
         fillListWithDummyData();
@@ -188,6 +121,45 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    private void fetchSleepFromUP() {
+        fetchSleepFromUP();
+        Log.e(TAG, "making Get Sleep Events List api call ...");
+        ApiManager.getRestApiInterface().getSleepEventsList(
+                UpPlatformSdkConstants.API_VERSION_STRING,
+                getSleepEventsListRequestParams(),
+                genericCallbackListener);
+    }
+
+    private static HashMap<String, Integer> getSleepEventsListRequestParams() {
+        HashMap<String, Integer> queryHashMap = new HashMap<String, Integer>();
+
+        //uncomment to add as needed parameters
+//        queryHashMap.put("date", "<insert-date>");
+//        queryHashMap.put("page_token", "<insert-page-token>");
+//        queryHashMap.put("start_time", "<insert-time>");
+//        queryHashMap.put("end_time", "<insert-time>");
+//        queryHashMap.put("updated_after", "<insert-time>");
+
+        return queryHashMap;
+    }
+
+    //TODO the callbacks are not yet backed by data model, but will get json response,
+    //TODO which for now is logged to console
+    private Callback genericCallbackListener = new Callback<Object>() {
+        @Override
+        public void success(Object o, Response response) {
+            Log.e(TAG,  "api call successful, json output: " + o.toString());
+            Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void failure(RetrofitError retrofitError) {
+            Log.e(TAG,  "api call failed, error message: " + retrofitError.getMessage());
+            Toast.makeText(getApplicationContext(), retrofitError.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    };
 
     /**
      * Updates the graph with and earlier sleep date
@@ -313,6 +285,97 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             graph.getViewport().setMinX(list[0].getX());
             graph.getViewport().setMaxX(list[1].getX());
         }
+    }
+
+    private void setupGraph() {
+        //TODO change to not account for specific times i.e seconds and minutes
+        Calendar cal = Calendar.getInstance();
+        currentCalendar = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
+        Date activeDate = currentCalendar.getTime();
+        //Used for testing
+        produceFakeData();
+        //View viewGraph = findViewById(R.id.imageViewGraph);
+        //DrawDiagram graphDiagram = new DrawDiagram(viewGraph.getContext());
+
+
+        GraphView graph = (GraphView) findViewById(R.id.graph);
+        ((TextView) findViewById(R.id.textDay)).setText("Idag");
+
+        List<DataPoint[]> sleepList = fetchDataPoints(activeDate);
+        DataPoint[] lightSleepDps = sleepList.get(0);
+        DataPoint[] deepSleepDps = sleepList.get(1);
+        DataPoint[] coverSleepDps = sleepList.get(2);
+
+        lightSleepSeries = new LineGraphSeries<>(lightSleepDps);
+        deepSleepSeries = new LineGraphSeries<>(deepSleepDps);
+        coverSleepSeries = new LineGraphSeries<>(coverSleepDps);
+
+        graph.addSeries(lightSleepSeries);
+        graph.addSeries(deepSleepSeries);
+        graph.addSeries(coverSleepSeries);
+        //lightSleepSeries.setTitle(sdfShowDay.format(activeDate));
+        setGraphXBounds(coverSleepDps, graph);
+
+
+
+        lightSleepSeries.setColor(Color.rgb(0, 0, 153));
+        lightSleepSeries.setDrawBackground(true);
+        lightSleepSeries.setBackgroundColor(Color.rgb(0, 0, 153));
+        lightSleepSeries.setThickness(0);
+
+        deepSleepSeries.setColor(Color.rgb(204, 82, 0));
+        deepSleepSeries.setDrawBackground(true);
+        deepSleepSeries.setBackgroundColor(Color.rgb(204, 82, 0));
+        deepSleepSeries.setThickness(0);
+
+        coverSleepSeries.setColor(Color.rgb(0, 0, 0));
+        coverSleepSeries.setDrawBackground(true);
+        coverSleepSeries.setBackgroundColor(Color.rgb(0, 0, 0));
+        coverSleepSeries.setThickness(0);
+
+
+        //Y Axis bounds
+        graph.getViewport().setScalable(true);
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(2);
+
+
+
+        graph.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Handles clicks on the graph.
+             *
+             * @param v The view to reference as current.
+             */
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX) {
+                    // transform number to time
+                    return sdfShowTime.format(new Date((long) value));
+                } else {
+                    if(value == 0) {
+                        return "V";
+                    }else if(value == 1) {
+                        return "L";
+                    }else if(value == 2) {
+                        return "D";
+                    }else {
+                        return "";
+                    }
+                }
+            }
+        });
+
+        //TODO make a better solution than simply making grid white (Either transparent, remove it or make background white as well)
+        graph.getGridLabelRenderer().setGridColor(Color.argb(0,255,255,255));
     }
 
 	private void fillListWithDummyData(){
