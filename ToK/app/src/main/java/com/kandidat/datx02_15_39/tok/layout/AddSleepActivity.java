@@ -32,13 +32,13 @@ import java.util.List;
 
 public class AddSleepActivity extends CustomActionBarActivity {
 
-	private Sleep newSleep;
-
 	ArrayAdapter<String> arrayAdapter;
 	List<String> sleepData;
 	private LineGraphSeries<DataPoint> series;
 
+	@SuppressWarnings("SimpleDateFormat")
 	private SimpleDateFormat sdfShowDate = new SimpleDateFormat("yyyy-MM-dd");
+	@SuppressWarnings("SimpleDateFormat")
 	private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
 
 	TimePicker startTimePicker;
@@ -111,7 +111,8 @@ public class AddSleepActivity extends CustomActionBarActivity {
 				    // transform number to time
 				    return sdfShowTime.format(new Date((long) value));
 			    } else {
-				    return super.formatLabel(value, isValueX);
+				    return super.formatLabel(value, false);
+				    //return super.formatLabel(value, isValueX);
 			    }
 		    }
 	    });
@@ -212,7 +213,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	 * Creates an alertdialog and gives the user the option to change the time of which the
 	 * new sleep should start.
 	 *
-	 * @param view
+	 * @param view Not used, maybe, don't know.
 	 */
 	public void fromListItemOnClick(View view){
 		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
@@ -261,7 +262,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	 * Creates an alertdialog and gives the user the option to change the time of which the
 	 * new sleep should stop.
 	 *
-	 * @param view
+	 * @param view Not used, maybe, don't know.
 	 */
 	public void toListItemOnClick(View view){
 		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
@@ -307,7 +308,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	}
 
 	/**
-	 * Adds a new sleep and redirects to another actitity.
+	 * Adds a new sleep and redirects to another activity.
 	 *
 	 * @param view Not used.
 	 */
@@ -348,7 +349,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 		/*for(int i = 0; i<datapoints.size(); i++){
 			System.out.println(datapoints.get(i));
 		}
-		System.out.println("------------------------------------------------MERFELHERDER----------------------------------------------------");*/
+		System.out.println("------------------------------------------------No thanks----------------------------------------------------");*/
 		return datapoints.toArray(new DataPoint[]{});
 	}
 }

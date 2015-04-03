@@ -1,6 +1,7 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
+import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 public class CreateUserActivity extends ActionBarActivity {
 
@@ -24,6 +26,12 @@ public class CreateUserActivity extends ActionBarActivity {
         String newName = ((EditText)findViewById(R.id.createUserUsername)).getText().toString();
         if(!newName.equals("")) {
             Account.getInstance().setName(newName);
+
+            SharedPreferences settings = getSharedPreferences(Utils.ACCOUNT_PREFS, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("accountName", newName);
+            editor.commit();
+
             startActivity(new Intent(this, MainActivity.class));
         }
     }
