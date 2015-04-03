@@ -1,8 +1,4 @@
-/**
- * @author Omer Muhammed
- * Copyright 2014 (c) Jawbone. All rights reserved.
- *
- */
+
 package com.kandidat.datx02_15_39.tok.jawbone;
 
 import android.app.Activity;
@@ -32,15 +28,12 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
- * Main activity of the Hello Up test app, it makes the OAuth API
- * call and obtains the access token.
+ * Activity for connecting to UP servers
  */
 public class JawboneSetupActivity extends Activity {
 
     private static final String TAG = JawboneSetupActivity.class.getSimpleName();
 
-    // These are obtained after registering on Jawbone Developer Portal
-    // Credentials used here are created for "Test-App1"
     private static final String CLIENT_ID = "9qZV-Q8xius";
     private static final String CLIENT_SECRET = "413cad28a2662f161a8de887fe2d43d38b88f834";
 
@@ -77,13 +70,9 @@ public class JawboneSetupActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        System.out.println("*************************** Checking request code");
         if (requestCode == UpPlatformSdkConstants.JAWBONE_AUTHORIZE_REQUEST_CODE && resultCode == RESULT_OK) {
-            System.out.println("*************************** Request code OK");
-
             String code = data.getStringExtra(UpPlatformSdkConstants.ACCESS_CODE);
             if (code != null) {
-                System.out.println("*************************** code != null");
                 //first clear older accessToken, if it exists..
                 ApiManager.getRequestInterceptor().clearAccessToken();
 
