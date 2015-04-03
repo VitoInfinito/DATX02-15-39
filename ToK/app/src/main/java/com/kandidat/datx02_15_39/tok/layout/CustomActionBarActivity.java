@@ -223,18 +223,22 @@ public class CustomActionBarActivity extends ActionBarActivity{
 	public void onBackPressed() {
 		if(this.getClass() == MainActivity.class) {
 			new AlertDialog.Builder(this)
-					.setTitle("Really Exit?")
-					.setMessage("Are you sure you want to exit?")
-					.setNegativeButton(android.R.string.no, null)
-					.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+									.setTitle("Really Exit?")
+									.setMessage("Are you sure you want to exit?")
+									.setNegativeButton(android.R.string.no, null)
+									.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-						public void onClick(DialogInterface arg0, int arg1) {
-							System.exit(0);
+										public void onClick(DialogInterface arg0, int arg1) {
+											quitPrograme();
 						}
 					}).create().show();
 		}else{
 			super.onBackPressed();
 		}
+	}
+
+	private void quitPrograme(){
+		finish();
 	}
 
 

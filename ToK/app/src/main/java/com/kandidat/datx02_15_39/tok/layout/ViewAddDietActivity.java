@@ -15,7 +15,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +37,9 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 	ArrayList<Food> itemsAdded;
 	private ListView searchResultList;
 	private SearchResultAdapter sra;
+	private int extendedInfoOpenPosition = -1;
+	private static View swipedItemView = null;
+	private DietActivity.MEALTYPE mealType = DietActivity.MEALTYPE.SNACK;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +77,10 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 		//noinspection SimplifiableIfStatement
 		if (id == R.id.right_corner_button_confirm) {
-			DietActivity da = createDietActivity();
-			DietDiary.getInstance().addActivity(da.getDate(), da);
+			if(itemsAdded.size() != 0) {
+				DietActivity da = createDietActivity();
+				DietDiary.getInstance().addActivity(da.getDate(), da);
+			}
 			startActivity(new Intent(this, MainActivity.class));
 		}
 
@@ -82,7 +89,9 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 	private DietActivity createDietActivity() {
 		DietActivity tmp = new DietActivity(itemsAdded, calendar);
-		//TODO Make the enum mealtype in DietActivity that can be set!
+		tmp.setName(((EditText) findViewById(R.id.mealname)).getText().toString());
+		tmp.setMealtype(mealType);
+		Toast.makeText(this, "name of meal: " + tmp.getName() + "/" + mealType, Toast.LENGTH_SHORT).show();
 		return tmp;
 	}
 
@@ -163,6 +172,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 	private void mealSelector(MenuItem item){
 		((Button)findViewById(R.id.meal_selector_button)).setText(item.getTitle());
+		mealType = DietActivity.MEALTYPE.values()[item.getItemId()];
 	}
 
 	/**
@@ -173,6 +183,11 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		//Creating the instance of PopupMenu
 		PopupMenu popup = new PopupMenu(this, (Button)view);
 		//Inflating the Popup using xml file
+		int i = 0;
+		for(DietActivity.MEALTYPE m: DietActivity.MEALTYPE.values()){
+			popup.getMenu().add(i, i, i, m.getString(view.getContext()));
+			++i;
+		}
 		popup.getMenuInflater()
 				.inflate(R.menu.popup_menu_meal, popup.getMenu());
 
@@ -208,16 +223,10 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 			convertView.setClickable(true);
 			// Lookup view for data population
 			TextView food_item_name = (TextView) convertView.findViewById(R.id.food_item_name);
-			Button food_amount = (Button) convertView.findViewById(R.id.btn_food_amount);
-			Button food_prefix = (Button) convertView.findViewById(R.id.btn_food_prefix);
 			ImageButton food_more = (ImageButton) convertView.findViewById(R.id.food_item_more_information);
 			Button delete_food = (Button) convertView.findViewById(R.id.btn_remove_item_from_meal);
 			// Populate the data into the template view using the data object
 			food_item_name.setHint(getItem(position).getName());
-			food_amount.setText(getItem(position).getAmount() + "");
-			food_prefix.setText(getItem(position).getPrefix() + "");
-			food_amount.setOnClickListener(new OnAmountClickListener(position));
-			food_prefix.setOnClickListener(new OnPrefixClickListener(position));
 			food_more.setFocusable(false);
 			food_more.setOnClickListener(new OnMoreInfoClickListener(position));
 			delete_food.setOnClickListener(new OnDeleteClickListener(position));
@@ -262,6 +271,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 	private void changeAmount(View v, int position) {
 		//TODO
+		itemsAdded.get(position).setAmount(154.2);
 	}
 
 	private class OnDeleteClickListener implements View.OnClickListener{
@@ -281,6 +291,9 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 	}
 
 	private void deleteItem(View v, int position) {
+		itemsAdded.remove(position);
+		Toast.makeText(this, "Radera " + position, Toast.LENGTH_SHORT).show();
+		updateList();
 		//TODO
 	}
 
@@ -295,21 +308,60 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 		@Override
 		public void onClick(View v) {
-			openExtendedInfo(v);
+			onMoreInfoClick(v, position);
 		}
 	}
 
-	private void openExtendedInfo(View v) {
-		Toast.makeText(this, "dragen", Toast.LENGTH_SHORT).show();
-		//TODO
+
+	private void onMoreInfoClick(View v, int position){
+		if( this.extendedInfoOpenPosition == position){
+			closeExtendedInfo(v, position);
+			extendedInfoOpenPosition = -1;
+		}else {
+			if(this.extendedInfoOpenPosition != -1){
+				closeExtendedInfo(v, extendedInfoOpenPosition);
+			}
+			openExtendedInfo(v, position);
+			extendedInfoOpenPosition = position;
+		}
+	}
+	private void closeExtendedInfo(View v, int position){
+		//TODO Make the opened information close
+		LinearLayout extendedView = (LinearLayout)searchResultList.getChildAt(position).findViewById(R.id.extended_food_information);
+		extendedView.removeAllViews();
 	}
 
-	private class ItemSwipeListener implements AdapterView.OnTouchListener{
+	private void openExtendedInfo(View v, int position) {
+		LinearLayout extendedView = (LinearLayout)searchResultList.getChildAt(position).findViewById(R.id.extended_food_information);
 
-		private static final int MIN_DISTANCE = 20;
+		View convertView = LayoutInflater.from(this).inflate(R.layout.change_amount_on_food_view, null);
+		Button food_amount = (Button) convertView.findViewById(R.id.btn_food_amount);
+		Button food_prefix = (Button) convertView.findViewById(R.id.btn_food_prefix);
+
+		food_amount.setText(itemsAdded.get(position).getAmount() + "");
+		food_prefix.setText(itemsAdded.get(position).getPrefix() + "");
+		food_amount.setOnClickListener(new OnAmountClickListener(position));
+		food_prefix.setOnClickListener(new OnPrefixClickListener(position));
+		extendedView.addView(convertView);
+
+		Toast.makeText(this, "dragen"+ position, Toast.LENGTH_SHORT).show();
+		//TODO Make so that the new adapter is a adapter to handle click events
+	}
+
+	private static class ItemSwipeListener implements AdapterView.OnTouchListener{
+
+		private static final int MIN_DISTANCE = 50;
 		private float downX, upX;
 		private int position;
 		private float scale;
+		private DIRECTION direction;
+		private static enum DIRECTION{
+			NORTH,
+			SOUTH,
+			WEST,
+			EAST,
+			NONE;
+		}
 
 		public ItemSwipeListener(int position, float scale) {
 			super();
@@ -321,6 +373,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		public boolean onTouch(View v, MotionEvent event) {
 			switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN: {
+					closeOtherSwipe(v);
 					downX = event.getX();
 					return false; // allow other events like Click to be processed
 				}
@@ -333,10 +386,12 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 					if (Math.abs(deltaX / scale) > MIN_DISTANCE) {
 						// left or right
 						if (deltaX < 0 && (deltaX/scale) >(-96)) {
+							direction = DIRECTION.EAST;
 							v.setLeft((96) + (int)(deltaX));
 							return false;
 						}
 						if (deltaX > 0 && (deltaX/scale) < 96) {
+							direction = DIRECTION.WEST;
 							v.setLeft((int)(deltaX) *(-1));
 							return false;
 						}
@@ -344,15 +399,31 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 					return true;
 				}
 				case MotionEvent.ACTION_CANCEL:{
-					if((v.getLeft()/scale) <= (-47)){
-						v.setLeft((int) ((-88) * scale));
-					}else{
-						v.setLeft(0);
-					}
-					return true;
+					setPositionOfContainer(v);
+				}
+				case MotionEvent.ACTION_UP:{
+					setPositionOfContainer(v);
+				}
+				case MotionEvent.ACTION_POINTER_UP:{
+					setPositionOfContainer(v);
 				}
 			}
 			return false;
 		}
+
+		private void setPositionOfContainer(View v){
+			if(direction == DIRECTION.WEST){
+				v.setLeft((int) ((-88) * scale));
+			}else if(direction == DIRECTION.EAST) {
+				v.setLeft(0);
+			}
+		}
+	}
+
+	private static void closeOtherSwipe(View v) {
+		if(swipedItemView != null){
+			swipedItemView.setLeft(0);
+		}
+		swipedItemView = v;
 	}
 }
