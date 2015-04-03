@@ -1,6 +1,7 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import android.widget.Spinner;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.jawbone.JawboneSetupActivity;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
+import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 public class AccountHomeActivity extends CustomActionBarActivity {
 
@@ -70,6 +72,13 @@ public class AccountHomeActivity extends CustomActionBarActivity {
         String newName = ((EditText)findViewById(R.id.accountUsername)).getText().toString();
         if(!newName.equals("")) {
             account.setName(newName);
+
+            //Setting the shared preference of name
+            SharedPreferences settings = getSharedPreferences(Utils.ACCOUNT_PREFS, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("accountName", newName);
+            editor.commit();
+
             ((EditText) findViewById(R.id.accountUsername)).setHint(newName);
             ((EditText) findViewById(R.id.accountUsername)).setText("");
         }

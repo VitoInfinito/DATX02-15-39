@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.internal.LinkedTreeMap;
 import com.jawbone.upplatformsdk.api.ApiManager;
 import com.jawbone.upplatformsdk.utils.UpPlatformSdkConstants;
 import com.jjoe64.graphview.DefaultLabelFormatter;
@@ -29,6 +30,9 @@ import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepActivity;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepDiary;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -124,7 +128,6 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
 
     private void fetchSleepFromUP() {
-        fetchSleepFromUP();
         Log.e(TAG, "making Get Sleep Events List api call ...");
         ApiManager.getRestApiInterface().getSleepEventsList(
                 UpPlatformSdkConstants.API_VERSION_STRING,
@@ -151,12 +154,33 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         @Override
         public void success(Object o, Response response) {
             Log.e(TAG,  "api call successful, json output: " + o.toString());
-            Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_LONG).show();
+
+            List<String> list = new ArrayList<String>();
+            try {
+                //JSONObject obj = new JSONObject("{interests : [{interestKey:Dogs}, {interestKey:Cats}]}");
+                LinkedTreeMap obj = (LinkedTreeMap) o;
+
+                Log.e(TAG, "data: " + obj.get("data").toString());
+                //obj.get("data")
+                ArrayList<LinkedTreeMap> array = (ArrayList<LinkedTreeMap>)((LinkedTreeMap)obj.get("data")).get("items");
+                for (int i = 0; i < array.size(); i++) {
+                    Log.e(TAG, array.get(i).toString());
+                    //array.get(i).
+                   // Log.e(TAG, );
+                    //list.add(array.getJSONObject(i).getString("interestKey"));
+                }
+            }catch(Exception e){
+                Log.e(TAG, "We got an error on our hands: " + e.toString());
+            }
+
+
+            Log.e(TAG, "Yo");
         }
 
         @Override
         public void failure(RetrofitError retrofitError) {
-            Log.e(TAG,  "api call failed, error message: " + retrofitError.getMessage());
+            Log.e(TAG, "api call failed, error message: " + retrofitError.getMessage());
             Toast.makeText(getApplicationContext(), retrofitError.getMessage(), Toast.LENGTH_LONG).show();
         }
     };

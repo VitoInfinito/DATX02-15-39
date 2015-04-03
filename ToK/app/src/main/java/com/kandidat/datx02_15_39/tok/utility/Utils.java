@@ -5,6 +5,9 @@ package com.kandidat.datx02_15_39.tok.utility;
  */
 public final class Utils {
 
+    public static final String ACCOUNT_PREFS = "account_prefs";
+
+
     private Utils() {}
 
 
