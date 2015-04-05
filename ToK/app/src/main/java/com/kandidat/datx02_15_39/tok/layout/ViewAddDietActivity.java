@@ -5,8 +5,11 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.LinkAddress;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -165,6 +168,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		searchResultList = (ListView) findViewById(R.id.food_item_added_container);
 		if(searchResultList.getChildCount() > 0) {
 			searchResultList.removeAllViewsInLayout();
+			//searchResultList.removeAllViews();
 		}
 		sra = new SearchResultAdapter(this);
 		for (Food f: itemsAdded){
@@ -220,10 +224,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 		public View getView (int position, View convertView, ViewGroup parent)
 		{
-			if (convertView == null)
-			{
-				convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_meal_item_editable, null);
-			}
+			convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_meal_item_editable, null);
 			convertView.setOnTouchListener(new ItemSwipeListener(position,
 					getResources().getDisplayMetrics().density));
 			convertView.setClickable(true);
@@ -236,22 +237,33 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 			food_more.setFocusable(false);
 			food_more.setOnClickListener(new OnMoreInfoClickListener(position));
 			delete_food.setOnClickListener(new OnDeleteClickListener(position));
-			//If this view is pressed show more details
-			if(position == extendedInfoOpenPosition){
-				LinearLayout extendedView = (LinearLayout)convertView.findViewById(R.id.extended_food_information);
+			LinearLayout extendedConvertView = (LinearLayout)convertView.findViewById(R.id.extended_food_information);
+			if(extendedInfoOpenPosition == position && extendedConvertView.getChildCount() == 0){
+				View extendedView = LayoutInflater.from(getContext()).inflate(R.layout.change_amount_on_food_view, null);
+				Button food_amount = (Button) extendedView.findViewById(R.id.btn_food_amount);
+				Button food_prefix = (Button) extendedView.findViewById(R.id.btn_food_prefix);
 
-				View extendedInfoView = LayoutInflater.from(convertView.getContext()).inflate(R.layout.change_amount_on_food_view, null);
-				Button food_amount = (Button) extendedInfoView.findViewById(R.id.btn_food_amount);
-				Button food_prefix = (Button) extendedInfoView.findViewById(R.id.btn_food_prefix);
-
-				food_amount.setText(itemsAdded.get(position).getAmount() + "");
-				food_prefix.setText(itemsAdded.get(position).getPrefix() + "");
+				food_amount.setText(getItem(position).getAmount() + "");
+				food_prefix.setText(getItem(position).getPrefix() + "");
 				food_amount.setOnClickListener(new OnAmountClickListener(position));
 				food_prefix.setOnClickListener(new OnPrefixClickListener(position));
-				extendedView.addView(extendedInfoView);
-			}
+				(extendedConvertView).addView(extendedView);
+			}//*/
+			Log.w("tag", "*******************************************\n" + position + "/" + extendedInfoOpenPosition);
 			// Return the completed view to render on screen
 			return convertView;
+		}
+
+		public View getViewByPosition(int pos, ListView listView) {
+			final int firstListItemPosition = listView.getFirstVisiblePosition();
+			final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+
+			if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+				return listView.getAdapter().getView(pos, null, listView);
+			} else {
+				final int childIndex = pos - firstListItemPosition;
+				return listView.getChildAt(childIndex);
+			}
 		}
 	}
 
@@ -361,41 +373,39 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 	private void onMoreInfoClick(View v, int position){
 		if( this.extendedInfoOpenPosition == position){
-			extendedInfoOpenPosition = -1;
 			closeExtendedInfo(v, position);
+			extendedInfoOpenPosition = -1;
 		}else {
-			if(this.extendedInfoOpenPosition != -1){
+			int y = position - searchResultList.getFirstVisiblePosition();
+			if(this.extendedInfoOpenPosition > -1
+					&& y >= 0
+					&& y <= searchResultList.getChildCount()){
 				closeExtendedInfo(v, extendedInfoOpenPosition);
 			}
-			extendedInfoOpenPosition = position;
 			openExtendedInfo(v, position);
+			this.extendedInfoOpenPosition = position;
 		}
 	}
 	private void closeExtendedInfo(View v, int position){
 		//TODO Make the opened information close
-		//LinearLayout extendedView = (LinearLayout)searchResultList.getChildAt(position).findViewById(R.id.extended_food_information);
-		//extendedView.removeAllViews();
-		sra.getView(position,null,null);
+		View view = sra.getViewByPosition(position, searchResultList);
+		//View view = searchResultList.getAdapter().getView(position, null, searchResultList);
+		LinearLayout extendedView = (LinearLayout)view.findViewById(R.id.extended_food_information);
+		extendedView.removeAllViews();
+		extendedView.removeAllViewsInLayout();
 	}
 
 	private void openExtendedInfo(View v, int position) {
-		/*LinearLayout extendedView = (LinearLayout)searchResultList
-				.getChildAt(i)
-				.findViewById(R.id.extended_food_information);
-
-		View convertView = LayoutInflater.from(this).inflate(R.layout.change_amount_on_food_view, null);
-		Button food_amount = (Button) convertView.findViewById(R.id.btn_food_amount);
-		Button food_prefix = (Button) convertView.findViewById(R.id.btn_food_prefix);
+		View view = searchResultList.getChildAt(position - searchResultList.getFirstVisiblePosition());
+		LinearLayout extendedView = (LinearLayout)view.findViewById(R.id.extended_food_information);
+		View convertExtendedView = LayoutInflater.from(this).inflate(R.layout.change_amount_on_food_view, null);
+		Button food_amount = (Button) convertExtendedView.findViewById(R.id.btn_food_amount);
+		Button food_prefix = (Button) convertExtendedView.findViewById(R.id.btn_food_prefix);
 
 		food_amount.setText(itemsAdded.get(position).getAmount() + "");
 		food_prefix.setText(itemsAdded.get(position).getPrefix() + "");
-		food_amount.setOnClickListener(new OnAmountClickListener(position));
-		food_prefix.setOnClickListener(new OnPrefixClickListener(position));
-		extendedView.addView(convertView);//*/
-		sra.getView(position, null, searchResultList);
-		//updateList();
-
-		Toast.makeText(this, "dragen"+ position, Toast.LENGTH_SHORT).show();
+		extendedView.addView(convertExtendedView);
+		Toast.makeText(this, "dragen"+ sra.getCount(), Toast.LENGTH_SHORT).show();
 		//TODO Make so that the new adapter is a adapter to handle click events
 	}
 
