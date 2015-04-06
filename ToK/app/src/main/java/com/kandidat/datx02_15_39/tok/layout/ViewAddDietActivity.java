@@ -237,9 +237,10 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 			food_more.setFocusable(false);
 			food_more.setOnClickListener(new OnMoreInfoClickListener(position));
 			delete_food.setOnClickListener(new OnDeleteClickListener(position));
-			LinearLayout extendedConvertView = (LinearLayout)convertView.findViewById(R.id.extended_food_information);
-			if(extendedInfoOpenPosition == position && extendedConvertView.getChildCount() == 0){
-				View extendedView = LayoutInflater.from(getContext()).inflate(R.layout.change_amount_on_food_view, null);
+			//LinearLayout extendedConvertView = (LinearLayout)convertView.findViewById(R.id.extended_food_information);
+			if(extendedInfoOpenPosition == position /*&& extendedConvertView.getChildCount() == 0/**/){
+				openExtendedInfo(convertView, position);
+				/*View extendedView = LayoutInflater.from(getContext()).inflate(R.layout.change_amount_on_food_view, null);
 				Button food_amount = (Button) extendedView.findViewById(R.id.btn_food_amount);
 				Button food_prefix = (Button) extendedView.findViewById(R.id.btn_food_prefix);
 
@@ -247,9 +248,8 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 				food_prefix.setText(getItem(position).getPrefix() + "");
 				food_amount.setOnClickListener(new OnAmountClickListener(position));
 				food_prefix.setOnClickListener(new OnPrefixClickListener(position));
-				(extendedConvertView).addView(extendedView);
-			}//*/
-			Log.w("tag", "*******************************************\n" + position + "/" + extendedInfoOpenPosition);
+				extendedConvertView.addView(extendedView);*/
+			}
 			// Return the completed view to render on screen
 			return convertView;
 		}
@@ -302,14 +302,13 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 	}
 
 	private void changeAmount(View v, int position) {
-		//TODO
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		View view = getLayoutInflater().inflate(R.layout.number_picker_layout, null);
 		NumberPicker np = (NumberPicker)view.findViewById(R.id.number_picker_amount);
 		np.setMinValue(0);
 		np.setMaxValue(10000);
 		np.setValue((int) itemsAdded.get(position).getAmount());
-		builder.setPositiveButton("Spara", new ChangedAmountListener(np, position));
+		builder.setPositiveButton("Spara", new ChangedAmountListener(v, np, position));
 		AlertDialog dialog = builder.create();
 		dialog.setView(view);
 		dialog.setCancelable(true);
@@ -320,15 +319,18 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 		private NumberPicker np;
 		private int position;
+		private View v;
 
-		public ChangedAmountListener(NumberPicker np, int position){
+		public ChangedAmountListener(View v, NumberPicker np, int position){
 			this.np = np;
 			this.position = position;
+			this.v = v;
 		}
 
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			itemsAdded.get(position).setAmount(np.getValue());
+			((Button)v).setText((float)np.getValue() + "");
 		}
 	}
 
@@ -373,38 +375,45 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 	private void onMoreInfoClick(View v, int position){
 		if( this.extendedInfoOpenPosition == position){
-			closeExtendedInfo(v, position);
+			closeExtendedInfo(sra.getViewByPosition(extendedInfoOpenPosition, searchResultList),
+					extendedInfoOpenPosition);
 			extendedInfoOpenPosition = -1;
 		}else {
 			int y = position - searchResultList.getFirstVisiblePosition();
 			if(this.extendedInfoOpenPosition > -1
-					&& y >= 0
+					&& y >= -1
 					&& y <= searchResultList.getChildCount()){
-				closeExtendedInfo(v, extendedInfoOpenPosition);
+				closeExtendedInfo(sra.getViewByPosition(extendedInfoOpenPosition, searchResultList),
+						extendedInfoOpenPosition);
 			}
-			openExtendedInfo(v, position);
+			openExtendedInfo(
+					searchResultList.getChildAt(position - searchResultList.getFirstVisiblePosition()),
+					position);
 			this.extendedInfoOpenPosition = position;
 		}
 	}
 	private void closeExtendedInfo(View v, int position){
 		//TODO Make the opened information close
-		View view = sra.getViewByPosition(position, searchResultList);
-		//View view = searchResultList.getAdapter().getView(position, null, searchResultList);
-		LinearLayout extendedView = (LinearLayout)view.findViewById(R.id.extended_food_information);
+		//View view = sra.getViewByPosition(position, searchResultList);
+		LinearLayout extendedView = (LinearLayout)v.findViewById(R.id.extended_food_information);
 		extendedView.removeAllViews();
 		extendedView.removeAllViewsInLayout();
 	}
 
 	private void openExtendedInfo(View v, int position) {
-		View view = searchResultList.getChildAt(position - searchResultList.getFirstVisiblePosition());
-		LinearLayout extendedView = (LinearLayout)view.findViewById(R.id.extended_food_information);
-		View convertExtendedView = LayoutInflater.from(this).inflate(R.layout.change_amount_on_food_view, null);
-		Button food_amount = (Button) convertExtendedView.findViewById(R.id.btn_food_amount);
-		Button food_prefix = (Button) convertExtendedView.findViewById(R.id.btn_food_prefix);
+		//View view = searchResultList.getChildAt(position - searchResultList.getFirstVisiblePosition());
+		LinearLayout extendedView = (LinearLayout)v.findViewById(R.id.extended_food_information);
+		if(extendedView.getChildCount() == 0) {
+			View convertExtendedView = LayoutInflater.from(v.getContext()).inflate(R.layout.change_amount_on_food_view, null);
+			Button food_amount = (Button) convertExtendedView.findViewById(R.id.btn_food_amount);
+			Button food_prefix = (Button) convertExtendedView.findViewById(R.id.btn_food_prefix);
 
-		food_amount.setText(itemsAdded.get(position).getAmount() + "");
-		food_prefix.setText(itemsAdded.get(position).getPrefix() + "");
-		extendedView.addView(convertExtendedView);
+			food_amount.setText(itemsAdded.get(position).getAmount() + "");
+			food_prefix.setText(itemsAdded.get(position).getPrefix() + "");
+			food_amount.setOnClickListener(new OnAmountClickListener(position));
+			food_prefix.setOnClickListener(new OnPrefixClickListener(position));
+			extendedView.addView(convertExtendedView);
+		}
 		Toast.makeText(this, "dragen"+ sra.getCount(), Toast.LENGTH_SHORT).show();
 		//TODO Make so that the new adapter is a adapter to handle click events
 	}

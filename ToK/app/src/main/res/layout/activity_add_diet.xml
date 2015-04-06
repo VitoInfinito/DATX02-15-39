@@ -32,16 +32,19 @@
                     android:layout_width="fill_parent"
                     android:layout_height="50dp"
                     android:id="@+id/search_container"
-                    android:touchscreenBlocksFocus="false">
+                    android:touchscreenBlocksFocus="false"
+                    android:clickable="true">
 
                     <SearchView
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/search_field"
-                        android:iconifiedByDefault="true"
+                        android:iconifiedByDefault="false"
                         android:queryHint="Search for...."
                         android:inputType="text"
-                        android:clickable="true"/>
+                        android:clickable="true"
+                        android:focusable="false"
+                        />
                 </FrameLayout>
 
                 <LinearLayout
@@ -139,6 +142,13 @@
                         android:layout_height="fill_parent"
                         android:layout_weight="1"/>
                 </LinearLayout>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="De du ätit mäst"
+                    android:id="@+id/info_about_search_list"
+                    android:textSize="20sp"/>
 
                 <FrameLayout
                     android:layout_width="fill_parent"
