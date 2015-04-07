@@ -46,7 +46,9 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
     private int stopMinutes;
 
     private int intensity;
-    private String workoutType;
+
+    String workoutType;
+
 
 
     @Override
@@ -82,21 +84,21 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
     //Skriv medtoder som sätter knapparna till enums här..
 
     public void onClickFlex(final View view){
-
+        this.workoutType = Workout.WORKOUTTYPE_FLEXIBILITY;
         registerWorkoutIntensityOnClick(view);
     }
 
     public void onClickStrength(final View view){
-
+        this.workoutType = Workout.WORKOUTTYPE_STRENGTH;
         registerWorkoutIntensityOnClick(view);
     }
 
     public void onClickCardio(final View view){
-
+        this.workoutType = Workout.WORKOUTTYPE_CARDIO;
         registerWorkoutIntensityOnClick(view);
     }
     public void onClickSports(final View view){
-
+        this.workoutType = Workout.WORKOUTTYPE_SPORT;
         registerWorkoutIntensityOnClick(view);
     }
 
@@ -106,7 +108,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
         builder.setTitle("Välj intensitet");
-        builder.setIcon(R.drawable.yoga);
+        builder.setIcon(R.drawable.heart288);
         final NumberPicker intensityPicker = new NumberPicker(this);
 
         intensityPicker.setMinValue(1);
@@ -138,7 +140,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Välj starttid:");
-        builder.setIcon(R.drawable.yoga);
+        builder.setIcon(R.drawable.heart288);
 
         final TimePicker timePicker = new TimePicker(this);
 
@@ -167,7 +169,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Välj sluttid:");
-        builder.setIcon(R.drawable.yoga);
+        builder.setIcon(R.drawable.heart288);
 
        final TimePicker timePicker = new TimePicker(this);
 
@@ -212,7 +214,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
     public void addNewWorkout(){
         updateDate();
         System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBB" + intensity);
-        Workout workout = new Workout(startDate, stopDate, intensity);
+        Workout workout = new Workout(startDate, stopDate, intensity, workoutType);
         WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
         WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
         workoutDiary.addActivity(startDate, workoutActivity);
