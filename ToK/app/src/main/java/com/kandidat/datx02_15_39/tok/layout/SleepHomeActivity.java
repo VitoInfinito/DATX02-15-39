@@ -156,7 +156,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             Log.e(TAG,  "api call successful, json output: " + o.toString());
             //Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_LONG).show();
 
-            List<String> list = new ArrayList<String>();
+            List<String> list = new ArrayList<>();
             try {
                 //JSONObject obj = new JSONObject("{interests : [{interestKey:Dogs}, {interestKey:Cats}]}");
                 LinkedTreeMap obj = (LinkedTreeMap) o;
@@ -165,13 +165,15 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 //obj.get("data")
                 ArrayList<LinkedTreeMap> array = (ArrayList<LinkedTreeMap>)((LinkedTreeMap)obj.get("data")).get("items");
                 for (int i = 0; i < array.size(); i++) {
-                    Log.e(TAG, array.get(i).toString());
+                    //Log.e(TAG, array.get(i).toString());
+                    LinkedTreeMap ltm = array.get(i);
+                    Log.e(TAG, "Asleep time: " + ltm.get("asleep_time").toString());
                     //array.get(i).
                    // Log.e(TAG, );
                     //list.add(array.getJSONObject(i).getString("interestKey"));
                 }
             }catch(Exception e){
-                Log.e(TAG, "We got an error on our hands: " + e.toString());
+                Log.e(TAG, "We got an error on our hands: " + e.getMessage());
             }
 
 
@@ -242,6 +244,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 } else {
                     addList = deepSleep;
                 }
+
+
 
                 Date startTime = sleep.getStartTime();
                 Date stopTime = sleep.getStopTime();

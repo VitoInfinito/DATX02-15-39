@@ -163,7 +163,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	 * Adds a new sleep entry into the diary such that it can be viewed in other activities
 	 */
 	public void addNewSleep(){
-		Sleep sleep = new Sleep(startDate, stopDate, 2);
+		Sleep sleep = new Sleep(startDate, stopDate, Sleep.SleepState.DEEP);
 		SleepActivity sleepActivity = new SleepActivity("id4", sleep);
 		SleepDiary sleepDiary = (SleepDiary) SleepDiary.getInstance();
 		sleepDiary.addActivity(startDate, sleepActivity);
