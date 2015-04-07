@@ -164,16 +164,21 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 Log.e(TAG, "data: " + obj.get("data").toString());
                 //obj.get("data")
                 ArrayList<LinkedTreeMap> array = (ArrayList<LinkedTreeMap>)((LinkedTreeMap)obj.get("data")).get("items");
-                for (int i = 0; i < array.size(); i++) {
+                for (int i = 0; i < /*array.size()*/1; i++) {
                     //Log.e(TAG, array.get(i).toString());
                     LinkedTreeMap ltm = array.get(i);
-                    Log.e(TAG, "Asleep time: " + ltm.get("asleep_time").toString());
+                    Log.e(TAG, "LTM: " + ltm.toString());
+                    Log.e(TAG, "Keys: " + ltm.keySet().toString());
+                    //Log.e(TAG, "Created: " + sdfShowFullTime.format(new Date(Double.valueOf((ltm.get("time_created").toString())).longValue())));
+                    Log.e(TAG, "Test: " + new Date(Double.valueOf((ltm.get("time_created").toString())).longValue()*1000));
+
                     //array.get(i).
                    // Log.e(TAG, );
                     //list.add(array.getJSONObject(i).getString("interestKey"));
                 }
             }catch(Exception e){
-                Log.e(TAG, "We got an error on our hands: " + e.getMessage());
+                Log.e(TAG, "We got an error on our hands: ");
+                e.printStackTrace();
             }
 
 
