@@ -178,7 +178,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	private void dateListItemOnClick(View view) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
-		builder.setTitle("Datum");
+		builder.setTitle(R.string.date);
 		builder.setIcon(R.drawable.zzz);
 
 		final DatePicker datePicker = new DatePicker(view.getContext());
@@ -186,7 +186,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 
 		builder.setView(datePicker);
 
-		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				Calendar cal = Calendar.getInstance();
 
@@ -195,11 +195,11 @@ public class AddSleepActivity extends CustomActionBarActivity {
 				startDate = cal.getTime();
 
 				ListView listview = (ListView) findViewById(R.id.sleepProperties);
-				sleepData.set(0, "Datum: " + sdfShowDate.format(startDate));
+				sleepData.set(0, R.string.date + sdfShowDate.format(startDate));
 				listview.setAdapter(arrayAdapter);
 			}
 		});
-		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				// User cancelled the dialog
 			}
@@ -218,7 +218,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	public void fromListItemOnClick(View view){
 		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
-		builder.setTitle("Började sova");
+		builder.setTitle(R.string.sleep_started);
 		builder.setIcon(R.drawable.zzz);
 
 		startTimePicker = new TimePicker(this);
@@ -229,19 +229,19 @@ public class AddSleepActivity extends CustomActionBarActivity {
 
 		builder.setView(startTimePicker);
 
-		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				Calendar cal = Calendar.getInstance();
 				startDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), startHours, startMinutes).getTime();
 
 				ListView listview = (ListView) findViewById(R.id.sleepProperties);
-				sleepData.set(1, "Start: " + sdfShowTime.format(startDate));
+				sleepData.set(1, R.string.sleep_started + sdfShowTime.format(startDate));
 				listview.setAdapter(arrayAdapter);
 
 				series.resetData(fetchDataPoints());
 			}
 		});
-		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				// User cancelled the dialog
 			}
@@ -267,7 +267,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	public void toListItemOnClick(View view){
 		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
-		builder.setTitle("Slutade sova");
+		builder.setTitle(R.string.sleep_ended);
 		builder.setIcon(R.drawable.zzz);
 
 		stopTimePicker = new TimePicker(this);
@@ -278,19 +278,19 @@ public class AddSleepActivity extends CustomActionBarActivity {
 
 		builder.setView(stopTimePicker);
 
-		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				Calendar cal = Calendar.getInstance();
 				stopDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), stopHours, stopMinutes).getTime();
 
 				ListView listview = (ListView) findViewById(R.id.sleepProperties);
-				sleepData.set(2, "Slut: " + sdfShowTime.format(stopDate));
+				sleepData.set(2, R.string.sleep_ended + sdfShowTime.format(stopDate));
 				listview.setAdapter(arrayAdapter);
 
 				series.resetData(fetchDataPoints());
 			}
 		});
-		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				// User cancelled the dialog
 			}
@@ -332,14 +332,12 @@ public class AddSleepActivity extends CustomActionBarActivity {
 		tmpCal.set(Calendar.MINUTE, startMinutes);
 
 		Date startTime = tmpCal.getTime();
-		//System.out.println(startTime);
 
 		tmpCal.setTime(stopDate);
 		tmpCal.set(Calendar.HOUR_OF_DAY, stopHours);
 		tmpCal.set(Calendar.MINUTE, stopMinutes);
 
 		Date stopTime = tmpCal.getTime();
-		//System.out.println(stopTime);
 
 		datapoints.add(new DataPoint(startTime.getTime(), 0));
 		datapoints.add(new DataPoint(startTime.getTime(), 2));
@@ -348,8 +346,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 
 		/*for(int i = 0; i<datapoints.size(); i++){
 			System.out.println(datapoints.get(i));
-		}
-		System.out.println("------------------------------------------------No thanks----------------------------------------------------");*/
+		}*/
 		return datapoints.toArray(new DataPoint[]{});
 	}
 }
