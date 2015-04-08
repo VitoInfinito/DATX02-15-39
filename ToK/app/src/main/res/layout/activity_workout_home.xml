@@ -40,7 +40,7 @@
             android:id="@+id/workout_graph" />
 
         <ListView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="201dp"
             android:id="@+id/show_workout"
             android:layout_gravity="center_horizontal|bottom" />

@@ -1,6 +1,7 @@
 package com.kandidat.datx02_15_39.tok.model.workout;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.kandidat.datx02_15_39.tok.layout.AddWorkoutActivity;
 import com.kandidat.datx02_15_39.tok.model.AbstractDiary;
@@ -71,7 +72,8 @@ public class WorkoutDiary extends AbstractDiary {
 
 	@Override
 	public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end) {
-        if(!start.before(end)){
+        if(!end.before(start)){
+            Log.d("DATEDEBUG", start.getTimeInMillis()+ " " + end.getTimeInMillis());
             throw new IllegalArgumentException();
         }
         List<IDiaryActivity> returnValue = new ArrayList<IDiaryActivity>();
@@ -94,9 +96,23 @@ public class WorkoutDiary extends AbstractDiary {
     public void editActivity(Calendar c,String id, EditActivityParams eap) {
 
     }
+    public List<IDiaryActivity> getActivitiesFromDate(Date d) {
 
-
+        return new ArrayList<>(getActivitiesFromTable(d));
+    }
+    public List<Workout> getWorkoutListFromDate(Date d) {
+        List<IDiaryActivity> activities = getActivitiesFromDate(d);
+        List<Workout> workoutList = new ArrayList<>();
+        if(activities != null) {
+            for(int i=0; i<activities.size(); i++) {
+                List<Workout> isl = ((WorkoutActivity) activities.get(i)).getWorkoutList();
+                workoutList.addAll(isl);
+            }
+        }
+        return workoutList;
+    }
 	@Override
 	public void addActivity(Calendar c, String id, AddToActivity ata) {
+
 	}
 }

@@ -4,22 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
-import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
-import com.kandidat.datx02_15_39.tok.model.sleep.SleepActivity;
 import com.kandidat.datx02_15_39.tok.model.workout.Workout;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutActivity;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutDiary;
@@ -52,12 +50,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_workout_home);
 		initMenu(R.layout.activity_workout_home);
-        todaysDate = new Date();
-       // calendar = GregorianCalendar.getInstance();
+        todaysDate = Calendar.getInstance().getTime();
         diary = (WorkoutDiary) WorkoutDiary.getInstance();
-        workout = new Workout(todaysDate, todaysDate, 0, " ");
-        workoutActivity = new WorkoutActivity("workout", workout);
-        //diary.addActivity(todaysDate, workoutActivity);
 
         fillListWithDummyData();
 
@@ -67,43 +61,25 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         Date start = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 1, cal.get(Calendar.MINUTE)).getTime();
         Date end = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
 
-        Workout workout = new Workout (start, end, 5, " ");
+        workout = new Workout (start, end, 5, " ");
         String id = "01";
-        WorkoutActivity activity = new WorkoutActivity(id, workout);
-        activity.setDate(workout.getStartTime());
-//        diary.addActivity(activeDate, activity);
-
-        Date d1 = cal.getTime();
-        cal.add(Calendar.DATE, 1);
-        Date d2 = cal.getTime();
-        cal.add(Calendar.DATE, 1);
-        Date d3 = cal.getTime();
+        workoutActivity = new WorkoutActivity(id, workout);
+        workoutActivity.setDate(workout.getStartTime());
+        diary.addActivity(activeDate, workoutActivity);
 
         GraphView graph = (GraphView) findViewById(R.id.workout_graph);
+        List<DataPoint[]> workoutList = fetchDataPoints(activeDate);
+        DataPoint [] workoutDataPoints = workoutList.get(0);
+        series = new LineGraphSeries<DataPoint>(workoutDataPoints);
 
-//         series = new LineGraphSeries<>(fetchDataPoints(activeDate));
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(d1, 1),
-                new DataPoint(d2, 5),
-                new DataPoint(d3, 3)
-        });
         graph.addSeries(series);
 
-//        graph.getViewport().setYAxisBoundsManual(true);
-//        graph.getViewport().setMinY(0);
-//        graph.getViewport().setMaxY(10);
-//
-//        graph.getViewport().setXAxisBoundsManual(true);
-//        graph.getViewport().setMinX(0);
-//        graph.getViewport().setMaxX(7);
-//
-        graph.getGridLabelRenderer().setNumVerticalLabels(5);
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Kalorier brända");
-        graph.getGridLabelRenderer().setNumHorizontalLabels(7);
-        graph.getGridLabelRenderer().setHorizontalAxisTitle("Vecka " + cal.WEEK_OF_YEAR);
+        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
+        staticLabelsFormatter.setHorizontalLabels(new String[] {"igår", "idag", "imorrn"});
+        staticLabelsFormatter.setVerticalLabels(new String[] {"låg", "mellan", "hög"});
+        graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
 
         series.setColor(Color.GREEN);
-        series.setTitle(sdfShowDay.format(activeDate));
 
         graph.setOnClickListener(new View.OnClickListener() {
             /**
@@ -148,14 +124,14 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         List<String> workoutList = new ArrayList<String>();
 
 
-            for(int i=0; i<acts.size(); i++) {
-                List<Workout> list = ((WorkoutActivity) acts.get(i)).getWorkoutList();
-                for(int j=0; j<list.size(); j++) {
-                    workoutList.add(list.get(j).getWorkoutType() + " Intensitet: " + list.get(j).getIntensity()
-                            + "\n" + "Start: " + sdfShowFullTime.format(list.get(j).getStartTime()) +
-                            "\n" + "Slut: " + sdfShowFullTime.format(list.get(j).getEndTime()));
-                }
+        for(int i=0; i<acts.size(); i++) {
+            List<Workout> list = ((WorkoutActivity) acts.get(i)).getWorkoutList();
+            for(int j=0; j<list.size(); j++) {
+                workoutList.add(list.get(j).getWorkoutType() + " Intensitet: " + list.get(j).getIntensity()
+                        + "\n" + "Start: " + sdfShowFullTime.format(list.get(j).getStartTime()) +
+                        "\n" + "Slut: " + sdfShowFullTime.format(list.get(j).getEndTime()));
             }
+        }
 
         // This is the array adapter, it takes the context of the activity as a
         // first parameter, the type of list view as a second parameter and your
@@ -191,35 +167,36 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         return this;
     }
 
-    private List<DataPoint[]> fetchDataPoints(Date date) {
+    private List<DataPoint [] > fetchDataPoints(Date date) {
         Calendar cal=Calendar.getInstance();
+        Calendar pastCal = Calendar.getInstance();
         cal.setTime(date);
+        pastCal.setTime(date);
+        pastCal.add(Calendar.HOUR, -1);
 
-        List <IDiaryActivity> wList = diary.showWeekActivities(cal, cal );
+        List <DataPoint> wList = new ArrayList<DataPoint>();
+        diary.addActivity(date, workoutActivity);
+        List<Workout> dayList = diary.getWorkoutListFromDate(date);
 
-        List <DataPoint> tmp = new ArrayList<DataPoint>();
-        tmp.add(new DataPoint((wList.get(0).getDate().getTime()),0));
-//        tmp.add(new DataPoint(wList.get(wList.size() - 1).getWorkoutList().get(wList.size() - 1).getEndTime().getTime(), 0));
-        int count = 0;
-        List <DataPoint> addList = new ArrayList<DataPoint>();
+        if(wList.size()>0){
+            for(int i = 0; i<wList.size(); i++){
+                Workout workout1 = dayList.get(i);
+                List <DataPoint> addList = new ArrayList<DataPoint>();
 
+                Date startTime = workout1.getStartTime();
+                Date stopTime = workout1.getEndTime();
 
-        for( IDiaryActivity w :wList ){
-            IDiaryActivity wa = wList.get(count);
-            List <IDiaryActivity> day = WorkoutDiary.getInstance().showDaysActivities(cal);
-//            Date startTime = w.getDate().getStartTime();
-//            Date stopTime = w.getStopTime();
-
-            addList.add(new DataPoint(cal.getTime(),0));
-//            addList.add(new DataPoint(stopTime.getTime(),0));
-            count++;
+                addList.add(new DataPoint(startTime.getTime(), 0));
+                addList.add(new DataPoint(startTime.getTime(), workout1.getIntensity()));
+                addList.add(new DataPoint(stopTime.getTime(), workout1.getIntensity()));
+                addList.add(new DataPoint(stopTime.getTime(), 0));
+            }
 
         }
 
-        List<DataPoint[]> dataPointsList = new ArrayList<DataPoint[]>();
-        dataPointsList.add(addList.toArray(new DataPoint[]{}));
-
-        return new ArrayList<DataPoint[]>(dataPointsList);
+        List<DataPoint[]> returnList = new ArrayList<DataPoint[]>();
+        returnList.add(wList.toArray(new DataPoint[]{}));
+        return new ArrayList<DataPoint []>(returnList);
     }
 
     public List<IDiaryActivity> getListOfActivities(){
