@@ -116,33 +116,36 @@
                     android:textSize="30sp"
                     android:gravity="center_vertical"/>
 
-                <FrameLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-
-                    <Switch
-                        android:layout_width="fill_parent"
-                        android:layout_height="20dp"
-                        android:id="@+id/save_meal"
-                        android:checked="false"
-                        android:layout_gravity="right|center_vertical"
-                        />
-                </FrameLayout>
-
             </LinearLayout>
 
             <FrameLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:id="@+id/item_container"
-                android:descendantFocusability="blocksDescendants">
+                android:descendantFocusability="blocksDescendants"
+                android:layout_weight="1">
 
                 <ListView
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_height="match_parent"
                     android:id="@+id/food_item_added_container"
                     android:choiceMode="singleChoice"/>
             </FrameLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="bottom">
+
+                <Switch
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="Spara detta som recept:"
+                    android:id="@+id/save_meal_created_as_recipe"
+                    android:layout_weight="1"
+                    android:checked="false"/>
+            </LinearLayout>
 
         </LinearLayout>
     </RelativeLayout>
