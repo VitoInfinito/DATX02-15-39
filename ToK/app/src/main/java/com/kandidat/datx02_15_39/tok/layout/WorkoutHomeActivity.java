@@ -73,6 +73,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         series = new LineGraphSeries<DataPoint>(workoutDataPoints);
 
         graph.addSeries(series);
+        Log.d("DATAPOINTS", workoutList.toString());
+        Log.d("SERIES", series.toString());
 
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
         staticLabelsFormatter.setHorizontalLabels(new String[] {"igår", "idag", "imorrn"});
