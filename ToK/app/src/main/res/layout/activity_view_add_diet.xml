@@ -121,9 +121,8 @@
                     android:layout_height="fill_parent">
 
                     <Switch
-                        android:layout_width="wrap_content"
+                        android:layout_width="fill_parent"
                         android:layout_height="20dp"
-                        android:text="Spara"
                         android:id="@+id/save_meal"
                         android:checked="false"
                         android:layout_gravity="right|center_vertical"

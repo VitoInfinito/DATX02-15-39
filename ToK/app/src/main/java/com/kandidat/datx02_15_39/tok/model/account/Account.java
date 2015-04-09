@@ -1,11 +1,15 @@
 package com.kandidat.datx02_15_39.tok.model.account;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import com.kandidat.datx02_15_39.tok.model.IDiary;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepDiary;
 import com.kandidat.datx02_15_39.tok.model.weight.WeightDiary;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutDiary;
+import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 /**
  * Created by tomashasselquist on 03/03/15.

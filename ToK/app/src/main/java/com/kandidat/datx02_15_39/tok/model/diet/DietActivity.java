@@ -1,5 +1,8 @@
 package com.kandidat.datx02_15_39.tok.model.diet;
 
+import android.content.Context;
+
+import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.AbstractDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.AddToActivity;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
@@ -16,17 +19,52 @@ public class DietActivity extends AbstractDiaryActivity {
 	private List<Food> foodList;
 	private double calorieCount, proteinCount, fatCount, carbCount;
     private String name;
+	private MEALTYPE mealtype = MEALTYPE.SNACK;
+	public enum MEALTYPE{
+		BREAKFAST,
+		LUNCH,
+		DINNER,
+		NIGHTMEAL,
+		SNACK;
+
+		public String getString(Context context){
+			String[] array = context.getResources().getStringArray(R.array.ENUM_NAME);
+			String tmp = "";
+			switch(this){
+				case BREAKFAST:
+					tmp = array[0];
+					break;
+				case LUNCH:
+					tmp = array[1];
+					break;
+				case DINNER:
+					tmp = array[2];
+					break;
+				case NIGHTMEAL:
+					tmp = array[3];
+					break;
+				case SNACK:
+					tmp = array[4];
+					break;
+			}
+			return tmp;
+		}
+	};
 
 	public DietActivity(Calendar calendar){
 		this(new ArrayList<Food>(), calendar);
 	}
 
 	public DietActivity(List<Food> listOfFood, Calendar calendar){
-		super();
-		this.foodList = listOfFood;
-		setDate(calendar.getTime());
-		update();
+        this("Unidentified", listOfFood, calendar);
 	}
+
+    public DietActivity(String name, List<Food> listOfFood, Calendar calendar) {
+        this.foodList = listOfFood;
+        this.name = name;
+        setDate(calendar.getTime());
+        update();
+    }
 
 	private void addFood(Food food){
 		foodList.add(food);
@@ -98,4 +136,12 @@ public class DietActivity extends AbstractDiaryActivity {
     public void setName(String name) {
         this.name = name;
     }
+
+	public void setMealtype(MEALTYPE mealtype) {
+		this.mealtype = mealtype;
+	}
+
+	public MEALTYPE getMealtype() {
+		return mealtype;
+	}
 }

@@ -1,6 +1,7 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,10 +9,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.jawbone.JawboneSetupActivity;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
+import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 public class AccountHomeActivity extends CustomActionBarActivity {
 
@@ -66,10 +68,17 @@ public class AccountHomeActivity extends CustomActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void saveAccountSettings(View view){
+    public void saveAccountSettings(View view) {
         String newName = ((EditText)findViewById(R.id.accountUsername)).getText().toString();
         if(!newName.equals("")) {
             account.setName(newName);
+
+            //Setting the shared preference of name
+            SharedPreferences settings = getSharedPreferences(Utils.ACCOUNT_PREFS, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("accountName", newName);
+            editor.commit();
+
             ((EditText) findViewById(R.id.accountUsername)).setHint(newName);
             ((EditText) findViewById(R.id.accountUsername)).setText("");
         }
@@ -84,5 +93,10 @@ public class AccountHomeActivity extends CustomActionBarActivity {
             }
         }
 
+    }
+
+    public void gotoJawboneConnection(View view) {
+        //startActivity(new Intent(this, JawboneSetup.class));
+        startActivity(new Intent(this, JawboneSetupActivity.class));
     }
 }

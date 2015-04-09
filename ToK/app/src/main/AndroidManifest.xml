@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kandidat.datx02_15_39.tok" >
+
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:targetSdkVersion="19">
+
         <activity
             android:name=".layout.MainActivity"
             android:label="@string/title_activity_hello_world" >
@@ -85,6 +89,31 @@
         <activity
             android:name=".layout.CreateUserActivity"
             android:label="@string/title_activity_create_user" >
+        </activity>
+
+        /*Oauth activity*/
+        <activity
+            android:name=".jawbone.JawboneSetupActivity">
+            <intent-filter>
+                <action android:name="com.kandidat.datx02_15_39.tok.jawbone.JawboneSetupActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.jawbone.upplatformsdk.oauth.OauthWebViewActivity">
+            <intent-filter>
+                <action android:name="com.jawbone.upplatformsdk.oauth.OauthWebViewActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".jawbone.UpApiListActivity">
+            <intent-filter>
+                <action android:name="com.kandidat.datx02_15_39.tok.jawbone.UpApiListActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
     </application>
 

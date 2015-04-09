@@ -1,22 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/one"
-        android:title="Frukost"/>
 
-    <item
-        android:id="@+id/two"
-        android:title="Lunch"/>
-
-    <item
-        android:id="@+id/three"
-        android:title="Middag"/>
-
-    <item
-        android:id="@+id/four"
-        android:title="Kvällsmat"/>
-
-    <item
-        android:id="@+id/five"
-        android:title="Mellanmål"/>
 </menu>
