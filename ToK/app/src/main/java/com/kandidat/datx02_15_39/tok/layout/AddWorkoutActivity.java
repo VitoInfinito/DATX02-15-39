@@ -120,6 +120,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int id){
                 intensity = intensityPicker.getValue();
+                //TODO remove println when not needed
                 System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAA" + intensity);
                 registerWorkoutStartTimeOnClick(view);
             }
@@ -213,6 +214,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
     public void addNewWorkout(){
         updateDate();
+        // TODO remove println when not needed
         System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBB" + intensity);
         Workout workout = new Workout(startDate, stopDate, intensity, workoutType);
         WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);

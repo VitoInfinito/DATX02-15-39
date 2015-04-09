@@ -18,7 +18,6 @@ import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.workout.Workout;
@@ -39,7 +38,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     private Workout workout;
     private Date todaysDate;
     private BarGraphSeries<DataPoint> series;
-    private ListView workoutListView;
+//    private ListView workoutListView;
     private GraphView graph;
     ArrayList <Workout> workoutList;
 
@@ -47,8 +46,6 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
 
     Calendar cal;
-    private int dayoffset = 0;
-    private int weekoffset = 0;
 
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("yyyyMMdd");
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
@@ -87,17 +84,17 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         series = new BarGraphSeries<>();
         updateDayScreen(cal);
 
-//        graph.setOnClickListener(new View.OnClickListener() {
-//            /**
-//             * Handles clicks on the graph.
-//             *
-//             * @param v The view to reference as current.
-//             */
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        graph.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Handles clicks on the graph.
+             *
+             * @param v The view to reference as current.
+             */
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -129,7 +126,6 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         List<IDiaryActivity> acts = diary.showDaysActivities(Calendar.getInstance());
         List<String> workoutList = new ArrayList<String>();
 
-
         for(int i=0; i<acts.size(); i++) {
             List<Workout> list = ((WorkoutActivity) acts.get(i)).getWorkoutList();
             for(int j=0; j<list.size(); j++) {
@@ -138,6 +134,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
                         "\n" + "Slut: " + sdfShowFullTime.format(list.get(j).getEndTime()));
             }
         }
+
 
         // This is the array adapter, it takes the context of the activity as a
         // first parameter, the type of list view as a second parameter and your
@@ -176,22 +173,28 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     private void updateActivityList (ArrayList<WorkoutActivity> workoutActivityList){
         double intensity = 0;
         for (WorkoutActivity a : workoutActivityList){
-            for(int i = 0; i<workoutActivityList.size(); i++)
-            intensity += a.getWorkoutList().get(i).getIntensity();
+//            for(int i = 0; i<workoutActivityList.size(); i++)
+            intensity += a.getWorkoutList().get(0).getIntensity();
 
         }
-        Log.d("INTENSITET ", intensity+ " ");
-        series.resetData(new DataPoint[]{
-            new DataPoint(10, intensity)
-        });
+        if(series!= null){
+            series.resetData(new DataPoint[]{
+                  new DataPoint(0,0),
+                  new DataPoint(10, intensity),
+                  new DataPoint(20, intensity+1),
+                  new DataPoint(30, intensity+2),
+                  new DataPoint(40, intensity+3),
+                  new DataPoint(50, 0),
+              });
+            series.setSpacing(8);
+            series.setDrawValuesOnTop(true);
+            series.setValuesOnTopColor(Color.RED);
 
-        series.setSpacing(8);
-        series.setDrawValuesOnTop(true);
-        series.setValuesOnTopColor(Color.RED);
+        }
 
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
         staticLabelsFormatter.setHorizontalLabels(new String[] {"M", "T", "O", "T", "F", "L", "S"});
-        staticLabelsFormatter.setVerticalLabels(new String[] {"låg", "medium", "hög"});
+//        staticLabelsFormatter.setVerticalLabels(new String[] {"låg", "medium", "hög"});
         graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
 
         graph.getGridLabelRenderer().setVerticalAxisTitle("Intensitet");
@@ -209,28 +212,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         updateActivityList(workoutActivityList);
     }
 
-    private void updateWeekScreen(Calendar cal){
 
-        Pair <Calendar, Calendar> pairDate = getDateIntervalOfWeek(cal);
-
-        workoutActivityList = (ArrayList) diary.showWeekActivities(pairDate.first, pairDate.second);
-    }
-
-    private Pair<Calendar, Calendar> getDateIntervalOfWeek(Calendar cal){
-        Calendar c = (Calendar) cal.clone();
-        c.add(Calendar.DATE, 0);
-        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - c.getFirstDayOfWeek();
-        c.add(Calendar.DAY_OF_MONTH, -dayOfWeek);
-
-        Calendar firstDay = (Calendar) c.clone();
-        // we do not need the same day a week after, that's why use 6, not 7
-        c.add(Calendar.DAY_OF_MONTH, 6);
-        Calendar lastDay = (Calendar) c.clone();
-
-        return new Pair<>(firstDay, lastDay);
-    }
-
-    private BarGraphSeries<DataPoint> fetchDataPoints(Date date) {
+ /*   private BarGraphSeries<DataPoint> fetchDataPoints(Date date) {
         Calendar cal=Calendar.getInstance();
         Calendar pastCal = Calendar.getInstance();
         cal.setTime(date);
@@ -266,7 +249,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 //        returnList.add(wList.toArray(new DataPoint[]{}));
 //        return new ArrayList<DataPoint []>(returnList);
         return returnList;
-    }
+    }*/
 
     public List<IDiaryActivity> getListOfActivities(){
         Calendar cal = new GregorianCalendar();
