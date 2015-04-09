@@ -68,20 +68,20 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         diary.addActivity(activeDate, workoutActivity);
 
         GraphView graph = (GraphView) findViewById(R.id.workout_graph);
-        List<DataPoint[]> workoutList = fetchDataPoints(activeDate);
-        DataPoint [] workoutDataPoints = workoutList.get(0);
-        series = new LineGraphSeries<DataPoint>(workoutDataPoints);
-
+//        List<DataPoint[]> workoutList = fetchDataPoints(activeDate);
+//        DataPoint [] workoutDataPoints = workoutList.get(0);
+//        series = new LineGraphSeries<DataPoint>(workoutDataPoints);
+        series = fetchDataPoints(activeDate);
         graph.addSeries(series);
-        Log.d("DATAPOINTS", workoutList.toString());
+
         Log.d("SERIES", series.toString());
 
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
-        staticLabelsFormatter.setHorizontalLabels(new String[] {"igår", "idag", "imorrn"});
-        staticLabelsFormatter.setVerticalLabels(new String[] {"låg", "mellan", "hög"});
+        staticLabelsFormatter.setHorizontalLabels(new String[] {"M", "T", "O", "T", "F", "L", "S"});
+        staticLabelsFormatter.setVerticalLabels(new String[] {"låg", "medium", "hög"});
         graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
 
-        series.setColor(Color.GREEN);
+        series.setColor(Color.RED);
 
         graph.setOnClickListener(new View.OnClickListener() {
             /**
@@ -169,36 +169,42 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         return this;
     }
 
-    private List<DataPoint [] > fetchDataPoints(Date date) {
+    private LineGraphSeries<DataPoint> fetchDataPoints(Date date) {
         Calendar cal=Calendar.getInstance();
         Calendar pastCal = Calendar.getInstance();
         cal.setTime(date);
         pastCal.setTime(date);
         pastCal.add(Calendar.HOUR, -1);
 
+        Log.d("DATE", date.toString());
         List <DataPoint> wList = new ArrayList<DataPoint>();
-        diary.addActivity(date, workoutActivity);
         List<Workout> dayList = diary.getWorkoutListFromDate(date);
 
-        if(wList.size()>0){
-            for(int i = 0; i<wList.size(); i++){
-                Workout workout1 = dayList.get(i);
-                List <DataPoint> addList = new ArrayList<DataPoint>();
+//        if(wList.size()>0){
+//            for(int i = 0; i<wList.size(); i++){
+//                Workout workout1 = dayList.get(i);
+//                List <DataPoint> addList = new ArrayList<DataPoint>();
+//
+//                Date startTime = workout1.getStartTime();
+//                Date stopTime = workout1.getEndTime();
+//
+//                addList.add(new DataPoint(startTime.getTime(), 0));
+//                addList.add(new DataPoint(startTime.getTime(), workout1.getIntensity()));
+//                addList.add(new DataPoint(stopTime.getTime(), workout1.getIntensity()));
+//                addList.add(new DataPoint(stopTime.getTime(), 0));
+//            }
+//
+//        }
+        Date x = dayList.get(0).getStartTime();
+        int y = dayList.get(0).getIntensity();
+        LineGraphSeries<DataPoint> returnList = new LineGraphSeries<DataPoint>(new DataPoint[]{
+                new DataPoint(1, 2),
+                new DataPoint(2, 3)
+        });
 
-                Date startTime = workout1.getStartTime();
-                Date stopTime = workout1.getEndTime();
-
-                addList.add(new DataPoint(startTime.getTime(), 0));
-                addList.add(new DataPoint(startTime.getTime(), workout1.getIntensity()));
-                addList.add(new DataPoint(stopTime.getTime(), workout1.getIntensity()));
-                addList.add(new DataPoint(stopTime.getTime(), 0));
-            }
-
-        }
-
-        List<DataPoint[]> returnList = new ArrayList<DataPoint[]>();
-        returnList.add(wList.toArray(new DataPoint[]{}));
-        return new ArrayList<DataPoint []>(returnList);
+//        returnList.add(wList.toArray(new DataPoint[]{}));
+//        return new ArrayList<DataPoint []>(returnList);
+        return returnList;
     }
 
     public List<IDiaryActivity> getListOfActivities(){

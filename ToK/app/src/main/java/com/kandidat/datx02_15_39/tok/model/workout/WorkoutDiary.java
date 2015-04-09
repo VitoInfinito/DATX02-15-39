@@ -73,7 +73,6 @@ public class WorkoutDiary extends AbstractDiary {
 	@Override
 	public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end) {
         if(!end.before(start)){
-            Log.d("DATEDEBUG", start.getTimeInMillis()+ " " + end.getTimeInMillis());
             throw new IllegalArgumentException();
         }
         List<IDiaryActivity> returnValue = new ArrayList<IDiaryActivity>();
@@ -109,6 +108,7 @@ public class WorkoutDiary extends AbstractDiary {
                 workoutList.addAll(isl);
             }
         }
+        Log.d("WORKOUT", workoutList.toString());
         return workoutList;
     }
 	@Override
