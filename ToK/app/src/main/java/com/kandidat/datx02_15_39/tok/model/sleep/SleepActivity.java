@@ -9,30 +9,25 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by tomashasselquist on 20/02/15.
+ * Created by tomasherselquist on 20/02/15.
  */
 public class SleepActivity implements IDiaryActivity{
 
     private final String id;
-    //private Sleep sleep;
     private List<Sleep> sleepList;
     private Date date;
 
     public SleepActivity(String id, Sleep sleep) {
         this.id = id;
-        sleepList = new ArrayList<Sleep>();
+        sleepList = new ArrayList<>();
         sleepList.add(sleep);
-        //this.sleep = sleep;
         date = new Date();
     }
 
     public SleepActivity(String id, Sleep sleep, Date date) {
         this.id = id;
-
-        sleepList = new ArrayList<Sleep>();
+        sleepList = new ArrayList<>();
         sleepList.add(sleep);
-        //this.sleep = sleep;
-
         this.date = date;
     }
 
@@ -47,8 +42,6 @@ public class SleepActivity implements IDiaryActivity{
     }
 
     public Sleep getSleepThatStarts(Date date) {
-       // System.out.println("Got into getSleepThatStarts with date " + date + " and sleep starts at " + sleep.getStartTime());
-       // System.out.println("The compare gives " + sleep.getStartTime().compareTo(date));
         for(int i=0; i<sleepList.size(); i++) {
             if (sleepList.get(i).getStartTime().compareTo(date) == 0) {
                 return sleepList.get(i);

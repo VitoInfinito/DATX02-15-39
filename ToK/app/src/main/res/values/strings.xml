@@ -25,6 +25,21 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="Workout">Träning</string>
 
+    <!-- Enumerator Words to mealtype -->
+    <string-array name="ENUM_NAME">
+        <item>@string/diet_breakfast</item>
+        <item>@string/diet_lunch</item>
+        <item>@string/diet_dinner</item>
+        <item>@string/diet_nightmeal</item>
+        <item>@string/diet_snack</item>
+    </string-array>
+
+    <string name="diet_breakfast">Frukost</string>
+    <string name="diet_lunch">Lunch</string>
+    <string name="diet_dinner">Middag</string>
+    <string name="diet_nightmeal">Kvällsmat</string>
+    <string name="diet_snack">Mellanmål</string>
+
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_top_items">
         <item>@string/Home</item>
@@ -46,11 +61,6 @@
         <item>@string/male</item>
         <item>@string/female</item>
     </string-array>
-
-
-    <!-- Nav Drawer List Item Icons -->
-    <!-- Keep them in order as the titles are in -->
-    <array name="nav_drawer_icons" />
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
@@ -76,5 +86,8 @@
     <string name="female">Kvinna</string>
     <string name="title_activity_view_add_diet">ViewAddDietActivity</string>
     <string name="title_activity_create_user">CreateUserActivity</string>
+    <string name="title_activity_jawbone_setup">JawboneSetup</string>
+    <string name="title_activity_up_api_list">UpApiListActivity</string>
+    <string name="press_button_to_connect">Press button to connect</string>
 
 </resources>
