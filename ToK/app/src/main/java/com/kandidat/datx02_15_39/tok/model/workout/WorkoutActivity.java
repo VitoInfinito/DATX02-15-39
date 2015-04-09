@@ -17,7 +17,6 @@ public class WorkoutActivity extends AbstractDiaryActivity {
 
     private List<Workout> workoutList;
 
-    private double burnedCalCount;
     private Date startTime;
     private Date stopTime;
     private final String id;
@@ -41,8 +40,14 @@ public class WorkoutActivity extends AbstractDiaryActivity {
     public Date getStartTime (){
         return this.startTime;
     }
+    public void setStartTime (Date d) {
+        startTime = d;
+    }
     public Date getStopTime(){
         return this.stopTime;
+    }
+    public void setStopTime(Date d){
+        stopTime = d;
     }
 
     @Override
@@ -57,10 +62,5 @@ public class WorkoutActivity extends AbstractDiaryActivity {
     public List <Workout> getWorkoutList(){
         return workoutList;
     }
-
-    public double getBurnedCalCount() {
-        return this.burnedCalCount;
-    }
-
 
 }
