@@ -167,10 +167,17 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 for (int i = 0; i < /*array.size()*/1; i++) {
                     //Log.e(TAG, array.get(i).toString());
                     LinkedTreeMap ltm = array.get(i);
+                    LinkedTreeMap details = (LinkedTreeMap) ltm.get("details");
                     Log.e(TAG, "LTM: " + ltm.toString());
                     Log.e(TAG, "Keys: " + ltm.keySet().toString());
                     //Log.e(TAG, "Created: " + sdfShowFullTime.format(new Date(Double.valueOf((ltm.get("time_created").toString())).longValue())));
-                    Log.e(TAG, "Test: " + new Date(Double.valueOf((ltm.get("time_created").toString())).longValue()*1000));
+                    Log.e(TAG, "Created: " + new Date(Double.valueOf((ltm.get("time_created").toString())).longValue()*1000));
+                    Log.e(TAG, "Completed: " + new Date(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000));
+                    Log.e(TAG, "Updated: " + new Date(Double.valueOf((ltm.get("time_updated").toString())).longValue()*1000));
+                    Log.e(TAG, "Details: " + details.toString());
+                    Log.e(TAG, "Asleep time: " + new Date(Double.valueOf((details.get("asleep_time").toString())).longValue()*1000));
+                    Log.e(TAG, "Duration: " + (Double.valueOf((details.get("duration").toString())).longValue()/3600.0) + " hours");
+                    Log.e(TAG, "Awake time: " + new Date(Double.valueOf((details.get("awake_time").toString())).longValue()*1000));
 
                     //array.get(i).
                    // Log.e(TAG, );
@@ -180,9 +187,6 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 Log.e(TAG, "We got an error on our hands: ");
                 e.printStackTrace();
             }
-
-
-            Log.e(TAG, "Yo");
         }
 
         @Override
