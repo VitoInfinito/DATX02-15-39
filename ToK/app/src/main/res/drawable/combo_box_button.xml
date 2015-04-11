@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/border_transparent_background"
+        ></item>
+    <item android:right="0dp">
+        <bitmap android:src="@drawable/arrow_down"
+                android:gravity="right"/>
+    </item>
+</layer-list>

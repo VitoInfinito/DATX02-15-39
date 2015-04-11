@@ -4,7 +4,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kandidat.datx02_15_39.tok.layout.AddDietActivity">
+    tools:context="com.kandidat.datx02_15_39.tok.layout.SleepHomeActivity">
     <!-- The main content view -->
 
     <RelativeLayout
@@ -29,14 +29,6 @@
             android:layout_height="fill_parent"
             android:layout_gravity="left|top">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal">
-
-            </LinearLayout>
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -47,6 +39,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dip"
                     android:id="@+id/graph" />
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/sleepGraph"
+                    android:layout_gravity="left|top" />
 
             </FrameLayout>
 
@@ -84,41 +82,114 @@
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                >
+                android:baselineAligned="false">
 
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Lätt sömn"
+                        android:id="@+id/textView6"
+                        android:layout_centerHorizontal="true"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Medium Text"
+                        android:id="@+id/textView13"
+                        android:layout_below="@+id/textView6"
+                        android:layout_centerHorizontal="true"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Tid i sängen"
+                        android:id="@+id/textView8"
+                        android:layout_centerHorizontal="true"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Medium Text"
+                        android:id="@+id/textView14"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/textView8"/>
+
+                </RelativeLayout>
             </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:baselineAligned="false">
 
-                <ImageButton
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton"
-                    android:src="@drawable/moon"
-                    android:layout_centerHorizontal="true"
-                    android:onClick="addSleepButtonOnClick"/>
-            </RelativeLayout>
+                    android:layout_weight="1">
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Djup sömn"
+                        android:id="@+id/textView10"
+                        android:layout_centerHorizontal="true"/>
 
-                <ListView
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Medium Text"
+                        android:id="@+id/textView15"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/textView10"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/sleepFeed"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_below="@+id/imageButton"/>
-            </FrameLayout>
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Vaknade"
+                        android:id="@+id/textView12"
+                        android:layout_centerHorizontal="true"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Medium Text"
+                        android:id="@+id/textView16"
+                        android:layout_below="@+id/textView12"
+                        android:layout_centerHorizontal="true"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
     </FrameLayout>
@@ -129,26 +200,44 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:divider="@android:color/transparent"
-        android:background="@android:color/black"
-        android:orientation="vertical"
-        android:choiceMode="singleChoice">
+        android:background="#fe111111"
+        android:orientation="vertical"    >
 
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_top"
-            android:choiceMode="singleChoice"/>
+            android:choiceMode="singleChoice"
+            android:divider="#11ffffff"
+            android:dividerHeight="1dp"
+            android:drawSelectorOnTop="false"/>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:id="@+id/view_divider_1"/>
+
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_diary"
-            android:choiceMode="singleChoice"/>
+            android:choiceMode="singleChoice"
+            android:divider="#11ffffff"
+            android:dividerHeight="1dp"
+            android:drawSelectorOnTop="false"/>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:id="@+id/view_divider_2"/>
+
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_setting"
-            android:choiceMode="singleChoice"/>
+            android:choiceMode="singleChoice"
+            android:divider="#11ffffff"
+            android:dividerHeight="1dp"
+            android:drawSelectorOnTop="false"/>
     </LinearLayout>
-
-</android.support.v4.widget.DrawerLayout>
+    </android.support.v4.widget.DrawerLayout>

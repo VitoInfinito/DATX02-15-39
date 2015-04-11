@@ -1,6 +1,7 @@
 package com.kandidat.datx02_15_39.tok.model.workout;
 
 import com.kandidat.datx02_15_39.tok.model.AbstractDiary;
+import com.kandidat.datx02_15_39.tok.model.AddToActivity;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiary;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 public class WorkoutDiary extends AbstractDiary {
     private static IDiary instance;
+    private List <IDiaryActivity> listByW;
 
     protected WorkoutDiary(){
         super();
@@ -61,4 +63,9 @@ public class WorkoutDiary extends AbstractDiary {
     public void editActivity(Calendar c,String id, EditActivityParams eap) {
 
     }
+
+	@Override
+	public void addActivity(Calendar c, String id, AddToActivity ata) {
+
+	}
 }

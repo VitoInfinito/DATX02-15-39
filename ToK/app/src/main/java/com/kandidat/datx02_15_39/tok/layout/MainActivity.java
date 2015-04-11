@@ -3,6 +3,7 @@ package com.kandidat.datx02_15_39.tok.layout;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,17 +11,42 @@ import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.model.account.Account;
+import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 
 public class MainActivity extends CustomActionBarActivity {
+    private Account account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity);
 		initMenu(R.layout.activity_main_activity);
+
+
+        //Fetching and/or setting up account name from saved preferences
+        account = Account.getInstance();
+        String accountName = account.getName();
+        if(accountName != null) {
+            ((TextView) findViewById(R.id.homeUsername)).setText(accountName);
+        }else {
+            SharedPreferences settings = getSharedPreferences(Utils.ACCOUNT_PREFS, 0);
+            accountName = settings.getString("accountName", null);
+
+            //Checking if name was a saved preference
+            if(accountName != null) {
+                Account.getInstance().setName(accountName);
+                ((TextView) findViewById(R.id.homeUsername)).setText(accountName);
+            }else {
+                startActivity(new Intent(this, CreateUserActivity.class));
+            }
+        }
+
+
     }
 
 
@@ -55,7 +81,7 @@ public class MainActivity extends CustomActionBarActivity {
 	 *
 	 * @param view Not used.
 	 */
-    public void OnDietButtonClick(View view) {
+    public void onDietButtonClick(View view) {
         startActivity(new Intent(this, DietHomeActivity.class));
     }
 
@@ -64,11 +90,11 @@ public class MainActivity extends CustomActionBarActivity {
      *
      * @param view Not used.
      */
-    public void OnSleepButtonClick(View view) {
+    public void onSleepButtonClick(View view) {
         startActivity(new Intent(this, SleepHomeActivity.class));
     }
 
-    public void OnWorkOutButtonClick(View view){
+    public void onWorkOutButtonClick(View view){
         startActivity(new Intent(this, WorkoutHomeActivity.class));
     }
 
@@ -79,7 +105,7 @@ public class MainActivity extends CustomActionBarActivity {
 	 * @param view View to get context from for the alert dialog
 	 */
 	public void registerWeightOnClick(View view){
-		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+		/*AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
 		builder.setTitle("Weight");
 		builder.setIcon(R.drawable.weigth_scale);
@@ -94,7 +120,7 @@ public class MainActivity extends CustomActionBarActivity {
 
 		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				// User clicked OK button
+
 			}
 		});
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -103,10 +129,14 @@ public class MainActivity extends CustomActionBarActivity {
 			}
 		});
 
-
 		AlertDialog dialog = builder.create();
 
-		dialog.show();
+		dialog.show();*/
+
+		startActivity(new Intent(this, WeightHomeActivity.class));
 	}
 
+	public void goalsButtonOnClick(View view){
+		startActivity(new Intent(this, GoalActivity.class));
+	}
 }

@@ -5,10 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -21,12 +20,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kandidat.datx02_15_39.tok.R;
-import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
 
 /**
  * Created by Lagerstedt on 2015-02-24.
@@ -37,41 +36,42 @@ public class CustomActionBarActivity extends ActionBarActivity{
 	private String mTitle="";
 	private String mDrawerTitle="hello";
 	private String[] mPlanetTopTiles, mPlanetDiaryTiles, mPlanetSettingTiles;
-	protected DrawerLayout mDrawerLayout;
+	private TypedArray mDrawerIcons, mPlanetTopTileIcons, mPlanetDiaryTileIcons,mPlanetSettingTileIcons;
 	private ListView mDrawerList;
 	private MenuItemAdapter miaTop, miaDiary, miaSetting;
-	protected int screenWidth,screenheight;
+	private DrawerLayout mDrawerLayout;
+	protected int screenWidth, screenHeight;
 
 	protected void initMenu(int layout){
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		this.screenheight = dm.heightPixels;
+		this.screenHeight = dm.heightPixels;
 		this.screenWidth = dm.widthPixels;
 		// Set up your ActionBar
 		final ActionBar actionBar = getSupportActionBar();
 		final int actionBarColor = getResources().getColor(R.color.action_bar);
 
 		mPlanetTopTiles = getResources().getStringArray(R.array.nav_drawer_top_items);
+		//mPlanetTopTileIcons = getResources().obtainTypedArray(R.array.nav_drawer_top_icon);
 		mPlanetDiaryTiles = getResources().getStringArray(R.array.nav_drawer_diary_items);
+		//mPlanetDiaryTileIcons = getResources().obtainTypedArray(R.array.nav_drawer_diary_icon);
 		mPlanetSettingTiles = getResources().getStringArray(R.array.nav_drawer_settingsinformation_item);
+		//mPlanetSettingTileIcons = getResources().obtainTypedArray(R.array.nav_drawer_settingsinformation_icon);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer_list_top);
 		miaTop = new MenuItemAdapter(this);
 		miaDiary = new MenuItemAdapter(this);
 		miaSetting = new MenuItemAdapter(this);
-		for(int i = 0; i < mPlanetTopTiles.length; i++){
-			miaTop.add(new MenuItems(mPlanetTopTiles[i]));
-		}//*/
-		/*mia.add(new MenuItems("Home", "Hem"));
 
-		mia.add(new MenuItems());
-		mia.add(new MenuItems("Workout","Träning"));
-		mia.add(new MenuItems("Diet","Kost"));
-		mia.add(new MenuItems("Sleep","Sömn"));
-		mia.add(new MenuItems("Weight","Vikt"));
-		mia.add(new MenuItems());
-		mia.add(new MenuItems("Settings","Inställningar"));
-		mia.add(new MenuItems("Device","Koppla tillbehör"));
-		mia.add(new MenuItems("About","Om ToK"));//*/
+		mDrawerIcons = getResources().obtainTypedArray(R.array.nav_drawer_top_icon);
+		int icon;
+		for(int i = 0; i < mPlanetTopTiles.length; i++){
+			icon = mDrawerIcons.getResourceId(i, -1);
+			if(icon != -1){
+				miaTop.add(new MenuItems(mPlanetTopTiles[i], icon));
+			}else{
+				miaTop.add(new MenuItems(mPlanetTopTiles[i]));
+			}
+		}
 		if(mDrawerList !=null) {
 			// Set the adapter for the list view
 			mDrawerList.setAdapter(miaTop);
@@ -79,25 +79,41 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		// Set the list's click listener
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 		mDrawerList = (ListView) findViewById(R.id.left_drawer_list_diary);
+		mDrawerIcons = getResources().obtainTypedArray(R.array.nav_drawer_diary_icon);
 		for(int i = 0; i < mPlanetDiaryTiles.length; i++){
-			miaDiary.add(new MenuItems(mPlanetDiaryTiles[i]));
-		}//*/
+			icon = mDrawerIcons.getResourceId(i, -1);
+			if(icon != -1){
+				miaDiary.add(new MenuItems(mPlanetDiaryTiles[i], icon));
+			}else{
+				miaDiary.add(new MenuItems(mPlanetDiaryTiles[i]));
+			}
+		}
+
 		if(mDrawerList !=null) {
 			// Set the adapter for the list view
 			mDrawerList.setAdapter(miaDiary);
 		}
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 		mDrawerList = (ListView) findViewById(R.id.left_drawer_list_setting);
+		mDrawerIcons = getResources().obtainTypedArray(R.array.nav_drawer_settingsinformation_icon);
 		for(int i = 0; i < mPlanetSettingTiles.length; i++){
-			miaSetting.add(new MenuItems(mPlanetSettingTiles[i]));
-		}//*/
+			icon = mDrawerIcons.getResourceId(i, -1);
+			if(icon != -1){
+				miaSetting.add(new MenuItems(mPlanetSettingTiles[i], icon));
+			}else{
+				miaSetting.add(new MenuItems(mPlanetSettingTiles[i]));
+			}
+		}
+
 		if(mDrawerList !=null) {
 			// Set the adapter for the list view
 			mDrawerList.setAdapter(miaSetting);
 		}
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
+
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerToggle = new ActionBarDrawerToggle(
 				this,                  /* host Activity */
@@ -154,7 +170,7 @@ public class CustomActionBarActivity extends ActionBarActivity{
 					startActivity(new Intent(this, SleepHomeActivity.class));
 					break;
 				case 3:
-					//TODO
+                    startActivity(new Intent(this, WeightHomeActivity.class));
 					break;
 				default:
 					Toast.makeText(this, "Please Report this button is not implemented, Diary", Toast.LENGTH_SHORT).show();
@@ -162,7 +178,7 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		}else if(parent.getId() == R.id.left_drawer_list_setting){
 			switch(position){
 				case 0:
-					//TODO
+                    startActivity(new Intent(this, AccountHomeActivity.class));
 					break;
 				case 1:
 					//TODO
@@ -176,46 +192,6 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		}else{
 			Toast.makeText(this, "Should not happen", Toast.LENGTH_LONG).show();
 		}
-		/*
-
-		// Highlight the selected item, update the title, and close the drawer
-		switch (mia.getItem(position).menuName) {
-			case "Home":
-				mDrawerLayout.closeDrawer(mDrawerList);
-				startActivity(new Intent(this, MainActivity.class));
-				break;
-			case "Workout":
-				mDrawerLayout.closeDrawer(mDrawerList);
-				startActivity(new Intent(this, WorkoutHomeActivity.class));
-				break;
-			case "Diet":
-				mDrawerLayout.closeDrawer(mDrawerList);
-				startActivity(new Intent(this, DietHomeActivity.class));
-				break;
-			case "Sleep":
-				mDrawerLayout.closeDrawer(mDrawerList);
-				startActivity(new Intent(this, SleepHomeActivity.class));
-				break;
-			case "Weight":
-				mDrawerLayout.closeDrawer(mDrawerList);
-				//TODO
-				break;
-			case "Settings":
-				mDrawerLayout.closeDrawer(mDrawerList);
-				//TODO
-				break;
-			case "Device":
-				mDrawerLayout.closeDrawer(mDrawerList);
-				//TODO
-				break;
-			case "About":
-				mDrawerLayout.closeDrawer(mDrawerList);
-				//TODO
-				break;
-			default:
-				Toast.makeText(getApplicationContext(), "Denna knappen funkare ej", Toast.LENGTH_LONG).show();
-				break;
-		}//*/
 	}
 
 	@Override
@@ -245,15 +221,15 @@ public class CustomActionBarActivity extends ActionBarActivity{
 
 	@Override
 	public void onBackPressed() {
-		if(this.getParent() == null) {
+		if(this.getClass() == MainActivity.class) {
 			new AlertDialog.Builder(this)
-					.setTitle("Really Exit?")
-					.setMessage("Are you sure you want to exit?")
-					.setNegativeButton(android.R.string.no, null)
-					.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+									.setTitle("Really Exit?")
+									.setMessage("Are you sure you want to exit?")
+									.setNegativeButton(android.R.string.no, null)
+									.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-						public void onClick(DialogInterface arg0, int arg1) {
-							System.exit(0);
+										public void onClick(DialogInterface arg0, int arg1) {
+											quitPrograme();
 						}
 					}).create().show();
 		}else{
@@ -261,18 +237,42 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		}
 	}
 
+	private void quitPrograme(){
+		finish();
+	}
+
 
 	public class MenuItems{
-		public String menuName;				//The name (Has to be english)
-		//public int inLayout;					//the description that will be printed
-		//public String name;
-		//public MenuItems(){this("space", "");}
-		public MenuItems(String menuName/*,int inLayout//*/
-						 /*String name//*/)
-		{
-			this.menuName = menuName;
-			//this.inLayout = inLayout;
-			//this.name = name;
+		private String title;
+		private int icon;
+
+		public MenuItems(){
+			this("",-1);
+		}
+
+		public MenuItems(String title){
+			this(title, -1);
+		}
+
+		public MenuItems(String title, int icon){
+			this.title = title;
+			this.icon = icon;
+		}
+
+		public void setIcon(int icon) {
+			this.icon = icon;
+		}
+
+		public void setTitle(String title) {
+			this.title = title;
+		}
+
+		public int getIcon() {
+			return icon;
+		}
+
+		public String getTitle() {
+			return title;
 		}
 	}
 
@@ -285,23 +285,18 @@ public class CustomActionBarActivity extends ActionBarActivity{
 
 		public View getView (int position, View convertView, ViewGroup parent)
 		{
-			if (convertView == null)
-			{
-				/*if(getItem(position).menuName.equals("space")){
-					convertView = LayoutInflater.from(getContext()).inflate(R.layout.drawer_list_divider, null);
-				}else {
-					convertView = LayoutInflater.from(getContext()).inflate(R.layout.drawer_list_top_item, null);
-				}*/
-				convertView = LayoutInflater.from(getContext()).inflate(R.layout.drawer_list_top_item, null);
-
+			if (convertView == null){
+				convertView = LayoutInflater.from(getContext()).inflate(R.layout.drawer_list_item, null);
 			}
-
 			// Lookup view for data population
+			if (getItem(position).getIcon() != -1){
+				ImageView icon = (ImageView) convertView.findViewById(R.id.menu_icon);
+				icon.setImageResource(getItem(position).getIcon());
+			}
 			TextView item1 = (TextView) convertView.findViewById(R.id.menu_item);
 			// Populate the data into the template view using the data object
-			item1.setHint(getItem(position).menuName);
+			item1.setText(getItem(position).getTitle());
 			// Return the completed view to render on screen
-
 			return convertView;
 		}
 	}

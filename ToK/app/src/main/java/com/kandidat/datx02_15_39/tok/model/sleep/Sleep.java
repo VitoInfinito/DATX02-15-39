@@ -7,15 +7,27 @@ import java.util.Date;
  */
 public class Sleep {
 
+    public enum SleepState {
+        AWAKE, LIGHT, DEEP
+    }
+
     Date startTime;
     Date stopTime;
+    //TODO change start and stoptime to be int instead of date
+    //0 is awake, 1 is light sleep, 2 is deep sleep
+    SleepState sleepState;
 
 
-    //TODO Might remove this class eventually depending on if we need to add different sleeps to a activity
-    //TODO otherwise add different types of sleep such as REM
     public Sleep(Date start, Date stop) {
         startTime = start;
         stopTime = stop;
+        sleepState = SleepState.AWAKE; //Set to awake sleep as normal
+    }
+
+    public Sleep(Date start, Date stop, SleepState sleepLevel) {
+        startTime = start;
+        stopTime = stop;
+        this.sleepState = sleepLevel;
     }
 
     public Date getStartTime() {
@@ -24,6 +36,23 @@ public class Sleep {
 
     public Date getStopTime() {
         return stopTime;
+    }
+
+    public SleepState getSleepState() { return sleepState; }
+
+    /**
+     * Giving the correct value to use when displaying the sleep in a graph
+     * @return
+     */
+    public int getSleepLevel() {
+        switch(sleepState) {
+            case LIGHT:
+                return 1;
+            case DEEP:
+                return 2;
+            default:
+                return 0;
+        }
     }
 
 

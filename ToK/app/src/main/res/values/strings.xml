@@ -2,48 +2,69 @@
 <resources>
 
     <string name="app_name">ToK</string>
-    <string name="title_activity_hello_world">HelloWorld</string>
+    <string name="title_activity_hello_world">ToK</string>
     <string name="hello_world">Hejsan världen!</string>
     <string name="action_settings">Inställningar</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_diet_home">DietHomeActivity</string>
-    <string name="title_activity_sleep_home">Sömn</string>
+    <string name="title_activity_diet_home">Kostdagbok</string>
+    <string name="title_activity_sleep_home">Sömndagbok</string>
     <string name="TrainingAndDiet">Träning Och Kost</string>
-    <string name="title_activity_add_sleep">AddSleepActivity</string>
+    <string name="title_activity_add_sleep">Lägg till sömn</string>
     <string name="title_activity_add_diet">Lägg till kost</string>
-    <string name="title_activity_work_out">WorkOutActivity</string>
-    <string name="title_activity_workout_home">WorkoutHomeActivity</string>
-
-    <string name="title_activity_add_workout">AddWorkoutActivity</string>
+    <string name="title_activity_work_out">Träningsdagbok</string>
+    <string name="title_activity_workout_home">Träningsdagbok</string>
+    <string name="title_activity_add_workout">Lägg till träning</string>
     <string name="title_activity_add_work_out">Lägg till träning</string>
     <string name="title_workout_diary">Träningsdagbok</string>
     <string name="title_activity_detailed_sleep">Sömn - Detaljvy</string>
     <string name="title_add_diet">Lägg till mat</string>
+    <string name="title_activity_goal">GoalActivity</string>
+    <string name="title_activity_account_home">Konto</string>
+    <string name="title_activity_weight_home">Vikt</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="Workout">Träning</string>
+    <string name="date">Datum</string>
+    <string name="sleep_started">Började</string>
+    <string name="sleep_ended">Slutade</string>
+    <string name="ok">OK</string>
+
+    <!-- Enumerator Words to mealtype -->
+    <string-array name="ENUM_NAME">
+        <item>@string/diet_breakfast</item>
+        <item>@string/diet_lunch</item>
+        <item>@string/diet_dinner</item>
+        <item>@string/diet_nightmeal</item>
+        <item>@string/diet_snack</item>
+    </string-array>
+
+    <string name="diet_breakfast">Frukost</string>
+    <string name="diet_lunch">Lunch</string>
+    <string name="diet_dinner">Middag</string>
+    <string name="diet_nightmeal">Kvällsmat</string>
+    <string name="diet_snack">Mellanmål</string>
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_top_items">
         <item>@string/Home</item>
     </string-array>
-
     <string-array name="nav_drawer_diary_items">
         <item>@string/Workout</item>
         <item>@string/Diet</item>
         <item>@string/Sleep</item>
         <item>@string/Weight</item>
     </string-array>
-
     <string-array name="nav_drawer_settingsinformation_item">
-        <item>@string/Settings</item>
+        <item>@string/Account</item>
         <item>@string/Device</item>
         <item>@string/About</item>
     </string-array>
 
-    <!-- Nav Drawer List Item Icons -->
-    <!-- Keep them in order as the titles are in -->
-    <array name="nav_drawer_icons"></array>
+    <string-array name="gender">
+        <item>@string/unset</item>
+        <item>@string/male</item>
+        <item>@string/female</item>
+    </string-array>
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
@@ -56,12 +77,21 @@
     <string name="Diet">Kost</string>
     <string name="Sleep">Sömn</string>
     <string name="Weight">Vikt</string>
-    <string name="Settings">Inställningar</string>
+    <string name="Account">Konto</string>
     <string name="Device">Koppla tillbehör</string>
     <string name="About">Om</string>
-
     <string name="add_intensity">Välj intensitet</string>
     <string name="save">Spara</string>
-    <string name="cancel">Cancel</string>
+    <string name="cancel">Avbryt</string>
     <string name="intensity">add_intensity</string>
+    <string name="signup">Just sign up already</string>
+    <string name="unset">Ej vald</string>
+    <string name="male">Man</string>
+    <string name="female">Kvinna</string>
+    <string name="title_activity_view_add_diet">ViewAddDietActivity</string>
+    <string name="title_activity_create_user">CreateUserActivity</string>
+    <string name="title_activity_jawbone_setup">JawboneSetup</string>
+    <string name="title_activity_up_api_list">UpApiListActivity</string>
+    <string name="press_button_to_connect">Press button to connect</string>
+
 </resources>
