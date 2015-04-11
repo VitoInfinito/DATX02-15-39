@@ -40,6 +40,12 @@
                     android:layout_height="200dip"
                     android:id="@+id/graph" />
 
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/sleepGraph"
+                    android:layout_gravity="left|top" />
+
             </FrameLayout>
 
             <RelativeLayout

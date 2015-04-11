@@ -30,6 +30,7 @@ import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepActivity;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepDiary;
+import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -137,19 +138,6 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 sleepListCallbackListener);
     }
 
-    private static HashMap<String, Integer> getSleepEventsListRequestParams() {
-        HashMap<String, Integer> queryHashMap = new HashMap<String, Integer>();
-
-        //uncomment to add as needed parameters
-//        queryHashMap.put("date", "<insert-date>");
-//        queryHashMap.put("page_token", "<insert-page-token>");
-//        queryHashMap.put("start_time", "<insert-time>");
-//        queryHashMap.put("end_time", "<insert-time>");
-//        queryHashMap.put("updated_after", "<insert-time>");
-
-        return queryHashMap;
-    }
-
     /**
      * Callback listener for fetching list of sleep activities from UP server
      */
@@ -168,23 +156,47 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 //obj.get("data")
                 ArrayList<LinkedTreeMap> array = (ArrayList<LinkedTreeMap>)((LinkedTreeMap)obj.get("data")).get("items");
                 for (int i = 0; i < /*array.size()*/1; i++) {
-                    //Log.e(TAG, array.get(i).toString());
                     LinkedTreeMap ltm = array.get(i);
                     LinkedTreeMap details = (LinkedTreeMap) ltm.get("details");
-                    Log.e(TAG, "LTM: " + ltm.toString());
+                    /*Log.e(TAG, "LTM: " + ltm.toString());
                     Log.e(TAG, "Keys: " + ltm.keySet().toString());
-                    //Log.e(TAG, "Created: " + sdfShowFullTime.format(new Date(Double.valueOf((ltm.get("time_created").toString())).longValue())));
                     Log.e(TAG, "Created: " + new Date(Double.valueOf((ltm.get("time_created").toString())).longValue()*1000));
                     Log.e(TAG, "Completed: " + new Date(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000));
                     Log.e(TAG, "Updated: " + new Date(Double.valueOf((ltm.get("time_updated").toString())).longValue()*1000));
                     Log.e(TAG, "Details: " + details.toString());
                     Log.e(TAG, "Asleep time: " + new Date(Double.valueOf((details.get("asleep_time").toString())).longValue()*1000));
                     Log.e(TAG, "Duration: " + (Double.valueOf((details.get("duration").toString())).longValue()/3600.0) + " hours");
-                    Log.e(TAG, "Awake time: " + new Date(Double.valueOf((details.get("awake_time").toString())).longValue()*1000));
+                    Log.e(TAG, "Awake time: " + new Date(Double.valueOf((details.get("awake_time").toString())).longValue()*1000));*/
 
-                    //array.get(i).
-                   // Log.e(TAG, );
-                    //list.add(array.getJSONObject(i).getString("interestKey"));
+
+                    String xid = ltm.get("xid").toString();
+                    Log.e(TAG, "Xid: " + xid);
+
+                    fetchSleepTicksFromUPWithXid(xid);
+
+                    if(diary.getActivity(Utils.MillisToCalendar(Double.valueOf((ltm.get("time_created").toString())).longValue()*1000), xid) == null) {
+
+
+                        /*Date createdDate = new Date(Double.valueOf((ltm.get("time_created").toString())).longValue() * 1000);
+                        Date asleepDate = new Date(Double.valueOf((details.get("asleep_time").toString())).longValue() * 1000);
+                        Date awakeDate = new Date(Double.valueOf((details.get("awake_time").toString())).longValue() * 1000);
+                        List<Sleep> tempList = (new ArrayList<>());
+                        tempList.addAll(Arrays.asList(
+                                new Sleep(
+                                        createdDate,
+                                        asleepDate,
+                                        Sleep.SleepState.AWAKE),
+                                new Sleep(
+                                        asleepDate,
+                                        awakeDate,
+                                        Sleep.SleepState.DEEP),
+                                new Sleep(
+                                        awakeDate,
+                                        new Date(Double.valueOf((ltm.get("time_completed").toString())).longValue() * 1000),
+                                        Sleep.SleepState.AWAKE)
+                        ));
+                        diary.addActivity(new SleepActivity(xid, tempList, createdDate));*/
+                    }
                 }
             }catch(Exception e){
                 Log.e(TAG, "We got an error on our hands: ");
@@ -198,6 +210,65 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             Toast.makeText(getApplicationContext(), retrofitError.getMessage(), Toast.LENGTH_LONG).show();
         }
     };
+
+    private void fetchSleepTicksFromUPWithXid(String xid) {
+        Log.e(TAG, "making Get Sleep Ticks api call ...");
+        ApiManager.getRestApiInterface().getSleepPhases(
+                UpPlatformSdkConstants.API_VERSION_STRING,
+                xid,
+                sleepPhaseCallbackListener);
+    }
+
+    private Callback sleepPhaseCallbackListener = new Callback<Object>() {
+        @Override
+        public void success(Object o, Response response) {
+            Log.e(TAG,  "api call successful, json output: " + o.toString());
+
+        }
+
+        @Override
+        public void failure(RetrofitError retrofitError) {
+            Log.e(TAG,  "api call failed, error message: " + retrofitError.getMessage());
+            Toast.makeText(getApplicationContext(), retrofitError.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    };
+
+    private void fetchSleepGraphFromUPWithXid(String xid) {
+        Log.e(TAG, "making Get Sleep Graph api call ...");
+        ApiManager.getRestApiInterface().getSleepGraph(
+                UpPlatformSdkConstants.API_VERSION_STRING,
+                xid,
+                sleepGraphCallbackListener);
+    }
+
+    private Callback sleepGraphCallbackListener = new Callback<Object>() {
+        @Override
+        public void success(Object o, Response response) {
+            Log.e(TAG,  "api call successful, json output: " + o.toString());
+
+        }
+
+        @Override
+        public void failure(RetrofitError retrofitError) {
+            Log.e(TAG,  "api call failed, error message: " + retrofitError.getMessage());
+            Toast.makeText(getApplicationContext(), retrofitError.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    };
+
+    private static HashMap<String, Integer> getSleepEventsListRequestParams() {
+        HashMap<String, Integer> queryHashMap = new HashMap<String, Integer>();
+
+        //uncomment to add as needed parameters
+//        queryHashMap.put("date", "<insert-date>");
+//        queryHashMap.put("page_token", "<insert-page-token>");
+//        queryHashMap.put("start_time", "<insert-time>");
+//        queryHashMap.put("end_time", "<insert-time>");
+//        queryHashMap.put("updated_after", "<insert-time>");
+
+        return queryHashMap;
+    }
+
+
 
     /**
      * Updates the graph with and earlier sleep date
@@ -317,8 +388,10 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         Calendar cal = Calendar.getInstance();
         currentCalendar = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
         Date activeDate = currentCalendar.getTime();
+
         //Used for testing
-        produceFakeData();
+        //produceFakeData();
+
         //View viewGraph = findViewById(R.id.imageViewGraph);
         //DrawDiagram graphDiagram = new DrawDiagram(viewGraph.getContext());
 

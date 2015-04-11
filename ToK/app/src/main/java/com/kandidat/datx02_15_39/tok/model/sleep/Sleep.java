@@ -13,6 +13,7 @@ public class Sleep {
 
     Date startTime;
     Date stopTime;
+    //TODO change start and stoptime to be int instead of date
     //0 is awake, 1 is light sleep, 2 is deep sleep
     SleepState sleepState;
 

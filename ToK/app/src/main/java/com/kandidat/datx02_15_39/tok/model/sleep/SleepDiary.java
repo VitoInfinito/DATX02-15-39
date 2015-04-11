@@ -41,8 +41,16 @@ public class SleepDiary extends AbstractDiary {
 
     @Override
     public IDiaryActivity getActivity(Calendar c,String id) {
+        List<IDiaryActivity> activities = getActivitiesFromDate(c.getTime());
+        for(int i=0; i<activities.size(); i++) {
+            IDiaryActivity ida = activities.get(i);
+            if(ida.getID().equals(id)) {
+                return ida;
+            }
+        }
         return null;
     }
+
     //Currently returns first element for testing
     public IDiaryActivity getActivityFromDate(Date d) {
         List<IDiaryActivity> act = getActivitiesFromTable(d);
@@ -57,12 +65,12 @@ public class SleepDiary extends AbstractDiary {
     public List<Sleep> getSleepListFromDate(Date d) {
         List<IDiaryActivity> activities = getActivitiesFromDate(d);
         List<Sleep> sleepList = new ArrayList<>();
-        if(activities != null) {
+       // if(activities != null) {
             for(int i=0; i<activities.size(); i++) {
                 List<Sleep> isl = ((SleepActivity) activities.get(i)).getSleepList();
                 sleepList.addAll(isl);
             }
-        }
+       // }
         return sleepList;
     }
 
