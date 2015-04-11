@@ -11,10 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.google.gson.internal.LinkedTreeMap;
 import com.jawbone.upplatformsdk.api.ApiManager;
 import com.jawbone.upplatformsdk.utils.UpPlatformSdkConstants;
@@ -62,18 +62,24 @@ public class SleepHomeActivity extends CustomActionBarActivity {
     //For lack of a better idea
     private LineGraphSeries<DataPoint> coverSleepSeries;
 
+	@SuppressWarnings("SimpleDateFormat")
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("yyyyMMdd");
+	@SuppressWarnings("SimpleDateFormat")
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
+	@SuppressWarnings("SimpleDateFormat")
     private SimpleDateFormat sdfShowFullTime = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sleep_home);
+	    findViewById(R.id.content_frame).setBackgroundColor(Color.argb(100,150,150,150));
+		findViewById(R.id.previousDayButton).setBackgroundColor(Color.alpha(0));
+	    findViewById(R.id.nextDayButton).setBackgroundColor(Color.alpha(0));
 		initMenu(R.layout.activity_sleep_home);
         diary = (SleepDiary) SleepDiary.getInstance();
 
-        Intent intent = getIntent();
+	    Intent intent = getIntent();
         if (intent != null) {
             mClientSecret = intent.getStringExtra(UpPlatformSdkConstants.CLIENT_SECRET);
         }
@@ -88,9 +94,6 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         fetchSleepFromUP();
 
         setupGraph();
-
-
-
 
         fillListWithDummyData();
 
@@ -340,14 +343,14 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
 
 
-        lightSleepSeries.setColor(Color.rgb(0, 0, 153));
+        lightSleepSeries.setColor(Color.rgb(0, 204, 204));
         lightSleepSeries.setDrawBackground(true);
-        lightSleepSeries.setBackgroundColor(Color.rgb(0, 0, 153));
+        lightSleepSeries.setBackgroundColor(Color.rgb(0, 204, 204));
         lightSleepSeries.setThickness(0);
 
-        deepSleepSeries.setColor(Color.rgb(204, 82, 0));
+        deepSleepSeries.setColor(Color.rgb(0, 153, 153));
         deepSleepSeries.setDrawBackground(true);
-        deepSleepSeries.setBackgroundColor(Color.rgb(204, 82, 0));
+        deepSleepSeries.setBackgroundColor(Color.rgb(0, 153, 153));
         deepSleepSeries.setThickness(0);
 
         coverSleepSeries.setColor(Color.rgb(0, 0, 0));
@@ -401,7 +404,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
     }
 
 	private void fillListWithDummyData(){
-		ListView lv = (ListView) findViewById(R.id.sleepFeed);
+
 
 		List<IDiaryActivity> acts = diary.showDaysActivities(Calendar.getInstance());
 		List<String> sleepList = new ArrayList<>();
@@ -421,7 +424,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 				android.R.layout.simple_list_item_1,
 				sleepList );
 
-		lv.setAdapter(arrayAdapter);
+
 	}
 
     /*Temporary for testing*/

@@ -13,6 +13,8 @@
             <option value="$PROJECT_DIR$/Examples/HelloUp" />
             <option value="$PROJECT_DIR$/UpPlatformSdk" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/library" />
+            <option value="$PROJECT_DIR$/numberProgressBar" />
           </set>
         </option>
       </GradleProjectSettings>
