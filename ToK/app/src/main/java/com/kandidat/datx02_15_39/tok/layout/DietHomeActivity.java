@@ -46,7 +46,6 @@ public class DietHomeActivity extends CustomActionBarActivity {
     private MealListAdapter mla;
     Calendar tempCal; // used for the test food
     DietDiary myDiary;
-    DietActivity myActivity;
 
     private int dayOffset = 0;
     private int weekOffset = 0;
@@ -93,11 +92,6 @@ public class DietHomeActivity extends CustomActionBarActivity {
             }
         };
 
-        myActivity = new DietActivity(foodList, tempCal);
-        myActivity.setName("Mosbricka");
-//
-        myDiary = DietDiary.getInstance();
-        myDiary.addActivity(myActivity.getDate(), myActivity);
 
         dayRadioButton.setPressed(true);
         dayRadioButton.setOnTouchListener(dayAndWeekListener);
@@ -213,18 +207,14 @@ public class DietHomeActivity extends CustomActionBarActivity {
         carbText.setText(carbSum + "");
         protText.setText(protSum + "");
         fatText.setText(fatSum + "");
-
         series.setSpacing(8);
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.RED);
-
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(dietGraph);
         staticLabelsFormatter.setHorizontalLabels(new String[]{"Kcal", "Kolhydrater", "Proteiner", "Fett"});
         dietGraph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
-
         dietGraph.getGridLabelRenderer().setVerticalAxisTitle("Mängd");
         dietGraph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
-
         dietGraph.addSeries(series);
 
         updateMealList();
