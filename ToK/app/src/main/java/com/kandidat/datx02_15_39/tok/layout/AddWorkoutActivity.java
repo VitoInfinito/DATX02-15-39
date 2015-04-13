@@ -3,11 +3,12 @@ package com.kandidat.datx02_15_39.tok.layout;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TimePicker;
 
@@ -27,8 +28,8 @@ import android.widget.Toast;
 
 public class AddWorkoutActivity extends CustomActionBarActivity {
 
-    ImageButton yogaButton;
-    ImageButton runnerButton;
+
+    int id = 0;
     //Create all image buttons..
 
     android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
@@ -56,7 +57,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_workout);
 		initMenu(R.layout.activity_add_workout);
-        yogaButton = (ImageButton) findViewById(R.id.yoga_button);
+        id = R.id.yoga_button;
         //runnerButton = (ImageButton) findViewById(R.id.sprint_button);
 
         Calendar currentCalendar = Calendar.getInstance();
@@ -85,20 +86,24 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
     public void onClickFlex(final View view){
         this.workoutType = Workout.WORKOUTTYPE_FLEXIBILITY;
+        this.id =R.drawable.yoga_icon;
         registerWorkoutIntensityOnClick(view);
     }
 
     public void onClickStrength(final View view){
         this.workoutType = Workout.WORKOUTTYPE_STRENGTH;
+        this.id = R.drawable.strength;
         registerWorkoutIntensityOnClick(view);
     }
 
     public void onClickCardio(final View view){
         this.workoutType = Workout.WORKOUTTYPE_CARDIO;
+        this.id = R.drawable.sprint;
         registerWorkoutIntensityOnClick(view);
     }
     public void onClickSports(final View view){
         this.workoutType = Workout.WORKOUTTYPE_SPORT;
+        this.id = R.drawable.soccer;
         registerWorkoutIntensityOnClick(view);
     }
 
@@ -216,7 +221,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         updateDate();
         // TODO remove println when not needed
         System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBB" + intensity);
-        Workout workout = new Workout(startDate, stopDate, intensity, workoutType);
+        Workout workout = new Workout(id, startDate, stopDate, intensity, workoutType);
         WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
         WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
         workoutDiary.addActivity(startDate, workoutActivity);
@@ -249,6 +254,5 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
     public void addButtonOnClick(View view){
         startActivity(new Intent(this, WorkoutHomeActivity.class));
     }
-
 
 }

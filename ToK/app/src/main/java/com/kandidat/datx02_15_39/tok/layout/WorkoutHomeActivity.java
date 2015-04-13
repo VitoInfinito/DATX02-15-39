@@ -5,12 +5,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.jjoe64.graphview.GraphView;
@@ -20,6 +19,7 @@ import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
+import com.kandidat.datx02_15_39.tok.model.workout.CustomListAdapter;
 import com.kandidat.datx02_15_39.tok.model.workout.Workout;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutActivity;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutDiary;
@@ -38,7 +38,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     private Workout workout;
     private Date todaysDate;
     private BarGraphSeries<DataPoint> series;
-//    private ListView workoutListView;
+    private int id = R.id.yoga_button;
     private GraphView graph;
     ArrayList <Workout> workoutList;
 
@@ -63,7 +63,6 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         todaysDate = Calendar.getInstance().getTime();
         diary = (WorkoutDiary) WorkoutDiary.getInstance();
 
-        fillListWithDummyData();
 
         cal = Calendar.getInstance();
         Date activeDate = cal.getTime();
@@ -72,7 +71,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         Date end = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
 
         //adding a workoutactivity in the diary so that the list is not empty
-        workout = new Workout (start, end, 5, " ");
+
+        workout = new Workout (id, start, end, 2, " ");
         String id = "01";
         workoutActivity = new WorkoutActivity(id, workout);
         workoutActivity.setStopTime(workout.getStartTime());
@@ -82,6 +82,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         graph = (GraphView) findViewById(R.id.workout_graph);
 
         series = new BarGraphSeries<>();
+        fillListWithDummyData();
+
         updateDayScreen(cal);
 
         graph.setOnClickListener(new View.OnClickListener() {
@@ -119,33 +121,62 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+    Integer [] imgid ={
+        R.drawable.yoga_icon,
+        R.drawable.sprint,
+        R.drawable.soccer,
+        R.drawable.strength
+    };
     private void fillListWithDummyData(){
         ListView lv = (ListView) findViewById(R.id.show_workout);
 
         List<IDiaryActivity> acts = diary.showDaysActivities(Calendar.getInstance());
         List<String> workoutList = new ArrayList<String>();
+//        String [] workoutList = new String[10];
+        int [] idList = new int[10];
 
         for(int i=0; i<acts.size(); i++) {
             List<Workout> list = ((WorkoutActivity) acts.get(i)).getWorkoutList();
+//            workoutList = new String[list.size()];
             for(int j=0; j<list.size(); j++) {
-                workoutList.add(list.get(j).getWorkoutType() + " Intensitet: " + list.get(j).getIntensity()
+                idList[j] = list.get(j).getId();
+                workoutList.add(idList[j]+list.get(j).getWorkoutType() + " Intensitet: " + list.get(j).getIntensity()
                         + "\n" + "Start: " + sdfShowFullTime.format(list.get(j).getStartTime()) +
                         "\n" + "Slut: " + sdfShowFullTime.format(list.get(j).getEndTime()));
+//                workoutList[j] = list.get(j).getWorkoutType() + " Intensitet: " + list.get(j).getIntensity()
+//                        + "\n" + "Start: " + sdfShowFullTime.format(list.get(j).getStartTime()) +
+//                        "\n" + "Slut: " + sdfShowFullTime.format(list.get(j).getEndTime());
             }
         }
-
+//        for(int v : idList) {
+//            ImageView iv = (ImageView)findViewById(R.id.workout_image);
+//            iv.setImageResource(idList[v]);
+//        }
 
         // This is the array adapter, it takes the context of the activity as a
         // first parameter, the type of list view as a second parameter and your
         // array as a third parameter.
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_list_item_1,
-                workoutList );
-
+        ArrayAdapter<String> arrayAdapter = (new ArrayAdapter<String>(
+                this, R.layout.workout_list_item,
+                R.id.workout_info,workoutList));
         lv.setAdapter(arrayAdapter);
+        String [] list = new String[workoutList.size()];
+        for(int i = 0; i<workoutList.size(); i++){
+            list[i] = workoutList.get(i);
+        }
+//        if(workoutList[0] == null) {
+//            String [] stringList = new String[1];
+//            stringList[0] = "Här kommer dina träningsaktiviteter synas";
+//            CustomListAdapter adapter = new CustomListAdapter(this, stringList, imgid);
+//            lv.setAdapter(adapter);
+//        }else{
+
+//            CustomListAdapter adapter = new CustomListAdapter(this, workoutList, imgid);
+//            lv.setAdapter(adapter);
+//        }
+
     }
+
 
     /*public void onAddWorkoutButtonClick(View view){
         startActivity(new Intent(this, AddWorkoutActivity.class));
@@ -171,39 +202,37 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     }
 
     private void updateActivityList (ArrayList<WorkoutActivity> workoutActivityList){
-        double intensity = 0;
+        double intensity =0;
+//                [] = new double[workoutActivityList.size()];
         for (WorkoutActivity a : workoutActivityList){
-//            for(int i = 0; i<workoutActivityList.size(); i++)
-            intensity += a.getWorkoutList().get(0).getIntensity();
-
+            for(int i = 0; i<workoutActivityList.size(); i++){
+//                for(int j=0; i<j; j++){
+                    intensity += a.getWorkoutList().get(0).getIntensity();
+//                }
+            }
         }
         if(series!= null){
             series.resetData(new DataPoint[]{
-                  new DataPoint(0,0),
-                  new DataPoint(10, intensity),
-                  new DataPoint(20, intensity+1),
-                  new DataPoint(30, intensity+2),
-                  new DataPoint(40, intensity+3),
-                  new DataPoint(50, 0),
-              });
-            series.setSpacing(8);
-            series.setDrawValuesOnTop(true);
-            series.setValuesOnTopColor(Color.RED);
+                    new DataPoint(0,0),
+                    new DataPoint(10, intensity),
+                    new DataPoint(20, intensity+1),
+                    new DataPoint(30, intensity+2),
+                    new DataPoint(40, intensity+3),
+                    new DataPoint(50, 0),
+            });
+            series.setSpacing(20);
 
         }
 
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
         staticLabelsFormatter.setHorizontalLabels(new String[] {"M", "T", "O", "T", "F", "L", "S"});
-//        staticLabelsFormatter.setVerticalLabels(new String[] {"låg", "medium", "hög"});
         graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
 
         graph.getGridLabelRenderer().setVerticalAxisTitle("Intensitet");
         graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
 
-        series.setColor(Color.RED);
+        series.setColor(Color.BLUE);
         graph.addSeries(series);
-
-        //updateWorkoutList();
 
     }
 
@@ -211,45 +240,6 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         workoutActivityList = (ArrayList) diary.showDaysActivities(cal);
         updateActivityList(workoutActivityList);
     }
-
-
- /*   private BarGraphSeries<DataPoint> fetchDataPoints(Date date) {
-        Calendar cal=Calendar.getInstance();
-        Calendar pastCal = Calendar.getInstance();
-        cal.setTime(date);
-        pastCal.setTime(date);
-        pastCal.add(Calendar.HOUR, -1);
-
-        Log.d("DATE", date.toString());
-        List <DataPoint> wList = new ArrayList<DataPoint>();
-        List<Workout> dayList = diary.getWorkoutListFromDate(date);
-
-//        if(wList.size()>0){
-//            for(int i = 0; i<wList.size(); i++){
-//                Workout workout1 = dayList.get(i);
-//                List <DataPoint> addList = new ArrayList<DataPoint>();
-//
-//                Date startTime = workout1.getStartTime();
-//                Date stopTime = workout1.getEndTime();
-//
-//                addList.add(new DataPoint(startTime.getTime(), 0));
-//                addList.add(new DataPoint(startTime.getTime(), workout1.getIntensity()));
-//                addList.add(new DataPoint(stopTime.getTime(), workout1.getIntensity()));
-//                addList.add(new DataPoint(stopTime.getTime(), 0));
-//            }
-//
-//        }
-        Date x = dayList.get(0).getStartTime();
-        int y = dayList.get(0).getIntensity();
-        BarGraphSeries<DataPoint> returnList = new BarGraphSeries<DataPoint>(new DataPoint[]{
-                new DataPoint(1, 2),
-                new DataPoint(2, 3)
-        });
-
-//        returnList.add(wList.toArray(new DataPoint[]{}));
-//        return new ArrayList<DataPoint []>(returnList);
-        return returnList;
-    }*/
 
     public List<IDiaryActivity> getListOfActivities(){
         Calendar cal = new GregorianCalendar();
