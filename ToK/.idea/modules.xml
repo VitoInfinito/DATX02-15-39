@@ -7,6 +7,8 @@
       <module fileurl="file://$PROJECT_DIR$/ToK.iml" filepath="$PROJECT_DIR$/ToK.iml" />
       <module fileurl="file://$PROJECT_DIR$/UpPlatformSdk/UpPlatformSdk.iml" filepath="$PROJECT_DIR$/UpPlatformSdk/UpPlatformSdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/numberProgressBar/numberProgressBar.iml" filepath="$PROJECT_DIR$/numberProgressBar/numberProgressBar.iml" />
     </modules>
   </component>
 </project>
