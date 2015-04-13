@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,9 +75,13 @@ public class SleepHomeActivity extends CustomActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sleep_home);
-	    findViewById(R.id.content_frame).setBackgroundColor(Color.argb(100,150,150,150));
+	    findViewById(R.id.content_frame).setBackgroundColor(Color.argb(100,120,120,120));
+
 		findViewById(R.id.previousDayButton).setBackgroundColor(Color.alpha(0));
 	    findViewById(R.id.nextDayButton).setBackgroundColor(Color.alpha(0));
+
+	    findViewById(R.id.detailedLayout).setBackgroundColor(Color.rgb(219,219,219));
+
 		initMenu(R.layout.activity_sleep_home);
         diary = (SleepDiary) SleepDiary.getInstance();
 
