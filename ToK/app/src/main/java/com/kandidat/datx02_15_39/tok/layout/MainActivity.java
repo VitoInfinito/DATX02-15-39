@@ -3,6 +3,7 @@ package com.kandidat.datx02_15_39.tok.layout;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
+import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 
 public class MainActivity extends CustomActionBarActivity {
@@ -25,12 +27,23 @@ public class MainActivity extends CustomActionBarActivity {
         setContentView(R.layout.activity_main_activity);
 		initMenu(R.layout.activity_main_activity);
 
+
+        //Fetching and/or setting up account name from saved preferences
         account = Account.getInstance();
         String accountName = account.getName();
         if(accountName != null) {
             ((TextView) findViewById(R.id.homeUsername)).setText(accountName);
         }else {
-            startActivity(new Intent(this, CreateUserActivity.class));
+            SharedPreferences settings = getSharedPreferences(Utils.ACCOUNT_PREFS, 0);
+            accountName = settings.getString("accountName", null);
+
+            //Checking if name was a saved preference
+            if(accountName != null) {
+                Account.getInstance().setName(accountName);
+                ((TextView) findViewById(R.id.homeUsername)).setText(accountName);
+            }else {
+                startActivity(new Intent(this, CreateUserActivity.class));
+            }
         }
 
 
