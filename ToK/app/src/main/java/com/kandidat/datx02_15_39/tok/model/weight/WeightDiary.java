@@ -29,16 +29,26 @@ public class WeightDiary extends AbstractDiary {
         return instance;
     }
 
-    //Currently returns first element for testing
-    public IDiaryActivity getActivityFromDate(Date d) {
-        List<IDiaryActivity> act = getActivitiesFromTable(d);
-        return act != null ? act.get(0) : null;
+
+    /**
+     * Fetch the weight belonging to a selected date
+     * @param d
+     * @return
+     */
+    public WeightActivity getWeightFromDate(Date d) {
+        List<IDiaryActivity> list = getActivitiesFromDate(d);
+        return list.isEmpty() ? null : (WeightActivity) list.get(0);
+    }
+
+    //TODO remove later on
+    public List<IDiaryActivity> getActivitiesFromDate(Date d) {
+        return new ArrayList<>(getActivitiesFromTable(d));
     }
 
     @Override
     public void addActivity(Date d, IDiaryActivity activity) {
 	    List<IDiaryActivity> act = getActivitiesFromTable(d);
-		if(act == null){
+		if(act.isEmpty()){
 			addActivityToTable(d, activity);
 		}else{
 			act.set(0, activity);
@@ -49,11 +59,6 @@ public class WeightDiary extends AbstractDiary {
     public IDiaryActivity getActivity(Calendar c, String id) {
         return null;
     }
-
-	public List<IDiaryActivity> getActivitiesFromDate(Date d){
-		List<IDiaryActivity> list = getActivitiesFromTable(d);
-		return list != null ? new ArrayList<>(list) : null;
-	}
 
     @Override
     public void removeActivity(Calendar c, String id) {

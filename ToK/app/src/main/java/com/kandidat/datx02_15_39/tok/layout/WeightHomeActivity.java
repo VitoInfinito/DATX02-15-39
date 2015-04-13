@@ -72,12 +72,14 @@ public class WeightHomeActivity extends CustomActionBarActivity {
 
 	    Weight weight = new Weight(selectedWeightValue);
 	    weightActivity = new WeightActivity("id1", weight, activeDate);
-	    WeightDiary weightDiary = (WeightDiary) WeightDiary.getInstance();
-	    weightDiary.addActivity(activeDate, diary.getActivityFromDate(activeDate));
+	    //WeightDiary weightDiary = (WeightDiary) WeightDiary.getInstance();
+	    //weightDiary.addActivity(activeDate, diary.getActivityFromDate(activeDate));
 
 		selectedWeightValue = (int) weight.getWeight();
 	    weightText.setText(selectedWeightValue + " kg");
 
+
+        selectedDate = activeDate;
 		Button dateButton = (Button) findViewById(R.id.dateButton);
 		dateButton.setText("Datum :" + sdfShowYearMonthDay.format(activeDate));
 
@@ -211,7 +213,8 @@ public class WeightHomeActivity extends CustomActionBarActivity {
 		            cal.get(Calendar.DAY_OF_MONTH) + i,
 		            cal.get(Calendar.HOUR_OF_DAY),
 		            cal.get(Calendar.MINUTE)).getTime();
-            WeightActivity wa = (WeightActivity) wd.getActivityFromDate(date);
+            //WeightActivity wa = (WeightActivity) wd.getActivityFromDate(date);
+            WeightActivity wa = wd.getWeightFromDate(date);
             if(wa != null) {
                 wal.add(wa);
             }
@@ -277,7 +280,8 @@ public class WeightHomeActivity extends CustomActionBarActivity {
     /*Temporary for testing*/
     private void produceFakeData() {
         Calendar cal = Calendar.getInstance();
-        if(diary.getActivityFromDate(cal.getTime()) == null) {
+        //if(diary.getActivityFromDate(cal.getTime()) == null) {
+        if(diary.getActivitiesFromDate(cal.getTime()).isEmpty()) {
 
             Date todaysDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
 
