@@ -73,23 +73,12 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         //adding a workoutactivity in the diary so that the list is not empty
 
-<<<<<<< HEAD
 //        workout = new Workout (id, start, end, 2, " ");
 //        String id = "01";
 //        workoutActivity = new WorkoutActivity(id, workout);
 //        workoutActivity.setStopTime(workout.getStartTime());
 //        workoutActivity.setStopTime(workout.getEndTime());
 //        diary.addActivity(activeDate, workoutActivity);
-=======
-        workout = new Workout (id, start, end, 2, " ");
-        String id = "01";
-        workoutActivity = new WorkoutActivity(id, workout);
-        workoutActivity.setStopTime(workout.getStartTime());
-        workoutActivity.setStopTime(workout.getEndTime());
-        //Har kommenterat bort denna raden nedan för av någon annledning läggs,
-        // det till dubbelt och blir helt knepigt när vi har en träning från start
-       // diary.addActivity(activeDate, workoutActivity);
->>>>>>> 4fed1bae8314e96941dadb396128872e80da199d
 
         graph = (GraphView) findViewById(R.id.workout_graph);
 
@@ -179,7 +168,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 //            lv.setAdapter(adapter);
 //        }else{
 
-            CustomListAdapter adapter = new CustomListAdapter(this, workoutList, idList);
+            CustomListAdapter adapter = new CustomListAdapter(this, workoutList, imgid);
             lv.setAdapter(adapter);
 //        }
     }

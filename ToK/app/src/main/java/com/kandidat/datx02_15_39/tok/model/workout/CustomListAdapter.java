@@ -44,7 +44,25 @@ public class CustomListAdapter extends ArrayAdapter<String> {
         ImageView imageView = (ImageView) rowView.findViewById(R.id.workout_image);
 
         txtTitle.setText(itemname.get(position));
-        imageView.setImageResource(imgid[position]);
+        String tmp =itemname.get(position);
+        switch(tmp.substring(0,2)){
+            case"ST":
+                imageView.setImageResource(R.drawable.strength);
+
+                break;
+            case"KO":
+                imageView.setImageResource(R.drawable.sprint);
+                break;
+            case"FL":
+                imageView.setImageResource(R.drawable.yoga_icon);
+                break;
+            case"SP":
+                imageView.setImageResource(R.drawable.soccer);
+                break;
+            default:
+                imageView.setImageResource(R.drawable.soccer);
+                break;
+        }
         return rowView;
 
     }
