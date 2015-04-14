@@ -168,7 +168,6 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
     private void updateActivityList (ArrayList<WorkoutActivity> workoutActivityList){
         double intensity =0;
-//                [] = new double[workoutActivityList.size()];
         for (WorkoutActivity a : workoutActivityList){
             for(int i = 0; i<workoutActivityList.size(); i++){
 //                for(int j=0; i<j; j++){
@@ -176,6 +175,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 //                }
             }
         }
+
         if(series!= null){
             series.resetData(new DataPoint[]{
                     new DataPoint(0,0),
@@ -185,7 +185,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
                     new DataPoint(40, intensity+3),
                     new DataPoint(50, 0),
             });
-            series.setSpacing(20);
+        series.setSpacing(20);
 
         }
 
