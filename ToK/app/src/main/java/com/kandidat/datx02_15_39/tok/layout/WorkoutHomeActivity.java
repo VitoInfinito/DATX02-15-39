@@ -77,7 +77,9 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         workoutActivity = new WorkoutActivity(id, workout);
         workoutActivity.setStopTime(workout.getStartTime());
         workoutActivity.setStopTime(workout.getEndTime());
-        diary.addActivity(activeDate, workoutActivity);
+        //Har kommenterat bort denna raden nedan för av någon annledning läggs,
+        // det till dubbelt och blir helt knepigt när vi har en träning från start
+       // diary.addActivity(activeDate, workoutActivity);
 
         graph = (GraphView) findViewById(R.id.workout_graph);
 

@@ -1,5 +1,2 @@
-<<<<<<< Updated upstream
 include ':app', ':UpPlatformSdk', ':Examples:HelloUp', ':library', ':numberProgressBar'
-=======
-include ':app', ':UpPlatformSdk', ':Examples:HelloUp', ':Examples'
->>>>>>> Stashed changes
+
