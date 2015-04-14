@@ -64,24 +64,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         todaysDate = Calendar.getInstance().getTime();
         diary = (WorkoutDiary) WorkoutDiary.getInstance();
 
-
         cal = Calendar.getInstance();
-        Date activeDate = cal.getTime();
-
-        Date start = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY) - 1, cal.get(Calendar.MINUTE)).getTime();
-        Date end = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
-
-        //adding a workoutactivity in the diary so that the list is not empty
-
-//        workout = new Workout (id, start, end, 2, " ");
-//        String id = "01";
-//        workoutActivity = new WorkoutActivity(id, workout);
-//        workoutActivity.setStopTime(workout.getStartTime());
-//        workoutActivity.setStopTime(workout.getEndTime());
-//        diary.addActivity(activeDate, workoutActivity);
-
         graph = (GraphView) findViewById(R.id.workout_graph);
-
         series = new BarGraphSeries<>();
         fillListWithDummyData();
 
@@ -149,24 +133,9 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
             }
         }
 
-        // This is the array adapter, it takes the context of the activity as a
+        // This is the customlist adapter, it takes the context of the activity as a
         // first parameter, the type of list view as a second parameter and your
-        // array as a third parameter.
-//        ArrayAdapter<String> arrayAdapter = (new ArrayAdapter<String>(
-//                this, R.layout.workout_list_item,
-//                R.id.workout_info,workoutList));
-//        lv.setAdapter(arrayAdapter);
-
-//        String [] list = new String[workoutList.size()];
-//        for(int i = 0; i<workoutList.size(); i++){
-//            list[i] = workoutList.get(i);
-//        }
-//        if(workoutList[0] == null) {
-//            String [] stringList = new String[1];
-//            stringList[0] = "Här kommer dina träningsaktiviteter synas";
-//            CustomListAdapter adapter = new CustomListAdapter(this, stringList, imgid);
-//            lv.setAdapter(adapter);
-//        }else{
+        // array with images as a third parameter.
 
             CustomListAdapter adapter = new CustomListAdapter(this, workoutList, imgid);
             lv.setAdapter(adapter);
