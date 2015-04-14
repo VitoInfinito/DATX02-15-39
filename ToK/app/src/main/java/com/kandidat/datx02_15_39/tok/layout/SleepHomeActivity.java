@@ -161,10 +161,10 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 Log.e(TAG, "data: " + obj.get("data").toString());
                 //obj.get("data")
                 ArrayList<LinkedTreeMap> array = (ArrayList<LinkedTreeMap>)((LinkedTreeMap)obj.get("data")).get("items");
-                for (int i = 0; i < /*array.size()*/1; i++) {
+                for (int i = 0; i < array.size(); i++) {
                     LinkedTreeMap ltm = array.get(i);
                     LinkedTreeMap details = (LinkedTreeMap) ltm.get("details");
-                    Log.e(TAG, "LTM: " + ltm.toString());
+                   /* Log.e(TAG, "LTM: " + ltm.toString());
                     Log.e(TAG, "Keys: " + ltm.keySet().toString());
                     Log.e(TAG, "Created: " + new Date(Double.valueOf((ltm.get("time_created").toString())).longValue()*1000));
                     Log.e(TAG, "Completed: " + new Date(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000));
@@ -172,16 +172,25 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                     Log.e(TAG, "Details: " + details.toString());
                     Log.e(TAG, "Asleep time: " + new Date(Double.valueOf((details.get("asleep_time").toString())).longValue()*1000));
                     Log.e(TAG, "Duration: " + (Double.valueOf((details.get("duration").toString())).longValue()/3600.0) + " hours");
-                    Log.e(TAG, "Awake time: " + new Date(Double.valueOf((details.get("awake_time").toString())).longValue()*1000));
+                    Log.e(TAG, "Awake time: " + new Date(Double.valueOf((details.get("awake_time").toString())).longValue()*1000));*/
 
 
                     String xid = ltm.get("xid").toString();
                     Log.e(TAG, "Xid: " + xid);
 
 
-
                     if(diary.getActivity(Utils.MillisToCalendar(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000), xid) == null) {
-                        fetchSleepTicksFromUPWithXid(xid);
+                        if(!details.get("light").toString().equals("0.0") && !details.get("sound").toString().equals("0.0")) {
+                            fetchSleepTicksFromUPWithXid(xid);
+                        }else {
+                            setManualSleepFromUP(xid,
+                                    new Date(Double.valueOf((details.get("asleep_time").toString())).longValue()*1000),
+                                    new Date(Double.valueOf((details.get("awake_time").toString())).longValue()*1000),
+                                    new Date(Double.valueOf((ltm.get("time_created").toString())).longValue()*1000),
+                                    new Date(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000));
+                        }
+                    }else {
+                        Log.e(TAG, xid + " ALREADY EXISTED");
                     }
                 }
             }catch(Exception e){
@@ -196,6 +205,27 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             Toast.makeText(getApplicationContext(), retrofitError.getMessage(), Toast.LENGTH_LONG).show();
         }
     };
+
+    private void setManualSleepFromUP(String xid, Date asleepDate, Date awakeDate, Date createDate, Date completeDate) {
+
+
+        List<Sleep> manualSleep = (new ArrayList<>());
+        manualSleep.addAll(Arrays.asList(
+                new Sleep(
+                        createDate,
+                        asleepDate,
+                        Sleep.SleepState.AWAKE),
+                new Sleep(
+                        asleepDate,
+                        awakeDate,
+                        Sleep.SleepState.DEEP),
+                new Sleep(
+                        awakeDate,
+                        completeDate,
+                        Sleep.SleepState.AWAKE)
+        ));
+        diary.addActivity(new SleepActivity(xid, manualSleep, completeDate));
+    }
 
     private void fetchSleepTicksFromUPWithXid(String xid) {
         Log.e(TAG, "making Get Sleep Ticks api call ...");
@@ -212,7 +242,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
             LinkedTreeMap obj = (LinkedTreeMap) o;
 
-            Log.e(TAG, "data: " + obj.get("data").toString());
+            //Log.e(TAG, "data: " + obj.get("data").toString());
             //Log.e(TAG, response.getUrl());
             //Log.e(TAG, "" + response.getUrl().lastIndexOf("/sleeps/"));
 
@@ -510,6 +540,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 }
             }
         });
+        graph.getGridLabelRenderer().setNumVerticalLabels(0);
 
         //TODO make a better solution than simply making grid white (Either transparent, remove it or make background white as well)
         graph.getGridLabelRenderer().setGridColor(Color.argb(0,255,255,255));
