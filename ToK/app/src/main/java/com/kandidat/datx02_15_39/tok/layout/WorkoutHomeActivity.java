@@ -3,6 +3,7 @@ package com.kandidat.datx02_15_39.tok.layout;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -72,12 +73,12 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         //adding a workoutactivity in the diary so that the list is not empty
 
-        workout = new Workout (id, start, end, 2, " ");
-        String id = "01";
-        workoutActivity = new WorkoutActivity(id, workout);
-        workoutActivity.setStopTime(workout.getStartTime());
-        workoutActivity.setStopTime(workout.getEndTime());
-        diary.addActivity(activeDate, workoutActivity);
+//        workout = new Workout (id, start, end, 2, " ");
+//        String id = "01";
+//        workoutActivity = new WorkoutActivity(id, workout);
+//        workoutActivity.setStopTime(workout.getStartTime());
+//        workoutActivity.setStopTime(workout.getEndTime());
+//        diary.addActivity(activeDate, workoutActivity);
 
         graph = (GraphView) findViewById(R.id.workout_graph);
 
@@ -127,43 +128,39 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         R.drawable.soccer,
         R.drawable.strength
     };
+
     private void fillListWithDummyData(){
         ListView lv = (ListView) findViewById(R.id.show_workout);
 
         List<IDiaryActivity> acts = diary.showDaysActivities(Calendar.getInstance());
         List<String> workoutList = new ArrayList<String>();
-//        String [] workoutList = new String[10];
-        int [] idList = new int[10];
+
+        Integer [] idList = new Integer[6];
 
         for(int i=0; i<acts.size(); i++) {
             List<Workout> list = ((WorkoutActivity) acts.get(i)).getWorkoutList();
 //            workoutList = new String[list.size()];
             for(int j=0; j<list.size(); j++) {
                 idList[j] = list.get(j).getId();
-                workoutList.add(list.get(j).getId()+ list.get(j).getWorkoutType() + " Intensitet: " + list.get(j).getIntensity()
+
+                workoutList.add(list.get(j).getWorkoutType() + " Intensitet: " + list.get(j).getIntensity()
                         + "\n" + "Start: " + sdfShowFullTime.format(list.get(j).getStartTime()) +
                         "\n" + "Slut: " + sdfShowFullTime.format(list.get(j).getEndTime()));
-//                workoutList[j] = list.get(j).getWorkoutType() + " Intensitet: " + list.get(j).getIntensity()
-//                        + "\n" + "Start: " + sdfShowFullTime.format(list.get(j).getStartTime()) +
-//                        "\n" + "Slut: " + sdfShowFullTime.format(list.get(j).getEndTime());
             }
         }
-//        for(int v : idList) {
-//            ImageView iv = (ImageView)findViewById(R.id.workout_image);
-//            iv.setImageResource(idList[v]);
-//        }
 
         // This is the array adapter, it takes the context of the activity as a
         // first parameter, the type of list view as a second parameter and your
         // array as a third parameter.
-        ArrayAdapter<String> arrayAdapter = (new ArrayAdapter<String>(
-                this, R.layout.workout_list_item,
-                R.id.workout_info,workoutList));
-        lv.setAdapter(arrayAdapter);
-        String [] list = new String[workoutList.size()];
-        for(int i = 0; i<workoutList.size(); i++){
-            list[i] = workoutList.get(i);
-        }
+//        ArrayAdapter<String> arrayAdapter = (new ArrayAdapter<String>(
+//                this, R.layout.workout_list_item,
+//                R.id.workout_info,workoutList));
+//        lv.setAdapter(arrayAdapter);
+
+//        String [] list = new String[workoutList.size()];
+//        for(int i = 0; i<workoutList.size(); i++){
+//            list[i] = workoutList.get(i);
+//        }
 //        if(workoutList[0] == null) {
 //            String [] stringList = new String[1];
 //            stringList[0] = "Här kommer dina träningsaktiviteter synas";
@@ -171,10 +168,9 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 //            lv.setAdapter(adapter);
 //        }else{
 
-//            CustomListAdapter adapter = new CustomListAdapter(this, workoutList, imgid);
-//            lv.setAdapter(adapter);
+            CustomListAdapter adapter = new CustomListAdapter(this, workoutList, idList);
+            lv.setAdapter(adapter);
 //        }
-
     }
 
 
