@@ -209,7 +209,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
     private void setManualSleepFromUP(String xid, Date asleepDate, Date awakeDate, Date createDate, Date completeDate) {
 
 
-        List<Sleep> manualSleep = (new ArrayList<>());
+       /* List<Sleep> manualSleep = (new ArrayList<>());
         manualSleep.addAll(Arrays.asList(
                 new Sleep(
                         createDate,
@@ -224,7 +224,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                         completeDate,
                         Sleep.SleepState.AWAKE)
         ));
-        diary.addActivity(new SleepActivity(xid, manualSleep, completeDate));
+        diary.addActivity(new SleepActivity(xid, manualSleep, completeDate));*/
+
     }
 
     private void fetchSleepTicksFromUPWithXid(String xid) {
