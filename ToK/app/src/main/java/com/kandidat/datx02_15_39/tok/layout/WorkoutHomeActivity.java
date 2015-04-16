@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -36,6 +37,8 @@ import java.util.List;
 public class WorkoutHomeActivity extends CustomActionBarActivity {
     WorkoutDiary diary;
     WorkoutActivity workoutActivity;
+    private Button dayRadioButton;
+    private Button weekRadioButton;
     private Workout workout;
     private Date todaysDate;
     private BarGraphSeries<DataPoint> series;
@@ -63,6 +66,9 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         todaysDate = Calendar.getInstance().getTime();
         diary = (WorkoutDiary) WorkoutDiary.getInstance();
+
+        dayRadioButton = (Button) findViewById(R.id.day_radioButton);
+        weekRadioButton = (Button) findViewById(R.id.week_radiobutton);
 
         cal = Calendar.getInstance();
 
@@ -158,25 +164,6 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     }
 
 
-    /*public void onAddWorkoutButtonClick(View view){
-        startActivity(new Intent(this, AddWorkoutActivity.class));
-    }*/
-
-
-   /* private void updateWorkoutList(){
-        workoutListView = (ListView) findViewById(R.id.show_workout);
-        workoutListView.removeAllViewsInLayout();
-
-        sra = new SearchResultAdapter(this);
-            for(IDiaryActivity w: getListOfActivities()){
-                sra.add(w);
-            }
-            if(workoutListView != null){
-                workoutListView.setAdapter(sra);
-            }
-
-    }*/
-
     public Context getActivity() {
         return this;
     }
@@ -221,6 +208,13 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         updateActivityList(workoutActivityList);
     }
 
+    private void updateWeekScreen(Calendar first, Calendar last) {
+
+        workoutActivityList = (ArrayList) diary.showWeekActivities(first, last);
+
+        updateActivityList(workoutActivityList);
+    }
+
     public List<IDiaryActivity> getListOfActivities(){
         Calendar cal = new GregorianCalendar();
         cal.setTime(todaysDate);
@@ -228,6 +222,26 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         Calendar cal2 = new GregorianCalendar();
         cal2.add(Calendar.DATE, 1);
         return WorkoutDiary.getInstance().showWeekActivities(cal, cal2);
+    }
+
+    private boolean isDayView() {
+        return dayRadioButton.isPressed();
+    }
+
+    private boolean isWeekView() {
+        return weekRadioButton.isPressed();
+    }
+
+    public void onWeekButtonClick(View view){
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(todaysDate);
+        Calendar cal2 = new GregorianCalendar();
+        cal2.add(Calendar.DATE, 7);
+        updateWeekScreen(cal, cal2);
+    }
+
+    public void onDayButtonClick(View view){
+
     }
 
 }

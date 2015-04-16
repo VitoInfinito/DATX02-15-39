@@ -83,7 +83,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_above="@+id/workout_graph"
-            android:layout_below="@+id/linearLayout2">
+            android:layout_below="@+id/linearLayout2"
+            android:focusableInTouchMode="false">
 
             <Button
                 android:layout_width="wrap_content"
