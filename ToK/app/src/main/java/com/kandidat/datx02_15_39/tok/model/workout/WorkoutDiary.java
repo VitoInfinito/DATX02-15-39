@@ -72,9 +72,10 @@ public class WorkoutDiary extends AbstractDiary {
 
 	@Override
 	public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end) {
-        if(!end.before(start)){
-            throw new IllegalArgumentException();
-        }
+
+//        if(!end.before(start)){
+//            throw new IllegalArgumentException();
+//        }
         List<IDiaryActivity> returnValue = new ArrayList<IDiaryActivity>();
         while(start.before(end)){
             List<IDiaryActivity> tmp = getActivitiesFromTable(start.getTime());
