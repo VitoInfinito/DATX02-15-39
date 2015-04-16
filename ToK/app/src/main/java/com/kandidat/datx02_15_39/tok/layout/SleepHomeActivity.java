@@ -59,6 +59,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
     private SleepDiary diary;
     private GregorianCalendar currentCalendar;
+    private Calendar activeCalendar;
 
     private LineGraphSeries<DataPoint> lightSleepSeries;
     private LineGraphSeries<DataPoint> deepSleepSeries;
@@ -97,6 +98,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         if (mAccessToken != null) {
             ApiManager.getRequestInterceptor().setAccessToken(mAccessToken);
         }
+
+        activeCalendar = Calendar.getInstance();
 
         fetchSleepFromUP();
 
@@ -285,11 +288,10 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 );
             }
 
-            if(!array.isEmpty()) {
-
-            }
-
             Date completedDate = array.isEmpty() ? new Date() : new Date(Double.valueOf(array.get(array.size()-1).get("time").toString()).longValue()*1000);
+            if(sdfShowDay.format(completedDate).equals(sdfShowDay.format(activeCalendar.getTime()))) {
+                Log.e(TAG, "YOOOHOOOO");
+            }
             Log.e(TAG, completedDate.toString());
 
             diary.addActivity(new SleepActivity(xid, newSleepPhases, completedDate));
