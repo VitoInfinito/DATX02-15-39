@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
@@ -39,6 +40,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     WorkoutActivity workoutActivity;
     private Button dayRadioButton;
     private Button weekRadioButton;
+    private TextView textDay;
     private Workout workout;
     private Date todaysDate;
     private BarGraphSeries<DataPoint> series;
@@ -69,6 +71,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         dayRadioButton = (Button) findViewById(R.id.day_radioButton);
         weekRadioButton = (Button) findViewById(R.id.week_radiobutton);
+        textDay = (TextView) findViewById(R.id.textDay);
 
         cal = Calendar.getInstance();
 
@@ -232,15 +235,19 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         return weekRadioButton.isPressed();
     }
 
+    public void onNextButtonClick(View view){
+
+    }
+    public void onPreviousButtonClick(View view){
+
+    }
+
     public void onWeekButtonClick(View view){
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(todaysDate);
-        Calendar cal2 = new GregorianCalendar();
-        cal2.add(Calendar.DATE, 7);
-        updateWeekScreen(cal, cal2);
+        textDay.setText("Denna veckan");
     }
 
     public void onDayButtonClick(View view){
+        textDay.setText(todaysDate.toString());
 
     }
 

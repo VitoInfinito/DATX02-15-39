@@ -36,7 +36,8 @@
                 android:text="Visa dag"
                 android:textSize="20sp"
                 android:textColor="#e5e5e5"
-                android:background="#4c4c4c"/>
+                android:background="#4c4c4c"
+                android:onClick="onDayButtonClick"/>
 
             <Button
                 android:layout_width="120dp"
@@ -46,7 +47,8 @@
                 android:id="@+id/week_radiobutton"
                 android:textColor="#e5e5e5"
                 android:background="#4c4c4c"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                android:onClick="onWeekButtonClick"/>
 
         </LinearLayout>
     </LinearLayout>
@@ -93,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Today"
+                android:text="Idag"
                 android:id="@+id/textDay"
                 android:layout_weight="1"
                 android:layout_centerInParent="true"/>
