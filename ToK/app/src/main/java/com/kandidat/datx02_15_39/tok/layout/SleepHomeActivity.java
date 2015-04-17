@@ -290,7 +290,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
             Date completedDate = array.isEmpty() ? new Date() : new Date(Double.valueOf(array.get(array.size()-1).get("time").toString()).longValue()*1000);
             if(sdfShowDay.format(completedDate).equals(sdfShowDay.format(activeCalendar.getTime()))) {
-                Log.e(TAG, "YOOOHOOOO");
+                fetchDataPoints(completedDate);
             }
             Log.e(TAG, completedDate.toString());
 
