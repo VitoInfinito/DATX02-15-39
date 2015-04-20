@@ -2,6 +2,7 @@ package com.kandidat.datx02_15_39.tok.layout;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Pair;
@@ -11,10 +12,12 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
@@ -92,6 +95,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
             }
         };
 
+        myDiary = DietDiary.getInstance();
 
         dayRadioButton.setPressed(true);
         dayRadioButton.setOnTouchListener(dayAndWeekListener);
@@ -176,15 +180,58 @@ public class DietHomeActivity extends CustomActionBarActivity {
         if(mealList != null){
             mealList.setAdapter(mla);
         }
+        mealList.setOnItemClickListener(new MealItemClickListener());
+
     }
 
     //Decides what happens on click on meal items in the ListView
-//    private class MealItemClickListener implements ListView.OnItemClickListener {
-//        @Override
-//        public void onItemClick(AdapterView parent, View view, int position, long id) {
-//            selectedItem(position);
-//        }
-//    }
+    private class MealItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView parent, View view, int position, long id) {
+            editMealItem(position);
+        }
+    }
+
+    private void editMealItem(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//TODO fixa till den här skiten
+        // set title
+        builder.setTitle("Välj alternativ");
+
+        // set dialog message
+        builder.setCancelable(false);
+        builder.setPositiveButton("Ändra", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                dialog.cancel();
+
+            }
+        })
+        .setNegativeButton("Radera", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        builder.setNeutralButton("Tillbaka", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // if this button is clicked, just close
+                // the dialog box and do nothing
+                dialog.cancel();
+            }
+        });
+
+        // create alert dialog
+        AlertDialog alertDialog = builder.create();
+        // show it
+        alertDialog.show();
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    void sendMessage(String s){
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+    }
 
     private void updateActivityList(ArrayList<DietActivity> activityList) {
 
@@ -279,14 +326,14 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
             dayOffset++;
             cal.add(Calendar.DATE, 1);
-            String updatedDate = sdfShowFullDate.format(cal.getTime());
+            String chosenDate = sdfShowFullDate.format(cal.getTime());
 
             if (dayOffset == -1) {
                 dateButton.setText("Igår");
             } else if (dayOffset == 0) {
                 dateButton.setText("Idag");
             } else {
-                dateButton.setText(updatedDate);
+                dateButton.setText(chosenDate);
             }
             updateDayScreen(cal);
 
