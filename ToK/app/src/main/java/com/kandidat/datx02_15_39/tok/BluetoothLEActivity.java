@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 
-public class BluetoothActivity extends ActionBarActivity implements BluetoothAdapter.LeScanCallback {
+public class BluetoothLEActivity extends ActionBarActivity implements BluetoothAdapter.LeScanCallback {
 
 	private static final String TAG = "BluetoothGattActivity";
 

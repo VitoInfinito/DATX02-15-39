@@ -89,5 +89,7 @@
     <string name="title_activity_jawbone_setup">JawboneSetup</string>
     <string name="title_activity_up_api_list">UpApiListActivity</string>
     <string name="press_button_to_connect">Press button to connect</string>
+    <string name="ble_not_supported">Din mobil har inte Bluetooth low energy</string>
+    <string name="title_activity_bluetooth">BluetoothActivity</string>
 
 </resources>
