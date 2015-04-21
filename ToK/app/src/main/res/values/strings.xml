@@ -24,6 +24,10 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="Workout">Träning</string>
+    <string name="date">Datum</string>
+    <string name="sleep_started">Började</string>
+    <string name="sleep_ended">Slutade</string>
+    <string name="ok">OK</string>
 
     <!-- Enumerator Words to mealtype -->
     <string-array name="ENUM_NAME">
@@ -78,7 +82,7 @@
     <string name="About">Om</string>
     <string name="add_intensity">Välj intensitet</string>
     <string name="save">Spara</string>
-    <string name="cancel">Cancel</string>
+    <string name="cancel">Avbryt</string>
     <string name="intensity">add_intensity</string>
     <string name="signup">Just sign up already</string>
     <string name="unset">Ej vald</string>
