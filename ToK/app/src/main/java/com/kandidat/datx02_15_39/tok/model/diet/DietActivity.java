@@ -72,11 +72,12 @@ public class DietActivity extends AbstractDiaryActivity implements Serializable 
 	}
 
 	public List<Food> getFoodList(){
-		ArrayList<Food> tmp = new ArrayList<Food>();
-		for (Food f: foodList){
-			tmp.add(f);
-		}
-		return tmp;
+//		ArrayList<Food> tmp = new ArrayList<Food>();
+//		for (Food f: foodList){
+//			tmp.add(f);
+//		}
+//		return tmp;
+		return foodList;
 	}
 
 	private void update(){
