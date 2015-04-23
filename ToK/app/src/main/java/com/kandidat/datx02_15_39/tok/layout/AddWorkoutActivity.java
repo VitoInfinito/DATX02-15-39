@@ -165,7 +165,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         builder.setView(datePicker);
         builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int id){
-                startMonth = datePicker.getMonth();
+                startMonth = datePicker.getMonth() + 1;
                 startDay = datePicker.getDayOfMonth();
                 registerWorkoutStartTimeOnClick(view);
             }
