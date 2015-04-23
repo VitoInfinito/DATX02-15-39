@@ -17,95 +17,183 @@
     tools:context="com.kandidat.datx02_15_39.tok.layout.MainActivity">
 
         <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="420dp"
             android:layout_alignParentTop="true"
-            android:layout_toStartOf="@+id/button2"
-            android:layout_above="@+id/button"
-            android:layout_alignRight="@+id/button2"
-            android:layout_alignEnd="@+id/button2">
+            android:id="@+id/user"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
+                android:text="Anna Andersson"
                 android:id="@+id/homeUsername"
-                android:layout_alignParentTop="true"
+                android:textSize="40dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+
+            <ImageButton
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:background="@drawable/user_icon"
+                android:id="@+id/imageButton"
+
+                android:layout_above="@+id/homeUsername"
+                android:layout_centerHorizontal="true" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:textSize="40dp" />
+                android:layout_alignParentBottom="true"
+                android:id="@+id/linearLayout3">
+
+                <ImageButton
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/start_run"
+                    android:scaleType="fitCenter"
+                    android:padding="15dp"
+                    android:id="@+id/imageButton3"
+                    android:onClick="onWorkOutButtonClick"
+                    android:layout_margin="15dp"
+                    />
+
+                <ImageButton
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/start_food"
+                    android:onClick="onDietButtonClick"
+                    android:scaleType="fitCenter"
+                    android:padding="20dp"
+                    android:id="@+id/imageButton4"
+                    android:layout_margin="15dp"/>
+
+                <ImageButton
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/start_sleep"
+                    android:scaleType="fitCenter"
+                    android:padding="15dp"
+                    android:id="@+id/imageButton2"
+                    android:onClick="onSleepButtonClick"
+                    android:layout_margin="15dp"/>
+
+            </LinearLayout>
+
+
         </RelativeLayout>
 
-        <ImageButton
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/button"
-        android:background="@drawable/heart288"
-        android:onClick="onWorkOutButtonClick"
-        android:maxHeight="100dp"
-        android:width="100dp"
-        android:maxWidth="100dp"
-        android:padding="15dp"
-        android:scaleType="fitCenter"
-        android:layout_centerVertical="true" />
 
-    <ImageButton
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:background="@drawable/restaurant44"
-        android:id="@+id/diet_button"
-        android:maxHeight="100dp"
-        android:width="100dp"
-        android:maxWidth="100dp"
-        android:scaleType="fitCenter"
-        android:padding="15dp"
-        android:onClick="onDietButtonClick"
-        android:layout_above="@+id/relativeLayout"
-        android:layout_centerHorizontal="true" />
-
-    <ImageButton
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:background="@drawable/zzz"
-        android:id="@+id/button2"
-        android:maxHeight="100dp"
-        android:width="100dp"
-        android:maxWidth="100dp"
-        android:scaleType="fitCenter"
-        android:onClick="onSleepButtonClick"
-        android:padding="15dp"
-        android:layout_alignTop="@+id/button"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/button2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/relativeLayout">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+       <!-- <ImageButton
+            android:layout_width="120dp"
+            android:layout_height="149dp"
             android:id="@+id/weightButton"
-            android:src="@drawable/weigth_scale"
+            android:src="@drawable/weight"
             android:onClick="registerWeightOnClick"
-            android:layout_centerInParent="true"/>
+            android:layout_weight="0.54"
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
 
-        <Button
+
+        <!- <ImageButton
+            android:layout_width="120dp"
+            android:layout_height="149dp"
+            android:id="@+id/goalButton"
+            android:src="@drawable/my_goals"
+            android:onClick="goalsButtonOnClick"
+            android:layout_weight="0.54"
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/weightButton" />-->
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Goals"
-            android:id="@+id/dummyButton"
-            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="0dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="false"
-            android:onClick="goalsButtonOnClick"/>
-    </RelativeLayout>
+            android:layout_centerHorizontal="true">
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/weight"
+            android:id="@+id/imageButton5"
+            android:onClick="registerWeightOnClick"
+            android:layout_margin="20dp"
+             />
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/my_goals"
+            android:id="@+id/imageButton6"
+            android:onClick="goalsButtonOnClick"
+            android:layout_margin="20dp"
+             />
+
+        </LinearLayout>
 
     </RelativeLayout>
+
+
+<!--
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user"
+            android:id="@+id/activity_buttons">
+
+            <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/button"
+            android:background="@drawable/heart288"
+            android:onClick="onWorkOutButtonClick"
+            android:maxHeight="100dp"
+            android:width="100dp"
+            android:maxWidth="100dp"
+            android:padding="15dp"
+            android:scaleType="fitCenter"
+            android:layout_centerVertical="true" />
+
+            <ImageButton
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/restaurant44"
+                android:id="@+id/diet_button"
+                android:maxHeight="100dp"
+                android:width="100dp"
+                android:maxWidth="100dp"
+                android:scaleType="fitCenter"
+                android:padding="15dp"
+                android:onClick="onDietButtonClick"
+                android:layout_above="@+id/relativeLayout"
+                android:layout_centerHorizontal="true" />
+
+            <ImageButton
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/zzz"
+                android:id="@+id/button2"
+                android:maxHeight="100dp"
+                android:width="100dp"
+                android:maxWidth="100dp"
+                android:scaleType="fitCenter"
+                android:onClick="onSleepButtonClick"
+                android:padding="15dp"
+                android:layout_alignTop="@+id/button"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </LinearLayout> -->
+
+
+
+
 
     <!-- The navigation drawer -->
     <LinearLayout
