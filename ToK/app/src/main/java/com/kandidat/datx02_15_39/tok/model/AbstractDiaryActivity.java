@@ -1,5 +1,6 @@
 package com.kandidat.datx02_15_39.tok.model;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 

@@ -60,14 +60,6 @@ public class AddDietActivity extends CustomActionBarActivity {
 		foodItemAdded = new ArrayList<Food>();
 		diary = DietDiary.getInstance();
 		Calendar c = Calendar.getInstance();
-		//List<Food> tmp = new ArrayList<Food>();
-		//tmp.add(new Food(200, 300,400,500, "Gunnar", "höger lår på kyckling", Food.FoodPrefix.g, 100));
-		//searchResultFood.add(tmp.get(0));
-		//DietActivity da = new DietActivity(c);
-		//diary.addActivity(c.getTime(), da);
-		//EditDietActivityParams edap = new EditDietActivityParams(c.getTime(), tmp);
-		//diary.editActivity(c, da.getID(), edap);
-		//foodItemAdded.add(tmp.get(0));
 		searchForItems("");
 	}
 
@@ -171,6 +163,7 @@ public class AddDietActivity extends CustomActionBarActivity {
 	private void searchForItems(String searchWord){
 		searchResultFood = new ArrayList<Food>(Database.getInstance().searchForFood(searchWord));
 		updateSearchList();
+		((TextView)findViewById(R.id.info_about_search_list)).setText("Search result for " + searchWord);
 	}
 
 	/**

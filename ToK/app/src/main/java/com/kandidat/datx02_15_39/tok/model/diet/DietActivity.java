@@ -7,6 +7,7 @@ import com.kandidat.datx02_15_39.tok.model.AbstractDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.AddToActivity;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -14,13 +15,13 @@ import java.util.List;
 /**
  * Created by Lagerstedt on 2015-02-16.
  */
-public class DietActivity extends AbstractDiaryActivity {
+public class DietActivity extends AbstractDiaryActivity implements Serializable {
 
 	private List<Food> foodList;
 	private double calorieCount, proteinCount, fatCount, carbCount;
     private String name;
 	private MEALTYPE mealtype = MEALTYPE.SNACK;
-	public enum MEALTYPE{
+	public enum MEALTYPE implements Serializable{
 		BREAKFAST,
 		LUNCH,
 		DINNER,
