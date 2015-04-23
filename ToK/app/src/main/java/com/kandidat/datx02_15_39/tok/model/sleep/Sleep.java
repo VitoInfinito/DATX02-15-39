@@ -8,7 +8,7 @@ import java.util.Date;
 public class Sleep {
 
     public enum SleepState {
-        AWAKE, LIGHT, DEEP
+        AWAKE, LIGHT, DEEP, MANUAL
     }
 
     Date startTime;
@@ -49,7 +49,10 @@ public class Sleep {
             case LIGHT:
                 return 1;
             case DEEP:
+            case MANUAL:
                 return 2;
+            case AWAKE:
+                return 3;
             default:
                 return 0;
         }

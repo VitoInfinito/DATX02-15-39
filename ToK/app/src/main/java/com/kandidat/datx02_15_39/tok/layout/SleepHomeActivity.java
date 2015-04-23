@@ -63,6 +63,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
     private LineGraphSeries<DataPoint> lightSleepSeries;
     private LineGraphSeries<DataPoint> deepSleepSeries;
+    private LineGraphSeries<DataPoint> awakeSleepSeries;
+    private LineGraphSeries<DataPoint> manualSleepSeries;
     //For lack of a better idea
     private LineGraphSeries<DataPoint> coverSleepSeries;
 
@@ -158,7 +160,6 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
             List<String> list = new ArrayList<>();
             try {
-                //JSONObject obj = new JSONObject("{interests : [{interestKey:Dogs}, {interestKey:Cats}]}");
                 LinkedTreeMap obj = (LinkedTreeMap) o;
 
                 Log.e(TAG, "data: " + obj.get("data").toString());
@@ -221,7 +222,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 new Sleep(
                         asleepDate,
                         awakeDate,
-                        Sleep.SleepState.DEEP),
+                        Sleep.SleepState.MANUAL),
                 new Sleep(
                         awakeDate,
                         completeDate,
@@ -290,7 +291,12 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
             Date completedDate = array.isEmpty() ? new Date() : new Date(Double.valueOf(array.get(array.size()-1).get("time").toString()).longValue()*1000);
             if(sdfShowDay.format(completedDate).equals(sdfShowDay.format(activeCalendar.getTime()))) {
-                fetchDataPoints(completedDate);
+                List<DataPoint[]> updatedSleep = fetchDataPoints(completedDate);
+                lightSleepSeries.resetData(updatedSleep.get(0));
+                deepSleepSeries.resetData(updatedSleep.get(1));
+                awakeSleepSeries.resetData(updatedSleep.get(2));
+                manualSleepSeries.resetData(updatedSleep.get(3));
+                coverSleepSeries.resetData(updatedSleep.get(4));
             }
             Log.e(TAG, completedDate.toString());
 
@@ -365,9 +371,11 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         List<DataPoint[]> updatedSleep = fetchDataPoints(newDate);
         lightSleepSeries.resetData(updatedSleep.get(0));
         deepSleepSeries.resetData(updatedSleep.get(1));
-        coverSleepSeries.resetData(updatedSleep.get(2));
+        awakeSleepSeries.resetData(updatedSleep.get(2));
+        manualSleepSeries.resetData(updatedSleep.get(3));
+        coverSleepSeries.resetData(updatedSleep.get(4));
 
-        setGraphXBounds(updatedSleep.get(2), (GraphView) findViewById(R.id.graph));
+        setGraphXBounds(updatedSleep.get(4), (GraphView) findViewById(R.id.graph));
 
         String newDateSDFDay = sdfShowDay.format(newDate);
         if(newDateSDFDay.equals(sdfShowDay.format(Calendar.getInstance().getTime()))) {
@@ -386,18 +394,26 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         List<DataPoint> lightSleep = new ArrayList<>();
         List<DataPoint> deepSleep = new ArrayList<>();
         List<DataPoint> coverSleep = new ArrayList<>();
+        List<DataPoint> awakeSleep = new ArrayList<>();
+        List<DataPoint> manualSleep = new ArrayList<>();
+
         List<Sleep> sleepList = diary.getSleepListFromDate(date);
         if(!sleepList.isEmpty()) {
             coverSleep.add(new DataPoint(sleepList.get(0).getStartTime().getTime(), 0));
-            coverSleep.add(new DataPoint(sleepList.get(sleepList.size() - 1).getStopTime().getTime(), 0));
+
 
             for (int i = 0; i < sleepList.size(); i++) {
                 Sleep sleep = sleepList.get(i);
                 List<DataPoint> addList;
+
                 if (sleep.getSleepState() == Sleep.SleepState.LIGHT) {
                     addList = lightSleep;
-                } else {
+                } else if (sleep.getSleepState() == Sleep.SleepState.DEEP) {
                     addList = deepSleep;
+                } else if (sleep.getSleepState() == Sleep.SleepState.AWAKE) {
+                    addList = awakeSleep;
+                }else{
+                    addList = manualSleep;
                 }
 
 
@@ -411,6 +427,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 addList.add(new DataPoint(stopTime.getTime(), 0));
 
             }
+
+            coverSleep.add(new DataPoint(sleepList.get(sleepList.size() - 1).getStopTime().getTime(), 0));
         }
 
         //If any list is found empty we enter empty data to show an empty graph
@@ -430,6 +448,18 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 deepSleep.add(new DataPoint(dpCal.getTime(), -1));
             }
 
+            if (awakeSleep.isEmpty()) {
+                awakeSleep.add(new DataPoint(dpCal.getTime(), -1));
+                dpCal.set(Calendar.MINUTE, dpCal.get(Calendar.MINUTE) + 1);
+                awakeSleep.add(new DataPoint(dpCal.getTime(), -1));
+            }
+
+            if (manualSleep.isEmpty()) {
+                manualSleep.add(new DataPoint(dpCal.getTime(), -1));
+                dpCal.set(Calendar.MINUTE, dpCal.get(Calendar.MINUTE) + 1);
+                manualSleep.add(new DataPoint(dpCal.getTime(), -1));
+            }
+
             if (coverSleep.isEmpty()) {
                 dpCal.set(Calendar.HOUR_OF_DAY, 0);
                 coverSleep.add(new DataPoint(dpCal.getTime(), 0));
@@ -441,6 +471,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         List<DataPoint[]> dataPointsList = new ArrayList<>();
         dataPointsList.add(lightSleep.toArray(new DataPoint[]{}));
         dataPointsList.add(deepSleep.toArray(new DataPoint[]{}));
+        dataPointsList.add(awakeSleep.toArray(new DataPoint[]{}));
+        dataPointsList.add(manualSleep.toArray(new DataPoint[]{}));
         dataPointsList.add(coverSleep.toArray(new DataPoint[]{}));
 
         return new ArrayList<>(dataPointsList);
@@ -474,7 +506,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         List<DataPoint[]> sleepList = fetchDataPoints(activeDate);
         DataPoint[] lightSleepDps = sleepList.get(0);
         DataPoint[] deepSleepDps = sleepList.get(1);
-        DataPoint[] coverSleepDps = sleepList.get(2);
+        DataPoint[] coverSleepDps = sleepList.get(4);
 
         lightSleepSeries = new LineGraphSeries<>(lightSleepDps);
         deepSleepSeries = new LineGraphSeries<>(deepSleepDps);
@@ -482,6 +514,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
         graph.addSeries(lightSleepSeries);
         graph.addSeries(deepSleepSeries);
+        graph.addSeries(awakeSleepSeries);
+        graph.addSeries(manualSleepSeries);
         graph.addSeries(coverSleepSeries);
         //lightSleepSeries.setTitle(sdfShowDay.format(activeDate));
         setGraphXBounds(coverSleepDps, graph);
@@ -497,6 +531,16 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         deepSleepSeries.setDrawBackground(true);
         deepSleepSeries.setBackgroundColor(Color.rgb(0, 153, 153));
         deepSleepSeries.setThickness(0);
+
+        awakeSleepSeries.setColor(Color.rgb(0, 65, 125));
+        awakeSleepSeries.setDrawBackground(true);
+        awakeSleepSeries.setBackgroundColor(Color.rgb(0, 65, 125));
+        awakeSleepSeries.setThickness(0);
+
+        manualSleepSeries.setColor(Color.rgb(188, 188, 153));
+        manualSleepSeries.setDrawBackground(true);
+        manualSleepSeries.setBackgroundColor(Color.rgb(188, 188, 153));
+        manualSleepSeries.setThickness(0);
 
         coverSleepSeries.setColor(Color.rgb(0, 0, 0));
         coverSleepSeries.setDrawBackground(true);
