@@ -34,12 +34,19 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.SynchronousQueue;
 
 public class BluetoothActivity extends ActionBarActivity {
 
 	private static final String TAG = "BluetoothActivity";
 
 	private static final String DEVICE_NAME = "HC06";
+
+	//Bluetooth Commands
+	private static final int TARE_SCALE = 10;
+	private static final int START_PUSH_VALUE = 11;
+	private static final int END_PUSH_VALUE = 12;
+	private static final int CALIBRATE_SCALE = 13;
 
 	public static final int REQUEST_ENABLE_BT = 1;
 	private BluetoothAdapter mBluetoothAdapter;
@@ -51,10 +58,16 @@ public class BluetoothActivity extends ActionBarActivity {
 	private static final int CONNECTED_SEND_DATA = 102;
 	private static final int CONNECTION_CHANGED = 103;
 	private static final int TARE_SCALE_REQUEST = 104;
+	private static final int START_SCALE_REQUEST = 105;
+	private static final int END_SCALE_REQUEST = 106;
 	Button button ;
+	TextView updateView;
 
 	private Handler mHandler = new Handler() {
-		ConnectedThread connectedThread;
+		private ConnectedThread connectedThread;
+
+		SynchronousQueue Queue  = new SynchronousQueue(); // Kan vara bra att testa sedan kanske ?
+
 
 		@Override
 		public void handleMessage(Message msg) {
@@ -68,20 +81,52 @@ public class BluetoothActivity extends ActionBarActivity {
 					connectedThread.start();
 					break;
 				case MESSAGE_READ:
-					Log.d(TAG, new String((byte[])msg.obj, 0, msg.arg1));
-					//button.setText(new String((byte[])msg.obj));
-					//sendToast("Svar: " + new String((byte[])msg.obj, "UTF-8")));
-					break;
-				case CONNECTED_SEND_DATA:
-					if(connectedThread != null){
-						connectedThread.write(((String)msg.obj).getBytes());
+					if(connectedThread != null) {
+						Log.d(TAG, new String((byte[]) msg.obj, 0, msg.arg1));
+						//button.setText(new String((byte[])msg.obj));
+						//sendToast("Svar: " + new String((byte[])msg.obj, "UTF-8")));
+						updateView.setText(convertMessage(new String((byte[]) msg.obj, msg.arg2, msg.arg1)) + "");
 					}
 					break;
+				case CONNECTED_SEND_DATA:
+					break;
+				case CONNECTION_CHANGED:
+					break;
 				case TARE_SCALE_REQUEST:
+					sendOverBluetooth(TARE_SCALE);
+					break;
+				case START_SCALE_REQUEST:
+					sendOverBluetooth(START_PUSH_VALUE);
+					break;
+				case END_SCALE_REQUEST:
+					sendOverBluetooth(END_PUSH_VALUE);
 					break;
 			}
 		}
+
+		void sendOverBluetooth(int code){
+			if(connectedThread != null) {
+				connectedThread.write(("#" + code + "~").getBytes());
+			}
+		}
 	};
+
+	public void onStartClick(View v){
+		mHandler.sendMessage(Message.obtain(null, START_SCALE_REQUEST));
+	}
+
+	public void onEndClick(View v){
+		mHandler.sendMessage(Message.obtain(null, END_SCALE_REQUEST));
+	}
+
+	public void onTareClick(View v){
+		mHandler.sendMessage(Message.obtain(null, TARE_SCALE_REQUEST));
+	}
+
+	private int convertMessage(String s) {
+		s = s.replaceAll("[^0-9]", "");
+		return Integer.parseInt(s);
+	}
 
 	private void sendToast(String s) {
 		Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
@@ -90,7 +135,7 @@ public class BluetoothActivity extends ActionBarActivity {
 	private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
 	private void init(){
-
+		updateView = (TextView) findViewById(R.id.output_bluetooth);
 		startBluetooth();
 		button = (Button)findViewById(R.id.button5);
 
@@ -324,7 +369,9 @@ public class BluetoothActivity extends ActionBarActivity {
 		public void run() {
 			byte[] buffer  = new byte[1024];  // buffer store for the stream
 			int bytes; // bytes returned from read()
-			boolean finishedRead = false;
+			boolean finishedRead = true;
+			int startPos = 0;
+			int endSearch = 100;
 			//new Thread(startCom).start();
 			// Keep listening to the InputStream until an exception occurs
 			while (true) {
@@ -333,17 +380,28 @@ public class BluetoothActivity extends ActionBarActivity {
 						//buffer  = new byte[1024];
 						// Read from the InputStream
 						bytes = mmInStream.read(buffer);
-						while(!finishedRead) {
-							bytes += mmInStream.read(buffer, bytes, 1023- bytes);
-							for (int i = 0; i < bytes; i++) {
-								if (buffer[i] == '~') {	 											// This '~' is needed to know that its the last byte that the
-									finishedRead = true;
-								}
+						for (int i = 0; i < bytes; i ++){
+							if(buffer[i] == '#'){
+								finishedRead = false;
+								startPos = i;
+								break;
 							}
-						}//*/
+						}
+						if(!finishedRead) {
+							while(!finishedRead && endSearch > 0) {
+								bytes += mmInStream.read(buffer, bytes, 1023- bytes);
+								for (int i = 0; i < bytes; i++) {
+									if (buffer[i] == '~') {	 											// This '~' is needed to know that its the last byte that the
+										finishedRead = true;
+									}
+								}
+								endSearch--;
+							}//*/
 						// Send the obtained bytes to the UI activity
-						mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer).sendToTarget();
-						finishedRead = false;
+							mHandler.obtainMessage(MESSAGE_READ, bytes - startPos, startPos, buffer).sendToTarget();
+						}
+						finishedRead = true;
+						startPos = 0;
 					}
 				} catch (IOException e) {
 					break;
@@ -406,4 +464,6 @@ public class BluetoothActivity extends ActionBarActivity {
 			connectBluetooth(mDevices.get(position));
 		}
 	}
+
+
 }

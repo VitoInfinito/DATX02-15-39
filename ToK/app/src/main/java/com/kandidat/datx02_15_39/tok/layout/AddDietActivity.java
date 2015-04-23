@@ -62,28 +62,24 @@ public class AddDietActivity extends CustomActionBarActivity {
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		if(savedInstanceState != null){
-			if (savedInstanceState.getSerializable(itemsList) != null)
-				newActivity = (DietActivity) savedInstanceState.getSerializable(AddDietActivity.itemsList);
-		}
-		if(newActivity == null) {
-			Calendar c = Calendar.getInstance();
-			newActivity = new DietActivity(c);
-		}
+//		if(savedInstanceState != null){
+//			if (savedInstanceState.getSerializable(itemsList) != null)
+//				newActivity = (DietActivity) savedInstanceState.getSerializable(AddDietActivity.itemsList);
+//		}
+//		if(newActivity == null) {
+//			Calendar c = Calendar.getInstance();
+//			newActivity = new DietActivity(c);
+//		}
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		Intent intent = new Intent(this, ViewAddDietActivity.class);
-		Bundle bundle = new Bundle();
-		//bundle.putSerializable(this.itemsList, foodItemAdded);									//TODO
-		bundle.putSerializable(this.itemsList, newActivity);
-		intent.putExtras(bundle);
-	}
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
+//		Intent intent = new Intent(this, ViewAddDietActivity.class);
+//		Bundle bundle = new Bundle();
+//		//bundle.putSerializable(this.itemsList, foodItemAdded);									//TODO
+//		bundle.putSerializable(this.itemsList, newActivity);
+//		intent.putExtras(bundle);
 	}
 
 	@Override
