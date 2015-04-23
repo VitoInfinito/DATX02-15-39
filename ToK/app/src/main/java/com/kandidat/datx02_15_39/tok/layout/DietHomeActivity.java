@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
@@ -144,6 +145,8 @@ public class DietHomeActivity extends CustomActionBarActivity {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.meal_item, null);
             }
 
+            String activityId = getItem(position).getID();
+
             // Fetching the views of the layout
             TextView meal_item_name = (TextView) convertView.findViewById(R.id.meal_item_name);
             TextView meal_item_calories = (TextView) convertView.findViewById(R.id.meal_item_calories);
@@ -153,6 +156,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
             meal_item_name.setHint(getItem(position).getName());
             meal_item_calories.setHint(getItem(position).getCalorieCount() + "");
             meal_item_date.setHint(sdfShowFullDate.format(getItem(position).getDate()));
+
 
             return convertView;
         }
@@ -194,22 +198,19 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
     private void editMealItem(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//TODO fixa till den här skiten
         // set title
         builder.setTitle("Välj alternativ");
 
         // set dialog message
-        builder.setCancelable(false);
         builder.setPositiveButton("Ändra", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-
                 dialog.cancel();
-
             }
-        })
-        .setNegativeButton("Radera", new DialogInterface.OnClickListener() {
+        });
+        builder.setNegativeButton("Radera", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
+                //TODO fråga Marcus om understående
+                myDiary.removeActivity(cal, mealList.getChildAt(position).);
             }
         });
         builder.setNeutralButton("Tillbaka", new DialogInterface.OnClickListener() {
@@ -224,9 +225,6 @@ public class DietHomeActivity extends CustomActionBarActivity {
         AlertDialog alertDialog = builder.create();
         // show it
         alertDialog.show();
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     void sendMessage(String s){
@@ -249,7 +247,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
                 new DataPoint(30, protSum),
                 new DataPoint(40, fatSum),
         });
-
+//
         kcalText.setText(calSum + "");
         carbText.setText(carbSum + "");
         protText.setText(protSum + "");
@@ -257,11 +255,21 @@ public class DietHomeActivity extends CustomActionBarActivity {
         series.setSpacing(8);
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.RED);
+        series.setSpacing(40);
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(dietGraph);
         staticLabelsFormatter.setHorizontalLabels(new String[]{"Kcal", "Kolhydrater", "Proteiner", "Fett"});
+
         dietGraph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
         dietGraph.getGridLabelRenderer().setVerticalAxisTitle("Mängd");
         dietGraph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+
+
+        dietGraph.getViewport().setXAxisBoundsManual(true);
+        dietGraph.getViewport().setMinX(5);
+        dietGraph.getViewport().setMaxX(45); //om större än 45 så fuckar de statiska lablarna ur, venne varför.
+
+        //TODO lägg till nedanstående line till Workout
+        dietGraph.removeAllSeries();
         dietGraph.addSeries(series);
 
         updateMealList();
