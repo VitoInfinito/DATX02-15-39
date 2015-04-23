@@ -52,7 +52,7 @@ public class Sleep {
             case MANUAL:
                 return 2;
             case AWAKE:
-                return 3;
+                return 1;
             default:
                 return 0;
         }

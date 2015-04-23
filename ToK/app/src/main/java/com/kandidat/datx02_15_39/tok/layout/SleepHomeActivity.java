@@ -506,16 +506,20 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         List<DataPoint[]> sleepList = fetchDataPoints(activeDate);
         DataPoint[] lightSleepDps = sleepList.get(0);
         DataPoint[] deepSleepDps = sleepList.get(1);
+        DataPoint[] awakeSleepDps = sleepList.get(2);
+        DataPoint[] manualSleepDps = sleepList.get(3);
         DataPoint[] coverSleepDps = sleepList.get(4);
 
         lightSleepSeries = new LineGraphSeries<>(lightSleepDps);
         deepSleepSeries = new LineGraphSeries<>(deepSleepDps);
+        awakeSleepSeries = new LineGraphSeries<>(awakeSleepDps);
+        manualSleepSeries = new LineGraphSeries<>(manualSleepDps);
         coverSleepSeries = new LineGraphSeries<>(coverSleepDps);
 
         graph.addSeries(lightSleepSeries);
         graph.addSeries(deepSleepSeries);
-        graph.addSeries(awakeSleepSeries);
-        graph.addSeries(manualSleepSeries);
+        //graph.addSeries(awakeSleepSeries);
+        //graph.addSeries(manualSleepSeries);
         graph.addSeries(coverSleepSeries);
         //lightSleepSeries.setTitle(sdfShowDay.format(activeDate));
         setGraphXBounds(coverSleepDps, graph);
@@ -532,7 +536,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         deepSleepSeries.setBackgroundColor(Color.rgb(0, 153, 153));
         deepSleepSeries.setThickness(0);
 
-        awakeSleepSeries.setColor(Color.rgb(0, 65, 125));
+        /*awakeSleepSeries.setColor(Color.rgb(0, 65, 125));
         awakeSleepSeries.setDrawBackground(true);
         awakeSleepSeries.setBackgroundColor(Color.rgb(0, 65, 125));
         awakeSleepSeries.setThickness(0);
@@ -540,7 +544,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         manualSleepSeries.setColor(Color.rgb(188, 188, 153));
         manualSleepSeries.setDrawBackground(true);
         manualSleepSeries.setBackgroundColor(Color.rgb(188, 188, 153));
-        manualSleepSeries.setThickness(0);
+        manualSleepSeries.setThickness(0);*/
 
         coverSleepSeries.setColor(Color.rgb(0, 0, 0));
         coverSleepSeries.setDrawBackground(true);
