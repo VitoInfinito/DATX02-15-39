@@ -18,6 +18,7 @@ public class Sleep {
     SleepState sleepState;
 
 
+
     public Sleep(Date start, Date stop) {
         startTime = start;
         stopTime = stop;
@@ -47,17 +48,14 @@ public class Sleep {
     public int getSleepLevel() {
         switch(sleepState) {
             case LIGHT:
-                return 1;
+                return 2;
             case DEEP:
             case MANUAL:
-                return 2;
+                return 4;
             case AWAKE:
                 return 1;
             default:
                 return 0;
         }
     }
-
-
-
 }

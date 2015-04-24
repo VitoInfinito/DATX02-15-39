@@ -1,5 +1,7 @@
 package com.kandidat.datx02_15_39.tok.model.sleep;
 
+import android.util.Log;
+
 import com.kandidat.datx02_15_39.tok.model.AbstractDiary;
 import com.kandidat.datx02_15_39.tok.model.AddToActivity;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
