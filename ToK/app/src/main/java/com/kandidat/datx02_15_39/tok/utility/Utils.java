@@ -29,4 +29,18 @@ public final class Utils {
         cal.setTimeInMillis(millis);
         return cal;
     }
+
+	/*
+ * Sets upp a calender that can be compared only between 2 dates!
+ * The Hour, Minute, Seconds, and milliseconds is set to 0.
+ * @return - A Calendar that is Comparable between days
+ */
+	private static Calendar setupCalendar(){
+		Calendar tmp = Calendar.getInstance();
+		tmp.set(Calendar.HOUR_OF_DAY, 0);
+		tmp.set(Calendar.MINUTE, 0);
+		tmp.set(Calendar.SECOND,0);
+		tmp.set(Calendar.MILLISECOND,0);
+		return tmp;
+	}
 }

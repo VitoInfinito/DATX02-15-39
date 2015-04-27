@@ -1,36 +1,39 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
 
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
+import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
 
-public class AddDietActivity2 extends ActionBarActivity {
+public class AddDietActivity2 extends CustomActionBarActivity {
+
+	DietFragment currentFragement;
+	public static final String dietActivityArgument = "DIETACTIVITY";
+	DietDiary myDiary = DietDiary.getInstance();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_diet_activity2);
+		initMenu(R.layout.activity_add_diet_activity2);
+		currentFragement = new AddDietFragment();
 		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment())
-					.commit();
+			getSupportFragmentManager().beginTransaction().add(R.id.content_frame, currentFragement).commit();
 		}
 	}
 
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_add_diet_activity2, menu);
+		if(currentFragement instanceof AddDietFragment) {
+			getMenuInflater().inflate(R.menu.menu_with_moveforward, menu);
+		}else{
+			getMenuInflater().inflate(R.menu.menu_with_confirm, menu);
+		}
 		return true;
 	}
 
@@ -40,28 +43,49 @@ public class AddDietActivity2 extends ActionBarActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-
 		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings) {
-			return true;
+		if (id == R.id.right_corner_button_moveforward) {
+			//Gör så att currentFragment kan returnera en DietActivity
+			DietActivity dietActivity = currentFragement.getDietActivity();
+			currentFragement = new ViewAddDietFragment();
+			Bundle bundle = new Bundle();
+			bundle.putSerializable(this.dietActivityArgument, dietActivity);
+			currentFragement.setArguments(bundle);
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.content_frame, currentFragement)
+					.addToBackStack(null)
+					.commit();
+			invalidateOptionsMenu();
+		}else if (id == R.id.right_corner_button_confirm) {
+			//TODO Fixa så den sparar allt och skickar vidare
+			if(currentFragement instanceof ViewAddDietFragment){
+				DietActivity tmp =	((ViewAddDietFragment)currentFragement).createDietActivity();
+				if(!tmp.getFoodList().isEmpty()) {
+					myDiary.addActivity(tmp.getDate(), tmp);
+				}
+				startActivity(new Intent(this, MainActivity.class));
+				finish();
+			}
 		}
-
+		//This will be called to be able to see if you pressed the menu
 		return super.onOptionsItemSelected(item);
 	}
 
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
+	@Override
+	public void onBackPressed() {
 
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-								 Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_add_diet_activity2, container, false);
-			return rootView;
+		if(currentFragement instanceof ViewAddDietFragment){
+			DietActivity dietActivity = currentFragement.getDietActivity();
+			currentFragement = new AddDietFragment();
+			Bundle bundle = new Bundle();
+			bundle.putSerializable(this.dietActivityArgument, dietActivity);
+			currentFragement.setArguments(bundle);
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.content_frame, currentFragement)
+					.commit();
+			invalidateOptionsMenu();
+		}else{
+			super.onBackPressed();
 		}
 	}
 }

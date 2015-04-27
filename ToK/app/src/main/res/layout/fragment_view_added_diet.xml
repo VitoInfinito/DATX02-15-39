@@ -1,13 +1,131 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.kandidat.datx02_15_39.tok.ViewAddedDiet">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/addview_body_container"
+    tools:context="com.kandidat.datx02_15_39.tok.layout.AddDietFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/name_date_container"
+        >
 
-</FrameLayout>
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/mealname"
+            android:inputType="textAutoComplete"
+            android:hint="Döp din måltid......."/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="Datum:"
+                android:id="@+id/textView2"
+                android:textSize="25sp"
+                android:gravity="center_vertical"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:text="Idag"
+                android:id="@+id/diet_choose_date_button"
+                android:background="@drawable/border_transparent_background"
+                android:onClick="onDietDateClick"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingStart="5dp"
+            >
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="end"
+                android:text="Måltidstyp"
+                android:gravity="left|center_vertical"
+                android:id="@+id/meal_selector_button"
+                android:onClick="onMealSelectorClick"
+                android:background="@drawable/combo_box_button"
+                android:paddingLeft="3dp"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="Innehåll i din måltid"
+            android:id="@+id/textView"
+            android:textSize="30sp"
+            android:gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/item_container"
+        android:descendantFocusability="blocksDescendants"
+        android:layout_weight="1">
+
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/food_item_added_container"
+            android:choiceMode="singleChoice"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="bottom">
+
+        <Switch
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Spara detta som recept:"
+            android:id="@+id/save_meal_created_as_recipe"
+            android:layout_weight="1"
+            android:checked="false"/>
+    </LinearLayout>
+
+</LinearLayout>

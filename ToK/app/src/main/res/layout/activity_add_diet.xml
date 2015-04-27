@@ -76,7 +76,8 @@
                         android:padding="10dp"
                         android:clickable="true"
                         android:onClick="onDietSelectorClick"
-                        android:focusableInTouchMode="false"/>
+                        android:focusableInTouchMode="false"
+                        android:contentDescription="Knapp för att söka bland råvaror"/>
 
                     <Space
                         android:layout_width="wrap_content"
@@ -96,7 +97,8 @@
                         android:padding="10dp"
                         android:clickable="true"
                         android:onClick="onDietSelectorClick"
-                        android:focusableInTouchMode="false"/>
+                        android:focusableInTouchMode="false"
+                        android:contentDescription="Våg knapp"/>
 
                     <Space
                         android:layout_width="wrap_content"
@@ -116,7 +118,8 @@
                         android:scaleType="fitCenter"
                         android:clickable="true"
                         android:focusableInTouchMode="false"
-                        android:onClick="onDietSelectorClick"/>
+                        android:onClick="onDietSelectorClick"
+                        android:contentDescription=""/>
 
                     <Space
                         android:layout_width="wrap_content"
@@ -136,7 +139,8 @@
                         android:padding="10dp"
                         android:clickable="true"
                         android:onClick="onDietSelectorClick"
-                        android:focusableInTouchMode="false"/>
+                        android:focusableInTouchMode="false"
+                        android:contentDescription="Knapp för att söka med hjälp av streckkod"/>
 
                     <Space
                         android:layout_width="wrap_content"
