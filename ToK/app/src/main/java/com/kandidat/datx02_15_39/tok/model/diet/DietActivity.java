@@ -63,7 +63,7 @@ public class DietActivity extends AbstractDiaryActivity implements Serializable 
     public DietActivity(String name, List<Food> listOfFood, Calendar calendar) {
         this.foodList = listOfFood;
         this.name = name;
-        setDate(calendar.getTime());
+        setDate(calendar);
         update();
     }
 

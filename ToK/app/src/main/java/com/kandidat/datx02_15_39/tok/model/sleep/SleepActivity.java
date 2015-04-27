@@ -1,40 +1,45 @@
 package com.kandidat.datx02_15_39.tok.model.sleep;
 
+import com.kandidat.datx02_15_39.tok.model.AbstractDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.AddToActivity;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by tomasherselquist on 20/02/15.
  */
-public class SleepActivity implements IDiaryActivity{
+public class SleepActivity extends AbstractDiaryActivity {
 
     private final String id;
     private List<Sleep> sleepList;
-    private Date date;
 
     public SleepActivity(String id, Sleep sleep) {
         this.id = id;
         sleepList = new ArrayList<>();
         sleepList.add(sleep);
-        date = new Date();
+        setDate(Calendar.getInstance());
     }
 
     public SleepActivity(String id, Sleep sleep, Date date) {
         this.id = id;
         sleepList = new ArrayList<>();
         sleepList.add(sleep);
-        this.date = date;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+        setDate(cal);
     }
 
     public SleepActivity(String id, List<Sleep> sleeps, Date date) {
         this.id = id;
         sleepList = sleeps;
-        this.date = date;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		setDate(cal);
     }
 
     public List<Sleep> getSleepList() {
@@ -55,15 +60,6 @@ public class SleepActivity implements IDiaryActivity{
         return id;
     }
 
-    @Override
-    public void setDate(Date d) {
-        date = d;
-    }
-
-    @Override
-    public Date getDate() {
-        return date;
-    }
 
     @Override
     public void edit(EditActivityParams eap) {

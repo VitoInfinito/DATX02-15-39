@@ -27,9 +27,9 @@ public class DietDiary extends AbstractDiary {
 	protected DietDiary(){}
 
 	@Override
-	public void addActivity(Date d, IDiaryActivity activity) {
-		activity.setDate(d);
-		addActivityToTable(d, activity);
+	public void addActivity(Calendar date, IDiaryActivity activity) {
+		activity.setDate(date);
+		addActivityToTable(date.getTime(), activity);
 	}
 
 	@Override
