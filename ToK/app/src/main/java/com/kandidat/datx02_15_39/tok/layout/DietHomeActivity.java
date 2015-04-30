@@ -29,6 +29,7 @@ import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
+import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ public class DietHomeActivity extends CustomActionBarActivity {
     private Calendar cal;
     private BarGraphSeries<DataPoint> series;
     ArrayList<Food> foodList;
+
+	private ViewAddDietFragment tempFragment;
 
     ArrayList<DietActivity> activityList;
     private ListView mealList;
@@ -107,7 +110,10 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_with_add, menu);
+		if(tempFragment != null)
+			getMenuInflater().inflate(R.menu.menu_with_confirm, menu);
+		else
+       		getMenuInflater().inflate(R.menu.menu_with_add, menu);
         return true;
     }
 
@@ -127,6 +133,13 @@ public class DietHomeActivity extends CustomActionBarActivity {
             ad.setCanceledOnTouchOutside(true);
             ad.show();
         }
+		if(id == R.id.right_corner_button_confirm){
+			tempFragment.editActivity();
+			getSupportFragmentManager().beginTransaction().remove(tempFragment).commit();
+			tempFragment = null;
+			updateMealList();
+			invalidateOptionsMenu();
+		}
 
         return super.onOptionsItemSelected(item);
     }
@@ -155,7 +168,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
             // Populate the data into the template layout (meal_item)
             meal_item_name.setHint(getItem(position).getName());
             meal_item_calories.setHint(getItem(position).getCalorieCount() + "");
-            meal_item_date.setHint(sdfShowFullDate.format(getItem(position).getDate()));
+            meal_item_date.setHint(sdfShowFullDate.format(getItem(position).getDate().getTime()));
 
 
             return convertView;
@@ -196,6 +209,17 @@ public class DietHomeActivity extends CustomActionBarActivity {
         }
     }
 
+	void startNewFragmentToEditMeal(DietActivity dietActivity){
+		if(dietActivity != null) {
+			tempFragment = new ViewAddDietFragment();
+			Bundle bundle = new Bundle();
+			bundle.putSerializable(Utils.dietActivityArgument, dietActivity);
+			tempFragment.setArguments(bundle);
+			getSupportFragmentManager().beginTransaction().add(R.id.content_frame, tempFragment).commit();
+			invalidateOptionsMenu();
+		}
+	}
+
     private void editMealItem(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // set title
@@ -205,12 +229,13 @@ public class DietHomeActivity extends CustomActionBarActivity {
         builder.setPositiveButton("Ändra", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
+				startNewFragmentToEditMeal((DietActivity)mealList.getItemAtPosition(position));
             }
         });
         builder.setNegativeButton("Radera", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //TODO fråga Marcus om understående
-                myDiary.removeActivity(cal, mealList.getChildAt(position).);
+                myDiary.removeActivity(cal, ((DietActivity)mealList.getItemAtPosition(position)).getID());
             }
         });
         builder.setNeutralButton("Tillbaka", new DialogInterface.OnClickListener() {

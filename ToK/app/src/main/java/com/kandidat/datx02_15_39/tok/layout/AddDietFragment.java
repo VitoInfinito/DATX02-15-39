@@ -20,7 +20,10 @@ import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.diet.AddToDietActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
+import com.kandidat.datx02_15_39.tok.model.diet.Recipe;
+import com.kandidat.datx02_15_39.tok.model.diet.RecipeCollection;
 import com.kandidat.datx02_15_39.tok.utilies.Database;
+import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,6 +38,7 @@ public class AddDietFragment extends DietFragment{
 	private ListView searchResultList;
 	private ArrayList<Food> searchResultFood;
 	private SearchResultAdapter sra;
+	private RecipeResultAdapter rra;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,7 +67,7 @@ public class AddDietFragment extends DietFragment{
 		getView().findViewById(activatedObject).setActivated(true);
 		Bundle bundle = getArguments();
 		if(bundle != null){
-			Object object = bundle.getSerializable(AddDietActivity2.dietActivityArgument);
+			Object object = bundle.getSerializable(Utils.dietActivityArgument);
 			if (object instanceof DietActivity) {
 			newActivity = (DietActivity) object;
 			}else {
@@ -78,7 +82,7 @@ public class AddDietFragment extends DietFragment{
 
 	private void searchForItems(String searchWord){
 		searchResultFood = new ArrayList<>(Database.getInstance().searchForFood(searchWord));
-		updateSearchList();
+		updateList();
 		((TextView)getView().findViewById(R.id.info_about_search_list)).setText("Search result for " + searchWord);
 	}
 
@@ -95,11 +99,7 @@ public class AddDietFragment extends DietFragment{
 			ImageButton ib = (ImageButton) view;
 			if (ib.getId() == R.id.barcode_button_view_diet) {
 				//TODO Change View to a Barcode app
-			}else{
-				if(ib.getId() == R.id.scale_button_view_diet) {
-					//this.startBluetooth();
-					startActivity(new Intent(getView().getContext(), BluetoothActivity.class));
-				}
+			}else {
 				int amount = ((LinearLayout) getView().findViewById(R.id.button_container)).getChildCount();
 				View child;
 				for (int i = 0; i < amount; i++) {
@@ -110,6 +110,15 @@ public class AddDietFragment extends DietFragment{
 					}
 				}
 				ib.setActivated(true);
+				activatedObject = ib.getId();
+				if(ib.getId() == R.id.food_button_view_diet){
+					updateList();
+				}else if(ib.getId() == R.id.scale_button_view_diet) {
+					//this.startBluetooth();
+					startActivity(new Intent(getView().getContext(), BluetoothActivity.class));
+				}else if (ib.getId() == R.id.recipe_button_view_diet){
+					updateList();
+				}
 			}
 		}
 	}
@@ -132,7 +141,28 @@ public class AddDietFragment extends DietFragment{
 
 	private void updateSearchList(List<Food> foodList){
 		searchResultFood = new ArrayList<Food>(foodList);
-		updateSearchList();
+		updateList();
+	}
+
+	private void updateList() {
+		if(activatedObject == R.id.recipe_button_view_diet){
+			updateRecipeList();
+		}else{
+			updateSearchList();
+		}
+	}
+
+	private void updateRecipeList() {
+		searchResultList = (ListView) getView().findViewById(R.id.food_search_item_container);
+		searchResultList.removeAllViewsInLayout();
+		rra = new RecipeResultAdapter(getView().getContext());
+		for (Recipe r: RecipeCollection.getInstance().getList()){
+			rra.add(r);
+		}
+		if(searchResultList != null){
+			searchResultList.setAdapter(rra);
+		}
+		searchResultList.setOnItemClickListener(new SearchItemClickListener());
 	}
 
 	/**
@@ -166,6 +196,37 @@ public class AddDietFragment extends DietFragment{
 	}
 
 	/**
+	 * This Class is added and extends ArrayAdapter and it lets me draw what i want to the list item
+	 */
+	private class RecipeResultAdapter extends ArrayAdapter<Recipe>
+	{
+
+		public RecipeResultAdapter  (Context context)
+		{
+			super(context,0);
+		}
+
+		public View getView (int position, View convertView, ViewGroup parent)
+		{
+			if (convertView == null)
+			{
+				convertView = LayoutInflater.from(getContext()).inflate(R.layout.search_food_item, null);
+
+			}
+			// Lookup view for data population
+			TextView food_item_name = (TextView) convertView.findViewById(R.id.food_item_name);
+			TextView food_item_calorie = (TextView) convertView.findViewById(R.id.food_calorie_amount);
+			// Populate the data into the template view using the data object
+			food_item_name.setHint(getItem(position).getName());
+			food_item_calorie.setHint(getItem(position).getCalorieCountPortion() + "kcal per portion");
+			// Return the completed view to render on screen
+
+			return convertView;
+		}
+	}
+
+
+	/**
 	 * This class is handel all the clicks on the listview
 	 */
 	private class SearchItemClickListener implements ListView.OnItemClickListener {
@@ -178,25 +239,23 @@ public class AddDietFragment extends DietFragment{
 	private void selectedItem(int position) {
 		if(getView().findViewById(R.id.recipe_button_view_diet).isActivated()){
 			//TODO when we implement so we have a database and can store food
-			Toast.makeText(getView().getContext(), "Diet_button"
-					+ searchResultFood.get(position).getName()
-					, Toast.LENGTH_SHORT).show();
+			message( "Recipe" + searchResultFood.get(position).getName());
+			if(rra != null){
+				Recipe recipe = rra.getItem(position);
+			}
 		}else if(getView().findViewById(R.id.scale_button_view_diet).isActivated()){
 			//TODO Can only be made when we have connected with the scale
-			Toast.makeText(getView().getContext(), "Scale_button" + searchResultFood.get(position).getName(), Toast.LENGTH_SHORT).show();
+
+			message("Scale_button" + searchResultFood.get(position).getName());
 		}else if(getView().findViewById(R.id.food_button_view_diet).isActivated()){
 			//foodItemAdded.add(sra.getItem(position));												//TODO
 			newActivity.add(new AddToDietActivity(sra.getItem(position).clone()));
-
-			Toast.makeText(getView().getContext(), "Diet_button"
-					+ searchResultFood.get(position).getName()
-					+ "Item added"
-					, Toast.LENGTH_SHORT).show();
+			message("Diet_button" + searchResultFood.get(position).getName() + "Item added");
 		}
 
 	}
-	void message(){
-		Toast.makeText(getView().getContext(), "Hej", Toast.LENGTH_SHORT).show();
+	void message(String s){
+		Toast.makeText(getView().getContext(), s, Toast.LENGTH_SHORT).show();
 	}
 
 }

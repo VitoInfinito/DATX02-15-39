@@ -48,7 +48,7 @@ public class SwipeableListAdapter<T> extends ArrayAdapter<T> {
 		private float downX, upX;
 		private int position;
 		private float scale;
-		private DIRECTION direction;
+		private DIRECTION direction = DIRECTION.NONE;
 		private static enum DIRECTION{
 			NORTH,
 			SOUTH,
@@ -111,6 +111,7 @@ public class SwipeableListAdapter<T> extends ArrayAdapter<T> {
 			}else if(direction == DIRECTION.EAST) {
 				v.setLeft(0);
 			}
+			direction = DIRECTION.NONE;
 		}
 	}
 

@@ -166,7 +166,9 @@ public class AddSleepActivity extends CustomActionBarActivity {
 		Sleep sleep = new Sleep(startDate, stopDate, Sleep.SleepState.DEEP);
 		SleepActivity sleepActivity = new SleepActivity("id4", sleep);
 		SleepDiary sleepDiary = (SleepDiary) SleepDiary.getInstance();
-		sleepDiary.addActivity(startDate, sleepActivity);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(startDate);
+		sleepDiary.addActivity(cal, sleepActivity);
 	}
 
 	/**

@@ -48,7 +48,8 @@ public interface IDiary {
     public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end);			// Return a Diagram maybe ?
 
 	/**
-	 * Method used when a already created Activity needs to be changed
+	 * Method used when a already created Activity needs to be changed.
+	 * If the Activity does not exist this wont change anything.
 	 *
 	 * @param eap - Contains the Attributes you want to edit
 	 */

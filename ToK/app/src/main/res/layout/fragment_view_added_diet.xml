@@ -4,7 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/addview_body_container"
-    tools:context="com.kandidat.datx02_15_39.tok.layout.AddDietFragment">
+    tools:context="com.kandidat.datx02_15_39.tok.layout.AddDietFragment"
+    >
 
     <LinearLayout
         android:orientation="horizontal"
@@ -122,7 +123,7 @@
         <Switch
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="Spara detta som recept:"
+            android:text="Spara detta som recept istället:"
             android:id="@+id/save_meal_created_as_recipe"
             android:layout_weight="1"
             android:checked="false"/>

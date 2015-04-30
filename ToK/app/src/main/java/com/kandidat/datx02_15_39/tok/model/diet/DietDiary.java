@@ -75,9 +75,18 @@ public class DietDiary extends AbstractDiary {
 
 	@Override
 	public void editActivity(Calendar c, String id, EditActivityParams eap) {
-		if(eap instanceof EditDietActivityParams)
-			getActivity(c, id).edit(eap);
-		else
+		if(eap instanceof EditDietActivityParams) {
+			DietActivity dietActivity = (DietActivity) getActivity(c, id);
+			if(dietActivity != null){
+				if(eap.date != null){
+					removeActivity(c, id);
+					dietActivity.edit(eap);
+					addActivityToTable(dietActivity.getDate().getTime(), dietActivity);
+				}else {
+					dietActivity.edit(eap);
+				}
+			}
+		}else
 			throw new IllegalArgumentException("Error");
 	}
 

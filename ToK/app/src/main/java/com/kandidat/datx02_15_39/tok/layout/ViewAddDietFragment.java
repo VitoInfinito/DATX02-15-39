@@ -27,6 +27,7 @@ import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
 import com.kandidat.datx02_15_39.tok.model.diet.EditDietActivityParams;
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
 import com.kandidat.datx02_15_39.tok.utilies.SwipeableListAdapter;
+import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -55,9 +56,16 @@ public class ViewAddDietFragment extends DietFragment{
 		initCalendar();
 		Bundle bundle = getArguments();
 		if(bundle != null) {
-			Object object = bundle.getSerializable(AddDietActivity2.dietActivityArgument);
+			Object object = bundle.getSerializable(Utils.dietActivityArgument);
 			if (object instanceof DietActivity) {
 				newActivity = (DietActivity) object;
+				((EditText) getView().findViewById(R.id.mealname)).setText(newActivity.getName());
+				calendar = (Calendar)newActivity.getDate().clone();
+				mealType = newActivity.getMealtype();
+				((Button)getView().findViewById(R.id.meal_selector_button))
+						.setText(mealType.getString(getView().getContext()));
+				setDateOnButton();
+
 			}
 		}
 		if(newActivity == null){
@@ -65,6 +73,12 @@ public class ViewAddDietFragment extends DietFragment{
 			newActivity = new DietActivity(today);
 		}
 		//TODO if getActivity instanceof not diary update time and name
+		if(!(getActivity() instanceof AddDietActivity2) && getView() != null){
+//			getView().setBackgroundColor(0xFFFFFFFF);
+			getView().setBackgroundResource(R.drawable.border_white_background);
+		}
+
+		getActivity().setTitle(getResources().getString(R.string.ViewAddDietFragment));
 
 		updateList();
 	}
@@ -93,20 +107,26 @@ public class ViewAddDietFragment extends DietFragment{
 		today = setupCalendar();
 	}
 
+
+	/**
+	 * Call this methode if you want to edit an Already existing DietActivity that exist!
+	 */
 	public void editActivity(){
 		DietDiary dietDiary = DietDiary.getInstance();
-		EditDietActivityParams editDietActivityParams = new EditDietActivityParams(newActivity.getDate() , newActivity.getFoodList());
+		EditDietActivityParams editDietActivityParams = new EditDietActivityParams(
+				calendar != newActivity.getDate()? calendar: null,
+				((EditText) getView().findViewById(R.id.mealname)).getText().toString()
+				, newActivity.getFoodList(), mealType);
 		dietDiary.editActivity(newActivity.getDate(), newActivity.getID(), editDietActivityParams);
 	}
 
 
-	public DietActivity createDietActivity() {
-		//DietActivity tmp = new DietActivity(itemsAdded, calendar);
+	public void createDietActivity() {
 		newActivity.setName(((EditText) getView().findViewById(R.id.mealname)).getText().toString());
 		newActivity.setMealtype(mealType);
-		newActivity.setDate(calendar.getTime());
+		newActivity.setDate(calendar);
 		Toast.makeText(getView().getContext(), "name of meal: " + newActivity.getName() + "/" + mealType, Toast.LENGTH_SHORT).show();
-		return newActivity;
+		DietDiary.getInstance().addActivity(newActivity.getDate(), newActivity);
 	}
 
 	/*
@@ -115,12 +135,25 @@ public class ViewAddDietFragment extends DietFragment{
 	 * @return
 	 */
 	private Calendar setupCalendar(){
-		Calendar tmp = Calendar.getInstance();
+		Calendar tmp = setupCalendar(Calendar.getInstance());
 		tmp.set(Calendar.HOUR_OF_DAY, 0);
 		tmp.set(Calendar.MINUTE, 0);
 		tmp.set(Calendar.SECOND,0);
 		tmp.set(Calendar.MILLISECOND,0);
 		return tmp;
+	}
+
+	/*
+	 * Sets upp a calender that can be compared only between 2 dates!
+	 * The Hour, Minute, Seconds, and milliseconds is set to 0.
+	 * @return
+	 */
+	private Calendar setupCalendar(Calendar cal){
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND,0);
+		cal.set(Calendar.MILLISECOND,0);
+		return cal;
 	}
 
 	private class DatePickerListener implements DatePickerDialog.OnDateSetListener {
@@ -231,7 +264,7 @@ public class ViewAddDietFragment extends DietFragment{
 
 		public View getView (int position, View convertView, ViewGroup parent)
 		{
-			convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_meal_item_editable, null);
+			convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_item_editable, null);
 			addSwipeDetection(this.getContext(), convertView, position);
 			//convertView.setOnTouchListener(new ItemSwipeListener(position,
 			//		getResources().getDisplayMetrics().density));

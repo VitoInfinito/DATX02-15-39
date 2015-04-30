@@ -30,16 +30,17 @@ public class SleepDiary extends AbstractDiary {
         return instance;
     }
 
-    @Override
-    public void addActivity(Date d, IDiaryActivity activity) {
-        addActivityToTable(d, activity);
-    }
 
     public void addActivity(IDiaryActivity act) {
-        addActivityToTable(act.getDate(), act);
+        addActivityToTable(act.getDate().getTime(), act);
     }
 
-    @Override
+	@Override
+	public void addActivity(Calendar date, IDiaryActivity activity) {
+
+	}
+
+	@Override
     public IDiaryActivity getActivity(Calendar c,String id) {
         List<IDiaryActivity> activities = getActivitiesFromDate(c.getTime());
         for(int i=0; i<activities.size(); i++) {

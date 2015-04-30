@@ -92,7 +92,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		//DietActivity tmp = new DietActivity(itemsAdded, calendar);
 		newActivity.setName(((EditText) findViewById(R.id.mealname)).getText().toString());
 		newActivity.setMealtype(mealType);
-		newActivity.setDate(calendar.getTime());
+		newActivity.setDate(calendar);
 		Toast.makeText(this, "name of meal: " + newActivity.getName() + "/" + mealType, Toast.LENGTH_SHORT).show();
 	}
 
@@ -218,7 +218,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 		public View getView (int position, View convertView, ViewGroup parent)
 		{
-			convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_meal_item_editable, null);
+			convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_item_editable, null);
 			addSwipeDetection(this.getContext(), convertView, position);
 			//convertView.setOnTouchListener(new ItemSwipeListener(position,
 			//		getResources().getDisplayMetrics().density));

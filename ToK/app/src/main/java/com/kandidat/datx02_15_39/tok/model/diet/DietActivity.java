@@ -21,6 +21,7 @@ public class DietActivity extends AbstractDiaryActivity implements Serializable 
 	private double calorieCount, proteinCount, fatCount, carbCount;
     private String name;
 	private MEALTYPE mealtype = MEALTYPE.SNACK;
+
 	public enum MEALTYPE implements Serializable{
 		BREAKFAST,
 		LUNCH,
@@ -67,6 +68,10 @@ public class DietActivity extends AbstractDiaryActivity implements Serializable 
         update();
     }
 
+	public DietActivity(Recipe recipe, int numberOfPortions, String name, Calendar calendar){
+		this(name, recipe.getMealList(numberOfPortions), calendar);
+	}
+
 	private void addFood(Food food){
 		foodList.add(food);
 	}
@@ -97,11 +102,17 @@ public class DietActivity extends AbstractDiaryActivity implements Serializable 
 	public void edit(EditActivityParams eap) {
 		if(eap instanceof EditDietActivityParams) {
 			EditDietActivityParams edap = (EditDietActivityParams) eap;
-			if(!edap.list.isEmpty()){
+			if(edap.list != null && !edap.list.isEmpty()){
 				this.foodList = edap.list;
 			}
-			if(edap.date != null){
+			if(edap.date != null && edap.date != null){
 				setDate(edap.date);
+			}
+			if(edap.name != null){
+				setName(edap.name);
+			}
+			if(edap.mealtype != null){
+				setMealtype(edap.mealtype);
 			}
 		}
 		update();

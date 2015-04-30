@@ -40,12 +40,16 @@ public class WorkoutDiary extends AbstractDiary {
         return instance;
     }
 
-    @Override
     public void addActivity(Date d, IDiaryActivity activity) {
         addActivityToTable(d, activity);
     }
 
-    @Override
+	@Override
+	public void addActivity(Calendar date, IDiaryActivity activity) {
+
+	}
+
+	@Override
     public IDiaryActivity getActivity(Calendar c,String id) {
         List<IDiaryActivity> tmp = super.getActivitiesFromTable(c.getTime());
         for (IDiaryActivity ida: tmp){

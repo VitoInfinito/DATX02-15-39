@@ -25,6 +25,10 @@
 
     </style>
 
+    <style name="DeviceBackground">
+        <item name="android:background">@drawable/gradient_background</item>
+    </style>
+
     <style name="MyThemes"  parent="@android:style/Theme.Dialog">
     <item name="android:bottomBright">@android:color/transparent</item>
     <item name="android:bottomDark">@android:color/transparent</item>

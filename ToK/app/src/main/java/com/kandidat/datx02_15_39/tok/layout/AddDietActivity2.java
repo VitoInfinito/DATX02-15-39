@@ -8,12 +8,11 @@ import android.view.MenuItem;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
+import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 public class AddDietActivity2 extends CustomActionBarActivity {
 
 	DietFragment currentFragement;
-	public static final String dietActivityArgument = "DIETACTIVITY";
-	DietDiary myDiary = DietDiary.getInstance();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +48,7 @@ public class AddDietActivity2 extends CustomActionBarActivity {
 			DietActivity dietActivity = currentFragement.getDietActivity();
 			currentFragement = new ViewAddDietFragment();
 			Bundle bundle = new Bundle();
-			bundle.putSerializable(this.dietActivityArgument, dietActivity);
+			bundle.putSerializable(Utils.dietActivityArgument, dietActivity);
 			currentFragement.setArguments(bundle);
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.content_frame, currentFragement)
@@ -59,10 +58,7 @@ public class AddDietActivity2 extends CustomActionBarActivity {
 		}else if (id == R.id.right_corner_button_confirm) {
 			//TODO Fixa så den sparar allt och skickar vidare
 			if(currentFragement instanceof ViewAddDietFragment){
-				DietActivity tmp =	((ViewAddDietFragment)currentFragement).createDietActivity();
-				if(!tmp.getFoodList().isEmpty()) {
-					myDiary.addActivity(tmp.getDate(), tmp);
-				}
+				((ViewAddDietFragment)currentFragement).createDietActivity();
 				startActivity(new Intent(this, MainActivity.class));
 				finish();
 			}
@@ -78,7 +74,7 @@ public class AddDietActivity2 extends CustomActionBarActivity {
 			DietActivity dietActivity = currentFragement.getDietActivity();
 			currentFragement = new AddDietFragment();
 			Bundle bundle = new Bundle();
-			bundle.putSerializable(this.dietActivityArgument, dietActivity);
+			bundle.putSerializable(Utils.dietActivityArgument, dietActivity);
 			currentFragement.setArguments(bundle);
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.content_frame, currentFragement)

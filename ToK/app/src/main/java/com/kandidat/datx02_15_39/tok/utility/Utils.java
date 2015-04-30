@@ -43,4 +43,7 @@ public final class Utils {
 		tmp.set(Calendar.MILLISECOND,0);
 		return tmp;
 	}
+
+	public static final String recipeArgument = "RECIPEARGUMENT";
+	public static final String dietActivityArgument = "DIETACTIVITYARGUMENT";
 }
