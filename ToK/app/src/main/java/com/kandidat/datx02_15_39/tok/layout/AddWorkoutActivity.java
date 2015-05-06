@@ -44,11 +44,9 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
     private Date startDate;
     private int startHours;
     private int startMinutes;
-    private int startMonth;
-    private int startDay;
 
     private Date stopDate;
-    private int stopHours;
+    private int stopHours; 
     private int stopMinutes;
 
 
@@ -71,13 +69,9 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
         startHours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         startMinutes = Calendar.getInstance().get(Calendar.MINUTE);
-        startMonth = Calendar.getInstance().get(Calendar.MONTH);
-        startDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
         currentCalendar.set(Calendar.HOUR_OF_DAY, startHours);
         currentCalendar.set(Calendar.MINUTE, startMinutes);
-        currentCalendar.set(Calendar.MONTH, startMonth);
-        currentCalendar.set(Calendar.DAY_OF_MONTH, startDay);
         startDate = currentCalendar.getTime();
 
         stopHours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + 1;
@@ -165,8 +159,6 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         builder.setView(datePicker);
         builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int id){
-                startMonth = datePicker.getMonth() + 1;
-                startDay = datePicker.getDayOfMonth();
                 registerWorkoutStartTimeOnClick(view);
             }
         });
@@ -244,8 +236,6 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
         currentCalendar.set(Calendar.HOUR_OF_DAY, startHours);
         currentCalendar.set(Calendar.MINUTE, startMinutes);
-        currentCalendar.set(Calendar.MONTH, startMonth);
-        currentCalendar.set(Calendar.DAY_OF_MONTH, startDay);
         startDate = currentCalendar.getTime();
 
 
