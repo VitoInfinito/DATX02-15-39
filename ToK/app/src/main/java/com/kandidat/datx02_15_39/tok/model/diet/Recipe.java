@@ -1,12 +1,13 @@
 package com.kandidat.datx02_15_39.tok.model.diet;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Lagerstedt on 2015-04-27.
  */
-public class Recipe {
+public class Recipe implements Serializable{
 
 	List<Food> listOfFoodItem;
 	double numberOfPortions;
@@ -44,10 +45,33 @@ public class Recipe {
 		ArrayList<Food> tmp = new ArrayList<>();
 		for(Food f: listOfFoodItem){
 			Food food = f.clone();
-			food.setAmount(f.getAmount() * (this.numberOfPortions / numberPortion));
+			food.setAmount(f.getAmount() * (numberPortion / this.numberOfPortions ));
 			tmp.add(food);
 		}
 		return tmp;
+	}
+
+	public double getNumberOfPortions(){
+		return numberOfPortions;
+	}
+
+	public List<Food> getListOfFoodItem(){
+		return listOfFoodItem;
+	}
+
+	public void removeFood(int position){
+		listOfFoodItem.remove(position);
+		update();
+	}
+
+	public void addFood(Food food){
+		listOfFoodItem.add(food);
+		update();
+	}
+
+	public void changeAmountOfPortions(double numberOfPortions){
+		this.numberOfPortions = numberOfPortions;
+		update();
 	}
 
 	public double getCalorieCount() {
@@ -82,6 +106,11 @@ public class Recipe {
 		return proteinCount/numberOfPortions;
 	}
 
+	public String getName() {
+		return recipeName;
+	}
 
-	public String getName() { return recipeName;  }
+	public void setRecipeName(String name){
+		this.recipeName = name;
+	}
 }

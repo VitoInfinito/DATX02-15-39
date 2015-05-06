@@ -60,12 +60,11 @@ public class ViewAddDietFragment extends DietFragment{
 			if (object instanceof DietActivity) {
 				newActivity = (DietActivity) object;
 				((EditText) getView().findViewById(R.id.mealname)).setText(newActivity.getName());
-				calendar = (Calendar)newActivity.getDate().clone();
+				calendar = setupCalendar((Calendar)newActivity.getDate().clone());
 				mealType = newActivity.getMealtype();
 				((Button)getView().findViewById(R.id.meal_selector_button))
 						.setText(mealType.getString(getView().getContext()));
 				setDateOnButton();
-
 			}
 		}
 		if(newActivity == null){
@@ -164,6 +163,7 @@ public class ViewAddDietFragment extends DietFragment{
 			tmp.set(year, monthOfYear, dayOfMonth);
 			if(!today.before(tmp))
 				calendar.set(year, monthOfYear, dayOfMonth);
+			newActivity.edit(new EditDietActivityParams(calendar, null, null, null));
 			setDateOnButton();
 		}
 	}
@@ -382,8 +382,7 @@ public class ViewAddDietFragment extends DietFragment{
 	}
 
 	private void deleteItem(View v, int position) {
-		List<Food> list = newActivity.getFoodList();
-		Food food = list.remove(position);
+		newActivity.getFoodList().remove(position);
 //		updateList(); Kanske skall användas men inte säker!!
 		sra.remove(sra.getItem(position));
 	}

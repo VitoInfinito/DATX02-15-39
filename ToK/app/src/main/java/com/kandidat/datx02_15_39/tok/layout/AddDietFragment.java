@@ -1,10 +1,12 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.diet.AddToDietActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
+import com.kandidat.datx02_15_39.tok.model.diet.EditDietActivityParams;
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
 import com.kandidat.datx02_15_39.tok.model.diet.Recipe;
 import com.kandidat.datx02_15_39.tok.model.diet.RecipeCollection;
@@ -39,6 +42,7 @@ public class AddDietFragment extends DietFragment{
 	private ArrayList<Food> searchResultFood;
 	private SearchResultAdapter sra;
 	private RecipeResultAdapter rra;
+	private FragmentActivity listener;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,6 +53,12 @@ public class AddDietFragment extends DietFragment{
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		init();
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		listener = (FragmentActivity) activity;
 	}
 
 	private void init() {
@@ -181,7 +191,6 @@ public class AddDietFragment extends DietFragment{
 			if (convertView == null)
 			{
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.search_food_item, null);
-
 			}
 			// Lookup view for data population
 			TextView food_item_name = (TextView) convertView.findViewById(R.id.food_item_name);
@@ -241,7 +250,15 @@ public class AddDietFragment extends DietFragment{
 			//TODO when we implement so we have a database and can store food
 			message( "Recipe" + searchResultFood.get(position).getName());
 			if(rra != null){
+				Fragment currentFragement = new RecipeViewFragment();
+				listener.onAttachFragment(currentFragement);
 				Recipe recipe = rra.getItem(position);
+				Bundle bundle = new Bundle();
+				bundle.putSerializable(Utils.recipeArgument, recipe);
+				currentFragement.setArguments(bundle);
+				listener.getSupportFragmentManager().beginTransaction()
+						.replace(R.id.content_frame, currentFragement)
+						.commit();
 			}
 		}else if(getView().findViewById(R.id.scale_button_view_diet).isActivated()){
 			//TODO Can only be made when we have connected with the scale

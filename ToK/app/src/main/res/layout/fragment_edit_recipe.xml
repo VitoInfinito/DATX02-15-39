@@ -2,12 +2,12 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.kandidat.datx02_15_39.tok.layout.ViewRecipeFragment"
+             tools:context="com.kandidat.datx02_15_39.tok.layout.EditRecipeFragment"
              android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/recipe_name_textview"
@@ -32,22 +32,23 @@
             android:layout_gravity="right"/>
     </FrameLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="100dp"
-        android:id="@+id/display_amount_value_of_recipe">
+        android:id="@+id/display_amount_value_of_recipe"
+        >
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:text="Här ska man se vad receptet innehåller för just de antal portioner man väljer"
-            android:id="@+id/textView21"
             android:layout_gravity="center"
-            android:textSize="25sp"/>
-    </FrameLayout>
+            android:textSize="25sp"
+            android:background="@drawable/bottom_lined_view"/>
+    </LinearLayout>
 
     <ListView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/display_ingredient_listView"
         android:choiceMode="singleChoice"/>

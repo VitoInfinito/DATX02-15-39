@@ -4,12 +4,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -24,14 +25,12 @@ import com.kandidat.datx02_15_39.tok.model.diet.RecipeCollection;
 import com.kandidat.datx02_15_39.tok.utilies.SwipeableListAdapter;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
-import java.util.List;
-
 /**
  *
  */
-public class ViewRecipeFragment extends Fragment {
+public class EditRecipeFragment extends Fragment {
 
-	private DummyRecipe recipe;
+	private Recipe recipe;
 
 	private RecipeAdapter recipeAdapter;
 
@@ -39,8 +38,18 @@ public class ViewRecipeFragment extends Fragment {
 
 	private ListView displayRecipe;
 
-	public ViewRecipeFragment() {
+	private double amountOfRecipePortions = 1;
+	private LinearLayout showIngredienceFrame;
+	private Button changeRecipePortion;
+	private EditText nameText;
+
+	public EditRecipeFragment() {
 		// Required empty public constructor
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.fragment_edit_recipe, container, false);
 	}
 
 	@Override
@@ -48,7 +57,7 @@ public class ViewRecipeFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		Bundle bundle = getArguments();
 		if(bundle != null) {
-			Object object = bundle.getSerializable(Utils.dietActivityArgument);
+			Object object = bundle.getSerializable(Utils.recipeArgument);
 			if (object instanceof Recipe) {
 				recipe = (Recipe) object;
 			}
@@ -59,16 +68,76 @@ public class ViewRecipeFragment extends Fragment {
 		if(!(getActivity() instanceof AddDietActivity2) && getView() != null){
 			getView().setBackgroundResource(R.drawable.border_white_background);
 		}
-
+		initViews();
 		updateList();
+	}
+	 private void initViews(){
+		 showIngredienceFrame = (LinearLayout) getView().findViewById(R.id.display_amount_value_of_recipe);
+		 changeRecipePortion = (Button) getView().findViewById(R.id.portion_button);
+		 nameText = (EditText) getView().findViewById(R.id.recipe_name_textview);
+		 showIngredienceFrame.setOnClickListener(new View.OnClickListener() {
+			 @Override
+			 public void onClick(View v) {
+				 if(v.getHeight() < Utils.getDpToPixel(getActivity(), 21)){
+					 v.setLayoutParams( new LinearLayout.LayoutParams(
+							 v.getWidth(),
+							 Utils.getDpToPixel(getActivity(), 100)));
+					 //TODO lägg till så de visas upp på något snyggt sätt
+				 }else{
+					 v.setLayoutParams( new LinearLayout.LayoutParams(
+							 v.getWidth(),
+							 Utils.getDpToPixel(getActivity(), 20)));
+					 //TODO lägg till så det bara skrivs typ klicka för mer info
+				 }
+			 }
+		 });
+		 changeRecipePortion.setText(amountOfRecipePortions + "");
+		 changeRecipePortion.setOnClickListener(
+				 new View.OnClickListener() {
+					 @Override
+					 public void onClick(View v) {
+						 changeAmountOfPortions(v);
+					 }
+				 });
+	 }
+
+	private void changeAmountOfPortions(View v) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getView().getContext());
+		View view = getLayoutInflater(null).inflate(R.layout.number_picker_layout, null);
+		NumberPicker np = (NumberPicker)view.findViewById(R.id.number_picker_amount);
+		np.setMinValue(0);
+		np.setMaxValue(10000);
+		np.setValue((int) amountOfRecipePortions);
+		builder.setPositiveButton("Spara", new ChangedAmountListener(v, np));
+		AlertDialog dialog = builder.create();
+		dialog.setView(view);
+		dialog.setCancelable(true);
+		dialog.show();
 	}
 
 	public void saveRecipe(){
-		RecipeCollection.getInstance().getList().add(recipe);
+		Recipe newRecipe = new Recipe(nameText.getText().toString()
+				, recipe.getListOfFoodItem()
+				, (int)amountOfRecipePortions);
+		RecipeCollection.getInstance().getList().add(newRecipe);
 	}
 
 	private void updateList() {
-
+		displayRecipe = (ListView) getView().findViewById(R.id.display_ingredient_listView);
+		if(displayRecipe.getChildCount() > 0) {
+			displayRecipe.removeAllViewsInLayout();
+			//searchResultList.removeAllViews();
+		}
+		recipeAdapter = new RecipeAdapter(getView().getContext());
+		for (Food f: recipe.getListOfFoodItem()){//TODO
+			recipeAdapter.add(f);
+		}
+		if(displayRecipe != null){
+			displayRecipe.setAdapter(recipeAdapter);
+		}
+		View view = LayoutInflater.from(getView().getContext()).inflate(R.layout.adapter_item_editable, null);
+		displayRecipe.addFooterView(view);
+		//TODO Fix so you can add more Food
 	}
 
 
@@ -171,7 +240,7 @@ public class ViewRecipeFragment extends Fragment {
 	}
 
 	private void deleteItem(View v, int position) {
-		List<Food> list = recipe.remove(position);
+		recipe.removeFood(position);
 //		updateList(); Kanske skall användas men inte säker!!
 		recipeAdapter.remove(recipeAdapter.getItem(position));
 	}
@@ -221,7 +290,7 @@ public class ViewRecipeFragment extends Fragment {
 		NumberPicker np = (NumberPicker)view.findViewById(R.id.number_picker_amount);
 		np.setMinValue(0);
 		np.setMaxValue(10000);
-		np.setValue((int) 10); // Set The amount of the food item
+		np.setValue((int) recipe.getListOfFoodItem().get(position).getAmount()); // Set The amount of the food item
 		builder.setPositiveButton("Spara", new ChangedAmountListener(v, np, position));
 		AlertDialog dialog = builder.create();
 		dialog.setView(view);
@@ -241,10 +310,19 @@ public class ViewRecipeFragment extends Fragment {
 			this.v = v;
 		}
 
+		public ChangedAmountListener(View v, NumberPicker np){
+			this(v, np, -1);
+		}
+
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			//newActivity.getFoodList().get(position).setAmount(np.getValue());
-			((Button)v).setText((float)np.getValue() + "");
+			if(position == -1 ){
+				amountOfRecipePortions = np.getValue();
+
+			}else {
+				recipe.getListOfFoodItem().get(position).setAmount(np.getValue());
+			}
+			((Button) v).setText((float) np.getValue() + "");
 		}
 	}
 

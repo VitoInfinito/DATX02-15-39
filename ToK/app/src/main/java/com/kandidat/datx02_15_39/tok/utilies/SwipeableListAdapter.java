@@ -3,6 +3,7 @@ package com.kandidat.datx02_15_39.tok.utilies;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
@@ -29,7 +30,6 @@ public class SwipeableListAdapter<T> extends ArrayAdapter<T> {
 		this(context);
 		this.swipeDistance = swipeDistance;
 	}
-
 
 	/**
 	 * Method to add to the item that you want to be able to swipe on

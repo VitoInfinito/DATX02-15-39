@@ -1,5 +1,7 @@
 package com.kandidat.datx02_15_39.tok.utility;
 
+import android.content.Context;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -35,13 +37,31 @@ public final class Utils {
  * The Hour, Minute, Seconds, and milliseconds is set to 0.
  * @return - A Calendar that is Comparable between days
  */
-	private static Calendar setupCalendar(){
+	public static Calendar setupCalendar(){
 		Calendar tmp = Calendar.getInstance();
 		tmp.set(Calendar.HOUR_OF_DAY, 0);
 		tmp.set(Calendar.MINUTE, 0);
 		tmp.set(Calendar.SECOND,0);
 		tmp.set(Calendar.MILLISECOND,0);
 		return tmp;
+	}
+
+	public static int getDpToPixel(Context context, int dp){
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int) (dp * scale + 0.5f);
+	}
+
+	/*
+		 * Sets upp a calender that can be compared only between 2 dates!
+		 * The Hour, Minute, Seconds, and milliseconds is set to 0.
+		 * @return
+		 */
+	public static Calendar setupCalendar(Calendar cal){
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND,0);
+		cal.set(Calendar.MILLISECOND,0);
+		return cal;
 	}
 
 	public static final String recipeArgument = "RECIPEARGUMENT";

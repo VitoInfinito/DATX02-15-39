@@ -25,6 +25,8 @@ public class RecipeCollection {
 		listOfRecipes.add(new Recipe("Mosbricka", Database.getInstance().searchForFood(""), 10));
 	}
 
+
+
 	public List<Recipe> getList(){
 		return listOfRecipes;
 	}
