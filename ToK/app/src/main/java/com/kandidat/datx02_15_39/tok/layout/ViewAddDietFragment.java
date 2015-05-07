@@ -1,12 +1,16 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.PopupMenu;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +47,14 @@ public class ViewAddDietFragment extends DietFragment{
 		return inflater.inflate(R.layout.fragment_view_added_diet, container, false);
 	}
 
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		listener = (FragmentActivity) activity;
+		getActivity().setTitle(getResources().getString(R.string.ViewAddDietFragment));
+	}
+
+	private FragmentActivity listener;
 	Calendar calendar, today;
 	private ListView searchResultList;
 	private SearchResultAdapter sra;
@@ -73,12 +85,8 @@ public class ViewAddDietFragment extends DietFragment{
 		}
 		//TODO if getActivity instanceof not diary update time and name
 		if(!(getActivity() instanceof AddDietActivity2) && getView() != null){
-//			getView().setBackgroundColor(0xFFFFFFFF);
 			getView().setBackgroundResource(R.drawable.border_white_background);
 		}
-
-		getActivity().setTitle(getResources().getString(R.string.ViewAddDietFragment));
-
 		updateList();
 	}
 
@@ -99,6 +107,22 @@ public class ViewAddDietFragment extends DietFragment{
 					}
 				}
 		);
+		((EditText)getView().findViewById(R.id.mealname)).addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				newActivity.edit(new EditDietActivityParams(null, s.toString(), null,null));
+			}
+		});
 	}
 
 	private void initCalendar(){

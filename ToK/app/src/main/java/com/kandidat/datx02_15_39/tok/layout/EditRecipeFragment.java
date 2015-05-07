@@ -1,11 +1,13 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +40,8 @@ public class EditRecipeFragment extends Fragment {
 
 	private ListView displayRecipe;
 
+	private FragmentActivity listener;
+
 	private double amountOfRecipePortions = 1;
 	private LinearLayout showIngredienceFrame;
 	private Button changeRecipePortion;
@@ -51,6 +55,13 @@ public class EditRecipeFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_edit_recipe, container, false);
 	}
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		listener = (FragmentActivity) activity;
+		getActivity().setTitle(getResources().getString(R.string.EditRecipeFragment));
+	}
+
 
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -134,9 +145,10 @@ public class EditRecipeFragment extends Fragment {
 		}
 		if(displayRecipe != null){
 			displayRecipe.setAdapter(recipeAdapter);
+			View view = LayoutInflater.from(getView().getContext()).inflate(R.layout.add_button_listview, null);
+			displayRecipe.addFooterView(view);
 		}
-		View view = LayoutInflater.from(getView().getContext()).inflate(R.layout.adapter_item_editable, null);
-		displayRecipe.addFooterView(view);
+
 		//TODO Fix so you can add more Food
 	}
 

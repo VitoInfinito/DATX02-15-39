@@ -58,7 +58,7 @@ public class DietActivity extends AbstractDiaryActivity implements Serializable 
 	}
 
 	public DietActivity(List<Food> listOfFood, Calendar calendar){
-        this("Unidentified", listOfFood, calendar);
+        this("", listOfFood, calendar);
 	}
 
     public DietActivity(String name, List<Food> listOfFood, Calendar calendar) {

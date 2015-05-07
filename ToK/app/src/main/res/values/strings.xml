@@ -101,5 +101,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ViewAddDietFragment">Redigera din måltid</string>
     <string name="AddDietToFragment">Lägg Till Mat</string>
+    <string name="AddDietFragment">Lägg varor till måltid</string>
+    <string name="EditRecipeFragment">Redigera Receptet</string>
+    <string name="RecipeViewFragment">Recept överskod</string>
 
 </resources>

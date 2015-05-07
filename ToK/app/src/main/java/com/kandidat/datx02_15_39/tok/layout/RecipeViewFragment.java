@@ -58,6 +58,7 @@ public class RecipeViewFragment extends DietFragment{
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		listener = (FragmentActivity) activity;
+		getActivity().setTitle(getResources().getString(R.string.RecipeViewFragment));
 	}
 
 	@Override
@@ -124,6 +125,7 @@ public class RecipeViewFragment extends DietFragment{
 						.commit();
 			}
 		});
+		((TextView)getView().findViewById(R.id.recipe_name_text_view)).setText(recipe.getName());
 	}
 
 	private void changeAmount(View v) {

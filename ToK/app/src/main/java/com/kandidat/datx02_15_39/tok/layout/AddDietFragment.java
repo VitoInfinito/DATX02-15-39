@@ -59,6 +59,7 @@ public class AddDietFragment extends DietFragment{
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		listener = (FragmentActivity) activity;
+		getActivity().setTitle(getResources().getString(R.string.AddDietFragment));
 	}
 
 	private void init() {
@@ -160,6 +161,20 @@ public class AddDietFragment extends DietFragment{
 		}else{
 			updateSearchList();
 		}
+		if(searchResultList.getFooterViewsCount() == 0) {
+			View view = LayoutInflater.from(getView().getContext()).inflate(R.layout.add_button_listview, null);
+			searchResultList.addFooterView(view);
+			view.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if (activatedObject == R.id.recipe_button_view_diet) {
+						//TODO Start creating a new Recipe
+					} else {
+						//TODO Start creating a new Food Item
+					}
+				}
+			});
+		}
 	}
 
 	private void updateRecipeList() {
@@ -248,7 +263,7 @@ public class AddDietFragment extends DietFragment{
 	private void selectedItem(int position) {
 		if(getView().findViewById(R.id.recipe_button_view_diet).isActivated()){
 			//TODO when we implement so we have a database and can store food
-			message( "Recipe" + searchResultFood.get(position).getName());
+			messageToast("Recipe" + searchResultFood.get(position).getName());
 			if(rra != null){
 				Fragment currentFragement = new RecipeViewFragment();
 				listener.onAttachFragment(currentFragement);
@@ -263,15 +278,15 @@ public class AddDietFragment extends DietFragment{
 		}else if(getView().findViewById(R.id.scale_button_view_diet).isActivated()){
 			//TODO Can only be made when we have connected with the scale
 
-			message("Scale_button" + searchResultFood.get(position).getName());
+			messageToast("Scale_button" + searchResultFood.get(position).getName());
 		}else if(getView().findViewById(R.id.food_button_view_diet).isActivated()){
-			//foodItemAdded.add(sra.getItem(position));												//TODO
 			newActivity.add(new AddToDietActivity(sra.getItem(position).clone()));
-			message("Diet_button" + searchResultFood.get(position).getName() + "Item added");
+			messageToast("Diet_button" + searchResultFood.get(position).getName() + "Item added");
 		}
 
 	}
-	void message(String s){
+
+	void messageToast(String s){
 		Toast.makeText(getView().getContext(), s, Toast.LENGTH_SHORT).show();
 	}
 
