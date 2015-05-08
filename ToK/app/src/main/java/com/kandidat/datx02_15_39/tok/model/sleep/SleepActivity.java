@@ -53,7 +53,9 @@ public class SleepActivity extends AbstractDiaryActivity {
     public SleepActivity(String id, List<Sleep> sleeps, Date date, double light, double deep, double awake, double total, double inBed, int wakeups) {
         this.id = id;
         sleepList = sleeps;
-        this.date = date;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+        setDate(cal);
 
         lightTime = light;
         deepTime = deep;
