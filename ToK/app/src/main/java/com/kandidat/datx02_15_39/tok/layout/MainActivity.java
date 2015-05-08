@@ -13,8 +13,10 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.jawbone.upplatformsdk.api.ApiManager;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
+import com.kandidat.datx02_15_39.tok.utility.JawboneUtils;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 
@@ -46,7 +48,11 @@ public class MainActivity extends CustomActionBarActivity {
             }
         }
 
+        //checkFormerConnection();
+    }
 
+    private void checkFormerConnection() {
+        JawboneUtils.checkConnectionToUP(this, this.getIntent());
     }
 
 

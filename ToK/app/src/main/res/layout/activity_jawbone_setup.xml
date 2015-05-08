@@ -13,7 +13,7 @@
         android:gravity="center"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
-        android:text="@string/press_button_to_connect"
+        android:text="Tryck på knappen för uppkoppling"
         android:textColor="#222"
         android:textSize="22sp"
         android:layout_above="@+id/authorizeButton"

@@ -14,85 +14,94 @@
         android:paddingBottom="@dimen/activity_vertical_margin"
         tools:context="com.kandidat.datx02_15_39.tok.layout.WeightHomeActivity">
 
-        <FrameLayout
+        <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+            android:id="@+id/scrollView2">
 
-            <LinearLayout
-                android:orientation="vertical"
+            <FrameLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
-                <FrameLayout
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
 
-                    <view
-                        android:layout_width="wrap_content"
-                        android:layout_height="200dip"
-                        class="com.jjoe64.graphview.GraphView"
-                        android:id="@+id/graph" />
-                </FrameLayout>
+                    <FrameLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/graphLayout">
 
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="200dp">
+                        <view
+                            android:layout_width="wrap_content"
+                            android:layout_height="200dip"
+                            class="com.jjoe64.graphview.GraphView"
+                            android:id="@+id/graph" />
+                    </FrameLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="Nuvarande vikt"
-                        android:id="@+id/currentWeightText"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="50dp"/>
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/titleLayout"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:background="@drawable/border_day_container">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="-------------------------"
-                        android:id="@+id/divider"
-                        android:layout_below="@+id/currentWeightText"
-                        android:layout_centerHorizontal="true"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="Nuvarande vikt"
+                            android:id="@+id/currentWeightText"
+                            android:layout_centerHorizontal="true"
+                            />
 
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="80 kg"
-                        android:id="@+id/weightText"
-                        android:layout_below="@+id/divider"
-                        android:layout_centerHorizontal="true"
-                        android:onClick="changeWeightOnClick"/>
+                    </RelativeLayout>
 
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Datum:"
-                        android:id="@+id/dateButton"
-                        android:layout_below="@+id/weightText"
-                        android:layout_centerHorizontal="true"
-                        android:onClick="changeDateOnClick"/>
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/detailedLayout"
+                        android:background="@drawable/border_detailed_sleep">
 
-                </RelativeLayout>
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="80 kg"
+                            android:id="@+id/weightText"
+                            android:layout_below="@+id/divider"
+                            android:layout_centerHorizontal="true"
+                            android:onClick="changeWeightOnClick"/>
 
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    >
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Datum:"
+                            android:id="@+id/dateButton"
+                            android:layout_below="@+id/weightText"
+                            android:layout_centerHorizontal="true"
+                            android:onClick="changeDateOnClick"/>
 
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Save changes"
-                        android:id="@+id/button3"
-                        android:layout_centerInParent="true"
-                        android:onClick="saveChangesOnClick"/>
-                </RelativeLayout>
+                        <Button
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:text="Spara"
+                            android:id="@+id/button3"
+                            android:onClick="saveChangesOnClick"
+                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_below="@+id/dateButton"
+                            android:background="@drawable/button_weight"
+                            />
+                    </RelativeLayout>
 
-            </LinearLayout>
+                </LinearLayout>
 
-        </FrameLayout>
+            </FrameLayout>
+        </ScrollView>
+
     </RelativeLayout>
 
     <!-- The navigation drawer -->

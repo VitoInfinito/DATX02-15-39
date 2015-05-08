@@ -18,6 +18,14 @@ public class SleepActivity extends AbstractDiaryActivity {
     private final String id;
     private List<Sleep> sleepList;
 
+    //In milliseconds
+    private double lightTime = 0.0;
+    private double deepTime = 0.0;
+    private double awakeTime = 0.0;
+    private double totalSleep = 0.0;
+    private double timeInBed = 0.0;
+    private int nbrOfWakups = 0;
+
     public SleepActivity(String id, Sleep sleep) {
         this.id = id;
         sleepList = new ArrayList<>();
@@ -42,6 +50,21 @@ public class SleepActivity extends AbstractDiaryActivity {
 		setDate(cal);
     }
 
+    public SleepActivity(String id, List<Sleep> sleeps, Date date, double light, double deep, double awake, double total, double inBed, int wakeups) {
+        this.id = id;
+        sleepList = sleeps;
+        this.date = date;
+
+        lightTime = light;
+        deepTime = deep;
+        awakeTime = awake;
+        totalSleep = total;
+        timeInBed = inBed;
+        nbrOfWakups = wakeups;
+    }
+
+
+
     public List<Sleep> getSleepList() {
         return sleepList;
     }
@@ -54,6 +77,30 @@ public class SleepActivity extends AbstractDiaryActivity {
         }
         return null;
      }
+
+    public double getLightTime() {
+        return lightTime;
+    }
+
+    public double getDeepTime() {
+        return deepTime;
+    }
+
+    public double getAwakeTime() {
+        return awakeTime;
+    }
+
+    public double getTotalSleep() {
+        return totalSleep;
+    }
+
+    public double getTimeInBed() {
+        return timeInBed;
+    }
+
+    public int getNbrOfWakups() {
+        return nbrOfWakups;
+    }
 
     @Override
     public String getID() {

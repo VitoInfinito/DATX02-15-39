@@ -183,7 +183,7 @@ public class CustomActionBarActivity extends ActionBarActivity{
                     startActivity(new Intent(this, AccountHomeActivity.class));
 					break;
 				case 1:
-					//TODO
+                    startActivity(new Intent(this, AccessoriesHomeActivity.class));
 					break;
 				case 2:
 					//TODO

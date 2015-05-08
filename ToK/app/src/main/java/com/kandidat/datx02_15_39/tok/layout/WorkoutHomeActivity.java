@@ -1,9 +1,9 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.util.Pair;
 import android.util.Log;
@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -54,9 +53,11 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     private int weekOffset = 0;
     Calendar cal;
 
+    @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("dd/MM");
+    @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
-    private SimpleDateFormat sdfShowHour = new SimpleDateFormat("HH");
+    @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat sdfShowFullTime = new SimpleDateFormat("yyyy.MM.dd");
 
 
@@ -73,6 +74,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         dayRadioButton = (Button) findViewById(R.id.day_radioButton);
         weekRadioButton = (Button) findViewById(R.id.week_radiobutton);
         textDay = (TextView) findViewById(R.id.textDay);
+
         nextDayButton = (Button) findViewById(R.id.nextDayButton);
         prevDayButton = (Button) findViewById(R.id.previousDayButton);
 
@@ -95,6 +97,15 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
             }
         });
+        Calendar tmpCal = Calendar.getInstance();
+        Date startDate = tmpCal.getTime();
+        tmpCal.set(Calendar.HOUR_OF_DAY, Calendar.HOUR_OF_DAY+2);
+        Date stopDate = tmpCal.getTime();
+
+        Workout workout = new Workout(0, startDate, stopDate, 5, Workout.WORKOUTTYPE_CARDIO);
+        WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
+        WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
+        workoutDiary.addActivity(startDate, workoutActivity);
     }
 
     @Override
@@ -130,14 +141,16 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         ListView lv = (ListView) findViewById(R.id.show_workout);
 
         List<IDiaryActivity> acts = diary.showDaysActivities(Calendar.getInstance());
-        List<String> workoutList = new ArrayList<String>();
+        List<String> workoutList = new ArrayList<>();
 
         Integer [] idList = new Integer[6];
+        System.out.println("Size: "+acts.size());
 
         for(int i=0; i<acts.size(); i++) {
             List<Workout> list = ((WorkoutActivity) acts.get(i)).getWorkoutList();
             for(int j=0; j<list.size(); j++) {
                 idList[j] = list.get(j).getId();
+
 
                 workoutList.add(list.get(j).getWorkoutType() + " Intensitet: " + list.get(j).getIntensity()
                         + "\n" + sdfShowFullTime.format(list.get(j).getStartTime()) + " " + sdfShowTime.format(list.get(j).getStartTime()) + " - " + sdfShowTime.format(list.get(j).getEndTime()));
@@ -147,6 +160,11 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         // This is the customlist adapter, it takes the context of the activity as a
         // first parameter, the type of list view as a second parameter and your
         // array with images as a third parameter.
+        /*ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                workoutList );
+        lv.setAdapter(arrayAdapter);*/
 
             CustomListAdapter adapter = new CustomListAdapter(this, workoutList, imgid);
             lv.setAdapter(adapter);
@@ -160,7 +178,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
     private void updateActivityList (ArrayList<WorkoutActivity> workoutActivityList){
         double intensity =0;
-        ArrayList <Workout> workoutArrayList = new ArrayList<Workout>();
+        ArrayList <Workout> workoutArrayList = new ArrayList<>();
 
         for(int i = 0; i<workoutActivityList.size(); i++) {
             for (int j = 0; j < workoutActivityList.get(i).getWorkoutList().size(); j++) {
@@ -200,8 +218,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
 
         series.setColor(Color.DKGRAY);
+        graph.removeSeries(series);
         graph.addSeries(series);
-
     }
 
     private void updateDayScreen(Calendar cal){

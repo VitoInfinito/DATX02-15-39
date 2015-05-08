@@ -15,7 +15,11 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:targetSdkVersion="19"
+<<<<<<< HEAD
         android:theme="@style/AppTheme">
+=======
+        android:theme="@style/AppTheme" >
+>>>>>>> 3sleep5workout
         <activity
             android:name=".layout.MainActivity"
             android:label="@string/title_activity_hello_world"
@@ -122,8 +126,22 @@
             </intent-filter>
         </activity>
         <activity android:name=".jawbone.UpApiListActivity" >
+<<<<<<< HEAD
             <intent-filter>
                 <action android:name="com.kandidat.datx02_15_39.tok.jawbone.UpApiListActivity" />
+=======
+            <intent-filter>
+                <action android:name="com.kandidat.datx02_15_39.tok.jawbone.UpApiListActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".layout.AccessoriesHomeActivity"
+            android:label="@string/title_activity_accessories_home" >
+            <intent-filter>
+                <action android:name="com.kandidat.datx02_15_39.tok.layout.AccessoriesHomeActivity" />
+>>>>>>> 3sleep5workout
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
