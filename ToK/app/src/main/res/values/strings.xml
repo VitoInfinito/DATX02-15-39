@@ -93,5 +93,7 @@
     <string name="title_activity_jawbone_setup">JawboneSetup</string>
     <string name="title_activity_up_api_list">UpApiListActivity</string>
     <string name="press_button_to_connect">Press button to connect</string>
+    <string name="title_activity_accessories_home">Koppla Tillbehör</string>
+    <string name="no_connection_UP">Ingen uppkoppling till UP hittad.</string>
 
 </resources>
