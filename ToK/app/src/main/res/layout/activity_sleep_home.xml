@@ -11,12 +11,11 @@
         android:id="@+id/content_frame"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/gradient_background_sleep"
-        >
+    android:background="@drawable/gradient_background_sleep">
 
         <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:id="@+id/scrollView">
 
             <FrameLayout
@@ -29,7 +28,8 @@
                     android:orientation="vertical"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:layout_gravity="left|top">
+                    android:layout_gravity="left|top"
+                    android:gravity="center_vertical|fill_vertical">
 
                     <RelativeLayout
                         android:layout_width="fill_parent"
@@ -267,6 +267,7 @@
                 </LinearLayout>
             </FrameLayout>
         </ScrollView>
+
     </RelativeLayout>
 
     <!-- The navigation drawer -->

@@ -1,5 +1,7 @@
 package com.kandidat.datx02_15_39.tok.model;
 
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,7 +52,8 @@ public abstract class AbstractDiary implements IDiary {
     }
 
     protected List<IDiaryActivity> getActivitiesFromTable(Date d) {
-		List<IDiaryActivity> tmp = activities.get(sdf.format(d));
+        Log.e("BARF", activities.keySet().toString());
+        List<IDiaryActivity> tmp = activities.get(sdf.format(d));
 		if(tmp == null) {
 			addActivityToTable(d, null);
 		}
