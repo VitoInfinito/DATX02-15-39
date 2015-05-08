@@ -140,8 +140,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
                 idList[j] = list.get(j).getId();
 
                 workoutList.add(list.get(j).getWorkoutType() + " Intensitet: " + list.get(j).getIntensity()
-                        + "\n" + "Start: " + sdfShowFullTime.format(list.get(j).getStartTime()) +
-                        "\n" + "Slut: " + sdfShowFullTime.format(list.get(j).getEndTime()));
+                        + "\n" + sdfShowFullTime.format(list.get(j).getStartTime()) + " " + sdfShowTime.format(list.get(j).getStartTime()) + " - " + sdfShowTime.format(list.get(j).getEndTime()));
             }
         }
 

@@ -1,6 +1,7 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TimePicker;
@@ -21,6 +23,7 @@ import com.kandidat.datx02_15_39.tok.model.workout.WorkoutDiary;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import android.widget.Toast;
 
@@ -41,15 +44,17 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
     private Date startDate;
     private int startHours;
     private int startMinutes;
+    private int startMonth;
+    private int startDay;
 
     private Date stopDate;
     private int stopHours;
     private int stopMinutes;
 
+
     private int intensity;
 
     String workoutType;
-
 
 
     @Override
@@ -66,9 +71,13 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
         startHours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         startMinutes = Calendar.getInstance().get(Calendar.MINUTE);
+        startMonth = Calendar.getInstance().get(Calendar.MONTH);
+        startDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
         currentCalendar.set(Calendar.HOUR_OF_DAY, startHours);
         currentCalendar.set(Calendar.MINUTE, startMinutes);
+        currentCalendar.set(Calendar.MONTH, startMonth);
+        currentCalendar.set(Calendar.DAY_OF_MONTH, startDay);
         startDate = currentCalendar.getTime();
 
         stopHours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + 1;
@@ -107,8 +116,6 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         registerWorkoutIntensityOnClick(view);
     }
 
-
-
     public void registerWorkoutIntensityOnClick(final View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
@@ -127,12 +134,45 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
                 intensity = intensityPicker.getValue();
                 //TODO remove println when not needed
                 System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAA" + intensity);
-                registerWorkoutStartTimeOnClick(view);
+                registerWorkoutDayOnClick(view);
             }
         });
         builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User cancelled the dialog
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void registerWorkoutDayOnClick(final View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+
+        builder.setTitle("Välj Dag");
+        builder.setIcon(R.drawable.heart288);
+
+        Calendar cal = GregorianCalendar.getInstance();
+        startDate = cal.getTime();
+
+        final DatePicker datePicker = new DatePicker(this);
+        datePicker.setMaxDate(startDate.getTime());
+        datePicker.setCalendarViewShown(false);
+        datePicker.setSpinnersShown(true);
+
+        builder.setView(datePicker);
+        builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int id){
+                startMonth = datePicker.getMonth() + 1;
+                startDay = datePicker.getDayOfMonth();
+                registerWorkoutStartTimeOnClick(view);
+            }
+        });
+        builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                registerWorkoutIntensityOnClick(view);
             }
         });
 
@@ -164,7 +204,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         });
         builder.setNegativeButton("Tillbaka", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                registerWorkoutIntensityOnClick(view);
+                registerWorkoutDayOnClick(view);
             }
         });
 
@@ -204,6 +244,8 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
         currentCalendar.set(Calendar.HOUR_OF_DAY, startHours);
         currentCalendar.set(Calendar.MINUTE, startMinutes);
+        currentCalendar.set(Calendar.MONTH, startMonth);
+        currentCalendar.set(Calendar.DAY_OF_MONTH, startDay);
         startDate = currentCalendar.getTime();
 
 
@@ -219,8 +261,6 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
     public void addNewWorkout(){
         updateDate();
-        // TODO remove println when not needed
-        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBB" + intensity);
         Workout workout = new Workout(id, startDate, stopDate, intensity, workoutType);
         WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
         WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
@@ -254,5 +294,6 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
     public void addButtonOnClick(View view){
         startActivity(new Intent(this, WorkoutHomeActivity.class));
     }
+
 
 }
