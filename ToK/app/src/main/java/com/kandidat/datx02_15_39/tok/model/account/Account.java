@@ -1,8 +1,10 @@
 package com.kandidat.datx02_15_39.tok.model.account;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.kandidat.datx02_15_39.tok.layout.SleepHomeActivity;
 import com.kandidat.datx02_15_39.tok.model.IDiary;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
@@ -20,12 +22,17 @@ public class Account {
     private String gender;
     private int age;
 
+    private boolean connectedUP;
+    private Class nextClassCallback;
+
     private static Account instance;
 
     protected Account() {
         name = null;
         gender = null;
         age = 0;
+        connectedUP = false;
+        nextClassCallback = null;
     }
 
     public static Account getInstance() {
@@ -48,6 +55,14 @@ public class Account {
         return age;
     }
 
+    public boolean isConnectedUP() { return connectedUP; }
+
+    public Class getNextClassCallback() {
+        Class sendClassCallback = nextClassCallback;
+        nextClassCallback = null;
+        return sendClassCallback;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -59,6 +74,10 @@ public class Account {
     public void setAge(int age) {
         this.age = age;
     }
+
+    public void setConnectedUP(boolean connected) { connectedUP = connected; }
+
+    public void setNextClassCallback(Class nextClassCallback) { this.nextClassCallback = nextClassCallback; }
 
     /**
      * Fetch the instance of diet diary

@@ -2,36 +2,64 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:gravity="center_horizontal|center_vertical"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:weightSum="1">
 
-    <TextView
-        android:id="@+id/authorizeText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingLeft="32dp"
-        android:paddingRight="32dp"
-        android:layout_marginBottom="15dp"
-        android:text="@string/press_button_to_connect"
-        android:textColor="#222"
-        android:textSize="22sp" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="127dp"
+        android:layout_weight="0.61">
 
-    <Button
-        android:id="@+id/authorizeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:background="@drawable/jawbone_button" />
+        <TextView
+            android:id="@+id/connectionJawboneText"
+            android:layout_width="wrap_content"
+            android:layout_height="77dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:text="Inte uppkopplad"
+            android:textColor="#ff6b0000"
+            android:textSize="40sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
 
-    <Button
-        android:id="@+id/authorizeButton2"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:background="@drawable/btn_black"
-        android:visibility="gone"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="249dp"
+        android:gravity="center_vertical|center_horizontal">
+
+        <TextView
+            android:id="@+id/authorizeText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:layout_marginBottom="15dp"
+            android:text="Tryck på knappen för att koppla upp"
+            android:textColor="#222"
+            android:textSize="22sp" />
+
+        <Button
+            android:id="@+id/authorizeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:background="@drawable/jawbone_button" />
+
+        <Button
+            android:id="@+id/authorizeButton2"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:background="@drawable/btn_black"
+            android:visibility="gone"/>
+    </LinearLayout>
 
 </LinearLayout>

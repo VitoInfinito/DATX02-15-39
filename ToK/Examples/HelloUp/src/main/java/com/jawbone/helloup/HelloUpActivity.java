@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.jawbone.upplatformsdk.api.ApiManager;
 import com.jawbone.upplatformsdk.api.response.OauthAccessTokenResponse;
