@@ -14,7 +14,7 @@ import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 public class AddDietActivity2 extends CustomActionBarActivity {
 
-	Fragment currentFragement;
+	Fragment currentFragement, earlierFragment; //TODO implement this
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +107,16 @@ public class AddDietActivity2 extends CustomActionBarActivity {
 	@Override
 	public void onAttachFragment(Fragment fragment) {
 		super.onAttachFragment(fragment);
-		currentFragement = fragment;
-		invalidateOptionsMenu();
+		changeFragment(fragment);
+	}
+
+
+	private void changeFragment(Fragment fragment){
+		if(!(fragment instanceof AddDietToFragment)) {
+			earlierFragment = currentFragement;
+			currentFragement = fragment;
+			invalidateOptionsMenu();
+		}
 	}
 
 	@Override

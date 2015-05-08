@@ -1,9 +1,11 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,11 +35,21 @@ public class AddDietToFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_view_added_diet, container, false);
+		return inflater.inflate(R.layout.fragment_add_diet_item_to, container, false);
 	}
 
 	List<Food> newFood;
 	private ListView searchResultList;
+
+	private EditRecipeFragment listenerFragment;
+
+	private FragmentActivity listener;
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		listener = (FragmentActivity) activity;
+	}
 
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -46,13 +58,7 @@ public class AddDietToFragment extends Fragment {
 			//TODO Något men för tillfället skapar man en ny
 			newFood = new ArrayList<Food>();
 		}
-		//TODO if getActivity instanceof not diary update time and name
-		if(!(getActivity() instanceof AddDietActivity2) && getView() != null){
-//			getView().setBackgroundColor(0xFFFFFFFF);
-			getView().setBackgroundResource(R.drawable.border_white_background);
-		}
-
-		getActivity().setTitle(getResources().getString(R.string.AddDietToFragment));
+		searchForItems("");
 	}
 
 	public List<Food> getListOfFoodItems(){
@@ -79,6 +85,10 @@ public class AddDietToFragment extends Fragment {
 			searchResultList.setAdapter(sra);
 		}
 		searchResultList.setOnItemClickListener(new SearchItemClickListener());
+	}
+
+	public void setFromFargment(EditRecipeFragment fragment) {
+		listenerFragment = fragment;
 	}
 
 	/**
@@ -114,9 +124,14 @@ public class AddDietToFragment extends Fragment {
 	private class SearchItemClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView parent, View view, int position, long id) {
-
+			addFood(newFood.get(position));
 		}
 	}
 
-
+	private void addFood(Food food){
+		if(listenerFragment != null){
+			listenerFragment.recipeUpdate(food);
+		}
+		listener.getSupportFragmentManager().beginTransaction().remove(this).commit();
+	}
 }

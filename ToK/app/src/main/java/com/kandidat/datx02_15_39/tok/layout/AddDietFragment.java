@@ -1,7 +1,9 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,9 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -125,7 +129,8 @@ public class AddDietFragment extends DietFragment{
 				if(ib.getId() == R.id.food_button_view_diet){
 					updateList();
 				}else if(ib.getId() == R.id.scale_button_view_diet) {
-					//this.startBluetooth();
+
+//					confirmScaleConnection();
 					startActivity(new Intent(getView().getContext(), BluetoothActivity.class));
 				}else if (ib.getId() == R.id.recipe_button_view_diet){
 					updateList();
@@ -169,7 +174,7 @@ public class AddDietFragment extends DietFragment{
 				public void onClick(View v) {
 					if (activatedObject == R.id.recipe_button_view_diet) {
 						//TODO Start creating a new Recipe
-					} else {
+					} else if (activatedObject == R.id.food_button_view_diet) {
 						//TODO Start creating a new Food Item
 					}
 				}
@@ -278,12 +283,41 @@ public class AddDietFragment extends DietFragment{
 		}else if(getView().findViewById(R.id.scale_button_view_diet).isActivated()){
 			//TODO Can only be made when we have connected with the scale
 
+
 			messageToast("Scale_button" + searchResultFood.get(position).getName());
 		}else if(getView().findViewById(R.id.food_button_view_diet).isActivated()){
 			newActivity.add(new AddToDietActivity(sra.getItem(position).clone()));
 			messageToast("Diet_button" + searchResultFood.get(position).getName() + "Item added");
 		}
 
+	}
+
+	private void confirmScaleConnection() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getView().getContext());
+		builder.setTitle("Koppla vågen");
+		builder.setPositiveButton("Koppla", new WeightScaleListener());
+		builder.setNegativeButton("Sök efter våg", new WeightScaleListener());
+		AlertDialog dialog = builder.create();
+		dialog.setCancelable(true);
+		dialog.show();
+	}
+
+
+	private void showWeight() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getView().getContext());
+		builder.setTitle("Koppla vågen");
+		builder.setPositiveButton("Koppla", new WeightScaleListener());
+		AlertDialog dialog = builder.create();
+		dialog.setCancelable(true);
+		dialog.show();
+	}
+
+	private class WeightScaleListener implements DialogInterface.OnClickListener {
+
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+
+		}
 	}
 
 	void messageToast(String s){

@@ -143,13 +143,35 @@ public class EditRecipeFragment extends Fragment {
 		for (Food f: recipe.getListOfFoodItem()){//TODO
 			recipeAdapter.add(f);
 		}
-		if(displayRecipe != null){
+		if(displayRecipe != null) {
 			displayRecipe.setAdapter(recipeAdapter);
-			View view = LayoutInflater.from(getView().getContext()).inflate(R.layout.add_button_listview, null);
-			displayRecipe.addFooterView(view);
+			if(displayRecipe.getFooterViewsCount() == 0){
+				View view = LayoutInflater.from(getView().getContext()).inflate(R.layout.add_button_listview, null);
+				displayRecipe.addFooterView(view);
+				view.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						openFoodSearch();
+					}
+				});
+			}
+
 		}
 
 		//TODO Fix so you can add more Food
+	}
+
+	public void recipeUpdate(Food food){
+		recipe.addFood(food);
+		updateList();
+	}
+
+	private void openFoodSearch(){
+		AddDietToFragment currentFragement = new AddDietToFragment();
+		currentFragement.setFromFargment(this);
+		listener.getSupportFragmentManager().beginTransaction()
+				.add(R.id.content_frame, currentFragement)
+				.commit();
 	}
 
 

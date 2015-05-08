@@ -51,7 +51,6 @@ public class ViewAddDietFragment extends DietFragment{
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		listener = (FragmentActivity) activity;
-		getActivity().setTitle(getResources().getString(R.string.ViewAddDietFragment));
 	}
 
 	private FragmentActivity listener;
@@ -72,7 +71,7 @@ public class ViewAddDietFragment extends DietFragment{
 			if (object instanceof DietActivity) {
 				newActivity = (DietActivity) object;
 				((EditText) getView().findViewById(R.id.mealname)).setText(newActivity.getName());
-				calendar = setupCalendar((Calendar)newActivity.getDate().clone());
+				calendar = setupCalendar(newActivity.getDate());
 				mealType = newActivity.getMealtype();
 				((Button)getView().findViewById(R.id.meal_selector_button))
 						.setText(mealType.getString(getView().getContext()));
@@ -82,10 +81,12 @@ public class ViewAddDietFragment extends DietFragment{
 		if(newActivity == null){
 			//TODO Något men för tillfället skapar man en ny
 			newActivity = new DietActivity(today);
+
 		}
 		//TODO if getActivity instanceof not diary update time and name
 		if(!(getActivity() instanceof AddDietActivity2) && getView() != null){
 			getView().setBackgroundResource(R.drawable.border_white_background);
+			getActivity().setTitle(getResources().getString(R.string.ViewAddDietFragment));
 		}
 		updateList();
 	}
@@ -171,7 +172,9 @@ public class ViewAddDietFragment extends DietFragment{
 	 * The Hour, Minute, Seconds, and milliseconds is set to 0.
 	 * @return
 	 */
-	private Calendar setupCalendar(Calendar cal){
+	private Calendar setupCalendar(Calendar calendar){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(calendar.getTime());
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND,0);
@@ -187,7 +190,6 @@ public class ViewAddDietFragment extends DietFragment{
 			tmp.set(year, monthOfYear, dayOfMonth);
 			if(!today.before(tmp))
 				calendar.set(year, monthOfYear, dayOfMonth);
-			newActivity.edit(new EditDietActivityParams(calendar, null, null, null));
 			setDateOnButton();
 		}
 	}

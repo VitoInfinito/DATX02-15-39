@@ -39,7 +39,7 @@ public class DietDiary extends AbstractDiary {
 			if(ida.getID().equals(id))
 				return ida;
 		}
-		throw new IllegalArgumentException();
+		return null;
 	}
 
 	@Override
