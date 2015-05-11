@@ -186,32 +186,17 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         @Override
         public void success(Object o, Response response) {
             Log.e(TAG,  "api call successful, json output: " + o.toString());
-            //Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_LONG).show();
 
-            List<String> list = new ArrayList<>();
             try {
                 LinkedTreeMap obj = (LinkedTreeMap) o;
 
-                //Log.e(TAG, "data: " + obj.get("data").toString());
-                //obj.get("data")
                 ArrayList<LinkedTreeMap> array = (ArrayList<LinkedTreeMap>)((LinkedTreeMap)obj.get("data")).get("items");
                 for (int i = 0; i < array.size(); i++) {
                     LinkedTreeMap ltm = array.get(i);
                     LinkedTreeMap details = (LinkedTreeMap) ltm.get("details");
-                   /* Log.e(TAG, "LTM: " + ltm.toString());
-                    Log.e(TAG, "Keys: " + ltm.keySet().toString());
-                    Log.e(TAG, "Created: " + new Date(Double.valueOf((ltm.get("time_created").toString())).longValue()*1000));
-                    Log.e(TAG, "Completed: " + new Date(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000));
-                    Log.e(TAG, "Updated: " + new Date(Double.valueOf((ltm.get("time_updated").toString())).longValue()*1000));
-                    Log.e(TAG, "Details: " + details.toString());
-                    Log.e(TAG, "Asleep time: " + new Date(Double.valueOf((details.get("asleep_time").toString())).longValue()*1000));
-                    Log.e(TAG, "Duration: " + (Double.valueOf((details.get("duration").toString())).longValue()/3600.0) + " hours");
-                    Log.e(TAG, "Awake time: " + new Date(Double.valueOf((details.get("awake_time").toString())).longValue()*1000));*/
-
 
                     String xid = ltm.get("xid").toString();
                     Log.e(TAG, "Xid: " + xid);
-
 
                     if(diary.getActivity(Utils.MillisToCalendar(Double.valueOf((ltm.get("time_completed").toString())).longValue() * 1000), xid) == null) {
                         //Creating new activity with a workout using the information from UP and adding it to the diary
@@ -223,20 +208,6 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
                     }else {
                         Log.e(TAG, xid + " ALREADY EXISTED");
                     }
-
-                    /*if(diary.getActivity(Utils.MillisToCalendar(Double.valueOf((ltm.get("time_completed").toString())).longValue() * 1000), xid) == null) {
-                        if(!details.get("light").toString().equals("0.0") && !details.get("sound").toString().equals("0.0")) {
-                            fetchSleepTicksFromUPWithXid(xid);
-                        }else {
-                            setManualSleepFromUP(xid,
-                                    new Date(Double.valueOf((details.get("asleep_time").toString())).longValue()*1000),
-                                    new Date(Double.valueOf((details.get("awake_time").toString())).longValue()*1000),
-                                    new Date(Double.valueOf((ltm.get("time_created").toString())).longValue()*1000),
-                                    new Date(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000));
-                        }
-                    }else {
-                        Log.e(TAG, xid + " ALREADY EXISTED");
-                    }*/
                 }
             }catch(Exception e){
                 Log.e(TAG, "We got an error on our hands: ");
@@ -278,50 +249,6 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         lv.setAdapter(adapter);
     }
 
-    //TODO: REMOVE THIS SHIT
-    /*private void fillListWithDummyData(){
-=======
-    private static HashMap<String, Integer> getWorkoutEventsListRequestParams() {
-        HashMap<String, Integer> queryHashMap = new HashMap<String, Integer>();
-        return queryHashMap;
-    }
-
-    private void fillListWithDummyData(){
->>>>>>> 8f2b6f17ac40cf751d3eb1bd4adacd2b8e9ca9cd
-        ListView lv = (ListView) findViewById(R.id.show_workout);
-
-        List<IDiaryActivity> acts = diary.showDaysActivities(Calendar.getInstance());
-        List<String> workoutList = new ArrayList<>();
-
-        Integer [] idList = new Integer[6];
-        System.out.println("Size: " + acts.size());
-
-        for(int i=0; i<acts.size(); i++) {
-            List<Workout> list = ((WorkoutActivity) acts.get(i)).getWorkoutList();
-            for(int j=0; j<list.size(); j++) {
-                idList[j] = list.get(j).getIconId();
-
-
-                workoutList.add(list.get(j).getWorkoutType() + " Intensitet: " + list.get(j).getIntensity()
-                        + "\n" + sdfShowFullTime.format(list.get(j).getStartTime()) + " " + sdfShowTime.format(list.get(j).getStartTime()) + " - " + sdfShowTime.format(list.get(j).getEndTime()));
-            }
-        }
-
-        // This is the customlist adapter, it takes the context of the activity as a
-        // first parameter, the type of list view as a second parameter and your
-        // array with images as a third parameter.
-        /*ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                workoutList );
-        lv.setAdapter(arrayAdapter);*/
-
-//            CustomListAdapter adapter = new CustomListAdapter(this, workoutList, imgid);
-//            lv.setAdapter(adapter);
-//        }
-//    }
-
-
     public Context getActivity() {
         return this;
     }
@@ -339,13 +266,6 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         for(Workout workout: workoutArrayList){
             intensity += workout.getIntensity();
         }
-//        for (WorkoutActivity a : workoutActivityList){
-//            for(int i = 0; i<workoutActivityList.size(); i++){
-//                for(int j=0; i<j; j++){
-//                    intensity += a.getWorkoutList().get(j).getIntensity();
-//                }
-//            }
-//        }
 
         if(series!= null){
             series.resetData(new DataPoint[]{
@@ -377,14 +297,6 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         updateActivityList(workoutActivityList);
     }
 
-//    private void updateWeekScreen(Calendar first, Calendar last) {
-//
-//        workoutActivityList = (ArrayList) diary.showWeekActivities(first, last);
-//
-//        updateActivityList(workoutActivityList);
-//    }
-
-
     //Calculates the start and end date for a given date and print out the diet activities for that interval
     private void updateWeekScreen(Calendar date) {
         Pair<Calendar, Calendar> pairDate = getDateIntervalOfWeek(date);
@@ -400,6 +312,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         cal2.add(Calendar.DATE, 1);
         return WorkoutDiary.getInstance().showWeekActivities(cal, cal2);
     }
+
     private Pair<Calendar, Calendar> getDateIntervalOfWeek(Calendar pairCal) {
 
         Calendar c = (Calendar) pairCal.clone();
@@ -551,11 +464,11 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
     /**
      * Helper method for returning a correct int when fetching it from UP
-     * @param integer
+     * @param integerWannabe
      * @return
      */
-    private int convertUPStringToInt(String integer) {
-        return Integer.parseInt(integer.substring(0, integer.indexOf(".")));
+    private int convertUPStringToInt(String integerWannabe) {
+        return Integer.parseInt(integerWannabe.substring(0, integerWannabe.indexOf(".")));
 
     }
 }
