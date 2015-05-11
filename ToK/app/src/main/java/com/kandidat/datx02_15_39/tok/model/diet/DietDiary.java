@@ -27,9 +27,9 @@ public class DietDiary extends AbstractDiary {
 	protected DietDiary(){}
 
 	@Override
-	public void addActivity(Date d, IDiaryActivity activity) {
-		activity.setDate(d);
-		addActivityToTable(d, activity);
+	public void addActivity(Calendar date, IDiaryActivity activity) {
+		activity.setDate(date);
+		addActivityToTable(date.getTime(), activity);
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class DietDiary extends AbstractDiary {
 			if(ida.getID().equals(id))
 				return ida;
 		}
-		throw new IllegalArgumentException();
+		return null;
 	}
 
 	@Override
@@ -75,9 +75,18 @@ public class DietDiary extends AbstractDiary {
 
 	@Override
 	public void editActivity(Calendar c, String id, EditActivityParams eap) {
-		if(eap instanceof EditDietActivityParams)
-			getActivity(c, id).edit(eap);
-		else
+		if(eap instanceof EditDietActivityParams) {
+			DietActivity dietActivity = (DietActivity) getActivity(c, id);
+			if(dietActivity != null){
+				if(eap.date != null){
+					removeActivity(c, id);
+					dietActivity.edit(eap);
+					addActivityToTable(dietActivity.getDate().getTime(), dietActivity);
+				}else {
+					dietActivity.edit(eap);
+				}
+			}
+		}else
 			throw new IllegalArgumentException("Error");
 	}
 

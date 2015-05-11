@@ -4,6 +4,7 @@ import com.kandidat.datx02_15_39.tok.model.AbstractDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.AddToActivity;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
+import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,8 +36,9 @@ public class WorkoutActivity extends AbstractDiaryActivity {
     }
 
 
-    public Date getDate(){
-        return date;
+    //TODO Another very wut moment. Look up later.
+    public Calendar getDate(){
+        return Utils.DateToCalendar(date);
     }
     public void setDate(Date d){
         date = new Date(d.getTime());

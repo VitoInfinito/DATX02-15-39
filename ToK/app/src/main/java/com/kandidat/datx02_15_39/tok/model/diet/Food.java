@@ -25,6 +25,12 @@ public class Food implements Serializable {
 		st,
 	};
 
+	public Food clone(){
+		return new Food(calorieAmount, proteinAmount, fatAmount
+				, carbAmount, name, description
+				, prefix, amount);
+	}
+
 	protected Food(){
 		calorieAmount = 0;
 		proteinAmount = 0;

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -38,8 +39,8 @@ public abstract class AbstractDiary implements IDiary {
         //activities.put(sdf.format(d), ida);
     }
 
-    protected void removeDate(Date d) {
-        activities.remove(sdf.format(d));
+    protected void removeDate(Calendar date) {
+        activities.remove(sdf.format(date.getTime()));
     }
 
     //Might have to remake later

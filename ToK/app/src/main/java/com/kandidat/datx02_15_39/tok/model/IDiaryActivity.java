@@ -1,5 +1,6 @@
 package com.kandidat.datx02_15_39.tok.model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -9,9 +10,9 @@ public interface IDiaryActivity {
 
     public String getID();
 
-	public void setDate(Date d);
+	public void setDate(Calendar date);
 
-	public Date getDate();
+	public Calendar getDate();
 
 	public void edit(EditActivityParams eap);
 

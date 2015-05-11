@@ -11,6 +11,7 @@ import com.kandidat.datx02_15_39.tok.model.IDiary;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.AddToDietActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
+import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -40,16 +41,21 @@ public class WorkoutDiary extends AbstractDiary {
         return instance;
     }
 
-    @Override
     public void addActivity(Date d, IDiaryActivity activity) {
         addActivityToTable(d, activity);
     }
 
+    //TODO apparently getDate returns a calendar. Look up.
     public void addActivity(IDiaryActivity act) {
-        addActivityToTable(act.getDate(), act);
+        addActivityToTable(act.getDate().getTime(), act);
     }
 
-    @Override
+	@Override
+	public void addActivity(Calendar date, IDiaryActivity activity) {
+
+	}
+
+	@Override
     public IDiaryActivity getActivity(Calendar c,String id) {
         List<IDiaryActivity> tmp = super.getActivitiesFromTable(c.getTime());
         for (IDiaryActivity ida: tmp){

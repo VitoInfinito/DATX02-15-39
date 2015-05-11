@@ -8,9 +8,11 @@
     <!-- The main content view -->
 
     <RelativeLayout
+        android:background="@drawable/gradient_background_diet"
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
@@ -113,6 +115,12 @@
                             />
 
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_margin="5dp"
+                        android:background="@android:color/black" />
 
                     <FrameLayout
                         android:layout_width="fill_parent"
@@ -229,6 +237,12 @@
 
                     </FrameLayout>
 
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_margin="5dp"
+                        android:background="@android:color/black" />
+
                     <FrameLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -267,6 +281,8 @@
             android:divider="#11aaaaaa"
             android:dividerHeight="1dp"
             android:drawSelectorOnTop="false"/>
+
+
 
         <ImageView
             android:layout_width="fill_parent"

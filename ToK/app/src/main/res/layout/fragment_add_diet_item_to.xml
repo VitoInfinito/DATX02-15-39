@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.kandidat.datx02_15_39.tok.layout.AddDietToFragment"
+                android:padding="30dp"
+    >
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/body_frame"
+        android:background="@drawable/border_white_background"
+        style="@style/DeviceBackground">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center">
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:id="@+id/search_container"
+                android:touchscreenBlocksFocus="false"
+                android:clickable="true">
+
+                <SearchView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/search_field"
+                    android:iconifiedByDefault="false"
+                    android:queryHint="Search for...."
+                    android:inputType="text"
+                    android:clickable="true"
+                    android:focusable="false"
+                    />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="De du ätit mäst"
+                android:id="@+id/info_about_search_list"
+                android:textSize="20sp"
+                android:layout_marginLeft="10dp"/>
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/item_container">
+
+                <ListView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/food_search_item_container"
+                    />
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</RelativeLayout>
