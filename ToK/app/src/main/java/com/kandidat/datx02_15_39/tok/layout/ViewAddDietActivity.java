@@ -1,24 +1,24 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,20 +26,20 @@ import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
+import com.kandidat.datx02_15_39.tok.utilies.SwipeableListAdapter;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class ViewAddDietActivity extends CustomActionBarActivity {
 
 	Calendar calendar, today;
-	ArrayList<Food> itemsAdded;
 	private ListView searchResultList;
 	private SearchResultAdapter sra;
 	private int extendedInfoOpenPosition = -1;
-	private static View swipedItemView = null;
 	private DietActivity.MEALTYPE mealType = DietActivity.MEALTYPE.SNACK;
+	DietActivity newActivity;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +49,9 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 		initCalendar();
 		savedInstanceState = this.getIntent().getExtras();
 		if(savedInstanceState != null){
-			itemsAdded = (ArrayList<Food>)savedInstanceState.getSerializable(AddDietActivity.itemsList);
+			newActivity = (DietActivity) savedInstanceState.getSerializable(AddDietActivity.itemsList);
 		}else{
-			itemsAdded = new ArrayList<Food>();
+			this.onBackPressed();
 		}
 		updateList();
 	}
@@ -77,22 +77,23 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 		//noinspection SimplifiableIfStatement
 		if (id == R.id.right_corner_button_confirm) {
-			if(itemsAdded.size() != 0) {
-				DietActivity da = createDietActivity();
-				DietDiary.getInstance().addActivity(da.getDate(), da);
+			if(newActivity.getFoodList().size() != 0) {
+				createDietActivity();
+				DietDiary.getInstance().addActivity(newActivity.getDate(), newActivity);
 			}
 			startActivity(new Intent(this, MainActivity.class));
+			finish();
 		}
 
 		return super.onOptionsItemSelected(item);
 	}
 
-	private DietActivity createDietActivity() {
-		DietActivity tmp = new DietActivity(itemsAdded, calendar);
-		tmp.setName(((EditText) findViewById(R.id.mealname)).getText().toString());
-		tmp.setMealtype(mealType);
-		Toast.makeText(this, "name of meal: " + tmp.getName() + "/" + mealType, Toast.LENGTH_SHORT).show();
-		return tmp;
+	private void createDietActivity() {
+		//DietActivity tmp = new DietActivity(itemsAdded, calendar);
+		newActivity.setName(((EditText) findViewById(R.id.mealname)).getText().toString());
+		newActivity.setMealtype(mealType);
+		newActivity.setDate(calendar);
+		Toast.makeText(this, "name of meal: " + newActivity.getName() + "/" + mealType, Toast.LENGTH_SHORT).show();
 	}
 
 	/*
@@ -160,9 +161,12 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 	 */
 	private void updateList(){
 		searchResultList = (ListView) findViewById(R.id.food_item_added_container);
-		searchResultList.removeAllViewsInLayout();
+		if(searchResultList.getChildCount() > 0) {
+			searchResultList.removeAllViewsInLayout();
+			//searchResultList.removeAllViews();
+		}
 		sra = new SearchResultAdapter(this);
-		for (Food f: itemsAdded){
+		for (Food f: newActivity.getFoodList()){//TODO
 			sra.add(f);
 		}
 		if(searchResultList != null){
@@ -205,21 +209,19 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 	/**
 	 * This Class is added and extends ArrayAdapter and it lets me draw what i want to the list item
 	 */
-	private class SearchResultAdapter extends ArrayAdapter<Food>
+	private class SearchResultAdapter extends SwipeableListAdapter<Food>
 	{
-		public SearchResultAdapter  (Context context)
-		{
-			super(context,0);
+
+		public SearchResultAdapter(Context context) {
+			super(context);
 		}
 
 		public View getView (int position, View convertView, ViewGroup parent)
 		{
-			if (convertView == null)
-			{
-				convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_meal_item_editable, null);
-			}
-			convertView.setOnTouchListener(new ItemSwipeListener(position,
-					getResources().getDisplayMetrics().density));
+			convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_item_editable, null);
+			addSwipeDetection(this.getContext(), convertView, position);
+			//convertView.setOnTouchListener(new ItemSwipeListener(position,
+			//		getResources().getDisplayMetrics().density));
 			convertView.setClickable(true);
 			// Lookup view for data population
 			TextView food_item_name = (TextView) convertView.findViewById(R.id.food_item_name);
@@ -230,8 +232,23 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 			food_more.setFocusable(false);
 			food_more.setOnClickListener(new OnMoreInfoClickListener(position));
 			delete_food.setOnClickListener(new OnDeleteClickListener(position));
+			if(extendedInfoOpenPosition == position){
+				openExtendedInfo(convertView, position);
+			}
 			// Return the completed view to render on screen
 			return convertView;
+		}
+
+		public View getViewByPosition(int pos, ListView listView) {
+			final int firstListItemPosition = listView.getFirstVisiblePosition();
+			final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+
+			if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+				return listView.getAdapter().getView(pos, null, listView);
+			} else {
+				final int childIndex = pos - firstListItemPosition;
+				return listView.getChildAt(childIndex);
+			}
 		}
 	}
 
@@ -251,7 +268,7 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 	}
 
 	private void changePrefix(View v, int position) {
-		//TODO
+		//TODO should i be able to do this ?
 	}
 
 	private class OnAmountClickListener implements View.OnClickListener{
@@ -270,8 +287,36 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 	}
 
 	private void changeAmount(View v, int position) {
-		//TODO
-		itemsAdded.get(position).setAmount(154.2);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		View view = getLayoutInflater().inflate(R.layout.number_picker_layout, null);
+		NumberPicker np = (NumberPicker)view.findViewById(R.id.number_picker_amount);
+		np.setMinValue(0);
+		np.setMaxValue(10000);
+		np.setValue((int) newActivity.getFoodList().get(position).getAmount());
+		builder.setPositiveButton("Spara", new ChangedAmountListener(v, np, position));
+		AlertDialog dialog = builder.create();
+		dialog.setView(view);
+		dialog.setCancelable(true);
+		dialog.show();
+	}
+
+	private class ChangedAmountListener implements DialogInterface.OnClickListener {
+
+		private NumberPicker np;
+		private int position;
+		private View v;
+
+		public ChangedAmountListener(View v, NumberPicker np, int position){
+			this.np = np;
+			this.position = position;
+			this.v = v;
+		}
+
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			newActivity.getFoodList().get(position).setAmount(np.getValue());
+			((Button)v).setText((float)np.getValue() + "");
+		}
 	}
 
 	private class OnDeleteClickListener implements View.OnClickListener{
@@ -291,10 +336,10 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 	}
 
 	private void deleteItem(View v, int position) {
-		itemsAdded.remove(position);
-		Toast.makeText(this, "Radera " + position, Toast.LENGTH_SHORT).show();
-		updateList();
-		//TODO
+		List<Food> list = newActivity.getFoodList();
+		Food food = list.remove(position);
+//		updateList(); Kanske skall användas men inte säker!!
+		sra.remove(sra.getItem(position));
 	}
 
 	private class OnMoreInfoClickListener implements View.OnClickListener {
@@ -315,115 +360,56 @@ public class ViewAddDietActivity extends CustomActionBarActivity {
 
 	private void onMoreInfoClick(View v, int position){
 		if( this.extendedInfoOpenPosition == position){
-			closeExtendedInfo(v, position);
+			closeExtendedInfo(sra.getViewByPosition(extendedInfoOpenPosition, searchResultList),
+					extendedInfoOpenPosition);
 			extendedInfoOpenPosition = -1;
 		}else {
-			if(this.extendedInfoOpenPosition != -1){
-				closeExtendedInfo(v, extendedInfoOpenPosition);
+			int y = position - searchResultList.getFirstVisiblePosition();
+			if(this.extendedInfoOpenPosition > -1
+					&& y >= -1
+					&& y <= searchResultList.getChildCount()){
+				closeExtendedInfo(sra.getViewByPosition(extendedInfoOpenPosition, searchResultList),
+						extendedInfoOpenPosition);
 			}
-			openExtendedInfo(v, position);
-			extendedInfoOpenPosition = position;
+			openExtendedInfo(
+					searchResultList.getChildAt(position - searchResultList.getFirstVisiblePosition()),
+					position);
+			this.extendedInfoOpenPosition = position;
 		}
 	}
 	private void closeExtendedInfo(View v, int position){
 		//TODO Make the opened information close
-		LinearLayout extendedView = (LinearLayout)searchResultList.getChildAt(position).findViewById(R.id.extended_food_information);
+		//View view = sra.getViewByPosition(position, searchResultList);
+		LinearLayout extendedView = (LinearLayout)v.findViewById(R.id.extended_food_information);
 		extendedView.removeAllViews();
+		extendedView.removeAllViewsInLayout();
 	}
 
 	private void openExtendedInfo(View v, int position) {
-		LinearLayout extendedView = (LinearLayout)searchResultList.getChildAt(position).findViewById(R.id.extended_food_information);
+		//View view = searchResultList.getChildAt(position - searchResultList.getFirstVisiblePosition());
+		LinearLayout extendedView = (LinearLayout)v.findViewById(R.id.extended_food_information);
+		if(extendedView.getChildCount() == 0) {
+			View convertExtendedView = LayoutInflater.from(v.getContext()).inflate(R.layout.change_amount_on_food_view, null);
+			Button food_amount = (Button) convertExtendedView.findViewById(R.id.btn_food_amount);
+			Button food_prefix = (Button) convertExtendedView.findViewById(R.id.btn_food_prefix);
 
-		View convertView = LayoutInflater.from(this).inflate(R.layout.change_amount_on_food_view, null);
-		Button food_amount = (Button) convertView.findViewById(R.id.btn_food_amount);
-		Button food_prefix = (Button) convertView.findViewById(R.id.btn_food_prefix);
-
-		food_amount.setText(itemsAdded.get(position).getAmount() + "");
-		food_prefix.setText(itemsAdded.get(position).getPrefix() + "");
-		food_amount.setOnClickListener(new OnAmountClickListener(position));
-		food_prefix.setOnClickListener(new OnPrefixClickListener(position));
-		extendedView.addView(convertView);
-
-		Toast.makeText(this, "dragen"+ position, Toast.LENGTH_SHORT).show();
+			food_amount.setText(newActivity.getFoodList().get(position).getAmount() + "");
+			food_prefix.setText(newActivity.getFoodList().get(position).getPrefix() + "");
+			food_amount.setOnClickListener(new OnAmountClickListener(position));
+			food_prefix.setOnClickListener(new OnPrefixClickListener(position));
+			extendedView.addView(convertExtendedView);
+		}
+		Toast.makeText(this, "dragen"+ sra.getCount(), Toast.LENGTH_SHORT).show();
 		//TODO Make so that the new adapter is a adapter to handle click events
 	}
 
-	private static class ItemSwipeListener implements AdapterView.OnTouchListener{
-
-		private static final int MIN_DISTANCE = 50;
-		private float downX, upX;
-		private int position;
-		private float scale;
-		private DIRECTION direction;
-		private static enum DIRECTION{
-			NORTH,
-			SOUTH,
-			WEST,
-			EAST,
-			NONE;
-		}
-
-		public ItemSwipeListener(int position, float scale) {
-			super();
-			this.position = position;
-			this.scale = scale;
-		}
-
-		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN: {
-					closeOtherSwipe(v);
-					downX = event.getX();
-					return false; // allow other events like Click to be processed
-				}
-				case MotionEvent.ACTION_MOVE: {
-					upX = event.getX();
-
-					float deltaX = downX - upX;
-
-					// horizontal swipe detection
-					if (Math.abs(deltaX / scale) > MIN_DISTANCE) {
-						// left or right
-						if (deltaX < 0 && (deltaX/scale) >(-96)) {
-							direction = DIRECTION.EAST;
-							v.setLeft((96) + (int)(deltaX));
-							return false;
-						}
-						if (deltaX > 0 && (deltaX/scale) < 96) {
-							direction = DIRECTION.WEST;
-							v.setLeft((int)(deltaX) *(-1));
-							return false;
-						}
-					}
-					return true;
-				}
-				case MotionEvent.ACTION_CANCEL:{
-					setPositionOfContainer(v);
-				}
-				case MotionEvent.ACTION_UP:{
-					setPositionOfContainer(v);
-				}
-				case MotionEvent.ACTION_POINTER_UP:{
-					setPositionOfContainer(v);
-				}
-			}
-			return false;
-		}
-
-		private void setPositionOfContainer(View v){
-			if(direction == DIRECTION.WEST){
-				v.setLeft((int) ((-88) * scale));
-			}else if(direction == DIRECTION.EAST) {
-				v.setLeft(0);
-			}
-		}
-	}
-
-	private static void closeOtherSwipe(View v) {
-		if(swipedItemView != null){
-			swipedItemView.setLeft(0);
-		}
-		swipedItemView = v;
+	@Override
+	public void onBackPressed() {
+		Intent intent = new Intent(this, AddDietActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(AddDietActivity.itemsList, newActivity);
+		intent.putExtras(bundle);
+		startActivity(intent);
+		finish();
 	}
 }

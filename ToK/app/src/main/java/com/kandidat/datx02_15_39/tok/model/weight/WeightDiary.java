@@ -46,10 +46,10 @@ public class WeightDiary extends AbstractDiary {
     }
 
     @Override
-    public void addActivity(Date d, IDiaryActivity activity) {
-	    List<IDiaryActivity> act = getActivitiesFromTable(d);
+    public void addActivity(Calendar cal, IDiaryActivity activity) {
+	    List<IDiaryActivity> act = getActivitiesFromTable(cal.getTime());
 		if(act.isEmpty()){
-			addActivityToTable(d, activity);
+			addActivityToTable(cal.getTime(), activity);
 		}else{
 			act.set(0, activity);
 	    }

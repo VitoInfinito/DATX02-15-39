@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.kandidat.datx02_15_39.tok"
-        minSdkVersion 14
+        minSdkVersion 19
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -22,7 +22,6 @@ android {
 dependencies {
     compile project(':UpPlatformSdk')
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.jjoe64:graphview:4.0.0'
-    compile 'com.daimajia.numberprogressbar:library:1.2@aar'
 }

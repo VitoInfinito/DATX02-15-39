@@ -1,5 +1,6 @@
 package com.kandidat.datx02_15_39.tok.model;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -23,14 +24,12 @@ public abstract class AbstractDiaryActivity implements IDiaryActivity{
 		return id;
 	}
 	@Override
-	public void setDate(Date d) {
-		Calendar c = Calendar.getInstance();
-		c.setTime(d);
-		this.date = c;
+	public void setDate(Calendar date) {
+		this.date = date;
 	}
 
 	@Override
-	public Date getDate() {
-		return date.getTime();
+	public Calendar getDate() {
+		return date;
 	}
 }

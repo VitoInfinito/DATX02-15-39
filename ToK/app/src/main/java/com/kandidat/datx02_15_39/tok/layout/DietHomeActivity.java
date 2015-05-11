@@ -1,8 +1,11 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
@@ -25,6 +29,7 @@ import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
+import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,13 +45,14 @@ public class DietHomeActivity extends CustomActionBarActivity {
     private Calendar cal;
     private BarGraphSeries<DataPoint> series;
     ArrayList<Food> foodList;
+
+	private ViewAddDietFragment tempFragment;
+
     ArrayList<DietActivity> activityList;
     private ListView mealList;
     private MealListAdapter mla;
-    Calendar tempCal;
-                                    //TODO make it constructor of dietActivity take name as a paramenter.
+    Calendar tempCal; // used for the test food
     DietDiary myDiary;
-    DietActivity myActivity;
 
     private int dayOffset = 0;
     private int weekOffset = 0;
@@ -63,6 +69,8 @@ public class DietHomeActivity extends CustomActionBarActivity {
         dietGraph = (GraphView) findViewById(R.id.diet_graph);
         series = new BarGraphSeries<>();
         foodList = createTestFoodList();
+
+        cal = Calendar.getInstance();
         tempCal = Calendar.getInstance();
 
         dayRadioButton = (Button) findViewById(R.id.day_radioButton);
@@ -72,8 +80,6 @@ public class DietHomeActivity extends CustomActionBarActivity {
         carbText = (TextView) findViewById(R.id.carb_text_view);
         protText = (TextView) findViewById(R.id.protein_text_view);
         fatText = (TextView) findViewById(R.id.fat_text_view);
-
-        cal = Calendar.getInstance();
 
         View.OnTouchListener dayAndWeekListener = new View.OnTouchListener() { //makes sure that not both day and week button are pressed simultaneously
             @Override
@@ -93,34 +99,48 @@ public class DietHomeActivity extends CustomActionBarActivity {
             }
         };
 
-        tempCal.add(Calendar.DATE, -1); // temp calendar to see if the acitivity having this calendar will show on yesterday.
-
-        myActivity = new DietActivity(foodList, tempCal);
-        myActivity.setName("Mosbricka");
-
         myDiary = DietDiary.getInstance();
-        myDiary.addActivity(myActivity.getDate(), myActivity);
 
         dayRadioButton.setPressed(true);
         dayRadioButton.setOnTouchListener(dayAndWeekListener);
         weekRadioButton.setOnTouchListener(dayAndWeekListener);
 
+        updateDayScreen(cal);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_diet_home, menu);
+		if(tempFragment != null)
+			getMenuInflater().inflate(R.menu.menu_with_confirm, menu);
+		else
+       		getMenuInflater().inflate(R.menu.menu_with_add, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            return true;
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.right_corner_button_add) {
+            View add = getLayoutInflater().inflate(R.layout.activity_add_all, null);
+            AlertDialog ad = new AlertDialog.Builder(this, R.style.CustomDialog)
+                    .create();
+            ad.setView(add);
+            ad.setCanceledOnTouchOutside(true);
+            ad.show();
         }
+		if(id == R.id.right_corner_button_confirm){
+			tempFragment.editActivity();
+			getSupportFragmentManager().beginTransaction().remove(tempFragment).commit();
+			tempFragment = null;
+			updateMealList();
+			invalidateOptionsMenu();
+		}
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -136,18 +156,20 @@ public class DietHomeActivity extends CustomActionBarActivity {
             if (convertView == null)
             {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.meal_item, null);
-
             }
 
-            // Lookup view for data population
+            String activityId = getItem(position).getID();
+
+            // Fetching the views of the layout
             TextView meal_item_name = (TextView) convertView.findViewById(R.id.meal_item_name);
             TextView meal_item_calories = (TextView) convertView.findViewById(R.id.meal_item_calories);
             TextView meal_item_date = (TextView) convertView.findViewById(R.id.meal_item_date);
-            // Populate the data into the template view using the data object
+
+            // Populate the data into the template layout (meal_item)
             meal_item_name.setHint(getItem(position).getName());
             meal_item_calories.setHint(getItem(position).getCalorieCount() + "");
-            meal_item_date.setHint(sdfShowFullDate.format(getItem(position).getDate()));
-            // Return the completed view to render on screen
+            meal_item_date.setHint(sdfShowFullDate.format(getItem(position).getDate().getTime()));
+
 
             return convertView;
         }
@@ -164,7 +186,8 @@ public class DietHomeActivity extends CustomActionBarActivity {
         return foodList;
     }
 
-    private void updateSearchList(){
+    //updates the meal list with the appropriate meals for given dates
+    private void updateMealList(){
         mealList = (ListView) findViewById(R.id.meal_list_view);
         mealList.removeAllViewsInLayout();
         mla = new MealListAdapter(this);
@@ -175,19 +198,62 @@ public class DietHomeActivity extends CustomActionBarActivity {
             mealList.setAdapter(mla);
         }
         mealList.setOnItemClickListener(new MealItemClickListener());
+
     }
 
+    //Decides what happens on click on meal items in the ListView
     private class MealItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
-            selectedItem(position);
+            editMealItem(position);
         }
     }
 
-    private void selectedItem(int position) {
-        Toast t = Toast.makeText(this, "Item selected", Toast.LENGTH_SHORT);
-        t.show();
+	void startNewFragmentToEditMeal(DietActivity dietActivity){
+		if(dietActivity != null) {
+			tempFragment = new ViewAddDietFragment();
+			Bundle bundle = new Bundle();
+			bundle.putSerializable(Utils.dietActivityArgument, dietActivity);
+			tempFragment.setArguments(bundle);
+			getSupportFragmentManager().beginTransaction().add(R.id.content_frame, tempFragment).commit();
+			invalidateOptionsMenu();
+		}
+	}
 
+    private void editMealItem(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // set title
+        builder.setTitle("Välj alternativ");
+
+        // set dialog message
+        builder.setPositiveButton("Ändra", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+				startNewFragmentToEditMeal((DietActivity)mealList.getItemAtPosition(position));
+            }
+        });
+        builder.setNegativeButton("Radera", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //TODO fråga Marcus om understående
+                myDiary.removeActivity(cal, ((DietActivity)mealList.getItemAtPosition(position)).getID());
+            }
+        });
+        builder.setNeutralButton("Tillbaka", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // if this button is clicked, just close
+                // the dialog box and do nothing
+                dialog.cancel();
+            }
+        });
+
+        // create alert dialog
+        AlertDialog alertDialog = builder.create();
+        // show it
+        alertDialog.show();
+    }
+
+    void sendMessage(String s){
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
     private void updateActivityList(ArrayList<DietActivity> activityList) {
@@ -201,33 +267,40 @@ public class DietHomeActivity extends CustomActionBarActivity {
         }
 
         series.resetData(new DataPoint[] {
-                new DataPoint(0,0),
                 new DataPoint(10, calSum),
                 new DataPoint(20, carbSum),
                 new DataPoint(30, protSum),
                 new DataPoint(40, fatSum),
-                new DataPoint(50, 0)
         });
-
+//
         kcalText.setText(calSum + "");
         carbText.setText(carbSum + "");
         protText.setText(protSum + "");
         fatText.setText(fatSum + "");
-
         series.setSpacing(8);
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.RED);
-
+        series.setSpacing(40);
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(dietGraph);
         staticLabelsFormatter.setHorizontalLabels(new String[]{"Kcal", "Kolhydrater", "Proteiner", "Fett"});
-        dietGraph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
 
+        dietGraph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
         dietGraph.getGridLabelRenderer().setVerticalAxisTitle("Mängd");
         dietGraph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
 
+
+        dietGraph.getViewport().setXAxisBoundsManual(true);
+        dietGraph.getViewport().setMinX(5);
+        dietGraph.getViewport().setMaxX(45); //om större än 45 så fuckar de statiska lablarna ur, venne varför.
+
+        //TODO lägg till nedanstående line till Workout
+        dietGraph.removeAllSeries();
         dietGraph.addSeries(series);
+
+        updateMealList();
     }
 
+    
     private void updateDayScreen(Calendar cal) {
 
         activityList = (ArrayList) myDiary.showDaysActivities(cal);
@@ -235,9 +308,12 @@ public class DietHomeActivity extends CustomActionBarActivity {
         updateActivityList(activityList);
     }
 
-    private void updateWeekScreen(Calendar first, Calendar last) {
+    //Calculates the start and end date for a given date and print out the diet activities for that interval
+    private void updateWeekScreen(Calendar date) {
 
-        activityList = (ArrayList) myDiary.showWeekActivities(first, last);
+        Pair<Calendar, Calendar> pairDate = getDateIntervalOfWeek(date);
+
+        activityList = (ArrayList) myDiary.showWeekActivities(pairDate.first, pairDate.second);
 
         updateActivityList(activityList);
     }
@@ -273,20 +349,8 @@ public class DietHomeActivity extends CustomActionBarActivity {
             } else {
                 dateButton.setText("Vecka " + cal.get(Calendar.WEEK_OF_YEAR));
             }
+            updateWeekScreen(cal);
         }
-
-        updateSearchList();
-    }
-
-    private void test() {
-        Calendar first = (Calendar) cal.clone();
-        first.add(Calendar.DAY_OF_WEEK,
-                first.getFirstDayOfWeek() - first.get(Calendar.DAY_OF_WEEK));
-
-        // and add six days to the end date
-        Calendar last = (Calendar) first.clone();
-        last.add(Calendar.DAY_OF_YEAR, 6);
-
     }
 
     public void onRightButtonClick(View view) {
@@ -295,16 +359,16 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
             dayOffset++;
             cal.add(Calendar.DATE, 1);
-            String updatedDate = sdfShowFullDate.format(cal.getTime());
+            String chosenDate = sdfShowFullDate.format(cal.getTime());
 
             if (dayOffset == -1) {
                 dateButton.setText("Igår");
             } else if (dayOffset == 0) {
                 dateButton.setText("Idag");
             } else {
-                dateButton.setText(updatedDate);
-                updateDayScreen(cal);
+                dateButton.setText(chosenDate);
             }
+            updateDayScreen(cal);
 
         } else if (!isDayView() && weekOffset != 0) {
             weekOffset++;
@@ -317,9 +381,24 @@ public class DietHomeActivity extends CustomActionBarActivity {
             } else {
                 dateButton.setText("Vecka " + cal.get(Calendar.WEEK_OF_YEAR));
             }
+            updateWeekScreen(cal);
         }
-        updateDayScreen(cal);
-        updateSearchList();
+    }
+
+    //Fins the date interval of a week for a current date
+    private Pair<Calendar, Calendar> getDateIntervalOfWeek(Calendar date) {
+
+        Calendar c = (Calendar) date.clone();
+        c.add(Calendar.DATE, 0);
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - c.getFirstDayOfWeek();
+        c.add(Calendar.DAY_OF_MONTH, -dayOfWeek);
+
+        Calendar firstDay = (Calendar) c.clone();
+        // we do not need the same day a week after, that's why use 6, not 7
+        c.add(Calendar.DAY_OF_MONTH, 6);
+        Calendar lastDay = (Calendar) c.clone();
+
+        return new Pair<>(firstDay, lastDay);
     }
 
     public void onDateButtonClick(View view) {
@@ -340,5 +419,13 @@ public class DietHomeActivity extends CustomActionBarActivity {
         weekOffset = 0;
         cal.setTime(Calendar.getInstance().getTime());
         dateButton.setText("Denna vecka");
+    }
+
+    public void onDayViewClick(View view) {
+        updateDayScreen(cal);
+    }
+
+    public void onWeekViewClick(View view) {
+        updateWeekScreen(cal);
     }
 }

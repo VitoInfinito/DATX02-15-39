@@ -2,13 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="fill_parent"
-              android:layout_height="80dp"
+              android:layout_height="60dp"
               android:weightSum="2"
-              android:id="@+id/search_food_item">
+              android:id="@+id/search_food_item"
+              android:minHeight="60dp"
+              android:longClickable="false">
 
     <TextView
         android:layout_width="fill_parent"
-        android:layout_height="35dp"
+        android:layout_height="0dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/food_item_name"
         android:layout_weight="1"/>
@@ -16,21 +18,20 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:weightSum="2"
-        android:gravity="center">
+        android:weightSum="2">
 
         <TextView
-            android:layout_width="20dp"
+            android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textView_food_add"
-            android:layout_weight="1"
-            android:text="Kalorier"/>
+            android:text="Kalorier"
+            android:layout_weight="1"/>
 
         <TextView
-            android:layout_width="20dp"
+            android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/food_calorie_amount"

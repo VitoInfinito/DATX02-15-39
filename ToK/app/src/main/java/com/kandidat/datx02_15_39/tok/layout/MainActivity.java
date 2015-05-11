@@ -13,8 +13,10 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.jawbone.upplatformsdk.api.ApiManager;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
+import com.kandidat.datx02_15_39.tok.utility.JawboneUtils;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 
@@ -46,7 +48,11 @@ public class MainActivity extends CustomActionBarActivity {
             }
         }
 
+        //checkFormerConnection();
+    }
 
+    private void checkFormerConnection() {
+        JawboneUtils.checkConnectionToUP(this, this.getIntent());
     }
 
 
@@ -70,6 +76,7 @@ public class MainActivity extends CustomActionBarActivity {
 			AlertDialog ad = new AlertDialog.Builder(this, R.style.CustomDialog)
 					.create();
 			ad.setView(add);
+			ad.setCanceledOnTouchOutside(true);
 			ad.show();
         }
 
@@ -94,6 +101,11 @@ public class MainActivity extends CustomActionBarActivity {
         startActivity(new Intent(this, SleepHomeActivity.class));
     }
 
+    /**
+     * Navigates to workout activity overview.
+     *
+     * @param view Not used.
+     */
     public void onWorkOutButtonClick(View view){
         startActivity(new Intent(this, WorkoutHomeActivity.class));
     }

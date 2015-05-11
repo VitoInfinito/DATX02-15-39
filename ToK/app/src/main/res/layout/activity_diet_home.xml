@@ -8,9 +8,11 @@
     <!-- The main content view -->
 
     <RelativeLayout
+        android:background="@drawable/gradient_background_diet"
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
@@ -113,6 +115,12 @@
                             />
 
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_margin="5dp"
+                        android:background="@android:color/black" />
 
                     <FrameLayout
                         android:layout_width="fill_parent"
@@ -229,6 +237,12 @@
 
                     </FrameLayout>
 
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_margin="5dp"
+                        android:background="@android:color/black" />
+
                     <FrameLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -249,44 +263,57 @@
 
         </LinearLayout>
     </RelativeLayout>
+
     <!-- The navigation drawer -->
     <LinearLayout
         android:id="@+id/left_drawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#fe111111"
-        android:orientation="vertical"
-        >
+        android:background="#fc212121"
+        android:orientation="vertical"    >
 
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_top"
             android:choiceMode="singleChoice"
-            android:divider="#99000000"
+            android:divider="#11aaaaaa"
             android:dividerHeight="1dp"
             android:drawSelectorOnTop="false"/>
+
+
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:id="@+id/view_divider_1"
+            android:background="#11aaaaaa"/>
 
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_diary"
             android:choiceMode="singleChoice"
-            android:divider="#99000000"
+            android:divider="#11aaaaaa"
             android:dividerHeight="1dp"
-            android:drawSelectorOnTop="false"
-            android:layout_marginTop="10dp"/>
+            android:drawSelectorOnTop="false"/>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:id="@+id/view_divider_2"
+            android:background="#11aaaaaa"/>
 
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/left_drawer_list_setting"
             android:choiceMode="singleChoice"
-            android:divider="#99000000"
+            android:divider="#11aaaaaa"
             android:dividerHeight="1dp"
             android:drawSelectorOnTop="false"
-            android:layout_marginTop="10dp"/>
+            />
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>
