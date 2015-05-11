@@ -24,6 +24,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.OnDataPointTapListener;
 import com.jjoe64.graphview.series.Series;
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.jawbone.JawboneSetupActivity;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
 import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
@@ -104,8 +105,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
         }else {
             Toast.makeText(getActivity(), R.string.no_connection_UP, Toast.LENGTH_LONG).show();
-            Account.getInstance().setNextClassCallback(SleepHomeActivity.class);
-            startActivity(new Intent(this, AccessoriesHomeActivity.class));
+            Account.getInstance().setNextClassCallback(this.getClass());
+            startActivity(new Intent(this, JawboneSetupActivity.class));
         }
 
         setupGraph();

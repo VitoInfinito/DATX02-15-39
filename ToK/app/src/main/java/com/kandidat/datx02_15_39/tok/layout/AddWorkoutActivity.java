@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,8 +32,6 @@ import android.widget.Toast;
 
 public class AddWorkoutActivity extends CustomActionBarActivity {
 
-
-    int id = 0;
     //Create all image buttons..
 
     android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
@@ -42,6 +41,8 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
 
     private Date startDate;
+    private int startMonth;
+    private int startDay;
     private int startHours;
     private int startMinutes;
 
@@ -52,7 +53,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
     private int intensity;
 
-    String workoutType;
+    Workout.WorkoutType workoutType;
 
 
     @Override
@@ -60,7 +61,6 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_workout);
 		initMenu(R.layout.activity_add_workout);
-        id = R.id.yoga_button;
         //runnerButton = (ImageButton) findViewById(R.id.sprint_button);
 
         Calendar currentCalendar = Calendar.getInstance();
@@ -90,28 +90,24 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
 
     }
-    //Skriv medtoder som sätter knapparna till enums här..
+
 
     public void onClickFlex(final View view){
-        this.workoutType = Workout.WORKOUTTYPE_FLEXIBILITY;
-        this.id =R.drawable.yoga_icon;
+        this.workoutType = Workout.WorkoutType.FLEX;
         registerWorkoutIntensityOnClick(view);
     }
 
     public void onClickStrength(final View view){
-        this.workoutType = Workout.WORKOUTTYPE_STRENGTH;
-        this.id = R.drawable.strength;
+        this.workoutType = Workout.WorkoutType.STRENGTH;
         registerWorkoutIntensityOnClick(view);
     }
 
     public void onClickCardio(final View view){
-        this.workoutType = Workout.WORKOUTTYPE_CARDIO;
-        this.id = R.drawable.sprint;
+        this.workoutType = Workout.WorkoutType.CARDIO;
         registerWorkoutIntensityOnClick(view);
     }
     public void onClickSports(final View view){
-        this.workoutType = Workout.WORKOUTTYPE_SPORT;
-        this.id = R.drawable.soccer;
+        this.workoutType = Workout.WorkoutType.SPORT;
         registerWorkoutIntensityOnClick(view);
     }
 
@@ -164,8 +160,8 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         builder.setView(datePicker);
         builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int id){
-                /*startMonth = datePicker.getMonth() + 1;
-                startDay = datePicker.getDayOfMonth();*/
+                startMonth = datePicker.getMonth() + 1;
+                startDay = datePicker.getDayOfMonth();
                 registerWorkoutStartTimeOnClick(view);
             }
         });
@@ -243,9 +239,11 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
         currentCalendar.set(Calendar.HOUR_OF_DAY, startHours);
         currentCalendar.set(Calendar.MINUTE, startMinutes);
-        /*currentCalendar.set(Calendar.MONTH, startMonth);
-        currentCalendar.set(Calendar.DAY_OF_MONTH, startDay);*/
+        currentCalendar.set(Calendar.MONTH, startMonth);
+        currentCalendar.set(Calendar.DAY_OF_MONTH, startDay);
         startDate = currentCalendar.getTime();
+
+        Log.e("Date to be added: ", "" + startDate);
 
 
         currentCalendar.set(Calendar.HOUR_OF_DAY, stopHours);
@@ -260,7 +258,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
     public void addNewWorkout(){
         updateDate();
-        Workout workout = new Workout(id, startDate, stopDate, intensity, workoutType);
+        Workout workout = new Workout(startDate, stopDate, intensity, workoutType);
         WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
         WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
         workoutDiary.addActivity(startDate, workoutActivity);
