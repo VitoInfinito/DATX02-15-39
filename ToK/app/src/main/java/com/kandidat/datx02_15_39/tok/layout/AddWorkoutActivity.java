@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,6 +43,8 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
 
     private Date startDate;
+    private int startMonth;
+    private int startDay;
     private int startHours;
     private int startMinutes;
 
@@ -164,8 +167,8 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         builder.setView(datePicker);
         builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int id){
-                /*startMonth = datePicker.getMonth() + 1;
-                startDay = datePicker.getDayOfMonth();*/
+                startMonth = datePicker.getMonth() + 1;
+                startDay = datePicker.getDayOfMonth();
                 registerWorkoutStartTimeOnClick(view);
             }
         });
@@ -243,9 +246,11 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
         currentCalendar.set(Calendar.HOUR_OF_DAY, startHours);
         currentCalendar.set(Calendar.MINUTE, startMinutes);
-        /*currentCalendar.set(Calendar.MONTH, startMonth);
-        currentCalendar.set(Calendar.DAY_OF_MONTH, startDay);*/
+        currentCalendar.set(Calendar.MONTH, startMonth);
+        currentCalendar.set(Calendar.DAY_OF_MONTH, startDay);
         startDate = currentCalendar.getTime();
+
+        Log.e("Date to be added: ", "" + startDate);
 
 
         currentCalendar.set(Calendar.HOUR_OF_DAY, stopHours);

@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,22 +35,20 @@ import java.util.List;
 
 
 public class WorkoutHomeActivity extends CustomActionBarActivity {
-    WorkoutDiary diary;
+    private WorkoutDiary diary;
 
-    private Button dayRadioButton;
-    private Button weekRadioButton;
-    private Button nextDayButton;
-    private Button prevDayButton;
 
     private TextView textDay;
     private Date todaysDate;
     private BarGraphSeries<DataPoint> series;
     private GraphView graph;
 
-    ArrayList <WorkoutActivity> workoutActivityList;
+    private ArrayList <WorkoutActivity> workoutActivityList;
     private int dayOffset = 0;
     private int weekOffset = 0;
-    Calendar cal;
+    private Calendar cal;
+
+    private boolean WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING = true;
 
     @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("dd/MM");
@@ -68,44 +65,35 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         setContentView(R.layout.activity_workout_home);
 		initMenu(R.layout.activity_workout_home);
 
-        todaysDate = Calendar.getInstance().getTime();
-        diary = (WorkoutDiary) WorkoutDiary.getInstance();
-
-        dayRadioButton = (Button) findViewById(R.id.day_radioButton);
-        weekRadioButton = (Button) findViewById(R.id.week_radiobutton);
-        textDay = (TextView) findViewById(R.id.textDay);
-
-        nextDayButton = (Button) findViewById(R.id.nextDayButton);
-        prevDayButton = (Button) findViewById(R.id.previousDayButton);
-
-        cal = Calendar.getInstance();
-
-        graph = (GraphView) findViewById(R.id.workout_graph);
-        series = new BarGraphSeries<>();
-        fillListWithDummyData();
-
-        updateDayScreen(cal);
-
-        graph.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Handles clicks on the graph.
-             *
-             * @param v The view to reference as current.
-             */
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
         Calendar tmpCal = Calendar.getInstance();
         Date startDate = tmpCal.getTime();
         tmpCal.set(Calendar.HOUR_OF_DAY, Calendar.HOUR_OF_DAY+2);
         Date stopDate = tmpCal.getTime();
 
-        Workout workout = new Workout(0, startDate, stopDate, 5, Workout.WORKOUTTYPE_CARDIO);
+        //Dummy listitem
+        Workout workout = new Workout(0, startDate, stopDate, 15, Workout.WORKOUTTYPE_CARDIO);
         WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
         WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
         workoutDiary.addActivity(startDate, workoutActivity);
+
+        todaysDate = Calendar.getInstance().getTime();
+        diary = (WorkoutDiary) WorkoutDiary.getInstance();
+
+        textDay = (TextView) findViewById(R.id.textDay);
+
+        cal = Calendar.getInstance();
+
+        graph = (GraphView) findViewById(R.id.workout_graph);
+        series = new BarGraphSeries<>();
+        //fillListWithDummyData();
+        fillListWithDataFromCalendar(cal);
+
+        updateDayScreen(cal);
+        if(WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING){
+            textDay.setText("Denna vecka");
+        }else{
+            textDay.setText("Idag");
+        }
     }
 
     @Override
@@ -137,14 +125,37 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         R.drawable.strength
     };
 
-    private void fillListWithDummyData(){
+    private void fillListWithDataFromCalendar(Calendar c){
+        ListView lv = (ListView) findViewById(R.id.show_workout);
+        Log.e("This is the cal", "" + c.getTime());
+        List<IDiaryActivity> activityList = diary.showDaysActivities(c);
+        List<String> workoutList = new ArrayList<>();
+
+        Integer [] idList = new Integer[6];
+
+        for(int i=0; i<activityList.size(); i++) {
+            List<Workout> list = ((WorkoutActivity) activityList.get(i)).getWorkoutList();
+            for(int j=0; j<list.size(); j++) {
+                idList[j] = list.get(j).getId();
+                workoutList.add(list.get(j).getWorkoutType() + " Intensitet: " + list.get(j).getIntensity() + "\n"
+                        + sdfShowFullTime.format(list.get(j).getStartTime()) + " "
+                        + sdfShowTime.format(list.get(j).getStartTime()) + " - "
+                        + sdfShowTime.format(list.get(j).getEndTime()));
+            }
+        }
+        CustomListAdapter adapter = new CustomListAdapter(this, workoutList, imgid);
+        lv.setAdapter(adapter);
+    }
+
+    //TODO: REMOVE THIS SHIT
+    /*private void fillListWithDummyData(){
         ListView lv = (ListView) findViewById(R.id.show_workout);
 
         List<IDiaryActivity> acts = diary.showDaysActivities(Calendar.getInstance());
         List<String> workoutList = new ArrayList<>();
 
         Integer [] idList = new Integer[6];
-        System.out.println("Size: "+acts.size());
+        System.out.println("Size: " + acts.size());
 
         for(int i=0; i<acts.size(); i++) {
             List<Workout> list = ((WorkoutActivity) acts.get(i)).getWorkoutList();
@@ -166,10 +177,10 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
                 workoutList );
         lv.setAdapter(arrayAdapter);*/
 
-            CustomListAdapter adapter = new CustomListAdapter(this, workoutList, imgid);
-            lv.setAdapter(adapter);
+//            CustomListAdapter adapter = new CustomListAdapter(this, workoutList, imgid);
+//            lv.setAdapter(adapter);
 //        }
-    }
+//    }
 
 
     public Context getActivity() {
@@ -237,11 +248,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
     //Calculates the start and end date for a given date and print out the diet activities for that interval
     private void updateWeekScreen(Calendar date) {
-
         Pair<Calendar, Calendar> pairDate = getDateIntervalOfWeek(date);
-
         workoutActivityList= (ArrayList) diary.showWeekActivities(pairDate.first, pairDate.second);
-
         updateActivityList(workoutActivityList);
     }
 
@@ -253,10 +261,10 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         cal2.add(Calendar.DATE, 1);
         return WorkoutDiary.getInstance().showWeekActivities(cal, cal2);
     }
-    private Pair<Calendar, Calendar> getDateIntervalOfWeek(Calendar date) {
+    private Pair<Calendar, Calendar> getDateIntervalOfWeek(Calendar pairCal) {
 
-        Calendar c = (Calendar) date.clone();
-        c.add(Calendar.DATE, 0);
+        Calendar c = (Calendar) pairCal.clone();
+        c.add(Calendar.DATE, 0);//???
         int dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - c.getFirstDayOfWeek();
         c.add(Calendar.DAY_OF_MONTH, -dayOfWeek);
 
@@ -268,16 +276,9 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         return new Pair<>(firstDay, lastDay);
     }
 
-    private boolean isDayView() {
-        return dayRadioButton.isPressed();
-    }
-
-    private boolean isWeekView() {
-        return weekRadioButton.isPressed();
-    }
-
     public void onNextButtonClick(View view){
-        if (isDayView() && dayOffset != 0) { // makes sure that you can't proceed past today's date
+        //Only dayview
+        if (!WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING && dayOffset != 0) { // makes sure that you can't proceed past today's date
 
             dayOffset++;
             cal.add(Calendar.DATE, 1);
@@ -291,13 +292,13 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
                 textDay.setText(updatedDate);
             }
             updateDayScreen(cal);
-
-        } else if (!isDayView() && weekOffset != 0) {
+        //Only weekview
+        } else if (WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING && weekOffset != 0) {
             weekOffset++;
             cal.add(Calendar.DATE, 7);
 
             if (weekOffset == -1) {
-                textDay.setText("Förgående vecka");
+                textDay.setText("Föregående vecka");
             } else if (weekOffset == 0) {
                 textDay.setText("Denna vecka");
             } else {
@@ -305,14 +306,18 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
             }
             updateWeekScreen(cal);
         }
-
+        fillListWithDataFromCalendar(cal);
     }
+
     public void onPreviousButtonClick(View view){
-        Log.d("ONCLICK", prevDayButton.toString());
-        if (isDayView()) {
+        Log.e("Is this weekview?", " - " + WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING);
+        if (!WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING) {
+            Log.e("Inside", "I'm fucking inside DAYVIEEEW!");
             dayOffset--;
+            Log.e("Dayoffset", "" + dayOffset);
             cal.add(Calendar.DATE, -1); //Sets the date to one day from the current date
             String chosenDate = sdfShowFullTime.format(cal.getTime()); // sets to yyyy-mm-dd format
+            Log.e("Date:", chosenDate);
 
             if (dayOffset == -1) {
                 textDay.setText("Igår");
@@ -322,13 +327,16 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
                 textDay.setText(chosenDate);
             }
             updateDayScreen(cal);
+            Log.e("Cal", "" + cal.getTime());
+            fillListWithDataFromCalendar(cal);
 
         } else {
+            Log.e("Inside", "I'm fucking inside WEEKVIEEEW!");
             weekOffset--;
             cal.add(Calendar.DATE, -7);
 
             if (weekOffset == -1) {
-                textDay.setText("Förgående vecka");
+                textDay.setText("Föregående vecka");
             } else if (weekOffset == 0) {
                 textDay.setText("Denna vecka");
             } else {
@@ -350,14 +358,14 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     }
 
     public void onWeekButtonClick(View view){
-        textDay.setText("Denna veckan");
+        WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING = true;
+        updateWeekScreen(cal);
+        resetWeek();
     }
 
     public void onDayButtonClick(View view){
-        textDay.setText("Idag: " + sdfShowDay.format(todaysDate));
-
+        WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING = false;
+        updateDayScreen(cal);
+        resetDay();
     }
-
-
-
 }
