@@ -31,8 +31,6 @@ import android.widget.Toast;
 
 public class AddWorkoutActivity extends CustomActionBarActivity {
 
-
-    int id = 0;
     //Create all image buttons..
 
     android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
@@ -52,7 +50,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
     private int intensity;
 
-    String workoutType;
+    Workout.WorkoutType workoutType;
 
 
     @Override
@@ -60,7 +58,6 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_workout);
 		initMenu(R.layout.activity_add_workout);
-        id = R.id.yoga_button;
         //runnerButton = (ImageButton) findViewById(R.id.sprint_button);
 
         Calendar currentCalendar = Calendar.getInstance();
@@ -90,28 +87,24 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
 
     }
-    //Skriv medtoder som sätter knapparna till enums här..
+
 
     public void onClickFlex(final View view){
-        this.workoutType = Workout.WORKOUTTYPE_FLEXIBILITY;
-        this.id =R.drawable.yoga_icon;
+        this.workoutType = Workout.WorkoutType.FLEX;
         registerWorkoutIntensityOnClick(view);
     }
 
     public void onClickStrength(final View view){
-        this.workoutType = Workout.WORKOUTTYPE_STRENGTH;
-        this.id = R.drawable.strength;
+        this.workoutType = Workout.WorkoutType.STRENGTH;
         registerWorkoutIntensityOnClick(view);
     }
 
     public void onClickCardio(final View view){
-        this.workoutType = Workout.WORKOUTTYPE_CARDIO;
-        this.id = R.drawable.sprint;
+        this.workoutType = Workout.WorkoutType.CARDIO;
         registerWorkoutIntensityOnClick(view);
     }
     public void onClickSports(final View view){
-        this.workoutType = Workout.WORKOUTTYPE_SPORT;
-        this.id = R.drawable.soccer;
+        this.workoutType = Workout.WorkoutType.SPORT;
         registerWorkoutIntensityOnClick(view);
     }
 
@@ -260,7 +253,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
     public void addNewWorkout(){
         updateDate();
-        Workout workout = new Workout(id, startDate, stopDate, intensity, workoutType);
+        Workout workout = new Workout(startDate, stopDate, intensity, workoutType);
         WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
         WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
         workoutDiary.addActivity(startDate, workoutActivity);

@@ -45,6 +45,10 @@ public class WorkoutDiary extends AbstractDiary {
         addActivityToTable(d, activity);
     }
 
+    public void addActivity(IDiaryActivity act) {
+        addActivityToTable(act.getDate(), act);
+    }
+
     @Override
     public IDiaryActivity getActivity(Calendar c,String id) {
         List<IDiaryActivity> tmp = super.getActivitiesFromTable(c.getTime());
@@ -52,7 +56,7 @@ public class WorkoutDiary extends AbstractDiary {
             if(ida.getID().equals(id))
                 return ida;
         }
-        throw new IllegalArgumentException();
+        return null;
     }
 
     public IDiaryActivity getActivityFromDate(Date d) {

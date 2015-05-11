@@ -17,37 +17,29 @@ public class WorkoutActivity extends AbstractDiaryActivity {
 
     private List<Workout> workoutList;
 
-    private Date startTime;
-    private Date stopTime;
+    private Date date;
     private final String id;
 
     public WorkoutActivity(String id, Workout workout) {
         this.id=id;
         workoutList = new ArrayList<Workout>();
         workoutList.add(workout);
-        startTime = workout.getStartTime();
-        stopTime = workout.getEndTime();
+        date = workout.getEndTime();
+    }
+
+    public WorkoutActivity(String id, Date date, Workout workout) {
+        this.id=id;
+        workoutList = new ArrayList<Workout>();
+        workoutList.add(workout);
+        this.date = date;
     }
 
 
-//    public void setStartTime(Date d) {
-//        startTime = d;
-//    }
-//    public void setStopTime(Date d){
-//        stopTime = d;
-//    }
-
-    public Date getStartTime (){
-        return this.startTime;
+    public Date getDate(){
+        return date;
     }
-    public void setStartTime (Date d) {
-        startTime = d;
-    }
-    public Date getStopTime(){
-        return this.stopTime;
-    }
-    public void setStopTime(Date d){
-        stopTime = d;
+    public void setDate(Date d){
+        date = new Date(d.getTime());
     }
 
     @Override
@@ -61,6 +53,11 @@ public class WorkoutActivity extends AbstractDiaryActivity {
 
     public List <Workout> getWorkoutList(){
         return workoutList;
+    }
+
+    @Override
+    public String getID() {
+        return id;
     }
 
 }
