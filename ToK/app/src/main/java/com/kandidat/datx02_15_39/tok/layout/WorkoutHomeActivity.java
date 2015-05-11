@@ -3,8 +3,10 @@ package com.kandidat.datx02_15_39.tok.layout;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.util.Pair;
 import android.util.Log;
 import android.view.Menu;
@@ -13,30 +15,47 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.internal.LinkedTreeMap;
+import com.jawbone.upplatformsdk.api.ApiManager;
+import com.jawbone.upplatformsdk.utils.UpPlatformSdkConstants;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.jawbone.JawboneSetupActivity;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
+import com.kandidat.datx02_15_39.tok.model.account.Account;
 import com.kandidat.datx02_15_39.tok.model.workout.CustomListAdapter;
 import com.kandidat.datx02_15_39.tok.model.workout.Workout;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutActivity;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutDiary;
+import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 public class WorkoutHomeActivity extends CustomActionBarActivity {
+
     private WorkoutDiary diary;
 
+    private static final String TAG = WorkoutHomeActivity.class.getSimpleName();
+
+    private String mAccessToken;
+    private String mClientSecret;
 
     private TextView textDay;
     private Date todaysDate;
@@ -49,6 +68,13 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     private Calendar cal;
 
     private boolean WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING = true;
+
+    private Integer [] imgid ={
+            R.drawable.yoga_icon,
+            R.drawable.sprint,
+            R.drawable.soccer,
+            R.drawable.strength
+    };
 
     @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("dd/MM");
@@ -71,7 +97,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         Date stopDate = tmpCal.getTime();
 
         //Dummy listitem
-        Workout workout = new Workout(0, startDate, stopDate, 15, Workout.WORKOUTTYPE_CARDIO);
+        Workout workout = new Workout(startDate, stopDate, 15, Workout.WorkoutType.CARDIO);
         WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
         WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
         workoutDiary.addActivity(startDate, workoutActivity);
@@ -89,10 +115,35 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         fillListWithDataFromCalendar(cal);
 
         updateDayScreen(cal);
+
         if(WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING){
             textDay.setText("Denna vecka");
-        }else{
+        }else {
             textDay.setText("Idag");
+        }
+
+        if(Account.getInstance().isConnectedUP()) {
+            Intent intent = getIntent();
+            if (intent != null) {
+                mClientSecret = intent.getStringExtra(UpPlatformSdkConstants.CLIENT_SECRET);
+            }
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            mAccessToken = preferences.getString(UpPlatformSdkConstants.UP_PLATFORM_ACCESS_TOKEN, null);
+
+            if (mAccessToken != null) {
+                ApiManager.getRequestInterceptor().setAccessToken(mAccessToken);
+            }
+
+
+
+            fetchWorkoutFromUP();
+
+
+        }else {
+            Toast.makeText(getActivity(), R.string.no_connection_UP, Toast.LENGTH_LONG).show();
+            Account.getInstance().setNextClassCallback(this.getClass());
+            startActivity(new Intent(this, JawboneSetupActivity.class));
         }
     }
 
@@ -118,12 +169,92 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    Integer [] imgid ={
-        R.drawable.yoga_icon,
-        R.drawable.sprint,
-        R.drawable.soccer,
-        R.drawable.strength
+
+
+    private void fetchWorkoutFromUP() {
+        Log.e(TAG, "making Get Workout Events List api call ...");
+        ApiManager.getRestApiInterface().getWorkoutEventList(
+                UpPlatformSdkConstants.API_VERSION_STRING,
+                getWorkoutEventsListRequestParams(),
+                workoutListCallbackListener);
+    }
+
+    /**
+     * Callback listener for fetching list of workout activities from UP server
+     */
+    private Callback workoutListCallbackListener = new Callback<Object>() {
+        @Override
+        public void success(Object o, Response response) {
+            Log.e(TAG,  "api call successful, json output: " + o.toString());
+            //Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_LONG).show();
+
+            List<String> list = new ArrayList<>();
+            try {
+                LinkedTreeMap obj = (LinkedTreeMap) o;
+
+                //Log.e(TAG, "data: " + obj.get("data").toString());
+                //obj.get("data")
+                ArrayList<LinkedTreeMap> array = (ArrayList<LinkedTreeMap>)((LinkedTreeMap)obj.get("data")).get("items");
+                for (int i = 0; i < array.size(); i++) {
+                    LinkedTreeMap ltm = array.get(i);
+                    LinkedTreeMap details = (LinkedTreeMap) ltm.get("details");
+                   /* Log.e(TAG, "LTM: " + ltm.toString());
+                    Log.e(TAG, "Keys: " + ltm.keySet().toString());
+                    Log.e(TAG, "Created: " + new Date(Double.valueOf((ltm.get("time_created").toString())).longValue()*1000));
+                    Log.e(TAG, "Completed: " + new Date(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000));
+                    Log.e(TAG, "Updated: " + new Date(Double.valueOf((ltm.get("time_updated").toString())).longValue()*1000));
+                    Log.e(TAG, "Details: " + details.toString());
+                    Log.e(TAG, "Asleep time: " + new Date(Double.valueOf((details.get("asleep_time").toString())).longValue()*1000));
+                    Log.e(TAG, "Duration: " + (Double.valueOf((details.get("duration").toString())).longValue()/3600.0) + " hours");
+                    Log.e(TAG, "Awake time: " + new Date(Double.valueOf((details.get("awake_time").toString())).longValue()*1000));*/
+
+
+                    String xid = ltm.get("xid").toString();
+                    Log.e(TAG, "Xid: " + xid);
+
+
+                    if(diary.getActivity(Utils.MillisToCalendar(Double.valueOf((ltm.get("time_completed").toString())).longValue() * 1000), xid) == null) {
+                        //Creating new activity with a workout using the information from UP and adding it to the diary
+                        diary.addActivity(new WorkoutActivity(xid, new Date(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000),
+                                new Workout(new Date(Double.valueOf((ltm.get("time_created").toString())).longValue()*1000),
+                                        new Date(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000),
+                                        convertUPStringToInt(details.get("intensity").toString()), convertSubToWork(convertUPStringToInt(ltm.get("sub_type").toString())),
+                                        convertUPStringToInt(details.get("calories").toString()), convertUPStringToInt(details.get("steps").toString()))));
+                    }else {
+                        Log.e(TAG, xid + " ALREADY EXISTED");
+                    }
+
+                    /*if(diary.getActivity(Utils.MillisToCalendar(Double.valueOf((ltm.get("time_completed").toString())).longValue() * 1000), xid) == null) {
+                        if(!details.get("light").toString().equals("0.0") && !details.get("sound").toString().equals("0.0")) {
+                            fetchSleepTicksFromUPWithXid(xid);
+                        }else {
+                            setManualSleepFromUP(xid,
+                                    new Date(Double.valueOf((details.get("asleep_time").toString())).longValue()*1000),
+                                    new Date(Double.valueOf((details.get("awake_time").toString())).longValue()*1000),
+                                    new Date(Double.valueOf((ltm.get("time_created").toString())).longValue()*1000),
+                                    new Date(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000));
+                        }
+                    }else {
+                        Log.e(TAG, xid + " ALREADY EXISTED");
+                    }*/
+                }
+            }catch(Exception e){
+                Log.e(TAG, "We got an error on our hands: ");
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void failure(RetrofitError retrofitError) {
+            Log.e(TAG, "api call failed, error message: " + retrofitError.getMessage());
+            Toast.makeText(getApplicationContext(), retrofitError.getMessage(), Toast.LENGTH_LONG).show();
+        }
     };
+
+    private static HashMap<String, Integer> getWorkoutEventsListRequestParams(){
+        HashMap<String, Integer> queryHashMap = new HashMap<>();
+        return queryHashMap;
+    }
 
     private void fillListWithDataFromCalendar(Calendar c){
         ListView lv = (ListView) findViewById(R.id.show_workout);
@@ -136,7 +267,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         for(int i=0; i<activityList.size(); i++) {
             List<Workout> list = ((WorkoutActivity) activityList.get(i)).getWorkoutList();
             for(int j=0; j<list.size(); j++) {
-                idList[j] = list.get(j).getId();
+                idList[j] = list.get(j).getIconId();
                 workoutList.add(list.get(j).getWorkoutType() + " Intensitet: " + list.get(j).getIntensity() + "\n"
                         + sdfShowFullTime.format(list.get(j).getStartTime()) + " "
                         + sdfShowTime.format(list.get(j).getStartTime()) + " - "
@@ -149,6 +280,14 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
     //TODO: REMOVE THIS SHIT
     /*private void fillListWithDummyData(){
+=======
+    private static HashMap<String, Integer> getWorkoutEventsListRequestParams() {
+        HashMap<String, Integer> queryHashMap = new HashMap<String, Integer>();
+        return queryHashMap;
+    }
+
+    private void fillListWithDummyData(){
+>>>>>>> 8f2b6f17ac40cf751d3eb1bd4adacd2b8e9ca9cd
         ListView lv = (ListView) findViewById(R.id.show_workout);
 
         List<IDiaryActivity> acts = diary.showDaysActivities(Calendar.getInstance());
@@ -160,7 +299,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         for(int i=0; i<acts.size(); i++) {
             List<Workout> list = ((WorkoutActivity) acts.get(i)).getWorkoutList();
             for(int j=0; j<list.size(); j++) {
-                idList[j] = list.get(j).getId();
+                idList[j] = list.get(j).getIconId();
 
 
                 workoutList.add(list.get(j).getWorkoutType() + " Intensitet: " + list.get(j).getIntensity()
@@ -367,5 +506,56 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING = false;
         updateDayScreen(cal);
         resetDay();
+    }
+
+    /**
+     * Helper method to sort out which workout type should be used
+     */
+    private Workout.WorkoutType convertSubToWork(int subtype) {
+        switch(subtype) {
+            case 1:
+            case 24:
+                return Workout.WorkoutType.WALK;
+            case 2:
+            case 4:
+            case 5:
+            case 11:
+            case 13:
+            case 14:
+            case 15:
+            case 26:
+            case 27:
+                return Workout.WorkoutType.CARDIO;
+            case 3:
+            case 8:
+            case 12:
+                return Workout.WorkoutType.STRENGTH;
+            case 9:
+            case 10:
+            case 17:
+            case 23:
+            case 25:
+            case 28:
+            case 29:
+                return Workout.WorkoutType.CUSTOM;
+            case 18:
+            case 19:
+            case 20:
+            case 21:
+            case 22:
+                return Workout.WorkoutType.SPORT;
+            default:
+                return Workout.WorkoutType.FLEX;
+        }
+    }
+
+    /**
+     * Helper method for returning a correct int when fetching it from UP
+     * @param integer
+     * @return
+     */
+    private int convertUPStringToInt(String integer) {
+        return Integer.parseInt(integer.substring(0, integer.indexOf(".")));
+
     }
 }
