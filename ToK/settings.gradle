@@ -1,2 +1,2 @@
-include ':app', ':UpPlatformSdk', ':Examples:HelloUp', ':library', ':numberProgressBar'
+include ':app', ':UpPlatformSdk', ':library'
 
