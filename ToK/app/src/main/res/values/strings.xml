@@ -106,5 +106,6 @@
     <string name="RecipeViewFragment">Recept överskod</string>
     <string name="title_activity_accessories_home">Koppla Tillbehör</string>
     <string name="no_connection_UP">Ingen uppkoppling till UP hittad.</string>
+    <string name="title_activity_database">DatabaseActivity</string>
 
 </resources>

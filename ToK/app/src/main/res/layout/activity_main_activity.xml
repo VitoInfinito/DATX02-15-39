@@ -103,6 +103,15 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="false"
             android:onClick="goalsButtonOnClick"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello"
+            android:id="@+id/button4"
+            android:layout_above="@+id/dummyButton"
+            android:layout_toEndOf="@+id/weightButton"
+            android:onClick="onButtonClick"/>
     </RelativeLayout>
 
     </RelativeLayout>

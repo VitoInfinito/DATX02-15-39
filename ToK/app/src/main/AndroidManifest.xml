@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kandidat.datx02_15_39.tok">
+    package="com.kandidat.datx02_15_39.tok" >
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -15,11 +15,11 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:targetSdkVersion="19"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".layout.MainActivity"
             android:label="@string/title_activity_hello_world"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,18 +29,18 @@
         <activity
             android:name=".layout.DietHomeActivity"
             android:label="@string/title_activity_diet_home"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".layout.SleepHomeActivity"
             android:label="@string/title_activity_sleep_home"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".layout.AddSleepActivity"
             android:label="@string/title_activity_add_sleep"
             android:parentActivityName=".layout.SleepHomeActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kandidat.datx02_15_39.tok.layout.SleepHomeActivity" />
@@ -48,13 +48,13 @@
         <activity
             android:name=".layout.AddDietActivity"
             android:label="@string/title_activity_add_diet"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".layout.WorkoutHomeActivity"
             android:label="@string/title_activity_workout_home"
             android:parentActivityName=".layout.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kandidat.datx02_15_39.tok.layout.MainActivity" />
@@ -63,13 +63,13 @@
             android:name=".layout.AddWorkoutActivity"
             android:label="@string/title_activity_add_workout"
             android:parentActivityName=".layout.WorkoutHomeActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".layout.ViewAddDietActivity"
             android:label="@string/title_activity_view_add_diet"
             android:parentActivityName=".layout.CustomActionBarActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kandidat.datx02_15_39.tok.layout.CustomActionBarActivity" />
@@ -78,7 +78,7 @@
             android:name=".layout.GoalActivity"
             android:label="@string/title_activity_goal"
             android:parentActivityName=".layout.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kandidat.datx02_15_39.tok.layout.MainActivity" />
@@ -87,7 +87,7 @@
             android:name=".layout.AccountHomeActivity"
             android:label="@string/title_activity_account_home"
             android:parentActivityName=".layout.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kandidat.datx02_15_39.tok.layout.MainActivity" />
@@ -96,7 +96,7 @@
             android:name=".layout.WeightHomeActivity"
             android:label="@string/title_activity_weight_home"
             android:parentActivityName=".layout.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kandidat.datx02_15_39.tok.layout.MainActivity" />
@@ -104,7 +104,7 @@
         <activity
             android:name=".layout.CreateUserActivity"
             android:label="@string/title_activity_create_user"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         /*Oauth activity*/
         <activity android:name=".jawbone.JawboneSetupActivity" >
@@ -133,18 +133,23 @@
             android:label="@string/title_activity_accessories_home" >
             <intent-filter>
                 <action android:name="com.kandidat.datx02_15_39.tok.layout.AccessoriesHomeActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".layout.BluetoothActivity"
             android:label="@string/title_activity_bluetooth"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".layout.AddDietActivity2"
             android:label="@string/title_activity_add_diet_activity2"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".layout.DatabaseActivity"
+            android:label="@string/title_activity_database" >
         </activity>
     </application>
 

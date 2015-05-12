@@ -83,6 +83,10 @@ public class MainActivity extends CustomActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+	public void onButtonClick(View v){
+		startActivity(new Intent(this, DatabaseActivity.class));
+	}
+
 	/**
 	 * Navigates to diet activity overview.
 	 *

@@ -59,6 +59,6 @@ public class AccessoriesHomeActivity extends CustomActionBarActivity {
     }
 
     public void connectScaleOnClick() {
-        Toast.makeText(getApplicationContext(), "Not implemented yet", Toast.LENGTH_LONG).show();
+		startActivity(new Intent(this, BluetoothActivity.class));
     }
 }
