@@ -55,7 +55,7 @@ public class DietDiary extends AbstractDiary {
 
 
 	@Override
-	public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end) {
+	public List<IDiaryActivity> showPeriodActivities(Calendar start, Calendar end) {
 		if(!start.before(end)){
 			throw new IllegalArgumentException();
 		}
@@ -71,6 +71,11 @@ public class DietDiary extends AbstractDiary {
 			start.add(Calendar.DATE, 1);
 		}
 		return returnValue;
+	}
+
+	@Override
+	public List<IDiaryActivity> showWeekActivities(Calendar startDayAtWeek) {
+		return null;
 	}
 
 	@Override

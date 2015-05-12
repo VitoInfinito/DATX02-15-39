@@ -71,11 +71,16 @@ public class WeightDiary extends AbstractDiary {
     }
 
     @Override
-    public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end) {
+    public List<IDiaryActivity> showPeriodActivities(Calendar start, Calendar end) {
         return null;
     }
 
-    @Override
+	@Override
+	public List<IDiaryActivity> showWeekActivities(Calendar startDayAtWeek) {
+		return null;
+	}
+
+	@Override
     public void editActivity(Calendar c, String id, EditActivityParams eap) {
 
     }
