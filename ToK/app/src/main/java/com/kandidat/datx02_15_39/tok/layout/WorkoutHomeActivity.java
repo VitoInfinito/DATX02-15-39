@@ -185,7 +185,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
                     new DataPoint(10, intensity),
                     new DataPoint(20, intensity),
                     new DataPoint(30, intensity),
-                    new DataPoint(40, intensity),
+                   // new DataPoint(40, intensity),
 
             });
         series.setSpacing(20);
