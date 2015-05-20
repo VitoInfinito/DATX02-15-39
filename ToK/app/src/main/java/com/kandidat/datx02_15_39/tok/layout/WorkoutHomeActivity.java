@@ -181,10 +181,10 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         if(series!= null){
             series.resetData(new DataPoint[]{
-                    new DataPoint(0,0),
-                    new DataPoint(10, intensity),
-                    new DataPoint(20, intensity),
-                    new DataPoint(30, intensity),
+                   // new DataPoint(0,0),
+                    //new DataPoint(10, intensity),
+                   // new DataPoint(20, intensity),
+                  //  new DataPoint(30, intensity),
                    // new DataPoint(40, intensity),
 
             });

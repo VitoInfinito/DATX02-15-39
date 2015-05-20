@@ -31,7 +31,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:id="@+id/linearLayout2">
-       <LinearLayout
+        <LinearLayout
+
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -40,25 +41,22 @@
             android:layout_gravity="right|center_vertical">
 
             <Button
-                android:layout_width="100dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
                 android:id="@+id/day_radioButton"
                 android:text="Visa dag"
-                android:textSize="20sp"
-                android:textColor="#e5e5e5"
-                android:background="#4c4c4c"
-                android:onClick="onDayButtonClick"/>
+
+                android:textSize="12sp"
+                android:onClick="onDayViewClick"
+                />
 
             <Button
-                android:layout_width="120dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
                 android:text="Visa vecka"
-                android:textSize="20sp"
+                android:textSize="12sp"
                 android:id="@+id/week_radiobutton"
-                android:textColor="#e5e5e5"
-                android:background="#4c4c4c"
-                android:layout_marginLeft="10dp"
-                android:onClick="onWeekButtonClick"/>
+                android:onClick="onWeekViewClick"/>
 
         </LinearLayout>
     </LinearLayout>
