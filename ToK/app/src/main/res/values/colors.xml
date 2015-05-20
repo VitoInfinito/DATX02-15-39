@@ -3,4 +3,6 @@
     <color name="primaryColor">#3F51B5</color>
     <color name="primaryColorDark">#303F9F</color>
     <color name="accentColor">#CE93D8</color>
+    <color name="sleepColor">#5F9EA0</color>
+
 </resources>

@@ -4,9 +4,11 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kandidat.datx02_15_39.tok.layout.SleepHomeActivity">
-    <!-- The main content view -->
+    tools:context="com.kandidat.datx02_15_39.tok.layout.SleepHomeActivity"
+    android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
 
+
+    <!-- The main content view -->
     <RelativeLayout
         android:id="@+id/content_frame"
     android:layout_width="fill_parent"

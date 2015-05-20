@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -23,6 +24,8 @@ public class MainActivity extends CustomActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity);
 		initMenu(R.layout.activity_main_activity);

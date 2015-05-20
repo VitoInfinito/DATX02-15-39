@@ -3,13 +3,18 @@ package com.kandidat.datx02_15_39.tok.layout;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -76,18 +81,19 @@ public class SleepHomeActivity extends CustomActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_sleep_home);
+        setContentView(R.layout.activity_sleep_home);
 	    //findViewById(R.id.content_frame).setBackgroundColor(Color.argb(100,120,120,120));
 
 		findViewById(R.id.previousDayButton).setBackgroundColor(Color.alpha(0));
 	    findViewById(R.id.nextDayButton).setBackgroundColor(Color.alpha(0));
 
-	    findViewById(R.id.detailedLayout).setBackgroundColor(Color.rgb(219,219,219));
+	    findViewById(R.id.detailedLayout).setBackgroundColor(Color.rgb(219, 219, 219));
 
 		initMenu(R.layout.activity_sleep_home);
         diary = (SleepDiary) SleepDiary.getInstance();
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#5F9EA0")));
 
-	    Intent intent = getIntent();
+        Intent intent = getIntent();
         if (intent != null) {
             mClientSecret = intent.getStringExtra(UpPlatformSdkConstants.CLIENT_SECRET);
         }

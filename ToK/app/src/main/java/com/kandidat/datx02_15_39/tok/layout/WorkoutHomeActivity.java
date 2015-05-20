@@ -3,6 +3,7 @@ package com.kandidat.datx02_15_39.tok.layout;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.util.Pair;
@@ -81,6 +82,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         graph = (GraphView) findViewById(R.id.workout_graph);
         series = new BarGraphSeries<>();
         fillListWithDummyData();
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#F5B3C0")));
 
         updateDayScreen(cal);
 
