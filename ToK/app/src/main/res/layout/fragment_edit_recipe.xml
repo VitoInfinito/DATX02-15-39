@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.kandidat.datx02_15_39.tok.layout.EditRecipeFragment"
+             android:orientation="vertical">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recipe_name_textview"
+        android:textSize="40sp"
+        android:singleLine="true"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="Antal portioner"
+            android:id="@+id/textView22"
+            android:layout_gravity="left"
+            android:textSize="30sp"/>
+
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:id="@+id/portion_button"
+            android:layout_gravity="right"
+            android:background="@drawable/combo_box_button"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:id="@+id/display_amount_value_of_recipe"
+        >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Här ska man se vad receptet innehåller för just de antal portioner man väljer"
+            android:layout_gravity="center"
+            android:textSize="25sp"
+            android:background="@drawable/bottom_lined_view"/>
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/display_ingredient_listView"
+        android:choiceMode="singleChoice"/>
+</LinearLayout>

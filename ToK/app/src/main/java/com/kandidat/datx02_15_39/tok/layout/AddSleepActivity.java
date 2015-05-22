@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +14,10 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.jawbone.upplatformsdk.api.ApiManager;
+import com.jawbone.upplatformsdk.utils.UpPlatformSdkConstants;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -28,13 +32,21 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 public class AddSleepActivity extends CustomActionBarActivity {
+
+    private static final String TAG = AddSleepActivity.class.getSimpleName();
 
 	ArrayAdapter<String> arrayAdapter;
 	List<String> sleepData;
 	private LineGraphSeries<DataPoint> series;
+
 
 	@SuppressWarnings("SimpleDateFormat")
 	private SimpleDateFormat sdfShowDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -77,9 +89,9 @@ public class AddSleepActivity extends CustomActionBarActivity {
 
 
 
-	    sleepData.add("Datum: " + sdfShowDate.format(startDate));
-	    sleepData.add("Start: " + sdfShowTime.format(startDate));
-	    sleepData.add("Slut: " + sdfShowTime.format(stopDate));
+	    sleepData.add("Start Datum: " + sdfShowDate.format(startDate));
+	    sleepData.add("Startade: " + sdfShowTime.format(startDate));
+	    sleepData.add("Slutade: " + sdfShowTime.format(stopDate));
 
 	    arrayAdapter = new ArrayAdapter<>(
 			    this,
@@ -98,11 +110,16 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	    //Y Axis bounds
 	    graphView.getViewport().setYAxisBoundsManual(true);
 	    graphView.getViewport().setMinY(0);
-	    graphView.getViewport().setMaxY(4);
-
+	    graphView.getViewport().setMaxY(2);
+/*
 	    series.setColor(Color.BLUE);
 	    series.setDrawBackground(true);
-	    series.setBackgroundColor(Color.BLUE);
+	    series.setBackgroundColor(Color.BLUE);*/
+
+        series.setColor(Color.rgb(188, 188, 153));
+        series.setDrawBackground(true);
+        series.setBackgroundColor(Color.rgb(188, 188, 153));
+        series.setThickness(0);
 
 	    graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
 		    @Override
@@ -116,6 +133,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 			    }
 		    }
 	    });
+        graphView.getGridLabelRenderer().setNumVerticalLabels(0);
 
 	    listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		    @Override
@@ -135,6 +153,9 @@ public class AddSleepActivity extends CustomActionBarActivity {
 			    }
 		    }
 	    });
+
+        //TODO make a better solution than simply making grid white (Either transparent, remove it or make background white as well)
+        graphView.getGridLabelRenderer().setGridColor(Color.argb(0,255,255,255));
     }
 
 	@Override
@@ -163,11 +184,67 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	 * Adds a new sleep entry into the diary such that it can be viewed in other activities
 	 */
 	public void addNewSleep(){
-		Sleep sleep = new Sleep(startDate, stopDate, Sleep.SleepState.DEEP);
+		/*Sleep sleep = new Sleep(startDate, stopDate, Sleep.SleepState.DEEP);
 		SleepActivity sleepActivity = new SleepActivity("id4", sleep);
 		SleepDiary sleepDiary = (SleepDiary) SleepDiary.getInstance();
-		sleepDiary.addActivity(startDate, sleepActivity);
+		sleepDiary.addActivity(startDate, sleepActivity);*/
+
+        Calendar tmpCal = Calendar.getInstance();
+
+        tmpCal.setTime(startDate);
+        tmpCal.set(Calendar.HOUR_OF_DAY, startHours);
+        tmpCal.set(Calendar.MINUTE, startMinutes);
+        int startSeconds = (int) (tmpCal.getTimeInMillis()/1000);
+
+        tmpCal.setTime(stopDate);
+        tmpCal.set(Calendar.HOUR_OF_DAY, stopHours);
+        tmpCal.set(Calendar.MINUTE, stopMinutes);
+        int stopSeconds = (int) (tmpCal.getTimeInMillis()/1000);
+
+        Log.e(TAG, "making Create Sleep Event api call ...");
+        ApiManager.getRestApiInterface().createSleepEvent(
+                UpPlatformSdkConstants.API_VERSION_STRING,
+                getCreateSleepEventRequestParams(startSeconds, stopSeconds),
+                createSleepCallbackListener);
+
+
 	}
+
+    private static HashMap<String, Object> getCreateSleepEventRequestParams(int time_created, int time_completed) {
+        HashMap<String, Object> queryHashMap = new HashMap<String, Object>();
+
+//        //uncomment to add as needed parameters
+//        queryHashMap.put("time_created", 1);
+//        queryHashMap.put("time_completed", 1);
+//        queryHashMap.put("tz", null);
+//        queryHashMap.put("share", false);
+
+        queryHashMap.put("time_created", time_created);
+        queryHashMap.put("time_completed", time_completed);
+        return queryHashMap;
+    }
+
+    private Callback createSleepCallbackListener = new Callback<Object>() {
+        @Override
+        public void success(Object o, Response response) {
+            Log.e(TAG,  "api call successful, json output: " + o.toString());
+            Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_LONG).show();
+            returnToSleepHome();
+        }
+
+        @Override
+        public void failure(RetrofitError retrofitError) {
+            Log.e(TAG,  "api call failed, error message: " + retrofitError.getMessage());
+            Toast.makeText(getApplicationContext(), retrofitError.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    };
+
+    /**
+     * Method to call when returning to sleep home
+     */
+    private void returnToSleepHome() {
+        startActivity(new Intent(this, SleepHomeActivity.class));
+    }
 
 	/**
 	 * Creates an alertdialog and gives the user the option to change the date of which the
@@ -195,7 +272,8 @@ public class AddSleepActivity extends CustomActionBarActivity {
 				startDate = cal.getTime();
 
 				ListView listview = (ListView) findViewById(R.id.sleepProperties);
-				sleepData.set(0, R.string.date + sdfShowDate.format(startDate));
+				//sleepData.set(0, R.string.date + sdfShowDate.format(startDate));
+                sleepData.set(0, "Start Datum: " + sdfShowDate.format(startDate));
 				listview.setAdapter(arrayAdapter);
 			}
 		});
@@ -235,7 +313,8 @@ public class AddSleepActivity extends CustomActionBarActivity {
 				startDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), startHours, startMinutes).getTime();
 
 				ListView listview = (ListView) findViewById(R.id.sleepProperties);
-				sleepData.set(1, R.string.sleep_started + sdfShowTime.format(startDate));
+				//sleepData.set(1, R.string.sleep_started + sdfShowTime.format(startDate));
+                sleepData.set(1, "Startade: " + sdfShowTime.format(startDate));
 				listview.setAdapter(arrayAdapter);
 
 				series.resetData(fetchDataPoints());
@@ -284,7 +363,8 @@ public class AddSleepActivity extends CustomActionBarActivity {
 				stopDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), stopHours, stopMinutes).getTime();
 
 				ListView listview = (ListView) findViewById(R.id.sleepProperties);
-				sleepData.set(2, R.string.sleep_ended + sdfShowTime.format(stopDate));
+				//sleepData.set(2, R.string.sleep_ended + sdfShowTime.format(stopDate));
+                sleepData.set(2, "Slutade: " + sdfShowTime.format(stopDate));
 				listview.setAdapter(arrayAdapter);
 
 				series.resetData(fetchDataPoints());
@@ -314,7 +394,6 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	 */
     public void addButtonOnClick(View view){
 		addNewSleep();
-        startActivity(new Intent(this, SleepHomeActivity.class));
     }
 
 	/**
@@ -333,7 +412,14 @@ public class AddSleepActivity extends CustomActionBarActivity {
 
 		Date startTime = tmpCal.getTime();
 
-		tmpCal.setTime(stopDate);
+        if(startHours <= stopHours && startMinutes <= stopMinutes) {
+            stopDate = new Date(startDate.getTime());
+        }else {
+            tmpCal.set(Calendar.DAY_OF_MONTH, tmpCal.get(Calendar.DAY_OF_MONTH) + 1);
+            stopDate = tmpCal.getTime();
+        }
+
+		//tmpCal.setTime(stopDate);
 		tmpCal.set(Calendar.HOUR_OF_DAY, stopHours);
 		tmpCal.set(Calendar.MINUTE, stopMinutes);
 

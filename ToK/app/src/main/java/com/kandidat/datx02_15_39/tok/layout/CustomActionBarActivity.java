@@ -183,7 +183,7 @@ public class CustomActionBarActivity extends ActionBarActivity{
                     startActivity(new Intent(this, AccountHomeActivity.class));
 					break;
 				case 1:
-					//TODO
+                    startActivity(new Intent(this, AccessoriesHomeActivity.class));
 					break;
 				case 2:
 					//TODO
@@ -306,7 +306,7 @@ public class CustomActionBarActivity extends ActionBarActivity{
 	public void onAlertAddButtonClick(View view){
 		switch(view.getId()) {
 			case R.id.alert_diet_button:
-				startActivity(new Intent(this, AddDietActivity.class));
+				startActivity(new Intent(this, AddDietActivity2.class));
 				break;
 			case R.id.alert_sleep_button:
 				startActivity(new Intent(this, AddSleepActivity.class));

@@ -233,7 +233,7 @@ public class WeightHomeActivity extends CustomActionBarActivity {
 			DataPoint[] dp = new DataPoint[wal.size()];
 
 			for(int j=0; j<wal.size(); j++) {
-				Date pointDate = wal.get(j).getDate();
+				Calendar pointDate = wal.get(j).getDate();
 
 				/*double pseudoDate = Double.parseDouble(sdfShowDay.format(pointDate)) / 100;
 				pseudoDate += Double.parseDouble(sdfShowMonth.format(pointDate));*/
@@ -286,7 +286,7 @@ public class WeightHomeActivity extends CustomActionBarActivity {
             Date todaysDate = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime();
 
             for(int i=-10; i<0; i++) {
-                diary.addActivity(new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + i, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime(),
+                diary.addActivity(new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + i, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)),
                         new WeightActivity("id" + i, new Weight(100+i),
                                 new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + i, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)).getTime()));
             }
@@ -385,6 +385,8 @@ public class WeightHomeActivity extends CustomActionBarActivity {
 		Weight newWeight = new Weight(selectedWeightValue);
 		weightActivity = new WeightActivity("id15", newWeight, selectedDate);
 		WeightDiary weightDiary = (WeightDiary) WeightDiary.getInstance();
-		weightDiary.addActivity(selectedDate, weightActivity);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(selectedDate);
+		weightDiary.addActivity(cal, weightActivity);
 	}
 }

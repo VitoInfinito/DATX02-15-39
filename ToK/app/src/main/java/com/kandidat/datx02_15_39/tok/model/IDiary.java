@@ -16,10 +16,10 @@ public interface IDiary {
 	/**
      * A Method to add new activities to your diary
      *
-     * @param d        - The date you want to add a activity to
+     * @param date        - The date you want to add a activity to
      * @param activity -
      */
-    public void addActivity(Date d, IDiaryActivity activity);
+    public void addActivity(Calendar date, IDiaryActivity activity);
 
 	/**
 	 * A method to get the specific Activity type of the id
@@ -48,7 +48,8 @@ public interface IDiary {
     public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end);			// Return a Diagram maybe ?
 
 	/**
-	 * Method used when a already created Activity needs to be changed
+	 * Method used when a already created Activity needs to be changed.
+	 * If the Activity does not exist this wont change anything.
 	 *
 	 * @param eap - Contains the Attributes you want to edit
 	 */

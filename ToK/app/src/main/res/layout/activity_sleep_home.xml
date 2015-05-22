@@ -13,12 +13,11 @@
         android:id="@+id/content_frame"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/gradient_background_sleep"
-        >
+    android:background="@drawable/gradient_background_sleep">
 
         <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:id="@+id/scrollView">
 
             <FrameLayout
@@ -31,7 +30,8 @@
                     android:orientation="vertical"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:layout_gravity="left|top">
+                    android:layout_gravity="left|top"
+                    android:gravity="center_vertical|fill_vertical">
 
                     <RelativeLayout
                         android:layout_width="fill_parent"
@@ -70,8 +70,8 @@
                             android:id="@+id/previousDayButton"
                             android:layout_weight="1"
                             android:layout_toLeftOf="@+id/textDay"
-                            android:onClick="gotoEarlierSleepDate"
-                            android:src="@drawable/arrowleft"/>
+                            android:src="@drawable/arrowleft"
+                            android:nestedScrollingEnabled="false" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -89,7 +89,8 @@
                             android:id="@+id/nextDayButton"
                             android:layout_weight="1"
                             android:onClick="gotoLaterSleepDate"
-                            android:src="@drawable/arrowright"/>
+                            android:src="@drawable/arrowright"
+                            android:visibility="invisible" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -126,8 +127,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="2 timmar"
-                                    android:id="@+id/textView13"
+                                    android:id="@+id/displayLightSleep"
                                     android:layout_below="@+id/textView6"
                                     android:layout_centerHorizontal="true"/>
 
@@ -150,8 +150,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="13 timmar"
-                                    android:id="@+id/textView14"
+                                    android:id="@+id/displayTimeInBedSleep"
                                     android:layout_centerHorizontal="true"
                                     android:layout_below="@+id/textView8"/>
 
@@ -183,8 +182,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="1 timme"
-                                    android:id="@+id/textView15"
+                                    android:id="@+id/displayDeepSleep"
                                     android:layout_centerHorizontal="true"
                                     android:layout_below="@+id/textView10"/>
 
@@ -207,8 +205,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="1000 gånger"
-                                    android:id="@+id/textView16"
+                                    android:id="@+id/displayNbrOfWakeupsSleep"
                                     android:layout_below="@+id/textView12"
                                     android:layout_centerHorizontal="true"/>
 
@@ -240,8 +237,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="1 timme"
-                                    android:id="@+id/textView18"
+                                    android:id="@+id/displayAwakeSleep"
                                     android:layout_centerHorizontal="true"
                                     android:layout_below="@+id/textView17"/>
                             </RelativeLayout>
@@ -263,8 +259,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="4 timmar"
-                                    android:id="@+id/textView20"
+                                    android:id="@+id/displayTotalSleep"
                                     android:layout_below="@+id/textView19"
                                     android:layout_centerHorizontal="true"/>
                             </RelativeLayout>
@@ -274,6 +269,7 @@
                 </LinearLayout>
             </FrameLayout>
         </ScrollView>
+
     </RelativeLayout>
 
     <!-- The navigation drawer -->

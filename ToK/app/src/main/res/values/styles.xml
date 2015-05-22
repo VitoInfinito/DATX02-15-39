@@ -9,7 +9,23 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <!--<item name="colorPrimaryDark">@color/primaryColorDark</item>-->
         <item name="colorAccent">@color/accentColor</item>
+    </style>
 
+    <style name="DeviceBackground">
+        <item name="android:background">@drawable/gradient_background</item>
+    </style>
+
+    <style name="MyThemes"  parent="@android:style/Theme.Dialog">
+    <item name="android:bottomBright">@android:color/transparent</item>
+    <item name="android:bottomDark">@android:color/transparent</item>
+    <item name="android:bottomMedium">@android:color/transparent</item>
+    <item name="android:centerBright">@android:color/transparent</item>
+    <item name="android:centerDark">@android:color/transparent</item>
+    <item name="android:centerMedium">@android:color/transparent</item>
+    <item name="android:fullBright">@android:color/transparent</item>
+    <item name="android:fullDark">@android:color/transparent</item>
+    <item name="android:topBright">@android:color/transparent</item>
+    <item name="android:topDark">@android:color/transparent</item>'
     </style>
     <style name="generalnotitle" parent="android:Theme.NoTitleBar">
         <item name="android:windowNoTitle">true</item>

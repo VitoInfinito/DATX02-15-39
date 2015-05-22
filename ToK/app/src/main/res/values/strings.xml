@@ -93,5 +93,18 @@
     <string name="title_activity_jawbone_setup">JawboneSetup</string>
     <string name="title_activity_up_api_list">UpApiListActivity</string>
     <string name="press_button_to_connect">Press button to connect</string>
+    <string name="ble_not_supported">Din mobil har inte Bluetooth low energy</string>
+    <string name="title_activity_bluetooth">BluetoothActivity</string>
+    <string name="title_activity_add_diet_activity2">AddDietActivity2</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ViewAddDietFragment">Redigera din måltid</string>
+    <string name="AddDietToFragment">Lägg Till Mat</string>
+    <string name="AddDietFragment">Lägg varor till måltid</string>
+    <string name="EditRecipeFragment">Redigera Receptet</string>
+    <string name="RecipeViewFragment">Recept överskod</string>
+    <string name="title_activity_accessories_home">Koppla Tillbehör</string>
+    <string name="no_connection_UP">Ingen uppkoppling till UP hittad.</string>
 
 </resources>
