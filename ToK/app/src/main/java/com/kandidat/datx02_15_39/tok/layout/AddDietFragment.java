@@ -17,10 +17,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.model.database.DataBaseHelper;
 import com.kandidat.datx02_15_39.tok.model.diet.AddToDietActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
@@ -41,6 +43,7 @@ public class AddDietFragment extends DietFragment{
 
 	private int activatedObject = R.id.food_button_view_diet;
 	private ListView searchResultList;
+	private SearchView textInput;
 	private ArrayList<Food> searchResultFood;
 	private SearchResultAdapter sra;
 	private RecipeResultAdapter rra;
@@ -48,6 +51,8 @@ public class AddDietFragment extends DietFragment{
 	private ScaleBluetoothAdapter sba;
 	private Thread weightUpdateThread;
 	private TextView displaywieght;
+	private boolean saveStateForScale = false;
+	private DataBaseHelper mDbHelper;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,6 +70,7 @@ public class AddDietFragment extends DietFragment{
 		super.onAttach(activity);
 		listener = (FragmentActivity) activity;
 		getActivity().setTitle(getResources().getString(R.string.AddDietFragment));
+		mDbHelper = new DataBaseHelper(activity.getApplicationContext(), Utils.DATABASE_VERSION);
 	}
 
 	private void init() {
@@ -79,7 +85,19 @@ public class AddDietFragment extends DietFragment{
 		(getView().findViewById(R.id.scale_button_view_diet)).setOnClickListener(listener);
 		(getView().findViewById(R.id.recipe_button_view_diet)).setOnClickListener(listener);
 		(getView().findViewById(R.id.barcode_button_view_diet)).setOnClickListener(listener);
-		searchForItems("");
+		((SearchView)getView().findViewById(R.id.search_field)).setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				searchForItems(query);
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+
+				return false;
+			}
+		});
 		getView().findViewById(activatedObject).setActivated(true);
 		Bundle bundle = getArguments();
 		if(bundle != null){
@@ -94,12 +112,37 @@ public class AddDietFragment extends DietFragment{
 		}
 	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+		if(sba != null) {
+			if (weightUpdateThread != null) {
+				weightUpdateThread.interrupt();
+				while (weightUpdateThread.isInterrupted()) {}
+				weightUpdateThread = null;
+			}
+			sba.destroy();
+			sba = null;
+			saveStateForScale = true;
+		}
+	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (saveStateForScale){
+			sba = new ScaleBluetoothAdapter(getView().getContext(), (CustomActionBarActivity) getActivity());
+			sba.bluetoothSearch();
+		}
+	}
 
 	private void searchForItems(String searchWord){
-		searchResultFood = new ArrayList<>(Database.getInstance().searchForFood(searchWord));
+		searchResultFood = (ArrayList<Food>) mDbHelper.searchFoodItems(searchWord);
 		updateList();
 		((TextView)getView().findViewById(R.id.info_about_search_list)).setText("Search result for " + searchWord);
+//		searchResultFood = new ArrayList<>(Database.getInstance().searchForFood(searchWord));
+//		updateList();
+//		((TextView)getView().findViewById(R.id.info_about_search_list)).setText("Search result for " + searchWord);
 	}
 
 	/**
@@ -130,6 +173,7 @@ public class AddDietFragment extends DietFragment{
 				if(ib.getId() == R.id.food_button_view_diet){
 					updateList();
 				}else if(ib.getId() == R.id.scale_button_view_diet) {
+					updateList();
 					confirmScaleConnection();
 //					startActivity(new Intent(getView().getContext(), BluetoothActivity.class));
 				}else if (ib.getId() == R.id.recipe_button_view_diet){
@@ -174,6 +218,12 @@ public class AddDietFragment extends DietFragment{
 				public void onClick(View v) {
 					if (activatedObject == R.id.recipe_button_view_diet) {
 						//TODO Start creating a new Recipe
+						EditRecipeFragment editRecipeFragment = new EditRecipeFragment();
+						listener.onAttachFragment(editRecipeFragment);
+						listener.getSupportFragmentManager().beginTransaction()
+								.replace(R.id.content_frame, editRecipeFragment)
+								.commit();
+
 					} else if (activatedObject == R.id.food_button_view_diet) {
 						//TODO Start creating a new Food Item
 					}
@@ -294,33 +344,44 @@ public class AddDietFragment extends DietFragment{
 	@Override
 	public void onStop() {
 		super.onStop();
-		if(sba != null){
-			weightUpdateThread.interrupt();
-			while(weightUpdateThread.isInterrupted()){}
-			weightUpdateThread = null;
+		if(sba != null) {
+			if (weightUpdateThread != null) {
+				weightUpdateThread.interrupt();
+				while (weightUpdateThread.isInterrupted()) {}
+				weightUpdateThread = null;
+			}
 			sba.destroy();
 		}
 	}
 
 	private void confirmScaleConnection() {
-		sba = new ScaleBluetoothAdapter(getActivity().getApplicationContext(), (CustomActionBarActivity) getActivity());
-		AlertDialog.Builder builder = new AlertDialog.Builder(getView().getContext());
-		builder.setTitle("Koppla vågen");
-		builder.setPositiveButton("Koppla", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				sba.update();
-			}
-		});
-		builder.setNegativeButton("Sök efter våg", new WeightScaleListener());
-		AlertDialog dialog = builder.create();
-		dialog.setCancelable(true);
-		dialog.show();
+		if(sba == null || !sba.isConnected()) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(getView().getContext());
+			builder.setTitle("Koppla vågen");
+			builder.setPositiveButton("Koppla", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					sba = new ScaleBluetoothAdapter(getActivity().getApplicationContext(), (CustomActionBarActivity) getActivity());
+					sba.update();
+				}
+			});
+			builder.setNegativeButton("Sök efter våg", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					((CustomActionBarActivity) listener).startNewActivity(BluetoothActivity.class);
+				}
+			});
+			AlertDialog dialog = builder.create();
+			dialog.setCancelable(true);
+			dialog.show();
+		}
 	}
 
 
+
+
 	private void showWeight(Food item) {
-		if(sba != null ) {
+		if(sba != null && sba.isConnected() ) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getView().getContext());
 			View list = getActivity().getLayoutInflater().inflate(R.layout.display_weight_from_scale, null);
 			sba.startCommunicate();
@@ -329,20 +390,30 @@ public class AddDietFragment extends DietFragment{
 			weightUpdateThread.start();
 			builder.setTitle("Lägg till vikt");
 			builder.setPositiveButton("Spara", new SaveWeightListener(item));
-			builder.setNegativeButton("Tare", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					if (sba != null){
-						sba.tareScale();
-					}
-				}
-			});
+			builder.setNegativeButton("Tare", null);
 			builder.setView(list);
 			AlertDialog dialog = builder.create();
 			dialog.setCancelable(true);
 			dialog.show();
+			dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(new DialogListener(dialog));
 		}else{
 			confirmScaleConnection();
+		}
+	}
+
+	private class DialogListener implements View.OnClickListener {
+
+		DialogInterface dialogInterface;
+
+		public DialogListener(DialogInterface dialog) {
+			dialogInterface = dialog;
+		}
+
+		@Override
+		public void onClick(View v) {
+			if (sba != null){
+				sba.tareScale();
+			}
 		}
 	}
 
@@ -359,24 +430,16 @@ public class AddDietFragment extends DietFragment{
 		@Override
 		public void run() {
 			handler.postDelayed(this, 1000);
-			startScan(weightDisplay);
+			scanBluetoothResponse(weightDisplay);
 		}
 	}
 
-	private void startScan(TextView txv) {
+	private void scanBluetoothResponse(TextView txv) {
 		String tmp = "--";
-		if(sba != null) {
-			tmp = sba.getWeight() + "";
+		if(sba != null && !(sba.getWeight() + "").equals("-1")) {
+			tmp = sba.getWeight() + " g";
 		}
 		(txv).setText(tmp);
-	}
-
-	private class WeightScaleListener implements DialogInterface.OnClickListener {
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-
-		}
 	}
 
 	void messageToast(String s){
@@ -393,11 +456,23 @@ public class AddDietFragment extends DietFragment{
 
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			weightUpdateThread.interrupt();
-			dialog.cancel();
-			sba.endCommunicate();
-			food.setAmount(sba.getWeight());
-			newActivity.add(new AddToDietActivity(food));
+			if(sba != null) {
+				if(weightUpdateThread != null)
+					weightUpdateThread.interrupt();
+				dialog.cancel();
+				if(sba.isConnected() && sba.getWeight() > 0) {
+					sba.endCommunicate();
+					food.setAmount(sba.getWeight());
+					newActivity.add(new AddToDietActivity(food));
+					sendMessage(food.getAmount() + "gram av " + food.getName() + " tillagd");
+				}else{
+					sendMessage("Ingen vikt upptäckt");
+				}
+			}
 		}
+	}
+
+	public void sendMessage(String s){
+		Toast.makeText(getView().getContext(), s, Toast.LENGTH_SHORT).show();;
 	}
 }

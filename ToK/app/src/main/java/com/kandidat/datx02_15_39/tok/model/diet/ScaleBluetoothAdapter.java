@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.layout.CustomActionBarActivity;
@@ -45,8 +46,11 @@ public class ScaleBluetoothAdapter {
 	private static final int START_PUSH_VALUE = 11;
 	private static final int END_PUSH_VALUE = 12;
 	private static final int CALIBRATE_SCALE = 13;
+	private boolean hasBluetooth = true;
+	private static boolean isConnected = false;
+	private static boolean isConnecting = false;
 
-	public static final int REQUEST_ENABLE_BT = 1;
+	private static final int REQUEST_ENABLE_BT = 1;
 	private static BluetoothAdapter mBluetoothAdapter;
 	private static BluetoothDisplayAdapter mDevicesAdapter;
 	private static ArrayList<BluetoothDevice> mDevices = new ArrayList<>();
@@ -57,9 +61,12 @@ public class ScaleBluetoothAdapter {
 	private static final int TARE_SCALE_REQUEST = 104;
 	private static final int START_SCALE_REQUEST = 105;
 	private static final int END_SCALE_REQUEST = 106;
+	private static final int CONNECTION_LOST = 444;
 	private static int weight = -1;
-	private Context mContext;
-	private CustomActionBarActivity mActivity;
+	private static Context mContext;
+	private static CustomActionBarActivity mActivity;
+
+
 
 	public ScaleBluetoothAdapter(Context context, CustomActionBarActivity activity){
 		this.mContext = context;
@@ -83,13 +90,12 @@ public class ScaleBluetoothAdapter {
 					Log.d(TAG, "Connected to " + (msg.obj));
 					connectedThread = new ConnectedThread((BluetoothSocket) msg.obj);
 					connectedThread.start();
+					isConnected = true;
+					sendToast("Uppkopplad mot vågen");
 					break;
 				case MESSAGE_READ:
 					if(connectedThread != null && connectedThread.isAlive()) {
 						Log.d(TAG, new String((byte[]) msg.obj, 0, msg.arg1));
-						//button.setText(new String((byte[])msg.obj));
-						//sendToast("Svar: " + new String((byte[])msg.obj, "UTF-8")));
-//						updateView.setText(convertMessage(new String((byte[]) msg.obj, msg.arg2, msg.arg1)) + "");
 						weight = convertMessage(new String((byte[]) msg.obj, msg.arg2, msg.arg1));
 					}
 					break;
@@ -98,13 +104,20 @@ public class ScaleBluetoothAdapter {
 				case CONNECTION_CHANGED:
 					break;
 				case TARE_SCALE_REQUEST:
+					weight = -1;
 					sendOverBluetooth(TARE_SCALE);
 					break;
 				case START_SCALE_REQUEST:
 					sendOverBluetooth(START_PUSH_VALUE);
 					break;
 				case END_SCALE_REQUEST:
+					weight = -1;
 					sendOverBluetooth(END_PUSH_VALUE);
+					break;
+				case CONNECTION_LOST:
+					sendToast("Tappade kopplingen till vågen");
+					weight = -1;
+					Log.d(TAG, "Den tappades");
 					break;
 			}
 		}
@@ -120,6 +133,10 @@ public class ScaleBluetoothAdapter {
 		return weight;
 	}
 
+	public boolean hasDeviceBluetooth(){
+		return hasBluetooth;
+	}
+
 	public void startCommunicate(){
 		mHandler.sendMessage(Message.obtain(null, START_SCALE_REQUEST));
 	}
@@ -133,43 +150,54 @@ public class ScaleBluetoothAdapter {
 	}
 
 	private static int convertMessage(String s) {
+		char tmp = s.charAt(1);
 		s = s.replaceAll("[^0-9]", "");
-		return Integer.parseInt(s);
+		int result = Integer.parseInt(s);
+		return tmp == '-'?-result:result;
 	}
 
 	private void init(){
-		startBluetooth();
+		if(!startBluetooth()){
+			this.hasBluetooth = false;
+			this.destroy();
+		}else {
+			this.hasBluetooth = true;
+			// Register the BroadcastReceiver
+			IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+			mContext.registerReceiver(mReceiver, filter); // Don't forget to unregister during onDestroy
+			filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+			mContext.registerReceiver(mReceiver, filter); // Don't forget to unregister during onDestroy
+			filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+			mContext.registerReceiver(mReceiver, filter); // Don't forget to unregister during onDestroy
+			filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+			mContext.registerReceiver(mReceiver, filter); // Don't forget to unregister during onDestroy
 
-		// Register the BroadcastReceiver
-		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-		mContext.registerReceiver(mReceiver, filter); // Don't forget to unregister during onDestroy
-		filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-		mContext.registerReceiver(mReceiver, filter); // Don't forget to unregister during onDestroy
-		filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-		mContext.registerReceiver(mReceiver, filter); // Don't forget to unregister during onDestroy
-		filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-		mContext.registerReceiver(mReceiver, filter); // Don't forget to unregister during onDestroy
-
-		bluetoothSearch();
-	}
-
-	public void destroy() {
-		if(mReceiver != null){
-			mContext.unregisterReceiver(mReceiver);
-			mBluetoothAdapter.disable();
-			stopScan();
+			bluetoothSearch();
 		}
 	}
 
-	private void startBluetooth(){
-		this.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+	public void destroy() {
+		if(hasBluetooth){
+
+			mContext.unregisterReceiver(mReceiver);
+			if(mBluetoothAdapter != null) {
+				mBluetoothAdapter = null;
+				stopScan();
+			}
+		}
+	}
+
+	private boolean startBluetooth(){
+		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		if(mBluetoothAdapter == null){
 			//What happens if it dosent have bluetooth
+			return false;
 		}
 		if(!mBluetoothAdapter.isEnabled()){
 			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			mActivity.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 		}
+		return true;
 	}
 
 	private void getAlreadyConnectedDevices(){
@@ -189,10 +217,12 @@ public class ScaleBluetoothAdapter {
 	}
 
 	public void bluetoothSearch(){
-		//Get already connected devices
-		getAlreadyConnectedDevices();
-		//Scans for new Devices
-		new Thread(startBluetoothSearch).start();
+		if(hasBluetooth) {
+			//Get already connected devices
+			getAlreadyConnectedDevices();
+			//Scans for new Devices
+			new Thread(startBluetoothSearch).start();
+		}
 	}
 
 	// Create a BroadcastReceiver for ACTION_FOUND
@@ -226,22 +256,26 @@ public class ScaleBluetoothAdapter {
 	};
 
 	public void update(){
-		bluetoothSearch();
+		if (hasBluetooth) {
+			bluetoothSearch();
+		}
 	}
 
 	public void updateBluetoothList(ListView bluetoothlist){
-		bluetoothlist.removeAllViewsInLayout();
-		mDevicesAdapter = new BluetoothDisplayAdapter(mContext);
-		for (BluetoothDevice d: mDevices){
-			mDevicesAdapter.add(d);
+		if (hasBluetooth) {
+			bluetoothlist.removeAllViewsInLayout();
+			mDevicesAdapter = new BluetoothDisplayAdapter(mContext);
+			for (BluetoothDevice d : mDevices) {
+				mDevicesAdapter.add(d);
+			}
+			if (bluetoothlist != null) {
+				bluetoothlist.setAdapter(mDevicesAdapter);
+			}
+			bluetoothlist.setOnItemClickListener(new SearchItemClickListener());
 		}
-		if(bluetoothlist != null){
-			bluetoothlist.setAdapter(mDevicesAdapter);
-		}
-		bluetoothlist.setOnItemClickListener(new SearchItemClickListener());
 	}
 
-	public class BluetoothDisplayAdapter extends ArrayAdapter<BluetoothDevice> {
+	private class BluetoothDisplayAdapter extends ArrayAdapter<BluetoothDevice> {
 		public BluetoothDisplayAdapter  (Context context)
 		{
 			super(context,0);
@@ -262,6 +296,10 @@ public class ScaleBluetoothAdapter {
 
 			return convertView;
 		}
+	}
+
+	public boolean isConnected(){
+		return isConnected;
 	}
 
 	private static class ConnectThread extends Thread {
@@ -285,7 +323,7 @@ public class ScaleBluetoothAdapter {
 		public void run() {
 			// Cancel discovery because it will slow down the connection
 			mBluetoothAdapter.cancelDiscovery();
-
+			isConnecting = true;
 			try {
 				// Connect the device through the socket. This will block
 				// until it succeeds or throws an exception
@@ -295,9 +333,10 @@ public class ScaleBluetoothAdapter {
 				try {
 					mmSocket.close();
 				} catch (IOException closeException) { }
+				isConnecting = false;
 				return;
 			}
-
+			isConnecting = false;
 			// Do work to manage the connection (in a separate thread)
 			manageConnectedSocket(mmSocket);
 		}
@@ -344,6 +383,12 @@ public class ScaleBluetoothAdapter {
 			//new Thread(startCom).start();
 			// Keep listening to the InputStream until an exception occurs
 			while (true) {
+				if(!mmSocket.isConnected()){
+					isConnected = false;
+					this.interrupt();
+					mHandler.sendMessage(Message.obtain(null, CONNECTION_LOST, mmSocket));
+					return;
+				}
 				try {
 					if(mmInStream.available() > 0) {
 						//buffer  = new byte[1024];
@@ -421,7 +466,7 @@ public class ScaleBluetoothAdapter {
 		}
 	}
 
-	public BluetoothDevice getDevice(){
+	private BluetoothDevice getDevice(){
 		for(BluetoothDevice bd: mDevices){
 			if(bd.getName().equals(DEVICE_NAME)){
 				return bd;
@@ -431,9 +476,11 @@ public class ScaleBluetoothAdapter {
 	}
 
 
-	public void connectBluetooth(BluetoothDevice device){
-		ConnectThread connect = new ConnectThread(device);
-		connect.start();
+	private void connectBluetooth(BluetoothDevice device){
+		if(!isConnecting) {
+			ConnectThread connect = new ConnectThread(device);
+			connect.start();
+		}
 	}
 
 	private class SearchItemClickListener implements android.widget.AdapterView.OnItemClickListener {
@@ -441,9 +488,11 @@ public class ScaleBluetoothAdapter {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			connectBluetooth(mDevices.get(position));
-
 		}
 	}
 
+	private static void sendToast(String s){
+		Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
+	}
 
 }

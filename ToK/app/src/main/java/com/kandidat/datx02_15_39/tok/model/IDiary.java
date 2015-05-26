@@ -38,20 +38,20 @@ public interface IDiary {
 	 * Method to show the data of a days activities
 	 * @param day
 	 */
-    public List<IDiaryActivity> showDaysActivities(Calendar day); 							// Return a Diagram maybe ?
+    public List<IDiaryActivity> showDaysActivities(Calendar day);
 
 	/**
 	 * method to give you a list of a period containing activities
 	 * @param start
 	 * @param end
 	 */
-    public List<IDiaryActivity> showPeriodActivities(Calendar start, Calendar end);			// Return a Diagram maybe ?
+    public List<IDiaryActivity> showPeriodActivities(Calendar start, Calendar end);
 
 	/**
 	 * Gives a Weeks Activities in list from start day to end
 	 * @param startDayAtWeek
 	 */
-	public List<IDiaryActivity> showWeekActivities(Calendar startDayAtWeek);			// Return a Diagram maybe ?
+	public List<IDiaryActivity> showWeekActivities(Calendar startDayAtWeek);
 
 
 	/**

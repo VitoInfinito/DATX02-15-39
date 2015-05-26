@@ -35,7 +35,6 @@ import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Created by Lagerstedt on 2015-04-23.
@@ -84,7 +83,7 @@ public class ViewAddDietFragment extends DietFragment{
 
 		}
 		//TODO if getActivity instanceof not diary update time and name
-		if(!(getActivity() instanceof AddDietActivity2) && getView() != null){
+		if(!(getActivity() instanceof AddDietActivity) && getView() != null){
 			getView().setBackgroundResource(R.drawable.border_white_background);
 			getActivity().setTitle(getResources().getString(R.string.ViewAddDietFragment));
 		}

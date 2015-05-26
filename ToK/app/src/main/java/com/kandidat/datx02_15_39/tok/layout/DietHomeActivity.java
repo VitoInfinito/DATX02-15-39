@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
-import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
@@ -313,7 +312,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
         Pair<Calendar, Calendar> pairDate = getDateIntervalOfWeek(date);
 
-        activityList = (ArrayList) myDiary.showWeekActivities(pairDate.first, pairDate.second);
+        activityList = (ArrayList) myDiary.showPeriodActivities(pairDate.first, pairDate.second);
 
         updateActivityList(activityList);
     }

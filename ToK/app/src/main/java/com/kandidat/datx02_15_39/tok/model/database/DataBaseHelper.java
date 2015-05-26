@@ -1,36 +1,106 @@
 package com.kandidat.datx02_15_39.tok.model.database;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
+import android.content.ContentValues;
 import android.content.Context;
-import android.database.SQLException;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.kandidat.datx02_15_39.tok.model.diet.Food;
+import com.kandidat.datx02_15_39.tok.utility.Utils;
+
+import junit.runner.Version;
+
 public class DataBaseHelper extends SQLiteOpenHelper
 {
 	private static String TAG = "DataBaseHelper"; // Tag just for the LogCat window
-	//destination path (location) of our database on device
-	private static String DB_PATH = "";
 	private static String DB_NAME = "food_database.sql";// Database name
 	private SQLiteDatabase mDataBase;
 	private final Context mContext;
 
-	public DataBaseHelper(Context context) {
-		super(context, DB_NAME, null, 1);// 1? its Database Version
-		DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
+	public DataBaseHelper(Context context, int version) {
+		super(context, DB_NAME, null, version);// 1? its Database Version
 		this.mContext = context;
-		mContext.deleteDatabase(DB_NAME);
-		mContext.openOrCreateDatabase(DB_NAME, SQLiteDatabase.CREATE_IF_NECESSARY, null);
-
+		mDataBase = mContext.openOrCreateDatabase(DB_NAME, SQLiteDatabase.CREATE_IF_NECESSARY, null);
 	}
 
+	public List<Food> searchFoodItems(String searchtxt){
+		Log.d("Databas", "Version" + getReadableDatabase().getVersion());
+		ArrayList<Food> tmp = new ArrayList<>();
+		Cursor cur = selectWhereLikeStatement(searchtxt, "VABENAM", "Vara");
+		if(cur != null){
+			boolean hasNext = cur.moveToFirst();
+			while(hasNext){
+				int id = cur.getInt(cur.getColumnIndex("VAIDENT"));
+				Log.d(TAG, cur.getString(cur.getColumnIndex("VAIDENT")));
+				Cursor cursor = selectWhereStatement(id + "", "VAIDENT", "FpCu");
+				if (cursor != null) {
+					if( cursor.moveToFirst()) {
+						id = cursor.getInt(cursor.getColumnIndex("CUIDENT"));
+						cursor = selectWhereStatement(id + "", "CUIDENT", "Nvarden");
+						if (cursor != null) {
+							if(cursor.moveToFirst())
+								tmp.add(getFood(cursor, cur.getString(cur.getColumnIndex("VABENAM"))));
+						}
+					}
+				}
+				hasNext = cur.moveToNext();
+			}
+		}
+		return tmp;
+	}
+
+	private Food getFood(Cursor cursor, String name){
+		if(cursor != null){
+			int calAm = 0, carbAm = 0, proAm = 0, fatAm= 0, amount = 100;
+			Food.FoodPrefix prefix = Food.FoodPrefix.g;
+			switch(cursor.getString(cursor.getColumnIndex("T5100_MATTKVALIFICERAREBASMANGD"))){
+				case "Gram":
+					prefix = Food.FoodPrefix.g;
+					break;
+				case "Milliliter":
+					prefix = Food.FoodPrefix.ml;
+					break;
+			}
+			amount = cursor.getInt(cursor.getColumnIndex("T4072_BASMANGDNARINGSDEKLARATION"));
+			boolean hasNext = cursor.moveToFirst();
+			while(hasNext) {
+				switch (cursor.getString(cursor.getColumnIndex("NVNVKOD"))) {
+					case "ENER-":
+						calAm = cursor.getInt(cursor.getColumnIndex("NVMANGD"));
+						break;
+					case "PRO-":
+						proAm = cursor.getInt(cursor.getColumnIndex("NVMANGD"));
+						break;
+					case "CHOAVL":
+						carbAm = cursor.getInt(cursor.getColumnIndex("NVMANGD"));
+						break;
+					case "FAT":
+						fatAm = cursor.getInt(cursor.getColumnIndex("NVMANGD"));
+						break;
+				}
+				hasNext = cursor.moveToNext();
+			}
+			return new Food(calAm, proAm, fatAm, carbAm, name, "",prefix,amount);
+		}else{
+			return null;
+		}
+	}
+
+	private Cursor selectWhereStatement(String whatToSelect, String columnName, String fromTable){
+		return getReadableDatabase().rawQuery("SELECT * FROM " + fromTable + " WHERE " + columnName + "='" + whatToSelect + "'", null);
+	}
+
+	private Cursor selectWhereLikeStatement(String whatToSelect, String columnName, String fromTable){
+		return getReadableDatabase().rawQuery("SELECT * FROM " + fromTable + " WHERE " + columnName + " LIKE '%" + whatToSelect + "%' LIMIT 10", null);
+	}
 
 	@Override
 	public synchronized void close()
@@ -42,14 +112,12 @@ public class DataBaseHelper extends SQLiteOpenHelper
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		Log.d("Databas", "Skapar");
 		try {
 			insertFromFile(mContext, 1, db);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		db.execSQL("CREATE TABLE IF NOT EXISTS testarn(Username INTEGER,Password VARCHAR);");
-		db.execSQL("INSERT INTO `testarn` VALUES (1,'testar');");
-
 	}
 
 	public int insertFromFile(Context context, int resourceId, SQLiteDatabase db) throws IOException {
@@ -57,15 +125,27 @@ public class DataBaseHelper extends SQLiteOpenHelper
 		int result = 0;
 
 		// Open the resource
-		InputStream insertsStream = mContext.getAssets().open("dabas.sql");
+		InputStream insertsStream = mContext.getAssets().open(DB_NAME);
 		BufferedReader insertReader = new BufferedReader(new InputStreamReader(insertsStream));
-
+		db.execSQL("BEGIN TRANSACTION;");
 		// Iterate through lines (assuming each insert has its own line and theres no other stuff)
 		while (insertReader.ready()) {
 			String insertStmt = insertReader.readLine();
-			db.execSQL(insertStmt);
-			result++;
+			if(insertStmt.length() > 0 ) {
+				String insertStmtEnd = insertStmt.substring(insertStmt.length() - 2, insertStmt.length());
+				while (!insertStmtEnd.equals(");")) {
+					if (insertReader.ready()) {
+						insertStmt += insertReader.readLine();
+						insertStmtEnd = insertStmt.substring(insertStmt.length() - 2, insertStmt.length());
+					} else {
+						Log.d("Databas", "databas fel");
+					}
+				}
+				db.execSQL(insertStmt);
+				result++;
+			}
 		}
+		db.execSQL("COMMIT;");
 		insertReader.close();
 
 		// returning number of inserted rows
@@ -73,8 +153,17 @@ public class DataBaseHelper extends SQLiteOpenHelper
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		Log.d(TAG, "Nedgraderar " + oldVersion + "->" + newVersion);
+		while(!mContext.deleteDatabase(DB_NAME));
+		mDataBase = mContext.openOrCreateDatabase(DB_NAME, SQLiteDatabase.CREATE_IF_NECESSARY, null);
+	}
 
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		Log.d(TAG, "Upgradering " + oldVersion + "->" + newVersion);
+		while(!mContext.deleteDatabase(DB_NAME)){}
+		mDataBase = mContext.openOrCreateDatabase(DB_NAME, SQLiteDatabase.CREATE_IF_NECESSARY, null);
 	}
 
 }

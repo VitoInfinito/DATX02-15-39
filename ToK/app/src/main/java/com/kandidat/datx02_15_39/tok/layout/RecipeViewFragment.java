@@ -11,10 +11,8 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -24,11 +22,7 @@ import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.EditDietActivityParams;
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
 import com.kandidat.datx02_15_39.tok.model.diet.Recipe;
-import com.kandidat.datx02_15_39.tok.model.diet.RecipeCollection;
-import com.kandidat.datx02_15_39.tok.utilies.SwipeableListAdapter;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
-
-import java.util.Calendar;
 
 /**
  * Created by Lagerstedt on 2015-05-05.
@@ -75,7 +69,7 @@ public class RecipeViewFragment extends DietFragment{
 		if(recipe == null){
 			getActivity().finish();
 		}
-		if(!(getActivity() instanceof AddDietActivity2) && getView() != null){
+		if(!(getActivity() instanceof AddDietActivity) && getView() != null){
 			getView().setBackgroundResource(R.drawable.border_white_background);
 		}
 		amountPortions = recipe.getNumberOfPortions();

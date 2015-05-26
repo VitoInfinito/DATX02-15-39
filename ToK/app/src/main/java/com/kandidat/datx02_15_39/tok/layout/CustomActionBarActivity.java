@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -306,7 +305,7 @@ public class CustomActionBarActivity extends ActionBarActivity{
 	public void onAlertAddButtonClick(View view){
 		switch(view.getId()) {
 			case R.id.alert_diet_button:
-				startActivity(new Intent(this, AddDietActivity2.class));
+				startActivity(new Intent(this, AddDietActivity.class));
 				break;
 			case R.id.alert_sleep_button:
 				startActivity(new Intent(this, AddSleepActivity.class));
@@ -317,5 +316,10 @@ public class CustomActionBarActivity extends ActionBarActivity{
 			case R.id.alert_weight_button:
 				break;
 		}
+	}
+
+	public void startNewActivity(Class<?> activity){
+		startActivity(new Intent(this, activity));
+		finish();
 	}
 }

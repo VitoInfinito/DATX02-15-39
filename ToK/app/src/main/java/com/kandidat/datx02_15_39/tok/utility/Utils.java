@@ -11,6 +11,7 @@ import java.util.Date;
 public final class Utils {
 
     public static final String ACCOUNT_PREFS = "account_prefs";
+	public static final int DATABASE_VERSION = 1;
 
 
     private Utils() {}

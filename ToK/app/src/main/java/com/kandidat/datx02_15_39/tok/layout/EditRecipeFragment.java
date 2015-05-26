@@ -27,6 +27,8 @@ import com.kandidat.datx02_15_39.tok.model.diet.RecipeCollection;
 import com.kandidat.datx02_15_39.tok.utilies.SwipeableListAdapter;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
+import java.util.ArrayList;
+
 /**
  *
  */
@@ -72,11 +74,13 @@ public class EditRecipeFragment extends Fragment {
 			if (object instanceof Recipe) {
 				recipe = (Recipe) object;
 			}
+		}else{
+			recipe = new Recipe(new ArrayList<Food>(), 1);
 		}
 		if(recipe == null){
 			getActivity().finish();
 		}
-		if(!(getActivity() instanceof AddDietActivity2) && getView() != null){
+		if(!(getActivity() instanceof AddDietActivity) && getView() != null){
 			getView().setBackgroundResource(R.drawable.border_white_background);
 		}
 		initViews();
@@ -127,10 +131,12 @@ public class EditRecipeFragment extends Fragment {
 	}
 
 	public void saveRecipe(){
-		Recipe newRecipe = new Recipe(nameText.getText().toString()
-				, recipe.getListOfFoodItem()
-				, (int)amountOfRecipePortions);
-		RecipeCollection.getInstance().getList().add(newRecipe);
+		if(recipe.getListOfFoodItem().size() > 0) {
+			Recipe newRecipe = new Recipe(nameText.getText().toString()
+					, recipe.getListOfFoodItem()
+					, (int) amountOfRecipePortions);
+			RecipeCollection.getInstance().getList().add(newRecipe);
+		}
 	}
 
 	private void updateList() {

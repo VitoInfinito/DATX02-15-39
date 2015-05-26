@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -229,7 +228,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
 //    private void updateWeekScreen(Calendar first, Calendar last) {
 //
-//        workoutActivityList = (ArrayList) diary.showWeekActivities(first, last);
+//        workoutActivityList = (ArrayList) diary.showPeriodActivities(first, last);
 //
 //        updateActivityList(workoutActivityList);
 //    }
@@ -240,7 +239,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         Pair<Calendar, Calendar> pairDate = getDateIntervalOfWeek(date);
 
-        workoutActivityList= (ArrayList) diary.showWeekActivities(pairDate.first, pairDate.second);
+        workoutActivityList= (ArrayList) diary.showPeriodActivities(pairDate.first, pairDate.second);
 
         updateActivityList(workoutActivityList);
     }
@@ -251,7 +250,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         Calendar cal2 = new GregorianCalendar();
         cal2.add(Calendar.DATE, 1);
-        return WorkoutDiary.getInstance().showWeekActivities(cal, cal2);
+        return WorkoutDiary.getInstance().showPeriodActivities(cal, cal2);
     }
     private Pair<Calendar, Calendar> getDateIntervalOfWeek(Calendar date) {
 

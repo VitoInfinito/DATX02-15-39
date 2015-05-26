@@ -36,7 +36,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.SynchronousQueue;
 
-public class BluetoothActivity extends ActionBarActivity {
+public class BluetoothActivity extends CustomActionBarActivity {
 
 	private static final String TAG = "BluetoothActivity";
 
@@ -156,6 +156,7 @@ public class BluetoothActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bluetooth);
+		initMenu(R.layout.activity_bluetooth);
 		init();
 	}
 
