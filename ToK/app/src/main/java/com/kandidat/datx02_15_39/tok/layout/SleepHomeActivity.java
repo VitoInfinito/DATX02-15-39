@@ -3,13 +3,22 @@ package com.kandidat.datx02_15_39.tok.layout;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +33,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.OnDataPointTapListener;
 import com.jjoe64.graphview.series.Series;
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.jawbone.JawboneSetupActivity;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
 import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
@@ -78,10 +88,33 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 		findViewById(R.id.previousDayButton).setBackgroundColor(Color.alpha(0));
 	    findViewById(R.id.nextDayButton).setBackgroundColor(Color.alpha(0));
 
-	    findViewById(R.id.detailedLayout).setBackgroundColor(Color.rgb(219,219,219));
+//        previousDayButton
+        ImageButton earlierDateButton = (ImageButton) findViewById(R.id.previousDayButton);
+        earlierDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoEarlierSleepDate(v);
 
-		initMenu(R.layout.activity_sleep_home);
+            }
+        });
+
+        ImageButton laterDateButton = (ImageButton) findViewById(R.id.nextDayButton);
+        laterDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoLaterSleepDate(v);
+
+            }
+        });
+
+
+
+	    findViewById(R.id.detailedLayout).setBackgroundColor(Color.rgb(219, 219, 219));
+
+        initMenu(R.layout.activity_sleep_home);
         diary = (SleepDiary) SleepDiary.getInstance();
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#5F9EA0")));
+
         activeCalendar = Calendar.getInstance();
 
         if(Account.getInstance().isConnectedUP()) {
@@ -104,8 +137,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
         }else {
             Toast.makeText(getActivity(), R.string.no_connection_UP, Toast.LENGTH_LONG).show();
-            Account.getInstance().setNextClassCallback(SleepHomeActivity.class);
-            startActivity(new Intent(this, AccessoriesHomeActivity.class));
+            Account.getInstance().setNextClassCallback(this.getClass());
+            startActivity(new Intent(this, JawboneSetupActivity.class));
         }
 
         setupGraph();
@@ -362,6 +395,9 @@ public class SleepHomeActivity extends CustomActionBarActivity {
     }
 
 
+    public void thisistest() {
+        Log.e(TAG, "HEYOOOOOOOO");
+    }
 
     /**
      * Updates the graph with and earlier sleep date

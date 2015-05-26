@@ -17,60 +17,58 @@ public class Workout {
     private Date startDate;
     private Date endDate;
     private int intensity;
-    private String workoutType;
-    private int id = 0;
+    private WorkoutType workoutType;
+    private int calories;
+    private int steps;
 
-    public static final String WORKOUTTYPE_STRENGTH = "STYRKA -";
-    public static final String WORKOUTTYPE_CARDIO = "KONDITION -";
-    public static final String WORKOUTTYPE_FLEXIBILITY = "FLEXIBILITET -";
-    public static final String WORKOUTTYPE_SPORT = "SPORT -";
+    public enum WorkoutType {
+        STRENGTH, CARDIO, WALK, FLEX, SPORT, CUSTOM
+    }
 
-    public Workout(Date start, Date end, int intensity, String workoutType){
-        this.startDate = start;
-        this.endDate = end;
+    public Workout(Date start, Date end, int intensity, WorkoutType workoutType){
+        startDate = start;
+        endDate = end;
         this.intensity = intensity;
         this.workoutType = workoutType;
+        this.calories = 0;
+        this.steps = 0;
 
     }
-    public Workout(int id, Date start, Date end, int intensity, String workoutType){
-        this.id=id;
-        this.startDate = start;
-        this.endDate = end;
+
+    public Workout(Date start, Date end, int intensity, WorkoutType workoutType, int calories, int steps) {
+        startDate = start;
+        endDate = end;
         this.intensity = intensity;
         this.workoutType = workoutType;
-
+        this.calories = calories;
+        this.steps = steps;
     }
 
     public Date getStartTime(){
-        return this.startDate;
+        return startDate;
     }
     public Date getEndTime(){
-        return this.endDate;
+        return endDate;
     }
     public int getIntensity (){
-        return this.intensity;
+        return intensity;
     }
-    public String getWorkoutType(){return this.workoutType; }
-    public int getId(){
+    public WorkoutType getWorkoutType(){return workoutType; }
+    public int getIconId(){
         switch(getWorkoutType()){
-            case"STYRKA -":
-                id = R.drawable.strength;
-                break;
-            case"KONDITION -":
-                id = R.drawable.sprint;
-                break;
-            case"FLEXIBILITET -":
-                id = R.drawable.yoga_icon;
-                break;
-            case"SPORT -":
-                id = R.drawable.soccer;
-                break;
+            case STRENGTH:
+                return R.drawable.strength;
+            case CARDIO:
+            case WALK:
+                return R.drawable.sprint;
+            case SPORT:
+                return R.drawable.soccer;
             default:
-                id = R.drawable.yoga_icon;
-                break;
+                return R.drawable.yoga_icon;
         }
-        return id;
     }
+    public int getSteps() { return steps; }
+    public int getCalories() { return calories; }
     public void setIntensity(int intensity){
         this.intensity=intensity;
     }
