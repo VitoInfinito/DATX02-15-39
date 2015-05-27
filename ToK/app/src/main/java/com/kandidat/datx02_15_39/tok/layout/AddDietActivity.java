@@ -1,6 +1,8 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
@@ -19,8 +21,9 @@ public class AddDietActivity extends CustomActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_add_diet_activity2);
-		initMenu(R.layout.activity_add_diet_activity2);
+		setContentView(R.layout.activity_add_diet);
+		initMenu(R.layout.activity_add_diet);
+		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80FF6F00));
 		currentFragement = new AddDietFragment();
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction().add(R.id.content_frame, currentFragement).commit();
@@ -30,11 +33,11 @@ public class AddDietActivity extends CustomActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		if(currentFragement instanceof AddDietFragment) {
+		if(currentFragement instanceof AddDietFragment||
+				currentFragement instanceof RecipeViewFragment) {
 			getMenuInflater().inflate(R.menu.menu_with_moveforward, menu);
 		}else if (currentFragement instanceof  ViewAddDietFragment ||
-				currentFragement instanceof EditRecipeFragment ||
-				currentFragement instanceof RecipeViewFragment){
+				currentFragement instanceof EditRecipeFragment ){
 			getMenuInflater().inflate(R.menu.menu_with_confirm, menu);
 		}
 		return true;
@@ -113,7 +116,10 @@ public class AddDietActivity extends CustomActionBarActivity {
 
 	private void changeFragment(Fragment fragment){
 		if(!(fragment instanceof AddDietToFragment)) {
-			earlierFragment = currentFragement;
+			if(currentFragement instanceof AddDietFragment
+					|| currentFragement instanceof ViewAddDietFragment){
+				earlierFragment = currentFragement;
+			}
 			currentFragement = fragment;
 			invalidateOptionsMenu();
 		}
@@ -121,7 +127,6 @@ public class AddDietActivity extends CustomActionBarActivity {
 
 	@Override
 	public void onBackPressed() {
-
 		if(currentFragement instanceof ViewAddDietFragment){
 			DietActivity dietActivity = ((DietFragment) currentFragement).getDietActivity();
 			currentFragement = new AddDietFragment();

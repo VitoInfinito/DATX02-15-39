@@ -43,8 +43,7 @@ public class AddDietFragment extends DietFragment{
 
 	private int activatedObject = R.id.food_button_view_diet;
 	private ListView searchResultList;
-	private SearchView textInput;
-	private ArrayList<Food> searchResultFood;
+	private ArrayList<Food> searchResultFood  = new ArrayList<>();
 	private SearchResultAdapter sra;
 	private RecipeResultAdapter rra;
 	private FragmentActivity listener;
@@ -84,7 +83,6 @@ public class AddDietFragment extends DietFragment{
 		(getView().findViewById(R.id.food_button_view_diet)).setOnClickListener(listener);
 		(getView().findViewById(R.id.scale_button_view_diet)).setOnClickListener(listener);
 		(getView().findViewById(R.id.recipe_button_view_diet)).setOnClickListener(listener);
-		(getView().findViewById(R.id.barcode_button_view_diet)).setOnClickListener(listener);
 		((SearchView)getView().findViewById(R.id.search_field)).setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 			@Override
 			public boolean onQueryTextSubmit(String query) {
@@ -134,6 +132,7 @@ public class AddDietFragment extends DietFragment{
 			sba = new ScaleBluetoothAdapter(getView().getContext(), (CustomActionBarActivity) getActivity());
 			sba.bluetoothSearch();
 		}
+		updateList();
 	}
 
 	private void searchForItems(String searchWord){
@@ -156,29 +155,25 @@ public class AddDietFragment extends DietFragment{
 	public void onDietSelectorClick(View view) {
 		if(view instanceof ImageButton) {
 			ImageButton ib = (ImageButton) view;
-			if (ib.getId() == R.id.barcode_button_view_diet) {
-				//TODO Change View to a Barcode app
-			}else {
-				int amount = ((LinearLayout) getView().findViewById(R.id.button_container)).getChildCount();
-				View child;
-				for (int i = 0; i < amount; i++) {
-					child = ((LinearLayout) getView().findViewById(R.id.button_container)).getChildAt(i);
-					if (child instanceof ImageButton) {
-						child.setActivated(false);
-						child.setFocusableInTouchMode(false);
-					}
+			int amount = ((LinearLayout) getView().findViewById(R.id.button_container)).getChildCount();
+			View child;
+			for (int i = 0; i < amount; i++) {
+				child = ((LinearLayout) getView().findViewById(R.id.button_container)).getChildAt(i);
+				if (child instanceof ImageButton) {
+					child.setActivated(false);
+					child.setFocusableInTouchMode(false);
 				}
-				ib.setActivated(true);
-				activatedObject = ib.getId();
-				if(ib.getId() == R.id.food_button_view_diet){
-					updateList();
-				}else if(ib.getId() == R.id.scale_button_view_diet) {
-					updateList();
-					confirmScaleConnection();
+			}
+			ib.setActivated(true);
+			activatedObject = ib.getId();
+			if(ib.getId() == R.id.food_button_view_diet){
+				updateList();
+			}else if(ib.getId() == R.id.scale_button_view_diet) {
+				updateList();
+				confirmScaleConnection();
 //					startActivity(new Intent(getView().getContext(), BluetoothActivity.class));
-				}else if (ib.getId() == R.id.recipe_button_view_diet){
-					updateList();
-				}
+			}else if (ib.getId() == R.id.recipe_button_view_diet){
+				updateList();
 			}
 		}
 	}
@@ -318,7 +313,7 @@ public class AddDietFragment extends DietFragment{
 	private void selectedItem(int position) {
 		if(getView().findViewById(R.id.recipe_button_view_diet).isActivated()){
 			//TODO when we implement so we have a database and can store food
-			messageToast("Recipe" + searchResultFood.get(position).getName());
+			messageToast("Recipe" + rra.getItem(position).getName());
 			if(rra != null){
 				Fragment currentFragement = new RecipeViewFragment();
 				listener.onAttachFragment(currentFragement);

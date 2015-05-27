@@ -71,8 +71,8 @@ public class MainActivity extends CustomActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.right_corner_button_add) {
 			View add = getLayoutInflater().inflate(R.layout.add_all, null);
-//			AlertDialog ad = new AlertDialog.Builder(this, R.style.CustomDialog);
-            AlertDialog ad = new AlertDialog.Builder(this).create();
+			AlertDialog ad = new AlertDialog.Builder(this, R.style.CustomDialog).create();
+//            AlertDialog ad = new AlertDialog.Builder(this).create();
 			ad.setView(add);
 			ad.setCanceledOnTouchOutside(true);
 			ad.show();

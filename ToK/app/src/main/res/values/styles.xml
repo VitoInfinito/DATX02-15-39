@@ -51,29 +51,16 @@
 
     <!--</style>-->
 
-    <!--<style name="MyThemes"  parent="@android:style/Theme.Dialog">-->
-    <!--<item name="android:bottomBright">@android:color/transparent</item>-->
-    <!--<item name="android:bottomDark">@android:color/transparent</item>-->
-    <!--<item name="android:bottomMedium">@android:color/transparent</item>-->
-    <!--<item name="android:centerBright">@android:color/transparent</item>-->
-    <!--<item name="android:centerDark">@android:color/transparent</item>-->
-    <!--<item name="android:centerMedium">@android:color/transparent</item>-->
-    <!--<item name="android:fullBright">@android:color/transparent</item>-->
-    <!--<item name="android:fullDark">@android:color/transparent</item>-->
-    <!--<item name="android:topBright">@android:color/transparent</item>-->
-    <!--<item name="android:topDark">@android:color/transparent</item>'-->
-    <!--</style>-->
-
-    <!--<style name="CustomDialog" >-->
-        <!--<item name="android:alertDialogStyle">@style/MyThemes</item>-->
-        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
-        <!--<item name="android:windowContentOverlay">@null</item>-->
-        <!--<item name="android:windowIsFloating">true</item>-->
-        <!--<item name="android:backgroundDimEnabled">true</item>-->
-        <!--<item name="android:colorBackground">@android:color/transparent</item>-->
-        <!--<item name="android:panelFullBackground">@android:color/transparent</item>-->
-        <!--<item name="android:width">150dp</item>-->
-        <!--<item name="android:height">150dp</item>-->
-    <!--</style>-->
+    <style name="CustomDialog" >
+        <item name="android:alertDialogStyle">@style/MyThemes</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="android:panelFullBackground">@android:color/transparent</item>
+        <item name="android:width">150dp</item>
+        <item name="android:height">150dp</item>
+    </style>
 
 </resources>

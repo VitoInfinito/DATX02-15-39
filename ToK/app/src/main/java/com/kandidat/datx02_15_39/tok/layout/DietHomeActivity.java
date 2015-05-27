@@ -127,13 +127,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.right_corner_button_add) {
-            View add = getLayoutInflater().inflate(R.layout.add_all, null);
-//            AlertDialog ad = new AlertDialog.Builder(this, R.style.CustomDialog)
-            AlertDialog ad = new AlertDialog.Builder(this)
-                    .create();
-            ad.setView(add);
-            ad.setCanceledOnTouchOutside(true);
-            ad.show();
+           startNewActivity(AddDietActivity.class);
         }
 		if(id == R.id.right_corner_button_confirm){
 			tempFragment.editActivity();
