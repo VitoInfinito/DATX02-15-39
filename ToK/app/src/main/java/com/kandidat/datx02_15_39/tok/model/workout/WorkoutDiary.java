@@ -47,7 +47,8 @@ public class WorkoutDiary extends AbstractDiary {
 
     //TODO apparently getDate returns a calendar. Look up.
     public void addActivity(IDiaryActivity act) {
-        addActivityToTable(act.getDate().getTime(), act);
+        WorkoutActivity wact = (WorkoutActivity) act;
+        addActivityToTable(wact.getCalendar().getTime(), wact);
     }
 
 	@Override

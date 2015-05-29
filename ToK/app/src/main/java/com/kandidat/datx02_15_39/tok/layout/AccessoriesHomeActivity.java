@@ -58,7 +58,7 @@ public class AccessoriesHomeActivity extends CustomActionBarActivity {
         startActivity(new Intent(this, JawboneSetupActivity.class));
     }
 
-    public void connectScaleOnClick() {
+/*    public void connectScaleOnClick() {
         Toast.makeText(getApplicationContext(), "Not implemented yet", Toast.LENGTH_LONG).show();
-    }
+    }*/
 }
