@@ -47,7 +47,8 @@ public class WorkoutDiary extends AbstractDiary {
 
     //TODO apparently getDate returns a calendar. Look up.
     public void addActivity(IDiaryActivity act) {
-        addActivityToTable(act.getDate().getTime(), act);
+        WorkoutActivity wact = (WorkoutActivity) act;
+        addActivityToTable(wact.getCalendar().getTime(), wact);
     }
 
 	@Override
@@ -112,16 +113,29 @@ public class WorkoutDiary extends AbstractDiary {
     }
     public List<Workout> getWorkoutListFromDate(Date d) {
         List<IDiaryActivity> activities = getActivitiesFromDate(d);
+        return fetchWorkoutFromActivities(activities);
+    }
+
+    public List<Workout> getWorkoutListFromWeek(Date d) {
+        Calendar startCal = Utils.DateToCalendar(d);
+        //By no means perfect but enough for this implementation
+        startCal.set(Calendar.DAY_OF_MONTH, startCal.get(Calendar.DAY_OF_MONTH) - 7);
+        List<IDiaryActivity> activities = showWeekActivities(startCal, Utils.DateToCalendar(d));
+        return fetchWorkoutFromActivities(activities);
+    }
+
+    private List<Workout> fetchWorkoutFromActivities(List<IDiaryActivity> acts) {
         List<Workout> workoutList = new ArrayList<>();
-        if(activities != null) {
-            for(int i=0; i<activities.size(); i++) {
-                List<Workout> isl = ((WorkoutActivity) activities.get(i)).getWorkoutList();
+        if(acts != null) {
+            for(int i=0; i<acts.size(); i++) {
+                List<Workout> isl = ((WorkoutActivity) acts.get(i)).getWorkoutList();
                 workoutList.addAll(isl);
             }
         }
         Log.d("WORKOUT", workoutList.toString());
         return workoutList;
     }
+
 	@Override
 	public void addActivity(Calendar c, String id, AddToActivity ata) {
 

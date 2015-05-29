@@ -18,31 +18,40 @@ public class WorkoutActivity extends AbstractDiaryActivity {
 
     private List<Workout> workoutList;
 
-    private Date date;
+    private Calendar calendar;
     private final String id;
 
     public WorkoutActivity(String id, Workout workout) {
         this.id=id;
         workoutList = new ArrayList<Workout>();
         workoutList.add(workout);
-        date = workout.getEndTime();
+        calendar = Utils.DateToCalendar(workout.getEndTime());
     }
 
-    public WorkoutActivity(String id, Date date, Workout workout) {
+    public WorkoutActivity(String id, Calendar calendar, Workout workout) {
         this.id=id;
         workoutList = new ArrayList<Workout>();
         workoutList.add(workout);
-        this.date = date;
+        this.calendar = calendar;
     }
 
 
-    //TODO Another very wut moment. Look up later.
-    public Calendar getDate(){
-        return Utils.DateToCalendar(date);
+    /**
+     * Returns the calendar belonging to the workout activity
+     * @return
+     */
+    public Calendar getCalendar(){
+        return calendar;
     }
-    public void setDate(Date d){
-        date = new Date(d.getTime());
+
+    /**
+     * Sets the calendar belonging to the activity to a new value
+     * @param c is the new calendar
+     */
+    public void setCalendar(Calendar c){
+        calendar.setTimeInMillis(c.getTimeInMillis());
     }
+
 
     @Override
     public void edit(EditActivityParams eap) {
