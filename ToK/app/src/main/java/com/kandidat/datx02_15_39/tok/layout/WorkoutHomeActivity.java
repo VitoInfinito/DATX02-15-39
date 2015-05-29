@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -231,6 +230,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         ListView lv = (ListView) findViewById(R.id.show_workout);
         Log.e("This is the cal", "" + c.getTime());
         List<IDiaryActivity> activityList = diary.showDaysActivities(c);
+        Log.e("This is the calander: ", "" + activityList.size());
         List<String> workoutList = new ArrayList<>();
 
         Integer [] idList = new Integer[6];
