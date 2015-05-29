@@ -98,7 +98,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         Date stopDate = tmpCal.getTime();
 
         //Dummy listitem
-        /*Workout workout = new Workout(startDate, stopDate, 15, Workout.WorkoutType.CARDIO);
+       /* Workout workout = new Workout(startDate, stopDate, 15, Workout.WorkoutType.CARDIO);
         WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
         WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
         workoutDiary.addActivity(startDate, workoutActivity);*/
@@ -479,40 +479,36 @@ va
 
     private DataPoint[] fetchDataPoints(Date date) {
         List<DataPoint> workoutGraphPoints = new ArrayList<>();
-
-        List<Workout> workoutList = diary.getWorkoutListFromDate(date);
+        List<Workout> workoutList;
+        if(isWeekView) {
+            workoutList = diary.getWorkoutListFromWeek(date);
+        }else {
+            workoutList = diary.getWorkoutListFromDate(date);
+        }
 
         int steps = 0;
         int calories = 0;
+        int intensity = 0;
+        int nbrOfIntensities = 0;
         if(!workoutList.isEmpty()) {
             for (int i = 0; i < workoutList.size(); i++) {
                 Workout workout = workoutList.get(i);
 
                 steps += workout.getSteps();
                 calories += workout.getCalories();
+                intensity += workout.getIntensity();
+                nbrOfIntensities++;
             }
         }
-
-         /*if(series!= null){
-            series.resetData(new DataPoint[]{
-                    new DataPoint(0,0),
-                    new DataPoint(10, intensity),
-                    new DataPoint(20, intensity),
-                    new DataPoint(30, intensity),
-                    new DataPoint(40, intensity),
-
-            });
-        series.setSpacing(20);
-
-        }*/
-
-
+        if(nbrOfIntensities != 0)
+            intensity /= nbrOfIntensities;
 
         return new DataPoint[]{
                 new DataPoint(0,0),
                 new DataPoint(10, steps),
                 new DataPoint(20, calories),
-                new DataPoint(30, 0),
+                new DataPoint(30, intensity),
+                new DataPoint(40, 0),
         };
     }
 
@@ -535,7 +531,7 @@ va
 
     //    updateInformationDisplay();
 
-
+        series.setSpacing(20);
         wGraph.getGridLabelRenderer().setNumVerticalLabels(0);
 
         //wGraph.getGridLabelRenderer().setGridColor(Color.argb(0,255,255,255));
