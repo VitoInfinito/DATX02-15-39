@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -65,6 +66,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
         setContentView(R.layout.activity_diet_home);
         initMenu(R.layout.activity_diet_home);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#80FF6F00")));
 
         dietGraph = (GraphView) findViewById(R.id.diet_graph);
         series = new BarGraphSeries<>();
@@ -127,7 +129,8 @@ public class DietHomeActivity extends CustomActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.right_corner_button_add) {
             View add = getLayoutInflater().inflate(R.layout.activity_add_all, null);
-            AlertDialog ad = new AlertDialog.Builder(this, R.style.CustomDialog)
+//            AlertDialog ad = new AlertDialog.Builder(this, R.style.CustomDialog)
+            AlertDialog ad = new AlertDialog.Builder(this)
                     .create();
             ad.setView(add);
             ad.setCanceledOnTouchOutside(true);

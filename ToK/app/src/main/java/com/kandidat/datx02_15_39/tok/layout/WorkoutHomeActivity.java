@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.util.Pair;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -97,6 +100,43 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         tmpCal.set(Calendar.HOUR_OF_DAY, Calendar.HOUR_OF_DAY+2);
         Date stopDate = tmpCal.getTime();
 
+        Button previousDateButton = (Button) findViewById(R.id.previousDayButton);
+        previousDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPreviousButtonClick(v);
+
+            }
+        });
+
+        Button nextDateButton = (Button) findViewById(R.id.nextDayButton);
+        nextDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onNextButtonClick(v);
+
+            }
+        });
+
+        Button dayToggleButton = (Button) findViewById(R.id.day_radioButton);
+        dayToggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onDayButtonClick(v);
+
+            }
+        });
+
+        Button weekToggleButton = (Button) findViewById(R.id.week_radiobutton);
+        weekToggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onWeekButtonClick(v);
+
+            }
+        });
+
+
         //Dummy listitem
        /* Workout workout = new Workout(startDate, stopDate, 15, Workout.WorkoutType.CARDIO);
         WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
@@ -115,6 +155,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         //series = new BarGraphSeries<>();
         //fillListWithDummyData();
         fillListWithDataFromCalendar(cal);
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#F5B3C0")));
 
         updateDayScreen(cal);
 
@@ -273,11 +315,11 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         /*if(series!= null){
             series.resetData(new DataPoint[]{
-                    new DataPoint(0,0),
-                    new DataPoint(10, intensity),
-                    new DataPoint(20, intensity),
-                    new DataPoint(30, intensity),
-                    new DataPoint(40, intensity),
+                   // new DataPoint(0,0),
+                    //new DataPoint(10, intensity),
+                   // new DataPoint(20, intensity),
+                  //  new DataPoint(30, intensity),
+                   // new DataPoint(40, intensity),
 
             });
         series.setSpacing(20);
