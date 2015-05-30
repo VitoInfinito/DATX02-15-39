@@ -117,6 +117,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
         activeCalendar = Calendar.getInstance();
 
+        //Checking if the user is connected to UP. If not they are redirected to the connect page
+        //Otherwise data from UP concerning sleep events are collected
         if(Account.getInstance().isConnectedUP()) {
             Intent intent = getIntent();
             if (intent != null) {
@@ -130,11 +132,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 ApiManager.getRequestInterceptor().setAccessToken(mAccessToken);
             }
 
-
-
             fetchSleepFromUP();
-
-
         }else {
             Toast.makeText(getActivity(), R.string.no_connection_UP, Toast.LENGTH_LONG).show();
             Account.getInstance().setNextClassCallback(this.getClass());
@@ -174,7 +172,9 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    /**
+     * Method used to fetch the latest sleep events from UP
+     */
     private void fetchSleepFromUP() {
         Log.e(TAG, "making Get Sleep Events List api call ...");
         ApiManager.getRestApiInterface().getSleepEventsList(
@@ -190,33 +190,23 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         @Override
         public void success(Object o, Response response) {
             Log.e(TAG,  "api call successful, json output: " + o.toString());
-            //Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_LONG).show();
 
             List<String> list = new ArrayList<>();
             try {
                 LinkedTreeMap obj = (LinkedTreeMap) o;
 
                 Log.e(TAG, "data: " + obj.get("data").toString());
-                //obj.get("data")
                 ArrayList<LinkedTreeMap> array = (ArrayList<LinkedTreeMap>)((LinkedTreeMap)obj.get("data")).get("items");
                 for (int i = 0; i < array.size(); i++) {
                     LinkedTreeMap ltm = array.get(i);
                     LinkedTreeMap details = (LinkedTreeMap) ltm.get("details");
-                   /* Log.e(TAG, "LTM: " + ltm.toString());
-                    Log.e(TAG, "Keys: " + ltm.keySet().toString());
-                    Log.e(TAG, "Created: " + new Date(Double.valueOf((ltm.get("time_created").toString())).longValue()*1000));
-                    Log.e(TAG, "Completed: " + new Date(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000));
-                    Log.e(TAG, "Updated: " + new Date(Double.valueOf((ltm.get("time_updated").toString())).longValue()*1000));
-                    Log.e(TAG, "Details: " + details.toString());
-                    Log.e(TAG, "Asleep time: " + new Date(Double.valueOf((details.get("asleep_time").toString())).longValue()*1000));
-                    Log.e(TAG, "Duration: " + (Double.valueOf((details.get("duration").toString())).longValue()/3600.0) + " hours");
-                    Log.e(TAG, "Awake time: " + new Date(Double.valueOf((details.get("awake_time").toString())).longValue()*1000));*/
-
 
                     String xid = ltm.get("xid").toString();
                     Log.e(TAG, "Xid: " + xid);
 
-
+                    //Checking if the sleep event that was found is already in the diary.
+                    //If not a call to fetch the sleep phases is called.
+                    //If it is a manual sleep, the event is sent to a method that will enter it into the diary as a manual sleep.
                     if(diary.getActivity(Utils.MillisToCalendar(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000), xid) == null) {
                         if(!details.get("light").toString().equals("0.0") && !details.get("sound").toString().equals("0.0")) {
                             fetchSleepTicksFromUPWithXid(xid);
@@ -244,9 +234,15 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         }
     };
 
+    /**
+     * Method for adding a manual sleep to the diary
+     * @param xid is the id the sleep should contain
+     * @param asleepDate is the date when the user fell asleep
+     * @param awakeDate is the date of when the user woke up
+     * @param createDate is the date of when the event was created
+     * @param completeDate is the date of when the event was completed
+     */
     private void setManualSleepFromUP(String xid, Date asleepDate, Date awakeDate, Date createDate, Date completeDate) {
-
-
         List<Sleep> manualSleep = (new ArrayList<>());
         manualSleep.addAll(Arrays.asList(
                 new Sleep(
@@ -266,6 +262,10 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
     }
 
+    /**
+     * Method used to call the sleep phases with a specific ID
+     * @param xid is the ID used when calling for the phases connected to that ID
+     */
     private void fetchSleepTicksFromUPWithXid(String xid) {
         Log.e(TAG, "making Get Sleep Ticks api call ...");
         ApiManager.getRestApiInterface().getSleepPhases(
@@ -274,27 +274,23 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 sleepPhaseCallbackListener);
     }
 
+    /**
+     * Callback method for the sleep phases from UP. The method also enters the sleep event into the sleep diary.
+     */
     private Callback sleepPhaseCallbackListener = new Callback<Object>() {
         @Override
         public void success(Object o, Response response) {
             Log.e(TAG,  "api call successful, json output: " + o.toString());
-
             LinkedTreeMap obj = (LinkedTreeMap) o;
-
-            //Log.e(TAG, "data: " + obj.get("data").toString());
-            //Log.e(TAG, response.getUrl());
-            //Log.e(TAG, "" + response.getUrl().lastIndexOf("/sleeps/"));
 
             String url = response.getUrl();
             int xidParsingStart = url.lastIndexOf("/sleeps/") + 8;
             int xidParsingStop = url.indexOf("/ticks");
             String xid = xidParsingStart != -1 && xidParsingStop != -1 ? url.substring(xidParsingStart, xidParsingStop) : "unknownID";
-            //Log.e(TAG, "" + xidParsingStart + " " + xidParsingStop);
-            //Log.e(TAG, xid);
 
+            //Sorting out the relevant data from the call.
             ArrayList<LinkedTreeMap> array = (ArrayList<LinkedTreeMap>)((LinkedTreeMap)obj.get("data")).get("items");
-
-            //Date createdDate = new Date(Double.valueOf(((LinkedTreeMap)obj.get("meta")).get("time").toString()).longValue()*1000);
+            //Collecting and compiling the information from the different phases from UP.
             List<Sleep> newSleepPhases = new ArrayList<>();
             double lightTime = 0.0;
             double deepTime = 0.0;
@@ -303,6 +299,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             double totalSleep = 0.0;
             int nbrOfWakeups = 0;
             for(int i = 0; i < array.size()-1; i++) {
+                //Connecting the current phase's start with the next phase's start to connect between what points
+                //of time the current phase is active.
                 LinkedTreeMap ltm = array.get(i);
                 LinkedTreeMap ltmplus1 = array.get(i+1);
 
@@ -310,8 +308,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 Long ltmplus1Time = Double.valueOf((ltmplus1.get("time").toString())).longValue()*1000;
                 Long timeDiff = ltmplus1Time - ltmTime;
 
-                //Log.e(TAG, "Depth: " + ltm.get("depth").toString());
-                //Log.e(TAG, "Time: " + new Date(Double.valueOf((ltm.get("time").toString())).longValue()*1000));
+                //Sorting what phase depth the current phase is in
                 String depth = ltm.get("depth").toString();
                 Sleep.SleepState sleepState;
                 switch(depth) {
@@ -333,7 +330,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
                 timeInBed += timeDiff;
 
-
+                //Adding the sleep to a sleep event list
                 newSleepPhases.add(
                         new Sleep(
                                 new Date(ltmTime),
@@ -344,8 +341,10 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
             Date completedDate = array.isEmpty() ? new Date() : new Date(Double.valueOf(array.get(array.size()-1).get("time").toString()).longValue()*1000);
 
+            //Adding the activity of the sleep event to the diary.
             diary.addActivity(new SleepActivity(xid, newSleepPhases, completedDate, lightTime, deepTime, awakeTime, totalSleep, timeInBed, nbrOfWakeups));
 
+            //If the event entered into the diary was the date of today the graph is updated.
             if(sdfShowDay.format(completedDate).equals(sdfShowDay.format(activeCalendar.getTime()))) {
                 updateGraphSeries(0);
             }
@@ -359,6 +358,10 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         }
     };
 
+    /**
+     * Method used to fetch the graph connected with a certain ID
+     * @param xid is the ID the graph is connected with
+     */
     private void fetchSleepGraphFromUPWithXid(String xid) {
         Log.e(TAG, "making Get Sleep Graph api call ...");
         ApiManager.getRestApiInterface().getSleepGraph(
@@ -367,6 +370,9 @@ public class SleepHomeActivity extends CustomActionBarActivity {
                 sleepGraphCallbackListener);
     }
 
+    /**
+     * Callback function for fetching the graph image from UP.
+     */
     private Callback sleepGraphCallbackListener = new Callback<Object>() {
         @Override
         public void success(Object o, Response response) {
@@ -381,16 +387,12 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         }
     };
 
+    /**
+     * Creating the query hashmap for the sleep event list call to UP.
+     * @return a query hashmap.
+     */
     private static HashMap<String, Integer> getSleepEventsListRequestParams() {
         HashMap<String, Integer> queryHashMap = new HashMap<String, Integer>();
-
-        //uncomment to add as needed parameters
-//        queryHashMap.put("date", "<insert-date>");
-//        queryHashMap.put("page_token", "<insert-page-token>");
-//        queryHashMap.put("start_time", "<insert-time>");
-//        queryHashMap.put("end_time", "<insert-time>");
-//        queryHashMap.put("updated_after", "<insert-time>");
-
         return queryHashMap;
     }
 
@@ -417,6 +419,10 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         }
     }
 
+    /**
+     * Method used to update the graph with the relevant date depending on an offset to the current graph's date
+     * @param offset is the offset to the current date shown in the graph.
+     */
     private void updateGraphSeries(int offset) {
         currentCalendar.set(Calendar.DAY_OF_MONTH, currentCalendar.get(Calendar.DAY_OF_MONTH) + offset);
         Date newDate = currentCalendar.getTime();
@@ -433,6 +439,10 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         updateInformationDisplay();
     }
 
+    /**
+     * Method used to update the information display connected to the graph.
+     * The date to be used is whatever date is currently used with showing the graph.
+     */
     private void updateInformationDisplay() {
         Date newDate = currentCalendar.getTime();
 
@@ -467,8 +477,6 @@ public class SleepHomeActivity extends CustomActionBarActivity {
             nbrOfWakups += sa.getNbrOfWakups();
         }
 
-        //Math.round(a * 100.0) / 100.0;
-
         ((TextView) findViewById(R.id.displayLightSleep)).setText("" + (int)lightTime + "h" + Math.round((lightTime - (int)lightTime)*60.0) + "min");
         ((TextView) findViewById(R.id.displayDeepSleep)).setText("" + (int)deepTime + "h" + Math.round((deepTime - (int)deepTime)*60.0) + "min");
         ((TextView) findViewById(R.id.displayAwakeSleep)).setText("" + (int)awakeTime + "h" + Math.round((awakeTime - (int)awakeTime)*60.0) + "min");
@@ -477,10 +485,19 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         ((TextView) findViewById(R.id.displayNbrOfWakeupsSleep)).setText("" + nbrOfWakups + " gånger");
     }
 
+    /**
+     * Method used to get the activity context
+     * @return the context of the current activity
+     */
     public Context getActivity() {
         return this;
     }
 
+    /**
+     * Method used to fetch the data points from the sleep diary.
+     * @param date
+     * @return
+     */
     private List<DataPoint[]> fetchDataPoints(Date date) {
         List<DataPoint> lightSleep = new ArrayList<>();
         List<DataPoint> deepSleep = new ArrayList<>();
@@ -584,12 +601,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         currentCalendar = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
         Date activeDate = currentCalendar.getTime();
 
-        //Used for testing
-        //produceFakeData();
-
         //View viewGraph = findViewById(R.id.imageViewGraph);
         //DrawDiagram graphDiagram = new DrawDiagram(viewGraph.getContext());
-
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
         ((TextView) findViewById(R.id.textDay)).setText("Idag");

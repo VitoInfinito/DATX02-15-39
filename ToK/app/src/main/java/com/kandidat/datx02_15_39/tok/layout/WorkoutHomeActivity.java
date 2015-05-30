@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,10 +27,12 @@ import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.jawbone.JawboneSetupActivity;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
+import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
 import com.kandidat.datx02_15_39.tok.model.workout.CustomListAdapter;
 import com.kandidat.datx02_15_39.tok.model.workout.Workout;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutActivity;
@@ -70,7 +71,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     private int weekOffset = 0;
     private Calendar cal;
 
-    private boolean WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING = true;
+    private boolean isWeekView = true;
 
     private Integer [] imgid ={
             R.drawable.yoga_icon,
@@ -137,10 +138,10 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
 
         //Dummy listitem
-        Workout workout = new Workout(startDate, stopDate, 15, Workout.WorkoutType.CARDIO);
+       /* Workout workout = new Workout(startDate, stopDate, 15, Workout.WorkoutType.CARDIO);
         WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
         WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
-        workoutDiary.addActivity(startDate, workoutActivity);
+        workoutDiary.addActivity(startDate, workoutActivity);*/
 
         todaysDate = Calendar.getInstance().getTime();
         diary = (WorkoutDiary) WorkoutDiary.getInstance();
@@ -149,8 +150,9 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         cal = Calendar.getInstance();
 
-        graph = (GraphView) findViewById(R.id.workout_graph);
-        series = new BarGraphSeries<>();
+        setupGraph();
+        //graph = (GraphView) findViewById(R.id.workout_graph);
+        //series = new BarGraphSeries<>();
         //fillListWithDummyData();
         fillListWithDataFromCalendar(cal);
 
@@ -158,7 +160,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         updateDayScreen(cal);
 
-        if(WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING){
+        if(isWeekView){
             textDay.setText("Denna vecka");
         }else {
             textDay.setText("Idag");
@@ -241,8 +243,9 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
                     Log.e(TAG, "Xid: " + xid);
 
                     if(diary.getActivity(Utils.MillisToCalendar(Double.valueOf((ltm.get("time_completed").toString())).longValue() * 1000), xid) == null) {
+
                         //Creating new activity with a workout using the information from UP and adding it to the diary
-                        diary.addActivity(new WorkoutActivity(xid, new Date(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000),
+                        diary.addActivity(new WorkoutActivity(xid, Utils.MillisToCalendar(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000),
                                 new Workout(new Date(Double.valueOf((ltm.get("time_created").toString())).longValue()*1000),
                                         new Date(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000),
                                         convertUPStringToInt(details.get("intensity").toString()), convertSubToWork(convertUPStringToInt(ltm.get("sub_type").toString())),
@@ -298,6 +301,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     private void updateActivityList (ArrayList<WorkoutActivity> workoutActivityList){
         double intensity =0;
         ArrayList <Workout> workoutArrayList = new ArrayList<>();
+        GraphView wGraph = (GraphView) findViewById(R.id.workout_graph);
 
         for(int i = 0; i<workoutActivityList.size(); i++) {
             for (int j = 0; j < workoutActivityList.get(i).getWorkoutList().size(); j++) {
@@ -309,7 +313,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
             intensity += workout.getIntensity();
         }
 
-        if(series!= null){
+        /*if(series!= null){
             series.resetData(new DataPoint[]{
                    // new DataPoint(0,0),
                     //new DataPoint(10, intensity),
@@ -319,19 +323,20 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
             });
         series.setSpacing(20);
-
-        }
+va
+        }*/
 
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
 //        staticLabelsFormatter.setHorizontalLabels(new String[] {"Antal });
-        graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
 
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Intensitet");
-        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+        wGraph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+
+        wGraph.getGridLabelRenderer().setVerticalAxisTitle("Intensitet");
+        wGraph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
 
         series.setColor(Color.DKGRAY);
-        graph.removeSeries(series);
-        graph.addSeries(series);
+        //graph.removeSeries(series);
+        //graph.addSeries(series);
     }
 
     private void updateDayScreen(Calendar cal){
@@ -372,7 +377,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
     public void onNextButtonClick(View view){
         //Only dayview
-        if (!WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING && dayOffset != 0) { // makes sure that you can't proceed past today's date
+        if (!isWeekView && dayOffset != 0) { // makes sure that you can't proceed past today's date
 
             dayOffset++;
             cal.add(Calendar.DATE, 1);
@@ -387,7 +392,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
             }
             updateDayScreen(cal);
         //Only weekview
-        } else if (WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING && weekOffset != 0) {
+        } else if (isWeekView && weekOffset != 0) {
             weekOffset++;
             cal.add(Calendar.DATE, 7);
 
@@ -404,8 +409,8 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     }
 
     public void onPreviousButtonClick(View view){
-        Log.e("Is this weekview?", " - " + WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING);
-        if (!WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING) {
+        Log.e("Is this weekview?", " - " + isWeekView);
+        if (!isWeekView) {
             Log.e("Inside", "I'm fucking inside DAYVIEEEW!");
             dayOffset--;
             Log.e("Dayoffset", "" + dayOffset);
@@ -452,13 +457,13 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     }
 
     public void onWeekButtonClick(View view){
-        WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING = true;
+        isWeekView = true;
         updateWeekScreen(cal);
         resetWeek();
     }
 
     public void onDayButtonClick(View view){
-        WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING = false;
+        isWeekView = false;
         updateDayScreen(cal);
         resetDay();
     }
@@ -512,5 +517,65 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     private int convertUPStringToInt(String integerWannabe) {
         return Integer.parseInt(integerWannabe.substring(0, integerWannabe.indexOf(".")));
 
+    }
+
+    private DataPoint[] fetchDataPoints(Date date) {
+        List<DataPoint> workoutGraphPoints = new ArrayList<>();
+        List<Workout> workoutList;
+        if(isWeekView) {
+            workoutList = diary.getWorkoutListFromWeek(date);
+        }else {
+            workoutList = diary.getWorkoutListFromDate(date);
+        }
+
+        int steps = 0;
+        int calories = 0;
+        int intensity = 0;
+        int nbrOfIntensities = 0;
+        if(!workoutList.isEmpty()) {
+            for (int i = 0; i < workoutList.size(); i++) {
+                Workout workout = workoutList.get(i);
+
+                steps += workout.getSteps();
+                calories += workout.getCalories();
+                intensity += workout.getIntensity();
+                nbrOfIntensities++;
+            }
+        }
+        if(nbrOfIntensities != 0)
+            intensity /= nbrOfIntensities;
+
+        return new DataPoint[]{
+                new DataPoint(0,0),
+                new DataPoint(10, steps),
+                new DataPoint(20, calories),
+                new DataPoint(30, intensity),
+                new DataPoint(40, 0),
+        };
+    }
+
+    private void setupGraph() {
+        cal = Calendar.getInstance();
+        Date activeDate = cal.getTime();
+
+        GraphView wGraph = (GraphView) findViewById(R.id.workout_graph);
+
+        DataPoint[] barGraphPoints = fetchDataPoints(activeDate);
+        series = new BarGraphSeries<>(barGraphPoints);
+
+        wGraph.addSeries(series);
+        series.setColor(Color.rgb(0, 204, 204));
+
+        //Y Axis bounds
+        wGraph.getViewport().setScalable(true);
+        wGraph.getViewport().setYAxisBoundsManual(true);
+
+
+    //    updateInformationDisplay();
+
+        series.setSpacing(20);
+        wGraph.getGridLabelRenderer().setNumVerticalLabels(0);
+
+        //wGraph.getGridLabelRenderer().setGridColor(Color.argb(0,255,255,255));
     }
 }

@@ -55,10 +55,11 @@ public class AccessoriesHomeActivity extends CustomActionBarActivity {
     }
 
     public void connectUPOnClick(View view){
-        startActivity(new Intent(this, JawboneSetupActivity.class));
+        startNewActivity(JawboneSetupActivity.class);
     }
 
     public void connectScaleOnClick() {
-		startActivity(new Intent(this, BluetoothActivity.class));
+		startNewActivity(BluetoothActivity.class);
     }
+
 }
