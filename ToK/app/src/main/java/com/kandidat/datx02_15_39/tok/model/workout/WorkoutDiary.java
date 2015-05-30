@@ -125,7 +125,7 @@ public class WorkoutDiary extends AbstractDiary {
         Calendar startCal = Utils.DateToCalendar(d);
         //By no means perfect but enough for this implementation
         startCal.set(Calendar.DAY_OF_MONTH, startCal.get(Calendar.DAY_OF_MONTH) - 7);
-        List<IDiaryActivity> activities = showWeekActivities(startCal, Utils.DateToCalendar(d));
+        List<IDiaryActivity> activities = showPeriodActivities(startCal, Utils.DateToCalendar(d));
         return fetchWorkoutFromActivities(activities);
     }
 
