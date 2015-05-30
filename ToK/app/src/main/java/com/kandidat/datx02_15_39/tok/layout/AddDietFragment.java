@@ -37,7 +37,9 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by Lagerstedt on 2015-04-23.
+ * Fragment tht will make it possible to search for recipes and/or food object to add to you
+ * diet activity.
+ * This will also make it possible to add new food objects and ned recipes to the database.
  */
 public class AddDietFragment extends DietFragment{
 
@@ -72,6 +74,10 @@ public class AddDietFragment extends DietFragment{
 		mDbHelper = new DataBaseHelper(activity.getApplicationContext(), Utils.DATABASE_VERSION);
 	}
 
+	/**
+	* A method to initial all the listeners on buttons and search view aswell as 	the argument set
+	* on the Fragment that is a Serializable object, and in this case containing a meal.
+	 */
 	private void init() {
 		//Init listeners to button on fragment
 		View.OnClickListener listener = new View.OnClickListener() {
@@ -113,6 +119,7 @@ public class AddDietFragment extends DietFragment{
 	@Override
 	public void onPause() {
 		super.onPause();
+		//addded to make the bluetooth connection turn off if its started
 		if(sba != null) {
 			if (weightUpdateThread != null) {
 				weightUpdateThread.interrupt();
@@ -128,6 +135,7 @@ public class AddDietFragment extends DietFragment{
 	@Override
 	public void onResume() {
 		super.onResume();
+		//Starts the bluetooth connection if we reconnect an had the scale connected earlier
 		if (saveStateForScale){
 			sba = new ScaleBluetoothAdapter(getView().getContext(), (CustomActionBarActivity) getActivity());
 			sba.bluetoothSearch();
@@ -135,21 +143,23 @@ public class AddDietFragment extends DietFragment{
 		updateList();
 	}
 
+	/**
+	* This method is a second hand to search in the Database aswell as updating the result
+	* of the search
+	*/
 	private void searchForItems(String searchWord){
 		searchResultFood = (ArrayList<Food>) mDbHelper.searchFoodItems(searchWord);
 		updateList();
 		((TextView)getView().findViewById(R.id.info_about_search_list)).setText("Search result for " + searchWord);
-//		searchResultFood = new ArrayList<>(Database.getInstance().searchForFood(searchWord));
-//		updateList();
-//		((TextView)getView().findViewById(R.id.info_about_search_list)).setText("Search result for " + searchWord);
 	}
 
 	/**
-	 * When the barcode button is pressed the Barcode app will open and we will ask for the EAN,
-	 * this will not activate the button and therefore Barcode cant give a search result.
-	 * The Scale button will try to connect to the the scale and recive some information
+	 * When pressing one of the three alternatives of adding food this method is called.
+	 * The plus button is for manually adding food to you meal.
+	 * The Scale button is to used to add food with automaticly adding weight, and when pressing the
+	 * button it will try to connect to the the scale and recive some information
 	 * if its connected or not.
-	 * All but Barcode is activatable
+	 * The Recipe button will change the list to displaying recipes that ccan be added to you meal
 	 * @param view
 	 */
 	public void onDietSelectorClick(View view) {
@@ -171,7 +181,6 @@ public class AddDietFragment extends DietFragment{
 			}else if(ib.getId() == R.id.scale_button_view_diet) {
 				updateList();
 				confirmScaleConnection();
-//					startActivity(new Intent(getView().getContext(), BluetoothActivity.class));
 			}else if (ib.getId() == R.id.recipe_button_view_diet){
 				updateList();
 			}
@@ -179,7 +188,7 @@ public class AddDietFragment extends DietFragment{
 	}
 
 	/*
-	Updates the list that is show so that new items appear
+	Updates the list that is shown with the new food item
 	 */
 	private void updateSearchList(){
 		searchResultList = (ListView) getView().findViewById(R.id.food_search_item_container);
@@ -194,12 +203,11 @@ public class AddDietFragment extends DietFragment{
 		searchResultList.setOnItemClickListener(new SearchItemClickListener());
 	}
 
-	private void updateSearchList(List<Food> foodList){
-		searchResultFood = new ArrayList<Food>(foodList);
-		updateList();
-	}
-
-	private void updateList() {
+	/**
+	 * Method to update the result list view depending on you search, and depending och what
+	 * button is activated the one that's used to adding food or the one for recipes
+	 */
+	public void updateList() {
 		if(activatedObject == R.id.recipe_button_view_diet){
 			updateRecipeList();
 		}else{
@@ -227,6 +235,9 @@ public class AddDietFragment extends DietFragment{
 		}
 	}
 
+	/*
+	Updates the list that is shown with the new recipes
+	 */
 	private void updateRecipeList() {
 		searchResultList = (ListView) getView().findViewById(R.id.food_search_item_container);
 		searchResultList.removeAllViewsInLayout();
@@ -241,7 +252,9 @@ public class AddDietFragment extends DietFragment{
 	}
 
 	/**
-	 * This Class is added and extends ArrayAdapter and it lets me draw what i want to the list item
+	 * This Class is added and extends ArrayAdapter and it lets the program
+	 * draw what is wanted in the list view.
+	 * This is used when to display food items.
 	 */
 	private class SearchResultAdapter extends ArrayAdapter<Food>
 	{
@@ -268,9 +281,10 @@ public class AddDietFragment extends DietFragment{
 			return convertView;
 		}
 	}
-
 	/**
-	 * This Class is added and extends ArrayAdapter and it lets me draw what i want to the list item
+	 * This Class is added and extends ArrayAdapter and it lets the program
+	 * draw what is wanted in the list view.
+	 * This is used when to display recipes.
 	 */
 	private class RecipeResultAdapter extends ArrayAdapter<Recipe>
 	{
@@ -301,7 +315,7 @@ public class AddDietFragment extends DietFragment{
 
 
 	/**
-	 * This class is handel all the clicks on the listview
+	 * This class is handel click event on the listview
 	 */
 	private class SearchItemClickListener implements ListView.OnItemClickListener {
 		@Override
@@ -310,6 +324,13 @@ public class AddDietFragment extends DietFragment{
 		}
 	}
 
+	/**
+	 * Method to handle the items on the listview that is pressed, and this is depending on if the
+	 * item is a recipe or food item.
+	 * Food item will only add it to a list,
+	 * but if it is a recipe it will change the fragment.
+	 * @param position
+	 */
 	private void selectedItem(int position) {
 		if(getView().findViewById(R.id.recipe_button_view_diet).isActivated()){
 			//TODO when we implement so we have a database and can store food
@@ -339,6 +360,7 @@ public class AddDietFragment extends DietFragment{
 	@Override
 	public void onStop() {
 		super.onStop();
+		//When the application stops we want to end the bluetooth connection if its active.
 		if(sba != null) {
 			if (weightUpdateThread != null) {
 				weightUpdateThread.interrupt();
@@ -349,6 +371,10 @@ public class AddDietFragment extends DietFragment{
 		}
 	}
 
+	/**
+	 * Called to display a dialog where the user can choose between connect the specified
+	 * bluetooth unit or a new one.
+	 */
 	private void confirmScaleConnection() {
 		if(sba == null || !sba.isConnected()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getView().getContext());
@@ -372,9 +398,11 @@ public class AddDietFragment extends DietFragment{
 		}
 	}
 
-
-
-
+	/**
+	 * Method called when a item in the list is pressed and will show a dialog box with the weight
+	 * of the scale that could be tared or saved with the selected item*
+	 * @param item - the selected item*
+	 */
 	private void showWeight(Food item) {
 		if(sba != null && sba.isConnected() ) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getView().getContext());
@@ -396,6 +424,9 @@ public class AddDietFragment extends DietFragment{
 		}
 	}
 
+	/**
+	 * Listener on the Tare button to not close the dialog it belongs to.
+	 */
 	private class DialogListener implements View.OnClickListener {
 
 		DialogInterface dialogInterface;
@@ -412,7 +443,10 @@ public class AddDietFragment extends DietFragment{
 		}
 	}
 
-
+	/**
+	 * A runnable class to update the weight on the dialog aswell as get the weight from the
+	 * Bluetooth class
+	 */
 	private class WeightRunnable implements Runnable {
 		Handler handler = new Handler();
 		TextView weightDisplay;
@@ -424,11 +458,15 @@ public class AddDietFragment extends DietFragment{
 
 		@Override
 		public void run() {
-			handler.postDelayed(this, 1000);
+			handler.postDelayed(this, 500);
 			scanBluetoothResponse(weightDisplay);
 		}
 	}
 
+	/**
+	 * Methods used to display the weight a textview that is taken from the bluetooth adapter
+	 * @param txv
+	 */
 	private void scanBluetoothResponse(TextView txv) {
 		String tmp = "--";
 		if(sba != null && !(sba.getWeight() + "").equals("-1")) {
@@ -437,10 +475,17 @@ public class AddDietFragment extends DietFragment{
 		(txv).setText(tmp);
 	}
 
+	/**
+	 * Method to send message on the screen
+	 * @param s - message
+	 */
 	void messageToast(String s){
 		Toast.makeText(getView().getContext(), s, Toast.LENGTH_SHORT).show();
 	}
 
+	/**
+	 * DialogListener to add Food object to your permanetly DietActivity
+	 */
 	private class SaveWeightListener implements DialogInterface.OnClickListener {
 
 		private Food food;
@@ -467,6 +512,10 @@ public class AddDietFragment extends DietFragment{
 		}
 	}
 
+	/**
+	 * Method to be able to send message to the user.
+	 * @param s - The message
+	 */
 	public void sendMessage(String s){
 		Toast.makeText(getView().getContext(), s, Toast.LENGTH_SHORT).show();;
 	}

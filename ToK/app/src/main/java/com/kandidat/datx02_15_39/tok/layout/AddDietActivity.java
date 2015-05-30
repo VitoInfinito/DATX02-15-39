@@ -14,6 +14,12 @@ import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.Recipe;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
+
+/**
+ * Activity to handle input to the diet diary and create Diet activity.
+ * This activity will change fragments to make it easier to keep the food item added before
+ * adding them to the diary. You will also be able to change and modify recipes.
+ */
 public class AddDietActivity extends CustomActionBarActivity {
 
 	Fragment currentFragement, earlierFragment; //TODO implement this
@@ -33,6 +39,7 @@ public class AddDietActivity extends CustomActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		//This decides what should be displayed in the right upper corner
 		if(currentFragement instanceof AddDietFragment||
 				currentFragement instanceof RecipeViewFragment) {
 			getMenuInflater().inflate(R.menu.menu_with_moveforward, menu);
@@ -49,7 +56,9 @@ public class AddDietActivity extends CustomActionBarActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		//noinspection SimplifiableIfStatement
+		//This is called when we press buttons on Actionbar
+		//And the following if statements decides what do when i press the right corner button
+		//depending on which frament that is activated
 		if (id == R.id.right_corner_button_moveforward) {
 			//Gör så att currentFragment kan returnera en DietActivity
 			if(currentFragement instanceof AddDietFragment) {
@@ -64,7 +73,6 @@ public class AddDietActivity extends CustomActionBarActivity {
 						.commit();
 				invalidateOptionsMenu();
 			}else if(currentFragement instanceof RecipeViewFragment){
-				//Gör så att currentFragment kan returnera en DietActivity
 				DietActivity dietActivity = ((RecipeViewFragment) currentFragement).getDietActivity();
 				currentFragement = new ViewAddDietFragment();
 				Bundle bundle = new Bundle();
@@ -113,7 +121,10 @@ public class AddDietActivity extends CustomActionBarActivity {
 		changeFragment(fragment);
 	}
 
-
+	/*
+	Help method to keep track of the current fragment that is showing.
+	Even if we change it from one of the fragment
+	 */
 	private void changeFragment(Fragment fragment){
 		if(!(fragment instanceof AddDietToFragment)) {
 			if(currentFragement instanceof AddDietFragment
@@ -127,6 +138,8 @@ public class AddDietActivity extends CustomActionBarActivity {
 
 	@Override
 	public void onBackPressed() {
+		//Method to be able to jump between some of the fragments under the activity
+		// that is used when we add food from our databas or recipe.
 		if(currentFragement instanceof ViewAddDietFragment){
 			DietActivity dietActivity = ((DietFragment) currentFragement).getDietActivity();
 			currentFragement = new AddDietFragment();
