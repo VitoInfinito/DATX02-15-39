@@ -29,6 +29,7 @@ import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.jawbone.IGraphSetup;
 import com.kandidat.datx02_15_39.tok.jawbone.JawboneSetupActivity;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
@@ -52,7 +53,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class WorkoutHomeActivity extends CustomActionBarActivity {
+public class WorkoutHomeActivity extends CustomActionBarActivity implements IGraphSetup{
 
     private WorkoutDiary diary;
 
@@ -519,7 +520,7 @@ va
 
     }
 
-    private DataPoint[] fetchDataPoints(Date date) {
+    public List<DataPoint[]> fetchDataPoints(Date date) {
         List<DataPoint> workoutGraphPoints = new ArrayList<>();
         List<Workout> workoutList;
         if(isWeekView) {
@@ -545,22 +546,26 @@ va
         if(nbrOfIntensities != 0)
             intensity /= nbrOfIntensities;
 
-        return new DataPoint[]{
+        List<DataPoint[]> dataPointsList = new ArrayList<>();
+        dataPointsList.add(new DataPoint[]{
                 new DataPoint(0,0),
                 new DataPoint(10, steps),
                 new DataPoint(20, calories),
                 new DataPoint(30, intensity),
                 new DataPoint(40, 0),
-        };
+        });
+
+        return new ArrayList<>(dataPointsList);
+
     }
 
-    private void setupGraph() {
+    public void setupGraph() {
         cal = Calendar.getInstance();
         Date activeDate = cal.getTime();
 
         GraphView wGraph = (GraphView) findViewById(R.id.workout_graph);
 
-        DataPoint[] barGraphPoints = fetchDataPoints(activeDate);
+        DataPoint[] barGraphPoints = fetchDataPoints(activeDate).get(0);
         series = new BarGraphSeries<>(barGraphPoints);
 
         wGraph.addSeries(series);

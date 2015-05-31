@@ -33,6 +33,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.OnDataPointTapListener;
 import com.jjoe64.graphview.series.Series;
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.jawbone.IGraphSetup;
 import com.kandidat.datx02_15_39.tok.jawbone.JawboneSetupActivity;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
@@ -55,7 +56,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class SleepHomeActivity extends CustomActionBarActivity {
+public class SleepHomeActivity extends CustomActionBarActivity implements IGraphSetup{
 
     private static final String TAG = SleepHomeActivity.class.getSimpleName();
 
@@ -493,12 +494,8 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         return this;
     }
 
-    /**
-     * Method used to fetch the data points from the sleep diary.
-     * @param date
-     * @return
-     */
-    private List<DataPoint[]> fetchDataPoints(Date date) {
+
+    public List<DataPoint[]> fetchDataPoints(Date date) {
         List<DataPoint> lightSleep = new ArrayList<>();
         List<DataPoint> deepSleep = new ArrayList<>();
         List<DataPoint> coverSleep = new ArrayList<>();
@@ -595,7 +592,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
         }
     }
 
-    private void setupGraph() {
+    public void setupGraph() {
         //TODO change to not account for specific times i.e seconds and minutes
         Calendar cal = Calendar.getInstance();
         currentCalendar = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
