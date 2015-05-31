@@ -1,24 +1,18 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +34,6 @@ import com.kandidat.datx02_15_39.tok.model.account.Account;
 import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepActivity;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepDiary;
-import com.kandidat.datx02_15_39.tok.utility.JawboneUtils;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 import java.text.SimpleDateFormat;
@@ -56,6 +49,9 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+/**
+ * Activity class for sleep home
+ */
 public class SleepHomeActivity extends CustomActionBarActivity implements IGraphSetup{
 
     private static final String TAG = SleepHomeActivity.class.getSimpleName();
@@ -74,11 +70,11 @@ public class SleepHomeActivity extends CustomActionBarActivity implements IGraph
     //For lack of better usage with graph view
     private LineGraphSeries<DataPoint> coverSleepSeries;
 
-	@SuppressWarnings("SimpleDateFormat")
+    @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat sdfShowDay = new SimpleDateFormat("yyyy-MM-dd");
-	@SuppressWarnings("SimpleDateFormat")
+    @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat sdfShowTime = new SimpleDateFormat("HH:mm");
-	@SuppressWarnings("SimpleDateFormat")
+    @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat sdfShowFullTime = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 
     @Override

@@ -13,6 +13,9 @@ import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
+/**
+ * Activity class used for creating a new user
+ */
 public class CreateUserActivity extends ActionBarActivity {
 
     @Override
@@ -21,6 +24,10 @@ public class CreateUserActivity extends ActionBarActivity {
         setContentView(R.layout.activity_create_user);
     }
 
+    /**
+     * Method called when user clicked on create user button
+     * @param view not used
+     */
     public void onClickcreateUserSignup(View view){
 
         String newName = ((EditText)findViewById(R.id.createUserUsername)).getText().toString();

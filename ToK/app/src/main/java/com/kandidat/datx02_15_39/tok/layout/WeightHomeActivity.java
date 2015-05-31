@@ -34,6 +34,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+/**
+ * Activity class for Weight home
+ */
 public class WeightHomeActivity extends CustomActionBarActivity {
     private WeightDiary diary;
 

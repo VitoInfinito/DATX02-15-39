@@ -39,14 +39,12 @@ public class JawboneSetupActivity extends Activity {
 
     private static final String TAG = JawboneSetupActivity.class.getSimpleName();
 
+    // The ids used to connect with the specified application
     private static final String CLIENT_ID = "9qZV-Q8xius";
     private static final String CLIENT_SECRET = "413cad28a2662f161a8de887fe2d43d38b88f834";
 
     // This has to be identical to the OAuth redirect url setup in Jawbone Developer Portal
-    //private static final String OAUTH_CALLBACK_URL = "up-platform://redirect";
-    //private static final String OAUTH_CALLBACK_URL = "http://localhost/helloup?";
     private static final String OAUTH_CALLBACK_URL = "http://localhost/tok?";
-    //private static final String OAUTH_CALLBACK_URL = "http://lethe.se/authtok.html";
 
 
     private List<UpPlatformSdkConstants.UpPlatformAuthScope> authScope;
@@ -78,6 +76,9 @@ public class JawboneSetupActivity extends Activity {
         setConnectionText();
     }
 
+    /**
+     * Method for setting the connection text in the activity
+     */
     private void setConnectionText() {
         String connectText = "Inte uppkopplad";
         int color = Color.argb(255, 107, 00, 00);
@@ -151,6 +152,10 @@ public class JawboneSetupActivity extends Activity {
         }
     };
 
+    /**
+     * Method for creating an intent for web view
+     * @return an intent of the web view
+     */
     private Intent getIntentForWebView() {
         Uri.Builder builder = OauthUtils.setOauthParameters(CLIENT_ID, OAUTH_CALLBACK_URL, authScope);
 
