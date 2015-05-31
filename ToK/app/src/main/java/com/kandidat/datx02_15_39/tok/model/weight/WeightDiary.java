@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by tomasharselquist on 03/03/15.
+ * Class used as diary containing all data about weights
  */
 public class WeightDiary extends AbstractDiary {
 
@@ -32,15 +32,19 @@ public class WeightDiary extends AbstractDiary {
 
     /**
      * Fetch the weight belonging to a selected date
-     * @param d
-     * @return
+     * @param d is the referenced date
+     * @return an activity containing a weight for the specified date
      */
     public WeightActivity getWeightFromDate(Date d) {
         List<IDiaryActivity> list = getActivitiesFromDate(d);
         return list.isEmpty() ? null : (WeightActivity) list.get(0);
     }
 
-    //TODO remove later on
+    /**
+     * Method used to fetch the activites used on a single date
+     * @param d is the referenced date
+     * @return a list of activities
+     */
     public List<IDiaryActivity> getActivitiesFromDate(Date d) {
         return new ArrayList<>(getActivitiesFromTable(d));
     }
