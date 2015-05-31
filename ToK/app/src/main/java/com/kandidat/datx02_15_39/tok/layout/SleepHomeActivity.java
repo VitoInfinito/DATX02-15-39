@@ -71,7 +71,7 @@ public class SleepHomeActivity extends CustomActionBarActivity implements IGraph
     private LineGraphSeries<DataPoint> deepSleepSeries;
     private LineGraphSeries<DataPoint> awakeSleepSeries;
     private LineGraphSeries<DataPoint> manualSleepSeries;
-    //For lack of a better idea
+    //For lack of better usage with graph view
     private LineGraphSeries<DataPoint> coverSleepSeries;
 
 	@SuppressWarnings("SimpleDateFormat")
@@ -89,7 +89,6 @@ public class SleepHomeActivity extends CustomActionBarActivity implements IGraph
 		findViewById(R.id.previousDayButton).setBackgroundColor(Color.alpha(0));
 	    findViewById(R.id.nextDayButton).setBackgroundColor(Color.alpha(0));
 
-//        previousDayButton
         ImageButton earlierDateButton = (ImageButton) findViewById(R.id.previousDayButton);
         earlierDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,6 +174,7 @@ public class SleepHomeActivity extends CustomActionBarActivity implements IGraph
 
     /**
      * Method used to fetch the latest sleep events from UP
+     * The method will relay the call to a callback function
      */
     private void fetchSleepFromUP() {
         Log.e(TAG, "making Get Sleep Events List api call ...");
@@ -265,6 +265,7 @@ public class SleepHomeActivity extends CustomActionBarActivity implements IGraph
 
     /**
      * Method used to call the sleep phases with a specific ID
+     * The method will relay the call to a callback function
      * @param xid is the ID used when calling for the phases connected to that ID
      */
     private void fetchSleepTicksFromUPWithXid(String xid) {
@@ -361,6 +362,7 @@ public class SleepHomeActivity extends CustomActionBarActivity implements IGraph
 
     /**
      * Method used to fetch the graph connected with a certain ID
+     * The method will relay the call to a callback function
      * @param xid is the ID the graph is connected with
      */
     private void fetchSleepGraphFromUPWithXid(String xid) {
