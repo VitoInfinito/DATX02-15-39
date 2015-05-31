@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by emma on 2015-02-24.
+ * Class used to define a workout activity
  */
 public class WorkoutActivity extends AbstractDiaryActivity {
 
@@ -21,6 +21,11 @@ public class WorkoutActivity extends AbstractDiaryActivity {
     private Calendar calendar;
     private final String id;
 
+    /**
+     * Constructor used when only referencing a workout with an ID
+     * @param id is the id used
+     * @param workout is the workout referenced
+     */
     public WorkoutActivity(String id, Workout workout) {
         this.id=id;
         workoutList = new ArrayList<Workout>();
@@ -28,6 +33,12 @@ public class WorkoutActivity extends AbstractDiaryActivity {
         calendar = Utils.DateToCalendar(workout.getEndTime());
     }
 
+    /**
+     * Constructor used when adding a calendar to the workout
+     * @param id is the id used
+     * @param calendar is the specifically referenced calendar
+     * @param workout is the workout used in the activity
+     */
     public WorkoutActivity(String id, Calendar calendar, Workout workout) {
         this.id=id;
         workoutList = new ArrayList<Workout>();
