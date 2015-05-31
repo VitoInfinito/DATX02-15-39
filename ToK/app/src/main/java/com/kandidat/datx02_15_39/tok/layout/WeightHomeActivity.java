@@ -55,7 +55,7 @@ public class WeightHomeActivity extends CustomActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weight_home);
-        initMenu(R.layout.activity_weight_home);
+        initMenu();
 
         diary = (WeightDiary) WeightDiary.getInstance();
 

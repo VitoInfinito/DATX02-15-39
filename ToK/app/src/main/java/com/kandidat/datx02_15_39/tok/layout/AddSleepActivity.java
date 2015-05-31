@@ -16,8 +16,6 @@ import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.jawbone.upplatformsdk.api.ApiManager;
-import com.jawbone.upplatformsdk.utils.UpPlatformSdkConstants;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -68,7 +66,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_sleep);
-		initMenu(R.layout.activity_add_sleep);
+		initMenu();
 
 	    Calendar currentCalendar = Calendar.getInstance();
 

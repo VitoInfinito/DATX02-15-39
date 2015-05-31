@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.util.Pair;
@@ -27,12 +26,10 @@ import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.jawbone.JawboneSetupActivity;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
-import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
 import com.kandidat.datx02_15_39.tok.model.workout.CustomListAdapter;
 import com.kandidat.datx02_15_39.tok.model.workout.Workout;
 import com.kandidat.datx02_15_39.tok.model.workout.WorkoutActivity;
@@ -93,7 +90,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_workout_home);
-		initMenu(R.layout.activity_workout_home);
+		initMenu();
 
         Calendar tmpCal = Calendar.getInstance();
         Date startDate = tmpCal.getTime();

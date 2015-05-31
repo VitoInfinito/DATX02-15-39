@@ -1,7 +1,6 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,7 +27,7 @@ public class AddDietActivity extends CustomActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_diet);
-		initMenu(R.layout.activity_add_diet);
+		initMenu();
 		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80FF6F00));
 		currentFragement = new AddDietFragment();
 		if (savedInstanceState == null) {

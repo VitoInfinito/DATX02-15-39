@@ -39,7 +39,12 @@ public class CustomActionBarActivity extends ActionBarActivity{
 	private DrawerLayout mDrawerLayout;
 	protected int screenWidth, screenHeight;
 
-	protected void initMenu(int layout){
+
+	/**
+	 * Method to initial a activity with menu on the left hand side.
+	 * This gives all buttons a listener and divides the menu item in different sections.
+	 */
+	protected void initMenu(){
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		this.screenHeight = dm.heightPixels;
@@ -140,7 +145,9 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 	}
 
-
+	/**
+	 * The menu item click listener. This will handle the input on the menu.
+	 */
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView parent, View view, int position, long id) {
@@ -148,50 +155,55 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		}
 	}
 
-	/** Swaps fragments in the main content view */
+	/** Swaps fragments in the main content view
+	 * This is a helper class for the menu item click listener that changes the Activity depending
+	 * on which menu item you press.
+	 * @param parent - The view that was pressed
+	 * @param position - The position it has in the listview
+	 */
 	private void selectItem(AdapterView parent, int position) {
 		mDrawerLayout.closeDrawer(GravityCompat.START);
 		if(parent.getId() == R.id.left_drawer_list_top){
 			switch(position){
 				case 0:
-					startActivity(new Intent(this, MainActivity.class));
+					startNewActivity(MainActivity.class);
 					break;
 				default:
-					Toast.makeText(this, "Please Report this button is not implemented, TOP", Toast.LENGTH_SHORT).show();
+					sendToast("Var god rapportera fel, denna knapp är inte implementerad, DiaryTop");
 			}
 		}else if(parent.getId() == R.id.left_drawer_list_diary){
 			switch(position){
 				case 0:
-					startActivity(new Intent(this, WorkoutHomeActivity.class));
+					startNewActivity(WorkoutHomeActivity.class);
 					break;
 				case 1:
-					startActivity(new Intent(this, DietHomeActivity.class));
+					startNewActivity(DietHomeActivity.class);
 					break;
 				case 2:
-					startActivity(new Intent(this, SleepHomeActivity.class));
+					startNewActivity(SleepHomeActivity.class);
 					break;
 				case 3:
-                    startActivity(new Intent(this, WeightHomeActivity.class));
+					startNewActivity(WeightHomeActivity.class);
 					break;
 				default:
-					Toast.makeText(this, "Please Report this button is not implemented, Diary", Toast.LENGTH_SHORT).show();
+					sendToast("Var god rapportera fel, denna knapp är inte implementerad, DiaryMid");
 			}
 		}else if(parent.getId() == R.id.left_drawer_list_setting){
 			switch(position){
 				case 0:
-                    startActivity(new Intent(this, AccountHomeActivity.class));
+					startNewActivity(AccountHomeActivity.class);
 					break;
 				case 1:
-                    startActivity(new Intent(this, AccessoriesHomeActivity.class));
+                    startNewActivity(AccessoriesHomeActivity.class);
 					break;
 				case 2:
-					//TODO
+					sendToast("");
 					break;
 				default:
-					Toast.makeText(this, "Please Report this button is not implemented, DiaryP", Toast.LENGTH_SHORT).show();
+					sendToast("Var god rapportera fel, denna knapp är inte implementerad, DiaryBot");
 			}
 		}else{
-			Toast.makeText(this, "Should not happen", Toast.LENGTH_LONG).show();
+			sendToast("Borde inte hända, var god rapportera fel");
 		}
 	}
 
@@ -215,13 +227,14 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-		// Handle your other action bar items...
-
 		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
 	public void onBackPressed() {
+		/*
+		This added to make the user aware of when the user leaves the application.
+		 */
 		if(this.getClass() == MainActivity.class) {
 			new AlertDialog.Builder(this)
 									.setTitle("Really Exit?")
@@ -238,11 +251,17 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		}
 	}
 
+	/**
+	 * Method to exit the program
+	 */
 	private void quitPrograme(){
 		this.finish();
 	}
 
-
+	/**
+	 * This is a helper class to represent the menu items.
+	 * This is needed because of the adapter that is used.
+	 */
 	public class MenuItems{
 		private String title;
 		private int icon;
@@ -277,6 +296,9 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		}
 	}
 
+	/**
+	 * A class that extends adapters to be able to fill a List view with information
+	 */
 	public class MenuItemAdapter extends ArrayAdapter<MenuItems>
 	{
 		public MenuItemAdapter (Context context)
@@ -302,24 +324,50 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		}
 	}
 
+
+	/**
+	 * Helper method to handle a button selection of diet, sleep, training and weight.
+	 * This is usefull when you want to make buttons with all the different types of diarys.
+	 * @param view
+	 */
 	public void onAlertAddButtonClick(View view){
 		switch(view.getId()) {
 			case R.id.alert_diet_button:
-				startActivity(new Intent(this, AddDietActivity.class));
+				startNewActivity( AddDietActivity.class);
 				break;
 			case R.id.alert_sleep_button:
-				startActivity(new Intent(this, AddSleepActivity.class));
+				startNewActivity( AddSleepActivity.class);
 				break;
 			case R.id.alert_training_button:
-				startActivity(new Intent(this, AddWorkoutActivity.class));
+				startNewActivity( AddWorkoutActivity.class);
 				break;
 			case R.id.alert_weight_button:
+				startNewActivity(WeightHomeActivity.class);
 				break;
 		}
 	}
 
-	public void startNewActivity(Class<?> activity){
-		startActivity(new Intent(this, activity));
-		finish();
+	/**
+	 * Method added to not make redundant code in all activities.
+	 * This will close the acticity your on and switch to the wanted activity.class,
+	 * but it the new is the same as 'this.class' nothing will happen and if
+	 * 'this.class' == Main.class it will only switch acitivity.
+	 * @param activity - The new activity you want to switch to
+	 */
+	public void startNewActivity(Class<?> activity) {
+		if (this.getClass() != activity) {
+			startActivity(new Intent(this, activity));
+			if(activity == MainActivity.class) {
+				finish();
+			}
+		}
+	}
+
+	/**
+	 * Method to not have redundant code with toasts.
+	 * @param message - The message you want to display.
+	 */
+	public void sendToast(String message){
+		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 	}
 }

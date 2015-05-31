@@ -1,18 +1,15 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.jawbone.JawboneSetupActivity;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
-import com.kandidat.datx02_15_39.tok.utility.JawboneUtils;
 
 public class AccessoriesHomeActivity extends CustomActionBarActivity {
     private static final String TAG = AccessoriesHomeActivity.class.getSimpleName();
@@ -21,7 +18,7 @@ public class AccessoriesHomeActivity extends CustomActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accessories_home);
-        initMenu(R.layout.activity_accessories_home);
+        initMenu();
 
         setupUPConnectionButton();
     }

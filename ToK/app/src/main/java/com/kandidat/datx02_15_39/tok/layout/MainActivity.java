@@ -25,7 +25,7 @@ public class MainActivity extends CustomActionBarActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity);
-		initMenu(R.layout.activity_main_activity);
+		initMenu();
 
 
         //Fetching and/or setting up account name from saved preferences

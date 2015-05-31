@@ -3,22 +3,15 @@ package com.kandidat.datx02_15_39.tok.layout;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +32,6 @@ import com.kandidat.datx02_15_39.tok.model.account.Account;
 import com.kandidat.datx02_15_39.tok.model.sleep.Sleep;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepActivity;
 import com.kandidat.datx02_15_39.tok.model.sleep.SleepDiary;
-import com.kandidat.datx02_15_39.tok.utility.JawboneUtils;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 import java.text.SimpleDateFormat;
@@ -111,7 +103,7 @@ public class SleepHomeActivity extends CustomActionBarActivity {
 
 	    findViewById(R.id.detailedLayout).setBackgroundColor(Color.rgb(219, 219, 219));
 
-        initMenu(R.layout.activity_sleep_home);
+        initMenu();
         diary = (SleepDiary) SleepDiary.getInstance();
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#5F9EA0")));
 

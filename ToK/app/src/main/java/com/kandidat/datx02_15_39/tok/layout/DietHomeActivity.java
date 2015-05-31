@@ -64,7 +64,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_diet_home);
-        initMenu(R.layout.activity_diet_home);
+        initMenu();
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#80FF6F00")));
 
         dietGraph = (GraphView) findViewById(R.id.diet_graph);

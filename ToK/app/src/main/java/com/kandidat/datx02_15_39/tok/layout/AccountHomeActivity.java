@@ -1,6 +1,5 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,7 +10,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.kandidat.datx02_15_39.tok.R;
-import com.kandidat.datx02_15_39.tok.jawbone.JawboneSetupActivity;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
@@ -24,7 +22,7 @@ public class AccountHomeActivity extends CustomActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_home);
-        initMenu(R.layout.activity_account_home);
+        initMenu();
 
         account = Account.getInstance();
         ((EditText) findViewById(R.id.accountUsername)).setHint(account.getName());

@@ -1,17 +1,14 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TimePicker;
 
@@ -62,7 +59,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_workout);
-		initMenu(R.layout.activity_add_workout);
+		initMenu();
         //runnerButton = (ImageButton) findViewById(R.id.sprint_button);
 
         Calendar currentCalendar = Calendar.getInstance();
