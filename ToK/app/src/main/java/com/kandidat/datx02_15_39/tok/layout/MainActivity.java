@@ -15,7 +15,9 @@ import com.kandidat.datx02_15_39.tok.model.account.Account;
 import com.kandidat.datx02_15_39.tok.utility.JawboneUtils;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
-
+/**
+ * Main activity class for users home screen
+ */
 public class MainActivity extends CustomActionBarActivity {
     private Account account;
 
@@ -46,6 +48,7 @@ public class MainActivity extends CustomActionBarActivity {
             }
         }
 
+        //Not used in this stage. Is to be implemented later if needed
         //checkFormerConnection();
     }
 
@@ -84,7 +87,6 @@ public class MainActivity extends CustomActionBarActivity {
 
 	/**
 	 * Navigates to diet activity overview.
-	 *
 	 * @param view Not used.
 	 */
     public void onDietButtonClick(View view) {
@@ -93,7 +95,6 @@ public class MainActivity extends CustomActionBarActivity {
 
     /**
      * Navigates to sleep activity overview.
-     *
      * @param view Not used.
      */
     public void onSleepButtonClick(View view) {
@@ -102,7 +103,6 @@ public class MainActivity extends CustomActionBarActivity {
 
     /**
      * Navigates to workout activity overview.
-     *
      * @param view Not used.
      */
     public void onWorkOutButtonClick(View view){
@@ -111,42 +111,17 @@ public class MainActivity extends CustomActionBarActivity {
 
 
 	/**
-	 * Creates a popup with a numberpicker inside it to register your weight for the day.
-	 *
-	 * @param view View to get context from for the alert dialog
+	 * Navigates to the weight activity
+	 * @param view not used
 	 */
 	public void registerWeightOnClick(View view){
-		/*AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-
-		builder.setTitle("Weight");
-		builder.setIcon(R.drawable.weigth_scale);
-
-		NumberPicker weightPicker = new NumberPicker(this);
-
-		weightPicker.setMinValue(25);
-		weightPicker.setMaxValue(200);
-		weightPicker.setValue(80);
-
-		builder.setView(weightPicker);
-
-		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-
-			}
-		});
-		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				// User cancelled the dialog
-			}
-		});
-
-		AlertDialog dialog = builder.create();
-
-		dialog.show();*/
-
 		startActivity(new Intent(this, WeightHomeActivity.class));
 	}
 
+    /**
+     * Navigates to the goals activity
+     * @param view not used
+     */
 	public void goalsButtonOnClick(View view){
 		startActivity(new Intent(this, GoalActivity.class));
 	}

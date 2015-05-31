@@ -11,6 +11,9 @@ import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.jawbone.JawboneSetupActivity;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
 
+/**
+ * Activity class used for setting up the accessories to the application
+ */
 public class AccessoriesHomeActivity extends CustomActionBarActivity {
     private static final String TAG = AccessoriesHomeActivity.class.getSimpleName();
 
@@ -23,6 +26,9 @@ public class AccessoriesHomeActivity extends CustomActionBarActivity {
         setupUPConnectionButton();
     }
 
+    /**
+     * Method used for setting up the connection to UP button
+     */
     private void setupUPConnectionButton() {
         if(Account.getInstance().isConnectedUP()) {
             ((TextView) findViewById(R.id.connectUPButton)).setBackgroundColor(Color.argb(255, 47, 107, 20));
@@ -51,11 +57,19 @@ public class AccessoriesHomeActivity extends CustomActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Method for when clicking on the connect to UP button
+     * @param view not used
+     */
     public void connectUPOnClick(View view){
         startNewActivity(JawboneSetupActivity.class);
     }
 
-    public void connectScaleOnClick() {
+    /**
+     * Method for when clicking on the connect scale button
+     * @param view not used
+     */
+    public void connectScaleOnClick(View view) {
 		startNewActivity(BluetoothActivity.class);
     }
 

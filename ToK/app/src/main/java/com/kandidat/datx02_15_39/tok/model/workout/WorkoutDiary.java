@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * Created by Emma on 2015-02-20.
+ * The workout diary containing all workout specific data points for workout
  */
 public class WorkoutDiary extends AbstractDiary {
     private static IDiary instance;
@@ -41,6 +41,11 @@ public class WorkoutDiary extends AbstractDiary {
         return instance;
     }
 
+    /**
+     * Method to add an activity in the diary
+     * @param d is the referenced date the activity is added to
+     * @param activity is the activity to be added to the diary
+     */
     public void addActivity(Date d, IDiaryActivity activity) {
         addActivityToTable(d, activity);
     }
@@ -112,23 +117,44 @@ public class WorkoutDiary extends AbstractDiary {
     public void editActivity(Calendar c,String id, EditActivityParams eap) {
 
     }
-    public List<IDiaryActivity> getActivitiesFromDate(Date d) {
 
+    /**
+     * Used to fetch activites from a chosen date
+     * @param d is the date to fetch activities for
+     * @return a list of activites
+     */
+    public List<IDiaryActivity> getActivitiesFromDate(Date d) {
         return new ArrayList<>(getActivitiesFromTable(d));
     }
+
+    /**
+     * Used to fetch a list of workouts from chosen date
+     * @param d is the date to fetch workouts for
+     * @return a list of workouts
+     */
     public List<Workout> getWorkoutListFromDate(Date d) {
         List<IDiaryActivity> activities = getActivitiesFromDate(d);
         return fetchWorkoutFromActivities(activities);
     }
 
+    /**
+     * Used to fetch a list of workout for a week from a chosen date
+     * @param d is the referenced date the week ends at
+     * @return a list of workouts
+     */
     public List<Workout> getWorkoutListFromWeek(Date d) {
         Calendar startCal = Utils.DateToCalendar(d);
         //By no means perfect but enough for this implementation
-        startCal.set(Calendar.DAY_OF_MONTH, startCal.get(Calendar.DAY_OF_MONTH) - 7);
+        startCal.set(Calendar.DAY_OF_MONTH, startCal.get(Calendar.DAY_OF_MONTH) - 6);
         List<IDiaryActivity> activities = showPeriodActivities(startCal, Utils.DateToCalendar(d));
         return fetchWorkoutFromActivities(activities);
     }
 
+    /**
+     * Helper method to fetch workout from a list of activities
+     * @param acts the list of activities to extract all workouts from
+     * @return a list of workouts
+     */
     private List<Workout> fetchWorkoutFromActivities(List<IDiaryActivity> acts) {
         List<Workout> workoutList = new ArrayList<>();
         if(acts != null) {

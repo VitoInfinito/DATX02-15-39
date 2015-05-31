@@ -37,6 +37,9 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+/**
+ * Activity class for adding a sleep
+ */
 public class AddSleepActivity extends CustomActionBarActivity {
 
     private static final String TAG = AddSleepActivity.class.getSimpleName();
@@ -188,6 +191,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
 		SleepDiary sleepDiary = (SleepDiary) SleepDiary.getInstance();
 		sleepDiary.addActivity(sleepActivity);
 
+        //Code for connecting to and sending the data to UP. Currently not used
         /*Calendar tmpCal = Calendar.getInstance();
 
         tmpCal.setTime(startDate);
@@ -205,10 +209,6 @@ public class AddSleepActivity extends CustomActionBarActivity {
                 UpPlatformSdkConstants.API_VERSION_STRING,
                 getCreateSleepEventRequestParams(startSeconds, stopSeconds),
                 createSleepCallbackListener);*/
-
-
-
-
 	}
 
     /**
