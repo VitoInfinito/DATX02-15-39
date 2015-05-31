@@ -2,8 +2,6 @@ package com.kandidat.datx02_15_39.tok.layout;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -128,10 +125,6 @@ public class BluetoothActivity extends CustomActionBarActivity {
 		return Integer.parseInt(s);
 	}
 
-	private void sendToast(String s) {
-		Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
-	}
-
 	private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
 	private void init(){
@@ -156,7 +149,7 @@ public class BluetoothActivity extends CustomActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bluetooth);
-		initMenu(R.layout.activity_bluetooth);
+		initMenu();
 		init();
 	}
 
