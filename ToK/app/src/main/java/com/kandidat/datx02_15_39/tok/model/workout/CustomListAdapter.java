@@ -15,10 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by emma on 15-04-13.
+ * Class used when creating a custom list in an activity list
  */
-
-
 public class CustomListAdapter extends ArrayAdapter<String> {
 
     private final Activity context;
