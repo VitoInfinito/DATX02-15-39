@@ -37,7 +37,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * Created by Lagerstedt on 2015-04-23.
+ * Fragment to display all the added items and give a name, date, mealtype to the dietactivity
+ * and save it as a meal if the user wants to. The user will also be giving the option to save the
+ * dietactivity as a recipe in the future.
  */
 public class ViewAddDietFragment extends DietFragment{
 
