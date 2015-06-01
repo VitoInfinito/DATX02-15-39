@@ -13,7 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by Lagerstedt on 2015-02-16.
+ * A class that represent a DietActivity that holds all information about a meal or snack you have eaten.
  */
 public class DietActivity extends AbstractDiaryActivity implements Serializable {
 
@@ -22,6 +22,9 @@ public class DietActivity extends AbstractDiaryActivity implements Serializable 
     private String name;
 	private MEALTYPE mealtype = MEALTYPE.SNACK;
 
+	/**
+	 * Mealtype is used to discribe what type of meal that you eat to categorizing you DietActivity
+	 */
 	public enum MEALTYPE implements Serializable{
 		BREAKFAST,
 		LUNCH,
@@ -76,7 +79,13 @@ public class DietActivity extends AbstractDiaryActivity implements Serializable 
 		foodList.add(food);
 	}
 
+	/**
+	 *
+	 * @return - A list containing all food items in a 'Meal'
+	 */
 	public List<Food> getFoodList(){
+		// This Commented code is the original structur
+		// But due to some problems this is not the way anymore.
 //		ArrayList<Food> tmp = new ArrayList<Food>();
 //		for (Food f: foodList){
 //			tmp.add(f);
@@ -85,6 +94,9 @@ public class DietActivity extends AbstractDiaryActivity implements Serializable 
 		return foodList;
 	}
 
+	/**
+	 * Used to alway update the number of carb, cal, fat and protein in a meal when something change.
+	 */
 	private void update(){
 		calorieCount = 0;
 		proteinCount = 0;
@@ -128,32 +140,64 @@ public class DietActivity extends AbstractDiaryActivity implements Serializable 
 		update();
 	}
 
+	/**
+	 *
+	 * @return - the calorie count of all food objects in the dietactivity
+	 */
 	public double getCalorieCount() {
 		return calorieCount;
 	}
 
+	/**
+	 *
+	 * @return - the carbs count of all food objects in the dietactivity
+	 */
 	public double getCarbCount() {
 		return carbCount;
 	}
 
+	/**
+	 *
+	 * @return - the fat count of all food objects in the dietactivity
+	 */
 	public double getFatCount() {
 		return fatCount;
 	}
 
+	/**
+	 *
+	 * @return - the protein count of all food objects in the dietactivity
+	 */
 	public double getProteinCount() {
 		return proteinCount;
 	}
 
+	/**
+	 *
+	 * @return - the name of the meal(DietActivity)
+	 */
     public String getName() { return name;  }
 
+	/**
+	 * Method to set the name of the meal(DietActivity)
+	 * @param name
+	 */
     public void setName(String name) {
         this.name = name;
     }
 
+	/**
+	 * Method to set a mealtype of this meal(DietActivity)
+	 * @param mealtype
+	 */
 	public void setMealtype(MEALTYPE mealtype) {
 		this.mealtype = mealtype;
 	}
 
+	/**
+	 *
+	 * @return - the mealtype of the meal (DietActivity)
+	 */
 	public MEALTYPE getMealtype() {
 		return mealtype;
 	}
