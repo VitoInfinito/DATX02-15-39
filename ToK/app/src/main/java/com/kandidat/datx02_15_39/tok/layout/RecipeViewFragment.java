@@ -25,7 +25,7 @@ import com.kandidat.datx02_15_39.tok.model.diet.Recipe;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 /**
- * Created by Lagerstedt on 2015-05-05.
+ * Class that represent a fragment that is use to display a recipe with hte amount of portions.
  */
 public class RecipeViewFragment extends DietFragment{
 
@@ -69,6 +69,8 @@ public class RecipeViewFragment extends DietFragment{
 		if(recipe == null){
 			getActivity().finish();
 		}
+		// If the fragment is created from another activity then AddDietActivity the
+		// background becomes solid white.
 		if(!(getActivity() instanceof AddDietActivity) && getView() != null){
 			getView().setBackgroundResource(R.drawable.border_white_background);
 		}
@@ -83,6 +85,9 @@ public class RecipeViewFragment extends DietFragment{
 		return super.getDietActivity();
 	}
 
+	/**
+	 * Method to update the listview that displays the containing food items.
+	 */
 	private void updateRecipeList() {
 		displayRecipe = (ListView) getView().findViewById(R.id.food_item_added_container);
 		if(displayRecipe.getCount() > 0)
@@ -103,7 +108,7 @@ public class RecipeViewFragment extends DietFragment{
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						changeAmount(v);
+						changeAmountOfPortions(v);
 					}
 				});
 		getView().findViewById(R.id.btn_change_recipe).setOnClickListener(new View.OnClickListener() {
@@ -122,26 +127,33 @@ public class RecipeViewFragment extends DietFragment{
 		((TextView)getView().findViewById(R.id.recipe_name_text_view)).setText(recipe.getName());
 	}
 
-	private void changeAmount(View v) {
+	/**
+	 * Helper method to change the amount of portions this recipe is created to have.
+	 * @param v
+	 */
+	private void changeAmountOfPortions(View v) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getView().getContext());
 		View view = getLayoutInflater(null).inflate(R.layout.number_picker_layout, null);
 		NumberPicker np = (NumberPicker)view.findViewById(R.id.number_picker_amount);
 		np.setMinValue(0);
 		np.setMaxValue(10000);
 		np.setValue((int) recipe.getNumberOfPortions());
-		builder.setPositiveButton("Spara",  new ChangedAmountListener(v, np));
+		builder.setPositiveButton("Spara",  new ChangedAmountOfPortionsListener(v, np));
 		AlertDialog dialog = builder.create();
 		dialog.setView(view);
 		dialog.setCancelable(true);
 		dialog.show();
 	}
 
-	private class ChangedAmountListener implements DialogInterface.OnClickListener {
+	/**
+	 * Listener to handle when the dialog number picker chooses a amount of portions.
+	 */
+	private class ChangedAmountOfPortionsListener implements DialogInterface.OnClickListener {
 
 		private NumberPicker np;
 		private View v;
 
-		public ChangedAmountListener(View v, NumberPicker np){
+		public ChangedAmountOfPortionsListener(View v, NumberPicker np){
 			this.np = np;
 			this.v = v;
 		}
