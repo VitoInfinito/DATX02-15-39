@@ -27,7 +27,9 @@ import android.widget.Toast;
 import com.kandidat.datx02_15_39.tok.R;
 
 /**
- * Created by Lagerstedt on 2015-02-24.
+ * This class is an activity that all our activities will extends to be able to implement the
+ * slidable menu, Switch activities right and send toast. This class is created to not make
+ * redundant code.
  */
 public class CustomActionBarActivity extends ActionBarActivity{
 
