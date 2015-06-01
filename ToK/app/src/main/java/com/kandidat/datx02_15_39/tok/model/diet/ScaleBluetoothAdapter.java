@@ -74,6 +74,9 @@ public class ScaleBluetoothAdapter {
 		init();
 	}
 
+	/**
+	 * Handler to be able to control bluetooth connection to the scale away from the main thread
+	 */
 	private static Handler mHandler = new Handler() {
 		private ConnectedThread connectedThread;
 
@@ -122,6 +125,10 @@ public class ScaleBluetoothAdapter {
 			}
 		}
 
+		/**
+		 * Method to send infomration over bluetooth
+		 * @param code - Which code in the protocol to send to the scale.
+		 */
 		void sendOverBluetooth(int code){
 			if(connectedThread != null) {
 				connectedThread.write(("#" + code + "~").getBytes());
@@ -129,26 +136,50 @@ public class ScaleBluetoothAdapter {
 		}
 	};
 
+	/**
+	 *
+	 * @return - The updated weight, this is the local update and might be different from the scale.
+	 */
 	public int getWeight() {
 		return weight;
 	}
 
+	/**
+	 * Method to decied if the mobile device has bluetooth an can continue.
+	 * @return - return true if the device got bluetooth
+	 */
 	public boolean hasDeviceBluetooth(){
 		return hasBluetooth;
 	}
 
+	/**
+	 * Call this method after you have connected to a device and want to start sending data.
+	 * This is used to tell the scale to start sending the weight.
+	 */
 	public void startCommunicate(){
 		mHandler.sendMessage(Message.obtain(null, START_SCALE_REQUEST));
 	}
 
+	/**
+	 * Call this method when you want to cancel this device to send information.
+	 *  This is used to tell the scale to end sending the weight.
+	 */
 	public void endCommunicate(){
 		mHandler.sendMessage(Message.obtain(null, END_SCALE_REQUEST));
 	}
 
+	/**
+	 * Can be called when a connection i active and you want to tare the scale.
+	 */
 	public void tareScale(){
 		mHandler.sendMessage(Message.obtain(null, TARE_SCALE_REQUEST));
 	}
 
+	/**
+	 * Method to help reading message from the connected bluetooth device according to our protocol
+	 * @param s - the message to read
+	 * @return
+	 */
 	private static int convertMessage(String s) {
 		char tmp = s.charAt(1);
 		s = s.replaceAll("[^0-9]", "");
@@ -156,6 +187,10 @@ public class ScaleBluetoothAdapter {
 		return tmp == '-'?-result:result;
 	}
 
+	/**
+	 * Init method to handle the bluetooth connection and register a reciver to be able to see
+	 * changes and disconnections that can occur
+	 */
 	private void init(){
 		if(!startBluetooth()){
 			this.hasBluetooth = false;
@@ -176,6 +211,10 @@ public class ScaleBluetoothAdapter {
 		}
 	}
 
+	/**
+	 * Method use when your not going to use the bluetooth connection anymore.
+	 * This is necessary to not drain battery and disconnect the connection between the devices.
+	 */
 	public void destroy() {
 		if(hasBluetooth){
 
@@ -187,6 +226,10 @@ public class ScaleBluetoothAdapter {
 		}
 	}
 
+	/**
+	 * Method that is called first to be sure that the device supports bluetooth.
+	 * @return
+	 */
 	private boolean startBluetooth(){
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		if(mBluetoothAdapter == null){
@@ -200,6 +243,9 @@ public class ScaleBluetoothAdapter {
 		return true;
 	}
 
+	/**
+	 * Method to put the already saved connections to the list that can be displayed.
+	 */
 	private void getAlreadyConnectedDevices(){
 		if(!mDevices.isEmpty()){
 			mDevices.clear();
@@ -216,6 +262,9 @@ public class ScaleBluetoothAdapter {
 		}
 	}
 
+	/**
+	 * Method to search for bluetooth devices that the device can detect.
+	 */
 	public void bluetoothSearch(){
 		if(hasBluetooth) {
 			//Get already connected devices
@@ -225,6 +274,12 @@ public class ScaleBluetoothAdapter {
 		}
 	}
 
+	/**
+	 * A BroadcastReciver To detect when the search for bluetooth finds a device and
+	 * When the device stops searching and
+	 * when the device start searching and
+	 * when the state of te device bluetooth ois changed.
+	 */
 	// Create a BroadcastReceiver for ACTION_FOUND
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
@@ -255,12 +310,20 @@ public class ScaleBluetoothAdapter {
 		}
 	};
 
+	/**
+	 * method  that updates the devices that the device can find
+	 */
 	public void update(){
 		if (hasBluetooth) {
 			bluetoothSearch();
 		}
 	}
 
+	/**
+	 * This update can be implmented by a class that needs to display bluetoothdevices that has been
+	 * found and the update a listview as result.
+	 * @param bluetoothlist - the listview it should update.
+	 */
 	public void updateBluetoothList(ListView bluetoothlist){
 		if (hasBluetooth) {
 			bluetoothlist.removeAllViewsInLayout();
@@ -275,6 +338,9 @@ public class ScaleBluetoothAdapter {
 		}
 	}
 
+	/**
+	 * This class is used for all listview items and is away to display in androids listviews
+	 */
 	private class BluetoothDisplayAdapter extends ArrayAdapter<BluetoothDevice> {
 		public BluetoothDisplayAdapter  (Context context)
 		{
@@ -298,10 +364,19 @@ public class ScaleBluetoothAdapter {
 		}
 	}
 
+	/**
+	 * Method to se if the bluetooth is connected
+	 * @return - wheter this device is connected to the scale.
+	 */
 	public boolean isConnected(){
 		return isConnected;
 	}
 
+	/**
+	 * Class that is standard for android useing bluetooth.
+	 * For more information check
+	 * http://developer.android.com/guide/topics/connectivity/bluetooth.html
+	 */
 	private static class ConnectThread extends Thread {
 		private final BluetoothSocket mmSocket;
 		private final BluetoothDevice mmDevice;
@@ -353,6 +428,11 @@ public class ScaleBluetoothAdapter {
 		}
 	}
 
+	/**
+	 * Class that is standard for android useing bluetooth.
+	 * For more information check
+	 * http://developer.android.com/guide/topics/connectivity/bluetooth.html
+	 */
 	private static class ConnectedThread extends Thread {
 		private final BluetoothSocket mmSocket;
 		private final InputStream mmInStream;
@@ -438,6 +518,9 @@ public class ScaleBluetoothAdapter {
 		}
 	}
 
+	/**
+	 * Added to be able to start scan in a different thread then the main thread
+	 */
 	private Runnable startBluetoothSearch = new Runnable() {
 		@Override
 		public void run() {
@@ -445,6 +528,9 @@ public class ScaleBluetoothAdapter {
 		}
 	};
 
+	/**
+	 * This can stop the bluetooth scan in a diffrent thread to not do to much in the main thread.
+	 */
 	private Runnable endBluetoothSearch = new Runnable() {
 		@Override
 		public void run() {
@@ -452,6 +538,9 @@ public class ScaleBluetoothAdapter {
 		}
 	};
 
+	/**
+	 * Method to start a scan in 5 seconds to get som bluetooth devices.
+	 */
 	private void startScan() {
 		if(mBluetoothAdapter != null) {
 			mBluetoothAdapter.cancelDiscovery();
@@ -460,12 +549,19 @@ public class ScaleBluetoothAdapter {
 		mHandler.postDelayed(endBluetoothSearch, 5000);
 	}
 
+	/**
+	 * Method to stop the scan for bluetooth devices.
+	 */
 	private void stopScan() {
 		if(mBluetoothAdapter != null) {
 			mBluetoothAdapter.cancelDiscovery();
 		}
 	}
 
+	/**
+	 * Method to get all the devices that is found
+	 * @return - list of all found bluetooth devices
+	 */
 	private BluetoothDevice getDevice(){
 		for(BluetoothDevice bd: mDevices){
 			if(bd.getName().equals(DEVICE_NAME)){
@@ -475,7 +571,10 @@ public class ScaleBluetoothAdapter {
 		return null;
 	}
 
-
+	/**
+	 * Method to connect to s specific bluetooth device
+	 * @param device - the device to connect to
+	 */
 	private void connectBluetooth(BluetoothDevice device){
 		if(!isConnecting) {
 			ConnectThread connect = new ConnectThread(device);
@@ -483,6 +582,9 @@ public class ScaleBluetoothAdapter {
 		}
 	}
 
+	/**
+	 * Class to handle what happens when you press an item in the listview.
+	 */
 	private class SearchItemClickListener implements android.widget.AdapterView.OnItemClickListener {
 
 		@Override
@@ -491,6 +593,10 @@ public class ScaleBluetoothAdapter {
 		}
 	}
 
+	/**
+	 * Method to send toast to the user.
+	 * @param s - Messages to send.
+	 */
 	private static void sendToast(String s){
 		Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
 	}
