@@ -1,4 +1,4 @@
-package com.kandidat.datx02_15_39.tok.utilies;
+package com.kandidat.datx02_15_39.tok.utility;
 
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
 

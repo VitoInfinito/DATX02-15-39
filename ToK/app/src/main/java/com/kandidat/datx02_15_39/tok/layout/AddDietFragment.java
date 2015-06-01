@@ -29,12 +29,10 @@ import com.kandidat.datx02_15_39.tok.model.diet.Food;
 import com.kandidat.datx02_15_39.tok.model.diet.Recipe;
 import com.kandidat.datx02_15_39.tok.model.diet.RecipeCollection;
 import com.kandidat.datx02_15_39.tok.model.diet.ScaleBluetoothAdapter;
-import com.kandidat.datx02_15_39.tok.utilies.Database;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Fragment tht will make it possible to search for recipes and/or food object to add to you

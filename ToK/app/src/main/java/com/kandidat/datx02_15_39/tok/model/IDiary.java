@@ -48,8 +48,8 @@ public interface IDiary {
     public List<IDiaryActivity> showPeriodActivities(Calendar start, Calendar end);
 
 	/**
-	 * Gives a Weeks Activities in list from start day to end
-	 * @param startDayAtWeek
+	 * Gives a Weeks Activities in list for a whole week
+	 * @param startDayAtWeek- a day in a week
 	 */
 	public List<IDiaryActivity> showWeekActivities(Calendar startDayAtWeek);
 

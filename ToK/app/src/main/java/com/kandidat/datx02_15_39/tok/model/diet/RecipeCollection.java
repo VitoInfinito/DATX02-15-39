@@ -1,6 +1,6 @@
 package com.kandidat.datx02_15_39.tok.model.diet;
 
-import com.kandidat.datx02_15_39.tok.utilies.Database;
+import com.kandidat.datx02_15_39.tok.utility.Database;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -10,8 +10,11 @@ import android.widget.Switch;
 
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
+import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
 import com.kandidat.datx02_15_39.tok.model.diet.Recipe;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
+
+import java.util.Calendar;
 
 
 /**
@@ -21,7 +24,7 @@ import com.kandidat.datx02_15_39.tok.utility.Utils;
  */
 public class AddDietActivity extends CustomActionBarActivity {
 
-	Fragment currentFragement, earlierFragment; //TODO implement this
+	Fragment currentFragement, earlierFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,7 @@ public class AddDietActivity extends CustomActionBarActivity {
 		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80FF6F00));
 		currentFragement = new AddDietFragment();
 		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction().add(R.id.content_frame, currentFragement).commit();
+			getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, currentFragement).commit();
 		}
 	}
 
@@ -68,9 +71,7 @@ public class AddDietActivity extends CustomActionBarActivity {
 				currentFragement.setArguments(bundle);
 				getSupportFragmentManager().beginTransaction()
 						.replace(R.id.content_frame, currentFragement)
-						.addToBackStack(null)
 						.commit();
-				invalidateOptionsMenu();
 			}else if(currentFragement instanceof RecipeViewFragment){
 				DietActivity dietActivity = ((RecipeViewFragment) currentFragement).getDietActivity();
 				currentFragement = new ViewAddDietFragment();
@@ -79,12 +80,9 @@ public class AddDietActivity extends CustomActionBarActivity {
 				currentFragement.setArguments(bundle);
 				getSupportFragmentManager().beginTransaction()
 						.replace(R.id.content_frame, currentFragement)
-						.addToBackStack(null)
 						.commit();
-				invalidateOptionsMenu();
 			}
 		}else if (id == R.id.right_corner_button_confirm) {
-			//TODO Fixa så den sparar allt och skickar vidare
 			if(currentFragement instanceof ViewAddDietFragment){
 				if(((Switch)findViewById(R.id.save_meal_created_as_recipe)).isChecked()){
 					((ViewAddDietFragment)currentFragement).createDietActivity();
@@ -96,18 +94,15 @@ public class AddDietActivity extends CustomActionBarActivity {
 					currentFragement.setArguments(bundle);
 					getSupportFragmentManager().beginTransaction()
 							.replace(R.id.content_frame, currentFragement)
-							.addToBackStack(null)
 							.commit();
 					invalidateOptionsMenu();
 				}else {
 					((ViewAddDietFragment) currentFragement).createDietActivity();
-					startActivity(new Intent(this, MainActivity.class));
-					finish();
+					startNewActivity(MainActivity.class);
 				}
 			}else if(currentFragement instanceof EditRecipeFragment){
 				((EditRecipeFragment) currentFragement).saveRecipe();
-				startActivity(new Intent(this, MainActivity.class));
-				finish();
+				startNewActivity(MainActivity.class);
 			}
 		}
 		//This will be called to be able to see if you pressed the menu
@@ -139,7 +134,9 @@ public class AddDietActivity extends CustomActionBarActivity {
 	public void onBackPressed() {
 		//Method to be able to jump between some of the fragments under the activity
 		// that is used when we add food from our databas or recipe.
-		if(currentFragement instanceof ViewAddDietFragment){
+		if(currentFragement instanceof ViewAddDietFragment ||
+				(currentFragement instanceof EditRecipeFragment && earlierFragment instanceof AddDietFragment)
+				){
 			DietActivity dietActivity = ((DietFragment) currentFragement).getDietActivity();
 			currentFragement = new AddDietFragment();
 			Bundle bundle = new Bundle();
@@ -148,7 +145,19 @@ public class AddDietActivity extends CustomActionBarActivity {
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.content_frame, currentFragement)
 					.commit();
-			invalidateOptionsMenu();
+		}else if (currentFragement instanceof ViewAddDietFragment) {
+			if(earlierFragment instanceof AddDietFragment){
+				DietActivity dietActivity = ((DietFragment) currentFragement).getDietActivity();
+				currentFragement = new AddDietFragment();
+				Bundle bundle = new Bundle();
+				bundle.putSerializable(Utils.dietActivityArgument, dietActivity);
+				currentFragement.setArguments(bundle);
+				getSupportFragmentManager().beginTransaction()
+						.replace(R.id.content_frame, currentFragement)
+						.commit();
+			}else{
+				super.onBackPressed();
+			}
 		}else{
 			super.onBackPressed();
 		}

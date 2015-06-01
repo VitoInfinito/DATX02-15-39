@@ -18,13 +18,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
 import com.kandidat.datx02_15_39.tok.model.diet.Recipe;
 import com.kandidat.datx02_15_39.tok.model.diet.RecipeCollection;
-import com.kandidat.datx02_15_39.tok.utilies.SwipeableListAdapter;
+import com.kandidat.datx02_15_39.tok.utility.SwipeableListAdapter;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 import java.util.ArrayList;
@@ -342,8 +341,8 @@ public class EditRecipeFragment extends Fragment {
 			Button food_amount = (Button) convertExtendedView.findViewById(R.id.btn_food_amount);
 			TextView food_prefix = (TextView) convertExtendedView.findViewById(R.id.btn_food_prefix);
 
-			food_amount.setText( "");// Amount
-			food_prefix.setText(""); // Prefix
+			food_amount.setText(recipeAdapter.getItem(position).getAmount() +  "");// Amount
+			food_prefix.setText(recipeAdapter.getItem(position).getPrefix() +  ""); // Prefix
 			food_amount.setOnClickListener(new OnAmountClickListener(position));
 			extendedView.addView(convertExtendedView);
 		}

@@ -30,7 +30,7 @@ import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.DietDiary;
 import com.kandidat.datx02_15_39.tok.model.diet.EditDietActivityParams;
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
-import com.kandidat.datx02_15_39.tok.utilies.SwipeableListAdapter;
+import com.kandidat.datx02_15_39.tok.utility.SwipeableListAdapter;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 import java.text.SimpleDateFormat;
@@ -46,7 +46,7 @@ public class ViewAddDietFragment extends DietFragment{
 	private FragmentActivity listener;
 	Calendar calendar, today;
 	private ListView searchResultList;
-	private SearchResultAdapter sra;
+	private DisplayAddedAdapter sra;
 	private int extendedInfoOpenPosition = -1;
 	private DietActivity.MEALTYPE mealType = DietActivity.MEALTYPE.SNACK;
 
@@ -212,7 +212,7 @@ public class ViewAddDietFragment extends DietFragment{
 		if(searchResultList.getChildCount() > 0) {
 			searchResultList.removeAllViewsInLayout();
 		}
-		sra = new SearchResultAdapter(getView().getContext());
+		sra = new DisplayAddedAdapter(getView().getContext());
 		for (Food f: newActivity.getFoodList()){
 			sra.add(f);
 		}
@@ -260,10 +260,10 @@ public class ViewAddDietFragment extends DietFragment{
 	/**
 	 * This Class is added and extends ArrayAdapter and it lets me draw what i want to the list item
 	 */
-	private class SearchResultAdapter extends SwipeableListAdapter<Food>
+	private class DisplayAddedAdapter extends SwipeableListAdapter<Food>
 	{
 
-		public SearchResultAdapter(Context context) {
+		public DisplayAddedAdapter(Context context) {
 			super(context);
 		}
 
@@ -456,8 +456,8 @@ public class ViewAddDietFragment extends DietFragment{
 			Button food_amount = (Button) convertExtendedView.findViewById(R.id.btn_food_amount);
 			TextView food_prefix = (TextView) convertExtendedView.findViewById(R.id.btn_food_prefix);
 
-			food_amount.setText( "");// Amount
-			food_prefix.setText(""); // Prefix
+			food_amount.setText(sra.getItem(position).getAmount() + "");// Amount
+			food_prefix.setText(sra.getItem(position).getPrefix() + ""); // Prefix
 			food_amount.setOnClickListener(new OnAmountClickListener(position));
 			extendedView.addView(convertExtendedView);
 		}

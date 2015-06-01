@@ -11,20 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.database.DataBaseHelper;
-import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
-import com.kandidat.datx02_15_39.tok.utilies.Database;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
