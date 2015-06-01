@@ -327,7 +327,6 @@ public class EditRecipeFragment extends Fragment {
 	 */
 	private void deleteItem(View v, int position) {
 		recipe.removeFood(position);
-//		updateList(); Kanske skall användas men inte säker!!
 		recipeAdapter.remove(recipeAdapter.getItem(position));
 	}
 
