@@ -47,11 +47,24 @@ public final class Utils {
      */
 	public static Calendar setupCalendar(){
 		Calendar tmp = Calendar.getInstance();
-		tmp.set(Calendar.HOUR_OF_DAY, 0);
-		tmp.set(Calendar.MINUTE, 0);
-		tmp.set(Calendar.SECOND,0);
-		tmp.set(Calendar.MILLISECOND,0);
+		tmp = setupCalendar(tmp);
 		return tmp;
+	}
+
+	/**
+	 * Sets upp a calender that can be compared only between 2 dates!
+	 * The Hour, Minute, Seconds, and milliseconds is set to 0.
+	 * @param calendar -Calendar to change to new calendar that is comparable.
+	 *	@return - A Calendar that is Comparable between days
+	 */
+	public static Calendar setupCalendar(Calendar calendar){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(calendar.getTime());
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND,0);
+		cal.set(Calendar.MILLISECOND,0);
+		return cal;
 	}
 
     /**
