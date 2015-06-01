@@ -41,6 +41,13 @@ import java.util.Calendar;
  */
 public class ViewAddDietFragment extends DietFragment{
 
+	private FragmentActivity listener;
+	Calendar calendar, today;
+	private ListView searchResultList;
+	private SearchResultAdapter sra;
+	private int extendedInfoOpenPosition = -1;
+	private DietActivity.MEALTYPE mealType = DietActivity.MEALTYPE.SNACK;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_view_added_diet, container, false);
@@ -51,13 +58,6 @@ public class ViewAddDietFragment extends DietFragment{
 		super.onAttach(activity);
 		listener = (FragmentActivity) activity;
 	}
-
-	private FragmentActivity listener;
-	Calendar calendar, today;
-	private ListView searchResultList;
-	private SearchResultAdapter sra;
-	private int extendedInfoOpenPosition = -1;
-	private DietActivity.MEALTYPE mealType = DietActivity.MEALTYPE.SNACK;
 
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -70,7 +70,7 @@ public class ViewAddDietFragment extends DietFragment{
 			if (object instanceof DietActivity) {
 				newActivity = (DietActivity) object;
 				((EditText) getView().findViewById(R.id.mealname)).setText(newActivity.getName());
-				calendar = setupCalendar(newActivity.getDate());
+				calendar = Utils.setupCalendar(newActivity.getDate());
 				mealType = newActivity.getMealtype();
 				((Button)getView().findViewById(R.id.meal_selector_button))
 						.setText(mealType.getString(getView().getContext()));
@@ -78,11 +78,10 @@ public class ViewAddDietFragment extends DietFragment{
 			}
 		}
 		if(newActivity == null){
-			//TODO Något men för tillfället skapar man en ny
 			newActivity = new DietActivity(today);
-
 		}
-		//TODO if getActivity instanceof not diary update time and name
+		// If the fragment is created from another activity then AddDietActivity the
+		// background becomes solid white.
 		if(!(getActivity() instanceof AddDietActivity) && getView() != null){
 			getView().setBackgroundResource(R.drawable.border_white_background);
 			getActivity().setTitle(getResources().getString(R.string.ViewAddDietFragment));
@@ -126,8 +125,8 @@ public class ViewAddDietFragment extends DietFragment{
 	}
 
 	private void initCalendar(){
-		calendar = setupCalendar();
-		today = setupCalendar();
+		calendar = Utils.setupCalendar();
+		today = Utils.setupCalendar();
 	}
 
 
@@ -143,7 +142,9 @@ public class ViewAddDietFragment extends DietFragment{
 		dietDiary.editActivity(newActivity.getDate(), newActivity.getID(), editDietActivityParams);
 	}
 
-
+	/**
+	 * Method to call if you want to create the diet activity and add it to the Diary.
+	 */
 	public void createDietActivity() {
 		newActivity.setName(((EditText) getView().findViewById(R.id.mealname)).getText().toString());
 		newActivity.setMealtype(mealType);
@@ -152,40 +153,14 @@ public class ViewAddDietFragment extends DietFragment{
 		DietDiary.getInstance().addActivity(newActivity.getDate(), newActivity);
 	}
 
-	/*
-	 * Sets upp a calender that can be compared only between 2 dates!
-	 * The Hour, Minute, Seconds, and milliseconds is set to 0.
-	 * @return
+	/**
+	 * Listener for the datepicker to update view and activity with the new date.
 	 */
-	private Calendar setupCalendar(){
-		Calendar tmp = setupCalendar(Calendar.getInstance());
-		tmp.set(Calendar.HOUR_OF_DAY, 0);
-		tmp.set(Calendar.MINUTE, 0);
-		tmp.set(Calendar.SECOND,0);
-		tmp.set(Calendar.MILLISECOND,0);
-		return tmp;
-	}
-
-	/*
-	 * Sets upp a calender that can be compared only between 2 dates!
-	 * The Hour, Minute, Seconds, and milliseconds is set to 0.
-	 * @return
-	 */
-	private Calendar setupCalendar(Calendar calendar){
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(calendar.getTime());
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND,0);
-		cal.set(Calendar.MILLISECOND,0);
-		return cal;
-	}
-
 	private class DatePickerListener implements DatePickerDialog.OnDateSetListener {
 
 		@Override
 		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-			Calendar tmp = setupCalendar();
+			Calendar tmp = Utils.setupCalendar();
 			tmp.set(year, monthOfYear, dayOfMonth);
 			if(!today.before(tmp))
 				calendar.set(year, monthOfYear, dayOfMonth);
@@ -207,12 +182,12 @@ public class ViewAddDietFragment extends DietFragment{
 		picker.show();
 	}
 
-	/*
-	 * This method sets the current choosen date to a specific button
-	 * @return
+	/**
+	 * This method sets the current choosen date to a specific button and to activity
+	 * @return - will always return true.
 	 */
 	private boolean setDateOnButton(){
-		Calendar tmp = setupCalendar();
+		Calendar tmp = Utils.setupCalendar();
 		tmp.set(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
 		tmp.add(Calendar.DAY_OF_MONTH, -1);
 		if(calendar.equals(tmp)){
@@ -227,17 +202,16 @@ public class ViewAddDietFragment extends DietFragment{
 		return true;
 	}
 
-	/*
-	Updates the list that is show so that new items appear
-	 */
+	/**
+	* Updates the list that is show so that new items appear
+	*/
 	private void updateList(){
 		searchResultList = (ListView) getView().findViewById(R.id.food_item_added_container);
 		if(searchResultList.getChildCount() > 0) {
 			searchResultList.removeAllViewsInLayout();
-			//searchResultList.removeAllViews();
 		}
 		sra = new SearchResultAdapter(getView().getContext());
-		for (Food f: newActivity.getFoodList()){//TODO
+		for (Food f: newActivity.getFoodList()){
 			sra.add(f);
 		}
 		if(searchResultList != null){
@@ -245,6 +219,10 @@ public class ViewAddDietFragment extends DietFragment{
 		}
 	}
 
+	/**
+	 * Method to change the meal type of the DietActivity object.
+	 * @param item
+	 */
 	private void mealSelector(MenuItem item){
 		((Button)getView().findViewById(R.id.meal_selector_button)).setText(item.getTitle());
 		mealType = DietActivity.MEALTYPE.values()[item.getItemId()];
@@ -309,7 +287,14 @@ public class ViewAddDietFragment extends DietFragment{
 			// Return the completed view to render on screen
 			return convertView;
 		}
-
+		/**
+		 * Method to get the exakt position of the element you want, and not update the wrong item.
+		 * This is a problem with listview that the size is only the listitems that you can see.
+		 * this method fixes this problem.
+		 * @param pos
+		 * @param listView
+		 * @return
+		 */
 		public View getViewByPosition(int pos, ListView listView) {
 			final int firstListItemPosition = listView.getFirstVisiblePosition();
 			final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
@@ -323,25 +308,9 @@ public class ViewAddDietFragment extends DietFragment{
 		}
 	}
 
-	private class OnPrefixClickListener implements View.OnClickListener{
-
-		private final int position;
-
-		public OnPrefixClickListener(int position) {
-			super();
-			this.position = position;
-		}
-
-		@Override
-		public void onClick(View v) {
-			changePrefix(v, position);
-		}
-	}
-
-	private void changePrefix(View v, int position) {
-		//TODO should i be able to do this ?
-	}
-
+	/**
+	 * Listener that handles the amount change by the user on a specific item.
+	 */
 	private class OnAmountClickListener implements View.OnClickListener{
 
 		private final int position;
@@ -357,6 +326,11 @@ public class ViewAddDietFragment extends DietFragment{
 		}
 	}
 
+	/**
+	 * Helper method to change the amount on a specific item in the list.
+	 * @param v
+	 * @param position
+	 */
 	private void changeAmount(View v, int position) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getView().getContext());
 		View view = getLayoutInflater(null).inflate(R.layout.number_picker_layout, null);
@@ -371,6 +345,10 @@ public class ViewAddDietFragment extends DietFragment{
 		dialog.show();
 	}
 
+	/**
+	 * Listener for the Dialog that is given to the user to decied what amount a specific list
+	 * should have.
+	 */
 	private class ChangedAmountListener implements DialogInterface.OnClickListener {
 
 		private NumberPicker np;
@@ -390,6 +368,9 @@ public class ViewAddDietFragment extends DietFragment{
 		}
 	}
 
+	/**
+	 * Listener to handle deletions
+	 */
 	private class OnDeleteClickListener implements View.OnClickListener{
 
 
@@ -406,12 +387,20 @@ public class ViewAddDietFragment extends DietFragment{
 		}
 	}
 
+	/**
+	 * Method that delete a specific item in the list from input of the user.
+	 * @param v
+	 * @param position - Deleted items position
+	 */
 	private void deleteItem(View v, int position) {
 		newActivity.getFoodList().remove(position);
-//		updateList(); Kanske skall användas men inte säker!!
 		sra.remove(sra.getItem(position));
 	}
 
+
+	/**
+	 * Class(Listener) to handle the input to a list view items more information button.
+	 */
 	private class OnMoreInfoClickListener implements View.OnClickListener {
 
 		private final int position;
@@ -427,7 +416,13 @@ public class ViewAddDietFragment extends DietFragment{
 		}
 	}
 
-
+	/**
+	 * Helper method to close and open more information about product, this is to be able to change
+	 * its amount.
+	 * This method also handles that there is not two more information sections open at the same time.
+	 * @param v
+	 * @param position
+	 */
 	private void onMoreInfoClick(View v, int position){
 		if( this.extendedInfoOpenPosition == position){
 			closeExtendedInfo(sra.getViewByPosition(extendedInfoOpenPosition, searchResultList),
@@ -447,30 +442,34 @@ public class ViewAddDietFragment extends DietFragment{
 			this.extendedInfoOpenPosition = position;
 		}
 	}
-	private void closeExtendedInfo(View v, int position){
-		//TODO Make the opened information close
-		//View view = sra.getViewByPosition(position, searchResultList);
-		LinearLayout extendedView = (LinearLayout)v.findViewById(R.id.extended_food_information);
-		extendedView.removeAllViews();
-		extendedView.removeAllViewsInLayout();
-	}
-
+	/**
+	 * Helper method to open a new extend information with listeners and the right information.
+	 * @param v
+	 * @param position - which item it is
+	 */
 	private void openExtendedInfo(View v, int position) {
-		//View view = searchResultList.getChildAt(position - searchResultList.getFirstVisiblePosition());
 		LinearLayout extendedView = (LinearLayout)v.findViewById(R.id.extended_food_information);
 		if(extendedView.getChildCount() == 0) {
 			View convertExtendedView = LayoutInflater.from(v.getContext()).inflate(R.layout.change_amount_on_food_view, null);
 			Button food_amount = (Button) convertExtendedView.findViewById(R.id.btn_food_amount);
-			Button food_prefix = (Button) convertExtendedView.findViewById(R.id.btn_food_prefix);
+			TextView food_prefix = (TextView) convertExtendedView.findViewById(R.id.btn_food_prefix);
 
-			food_amount.setText(newActivity.getFoodList().get(position).getAmount() + "");
-			food_prefix.setText(newActivity.getFoodList().get(position).getPrefix() + "");
+			food_amount.setText( "");// Amount
+			food_prefix.setText(""); // Prefix
 			food_amount.setOnClickListener(new OnAmountClickListener(position));
-			food_prefix.setOnClickListener(new OnPrefixClickListener(position));
 			extendedView.addView(convertExtendedView);
 		}
-		Toast.makeText(getView().getContext(), "dragen"+ sra.getCount(), Toast.LENGTH_SHORT).show();
-		//TODO Make so that the new adapter is a adapter to handle click events
+	}
+
+	/**
+	 * Helper method to close the open section and remove alla the added views and fragments.
+	 * @param v
+	 * @param position - which item it is
+	 */
+	private void closeExtendedInfo(View v, int position){
+		LinearLayout extendedView = (LinearLayout)v.findViewById(R.id.extended_food_information);
+		extendedView.removeAllViews();
+		extendedView.removeAllViewsInLayout();
 	}
 
 }
