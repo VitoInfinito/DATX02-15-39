@@ -258,6 +258,7 @@ public class CustomActionBarActivity extends ActionBarActivity{
 	 */
 	private void quitPrograme(){
 		this.finish();
+		System.exit(0);
 	}
 
 	/**
@@ -359,7 +360,7 @@ public class CustomActionBarActivity extends ActionBarActivity{
 	public void startNewActivity(Class<?> activity) {
 		if (this.getClass() != activity) {
 			startActivity(new Intent(this, activity));
-			if(activity == MainActivity.class) {
+			if(this.getClass() != MainActivity.class) {
 				finish();
 			}
 		}

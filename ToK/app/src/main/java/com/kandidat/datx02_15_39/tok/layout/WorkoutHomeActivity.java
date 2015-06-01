@@ -183,7 +183,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity implements IGra
         }else {
             Toast.makeText(getActivity(), R.string.no_connection_UP, Toast.LENGTH_LONG).show();
             Account.getInstance().setNextClassCallback(this.getClass());
-            startActivity(new Intent(this, JawboneSetupActivity.class));
+            startNewActivity( JawboneSetupActivity.class);
         }
     }
 
@@ -203,7 +203,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity implements IGra
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.right_corner_button_add) {
-            startActivity(new Intent(this, AddWorkoutActivity.class));
+            startNewActivity( AddWorkoutActivity.class);
             return true;
         }
 

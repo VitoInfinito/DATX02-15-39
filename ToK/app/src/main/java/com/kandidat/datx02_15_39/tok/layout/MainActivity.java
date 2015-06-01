@@ -44,7 +44,7 @@ public class MainActivity extends CustomActionBarActivity {
                 Account.getInstance().setName(accountName);
                 ((TextView) findViewById(R.id.homeUsername)).setText(accountName);
             }else {
-                startActivity(new Intent(this, CreateUserActivity.class));
+                startNewActivity( CreateUserActivity.class);
             }
         }
 
@@ -90,7 +90,7 @@ public class MainActivity extends CustomActionBarActivity {
 	 * @param view Not used.
 	 */
     public void onDietButtonClick(View view) {
-        startActivity(new Intent(this, DietHomeActivity.class));
+        startNewActivity( DietHomeActivity.class);
     }
 
     /**
@@ -98,7 +98,7 @@ public class MainActivity extends CustomActionBarActivity {
      * @param view Not used.
      */
     public void onSleepButtonClick(View view) {
-        startActivity(new Intent(this, SleepHomeActivity.class));
+        startNewActivity( SleepHomeActivity.class);
     }
 
     /**
@@ -106,7 +106,7 @@ public class MainActivity extends CustomActionBarActivity {
      * @param view Not used.
      */
     public void onWorkOutButtonClick(View view){
-        startActivity(new Intent(this, WorkoutHomeActivity.class));
+        startNewActivity( WorkoutHomeActivity.class);
     }
 
 
@@ -115,7 +115,7 @@ public class MainActivity extends CustomActionBarActivity {
 	 * @param view not used
 	 */
 	public void registerWeightOnClick(View view){
-		startActivity(new Intent(this, WeightHomeActivity.class));
+		startNewActivity( WeightHomeActivity.class);
 	}
 
     /**
@@ -123,6 +123,6 @@ public class MainActivity extends CustomActionBarActivity {
      * @param view not used
      */
 	public void goalsButtonOnClick(View view){
-		startActivity(new Intent(this, GoalActivity.class));
+		startNewActivity( GoalActivity.class);
 	}
 }

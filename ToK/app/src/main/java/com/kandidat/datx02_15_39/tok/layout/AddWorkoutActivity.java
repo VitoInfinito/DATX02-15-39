@@ -293,7 +293,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
         workoutDiary.addActivity(startDate, workoutActivity);
 
-        startActivity(new Intent(this, WorkoutHomeActivity.class));
+        startNewActivity(WorkoutHomeActivity.class);
         Toast.makeText(getApplicationContext(), "Träning sparad", Toast.LENGTH_LONG).show();
     }
 
@@ -324,7 +324,7 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
      * @param view Not used.
      */
     public void addButtonOnClick(View view){
-        startActivity(new Intent(this, WorkoutHomeActivity.class));
+        startNewActivity( WorkoutHomeActivity.class);
     }
 
 

@@ -246,7 +246,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
      * Method to call when returning to sleep home
      */
     private void returnToSleepHome() {
-        startActivity(new Intent(this, SleepHomeActivity.class));
+        startNewActivity( SleepHomeActivity.class);
     }
 
 	/**

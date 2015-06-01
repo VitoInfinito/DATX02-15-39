@@ -132,7 +132,7 @@ public class SleepHomeActivity extends CustomActionBarActivity implements IGraph
         }else {
             Toast.makeText(getActivity(), R.string.no_connection_UP, Toast.LENGTH_LONG).show();
             Account.getInstance().setNextClassCallback(this.getClass());
-            startActivity(new Intent(this, JawboneSetupActivity.class));
+            startNewActivity( JawboneSetupActivity.class);
         }
 
         setupGraph();
@@ -161,7 +161,7 @@ public class SleepHomeActivity extends CustomActionBarActivity implements IGraph
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.right_corner_button_add) {
-            startActivity(new Intent(this, AddSleepActivity.class));
+            startNewActivity( AddSleepActivity.class);
             return true;
         }
 
@@ -240,7 +240,7 @@ public class SleepHomeActivity extends CustomActionBarActivity implements IGraph
      * @param completeDate is the date of when the event was completed
      */
     private void setManualSleepFromUP(String xid, Date asleepDate, Date awakeDate, Date createDate, Date completeDate) {
-        List<Sleep> manualSleep = (new ArrayList<>());
+        List<Sleep> manualSleep = new ArrayList<>();
         manualSleep.addAll(Arrays.asList(
                 new Sleep(
                         createDate,
