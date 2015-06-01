@@ -16,7 +16,7 @@ import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper
 {
-	private static String TAG = "DataBaseHelper"; // Tag just for the LogCat window
+	private static String TAG = "DataBas"; // Tag just for the LogCat window
 	private static String DB_NAME = "food_database.sql";// Database name
 	private static String DB_NAME_PART[] = {"food_database_vara.sql","food_database_nvarden.sql", "food_database_fpcu.sql"};
 	private SQLiteDatabase mDataBase;
@@ -125,15 +125,17 @@ public class DataBaseHelper extends SQLiteOpenHelper
 		db.execSQL("BEGIN TRANSACTION;");
 		// Iterate through lines (assuming each insert has its own line and theres no other stuff)
 		for(int i = 0; i < 3; i++) {
+			Log.d(TAG, "" + DB_NAME_PART[i]);
 			InputStream insertsStream = mContext.getAssets().open(DB_NAME_PART[i]);
 			BufferedReader insertReader = new BufferedReader(new InputStreamReader(insertsStream));
 			while (insertReader.ready()) {
 				String insertStmt = insertReader.readLine();
-				if (insertStmt.length() > 0) {
+				if (insertStmt != null && insertStmt.length() > 0) {
 					String insertStmtEnd = insertStmt.substring(insertStmt.length() - 2, insertStmt.length());
 					while (!insertStmtEnd.equals(");")) {
 						if (insertReader.ready()) {
-							insertStmt += insertReader.readLine();
+							String tmp = insertReader.readLine();
+							insertStmt += tmp != null? tmp: "";
 							insertStmtEnd = insertStmt.substring(insertStmt.length() - 2, insertStmt.length());
 						} else {
 							Log.d("Databas", "databas fel");
