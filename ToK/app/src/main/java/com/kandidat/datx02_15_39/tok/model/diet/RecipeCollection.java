@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Lagerstedt on 2015-04-27.
+ * Class to collect all Recipes in a single to to keep track of all recipes
  */
 public class RecipeCollection {
 
@@ -26,7 +26,10 @@ public class RecipeCollection {
 	}
 
 
-
+	/**
+	 *
+	 * @return - Returns the list of all recipes.
+	 */
 	public List<Recipe> getList(){
 		return listOfRecipes;
 	}
