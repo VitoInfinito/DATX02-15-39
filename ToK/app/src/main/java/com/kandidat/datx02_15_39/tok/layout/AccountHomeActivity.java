@@ -13,10 +13,12 @@ import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
+/**
+ * Activity class for Account home
+ */
 public class AccountHomeActivity extends CustomActionBarActivity {
 
     Account account;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

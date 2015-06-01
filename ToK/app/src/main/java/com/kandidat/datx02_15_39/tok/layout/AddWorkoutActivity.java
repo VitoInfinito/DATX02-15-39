@@ -25,11 +25,10 @@ import java.util.GregorianCalendar;
 
 import android.widget.Toast;
 
-
-
+/**
+ * Activity class for adding a workout activity
+ */
 public class AddWorkoutActivity extends CustomActionBarActivity {
-
-    //Create all image buttons..
 
     android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
     private Calendar cal = Calendar.getInstance();
@@ -91,26 +90,47 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
     }
 
-
+    /**
+     * Handles click on the flex workout-type button
+     * @param view Sent as a parameter to register intensity
+     */
     public void onClickFlex(final View view){
         this.workoutType = Workout.WorkoutType.FLEX;
         registerWorkoutIntensityOnClick(view);
     }
 
+    /**
+     * Handles click on the strength workout-type button
+     * @param view Sent as a parameter to register intensity
+     */
     public void onClickStrength(final View view){
         this.workoutType = Workout.WorkoutType.STRENGTH;
         registerWorkoutIntensityOnClick(view);
     }
 
+    /**
+     * Handles click on the cardio workout-type button
+     * @param view Sent as a parameter to register intensity
+     */
     public void onClickCardio(final View view){
         this.workoutType = Workout.WorkoutType.CARDIO;
         registerWorkoutIntensityOnClick(view);
     }
+
+    /**
+     * Handles click on the sports workout-type button
+     * @param view Sent as a parameter to register intensity
+     */
     public void onClickSports(final View view){
         this.workoutType = Workout.WorkoutType.SPORT;
         registerWorkoutIntensityOnClick(view);
     }
 
+    /**
+     * Creates and opens a dialog frame in which the user can select the intensity level of
+     * the new workout activity.
+     * @param view Provides the context on which the dialog will be opened.
+     */
     public void registerWorkoutIntensityOnClick(final View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
@@ -124,8 +144,8 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         intensityPicker.setWrapSelectorWheel(false);
 
         builder.setView(intensityPicker);
-        builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int id){
+        builder.setPositiveButton("Nästa", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
                 intensity = intensityPicker.getValue();
                 //TODO remove println when not needed
                 System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAA" + intensity);
@@ -142,6 +162,11 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         dialog.show();
     }
 
+    /**
+     * Creates and opens a dialog frame in which the user can select which day
+     * the new workout activity took place.
+     * @param view Provides the context on which the dialog will be opened.
+     */
     public void registerWorkoutDayOnClick(final View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
@@ -173,7 +198,11 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         dialog.show();
     }
 
-
+    /**
+     * Creates and opens a dialog frame in which the user can select which time
+     * the new workout activity started.
+     * @param view Provides the context on which the dialog will be opened.
+     */
     public void registerWorkoutStartTimeOnClick(final View view){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -204,6 +233,12 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    /**
+     * Creates and opens a dialog frame in which the user can select which time
+     * the new workout activity ended.
+     * @param view Provides the context on which the dialog will be opened.
+     */
    public void registerWorkoutEndTimeOnClick(final View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -251,7 +286,6 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
     /**
      * Add new workout in the WorkoutHomeActivity list.
      */
-
     public void addNewWorkout(){
         updateDate();
         Workout workout = new Workout(startDate, stopDate, intensity, workoutType);
@@ -284,6 +318,11 @@ public class AddWorkoutActivity extends CustomActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * Redirects to WorkoutHomeActivity on click.
+     * @param view Not used.
+     */
     public void addButtonOnClick(View view){
         startActivity(new Intent(this, WorkoutHomeActivity.class));
     }

@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import com.kandidat.datx02_15_39.tok.R;
 
+/**
+ * Activity for setting goals
+ */
 public class GoalActivity extends CustomActionBarActivity {
 
 	@Override
