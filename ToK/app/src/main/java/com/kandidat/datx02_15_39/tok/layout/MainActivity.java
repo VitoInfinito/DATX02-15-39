@@ -20,6 +20,7 @@ import com.kandidat.datx02_15_39.tok.utility.Utils;
  */
 public class MainActivity extends CustomActionBarActivity {
     private Account account;
+	private AlertDialog ad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +75,9 @@ public class MainActivity extends CustomActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.right_corner_button_add) {
 			View add = getLayoutInflater().inflate(R.layout.add_all, null);
-			AlertDialog ad = new AlertDialog.Builder(this, R.style.CustomDialog).create();
-//            AlertDialog ad = new AlertDialog.Builder(this).create();
+			ad = new AlertDialog.Builder(this, R.style.CustomDialog).create();
 			ad.setView(add);
+			ad.setCancelable(true);
 			ad.setCanceledOnTouchOutside(true);
 			ad.show();
         }
@@ -84,13 +85,39 @@ public class MainActivity extends CustomActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+	/**
+	 * Helper method to handle a button selection of diet, sleep, training and weight.
+	 * This is usefull when you want to make buttons with all the different types of diarys.
+	 * @param view
+	 */
+	public void onAlertAddButtonClick(View view){
+		switch(view.getId()) {
+			case R.id.alert_diet_button:
+				ad.dismiss();
+				startNewActivity( AddDietActivity.class);
+				break;
+			case R.id.alert_sleep_button:
+				ad.dismiss();
+				startNewActivity( AddSleepActivity.class);
+				break;
+			case R.id.alert_training_button:
+				ad.dismiss();
+				startNewActivity( AddWorkoutActivity.class);
+				break;
+			case R.id.alert_weight_button:
+				ad.dismiss();
+				startNewActivity(WeightHomeActivity.class);
+				break;
+		}
+	}
+
 
 	/**
 	 * Navigates to diet activity overview.
 	 * @param view Not used.
 	 */
     public void onDietButtonClick(View view) {
-        startNewActivity( DietHomeActivity.class);
+		startNewActivity(DietHomeActivity.class);
     }
 
     /**
@@ -98,7 +125,7 @@ public class MainActivity extends CustomActionBarActivity {
      * @param view Not used.
      */
     public void onSleepButtonClick(View view) {
-        startNewActivity( SleepHomeActivity.class);
+		startNewActivity( SleepHomeActivity.class);
     }
 
     /**
@@ -106,7 +133,7 @@ public class MainActivity extends CustomActionBarActivity {
      * @param view Not used.
      */
     public void onWorkOutButtonClick(View view){
-        startNewActivity( WorkoutHomeActivity.class);
+		startNewActivity( WorkoutHomeActivity.class);
     }
 
 

@@ -28,7 +28,8 @@
         <activity
             android:name=".layout.DietHomeActivity"
             android:label="@string/title_activity_diet_home"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:parentActivityName=".layout.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kandidat.datx02_15_39.tok.layout.MainActivity" />
@@ -36,7 +37,8 @@
         <activity
             android:name=".layout.SleepHomeActivity"
             android:label="@string/title_activity_sleep_home"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:parentActivityName=".layout.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kandidat.datx02_15_39.tok.layout.MainActivity" />
@@ -134,7 +136,8 @@
         <activity
             android:name=".layout.BluetoothActivity"
             android:label="@string/title_activity_bluetooth"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:parentActivityName=".layout.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kandidat.datx02_15_39.tok.layout.MainActivity" />
@@ -142,7 +145,8 @@
         <activity
             android:name=".layout.AddDietActivity"
             android:label="@string/title_activity_add_diet"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:parentActivityName=".layout.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kandidat.datx02_15_39.tok.layout.MainActivity" />

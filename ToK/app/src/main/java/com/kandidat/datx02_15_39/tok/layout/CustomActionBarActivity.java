@@ -1,18 +1,21 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
 import android.app.AlertDialog;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -249,7 +252,8 @@ public class CustomActionBarActivity extends ActionBarActivity{
 						}
 					}).create().show();
 		}else{
-			super.onBackPressed();
+			startActivity(NavUtils.getParentActivityIntent(this));
+			finish();
 		}
 	}
 
@@ -257,8 +261,8 @@ public class CustomActionBarActivity extends ActionBarActivity{
 	 * Method to exit the program
 	 */
 	private void quitPrograme(){
-		this.finish();
-		System.exit(0);
+		moveTaskToBack(true);
+		finish();
 	}
 
 	/**
@@ -324,29 +328,6 @@ public class CustomActionBarActivity extends ActionBarActivity{
 			item1.setText(getItem(position).getTitle());
 			// Return the completed view to render on screen
 			return convertView;
-		}
-	}
-
-
-	/**
-	 * Helper method to handle a button selection of diet, sleep, training and weight.
-	 * This is usefull when you want to make buttons with all the different types of diarys.
-	 * @param view
-	 */
-	public void onAlertAddButtonClick(View view){
-		switch(view.getId()) {
-			case R.id.alert_diet_button:
-				startNewActivity( AddDietActivity.class);
-				break;
-			case R.id.alert_sleep_button:
-				startNewActivity( AddSleepActivity.class);
-				break;
-			case R.id.alert_training_button:
-				startNewActivity( AddWorkoutActivity.class);
-				break;
-			case R.id.alert_weight_button:
-				startNewActivity(WeightHomeActivity.class);
-				break;
 		}
 	}
 
