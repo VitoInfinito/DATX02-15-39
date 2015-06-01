@@ -30,7 +30,8 @@ import com.kandidat.datx02_15_39.tok.utility.Utils;
 import java.util.ArrayList;
 
 /**
- *
+ *	Class that is a Fragment that is used when adding food, this is also available to
+ *	use when you need to edit a recipe that already exist or is going to be created.
  */
 public class EditRecipeFragment extends Fragment {
 
@@ -80,12 +81,19 @@ public class EditRecipeFragment extends Fragment {
 		if(recipe == null){
 			getActivity().finish();
 		}
+		// This is used if you want to get a popup version of this fragment in any other
+		// activity the AddDietActivity
 		if(!(getActivity() instanceof AddDietActivity) && getView() != null){
 			getView().setBackgroundResource(R.drawable.border_white_background);
 		}
 		initViews();
 		updateList();
 	}
+
+	/**
+	 * This method is used to init all views on the fragment with listeners,
+	 * this is needed because the use of fragments.
+	 */
 	 private void initViews(){
 		 showIngredienceFrame = (LinearLayout) getView().findViewById(R.id.display_amount_value_of_recipe);
 		 changeRecipePortion = (Button) getView().findViewById(R.id.portion_button);
@@ -97,12 +105,10 @@ public class EditRecipeFragment extends Fragment {
 					 v.setLayoutParams( new LinearLayout.LayoutParams(
 							 v.getWidth(),
 							 Utils.getDpToPixel(getActivity(), 100)));
-					 //TODO lägg till så de visas upp på något snyggt sätt
 				 }else{
 					 v.setLayoutParams( new LinearLayout.LayoutParams(
 							 v.getWidth(),
 							 Utils.getDpToPixel(getActivity(), 20)));
-					 //TODO lägg till så det bara skrivs typ klicka för mer info
 				 }
 			 }
 		 });
@@ -116,6 +122,11 @@ public class EditRecipeFragment extends Fragment {
 				 });
 	 }
 
+
+	/**
+	 * Used as listener of when the amount of portions is changed.
+	 * @param v - The view that was pressed.
+	 */
 	private void changeAmountOfPortions(View v) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getView().getContext());
 		View view = getLayoutInflater(null).inflate(R.layout.number_picker_layout, null);
@@ -130,6 +141,9 @@ public class EditRecipeFragment extends Fragment {
 		dialog.show();
 	}
 
+	/**
+	 * Method to save the recipe to your RecipeBook.
+	 */
 	public void saveRecipe(){
 		if(recipe.getListOfFoodItem().size() > 0) {
 			Recipe newRecipe = new Recipe(nameText.getText().toString()
@@ -139,6 +153,9 @@ public class EditRecipeFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * updates teh list of all the items in the recipe with amount of every single item.
+	 */
 	private void updateList() {
 		displayRecipe = (ListView) getView().findViewById(R.id.display_ingredient_listView);
 		if(displayRecipe.getChildCount() > 0) {
@@ -161,17 +178,21 @@ public class EditRecipeFragment extends Fragment {
 					}
 				});
 			}
-
 		}
-
-		//TODO Fix so you can add more Food
 	}
 
+	/**
+	 * Update the focused recipe with Food item.
+	 * @param food - the new food item.
+	 */
 	public void recipeUpdate(Food food){
 		recipe.addFood(food);
 		updateList();
 	}
 
+	/**
+	 * Method to open a fragment where you can search and add more Food objects.
+	 */
 	private void openFoodSearch(){
 		AddDietToFragment currentFragement = new AddDietToFragment();
 		currentFragement.setFromFargment(this);
@@ -214,6 +235,14 @@ public class EditRecipeFragment extends Fragment {
 			return convertView;
 		}
 
+		/**
+		 * Method to get the exakt position of the element you want, and not update the wrong item.
+		 * This is a problem with listview that the size is only the listitems that you can see.
+		 * this method fixes this problem.
+		 * @param pos
+		 * @param listView
+		 * @return
+		 */
 		public View getViewByPosition(int pos, ListView listView) {
 			final int firstListItemPosition = listView.getFirstVisiblePosition();
 			final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
@@ -227,6 +256,9 @@ public class EditRecipeFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * Class(Listener) to handle the input to a list view items more information button.
+	 */
 	private class OnMoreInfoClickListener implements View.OnClickListener {
 
 		private final int position;
@@ -242,7 +274,13 @@ public class EditRecipeFragment extends Fragment {
 		}
 	}
 
-
+	/**
+	 * Helper method to close and open more information about product, this is to be able to change
+	 * its amount.
+	 * This method also handles that there is not two more information sections open at the same time.
+	 * @param v
+	 * @param position
+	 */
 	private void onMoreInfoClick(View v, int position){
 		if( this.extendedInfoOpenPosition == position){
 			closeExtendedInfo(recipeAdapter.getViewByPosition(extendedInfoOpenPosition, displayRecipe),
@@ -263,6 +301,9 @@ public class EditRecipeFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * Listener to handle deletions
+	 */
 	private class OnDeleteClickListener implements View.OnClickListener{
 
 
@@ -279,36 +320,50 @@ public class EditRecipeFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * Method that delete a specific item in the list from input of the user.
+	 * @param v
+	 * @param position - Deleted items position
+	 */
 	private void deleteItem(View v, int position) {
 		recipe.removeFood(position);
 //		updateList(); Kanske skall användas men inte säker!!
 		recipeAdapter.remove(recipeAdapter.getItem(position));
 	}
 
+	/**
+	 * Helper method to open a new extend information with listeners and the right information.
+	 * @param v
+	 * @param position - which item it is
+	 */
 	private void openExtendedInfo(View v, int position) {
-		//View view = searchResultList.getChildAt(position - searchResultList.getFirstVisiblePosition());
 		LinearLayout extendedView = (LinearLayout)v.findViewById(R.id.extended_food_information);
 		if(extendedView.getChildCount() == 0) {
 			View convertExtendedView = LayoutInflater.from(v.getContext()).inflate(R.layout.change_amount_on_food_view, null);
 			Button food_amount = (Button) convertExtendedView.findViewById(R.id.btn_food_amount);
-			Button food_prefix = (Button) convertExtendedView.findViewById(R.id.btn_food_prefix);
+			TextView food_prefix = (TextView) convertExtendedView.findViewById(R.id.btn_food_prefix);
 
 			food_amount.setText( "");// Amount
 			food_prefix.setText(""); // Prefix
 			food_amount.setOnClickListener(new OnAmountClickListener(position));
-			food_prefix.setOnClickListener(new OnPrefixClickListener(position));
 			extendedView.addView(convertExtendedView);
 		}
-		Toast.makeText(getView().getContext(), "dragen" + recipeAdapter.getCount(), Toast.LENGTH_SHORT).show();
-		//TODO Make so that the new adapter is a adapter to handle click events
 	}
 
+	/**
+	 * Helper method to close the open section and remove alla the added views and fragments.
+	 * @param v
+	 * @param position - which item it is
+	 */
 	private void closeExtendedInfo(View v, int position){
 		LinearLayout extendedView = (LinearLayout)v.findViewById(R.id.extended_food_information);
 		extendedView.removeAllViews();
 		extendedView.removeAllViewsInLayout();
 	}
 
+	/**
+	 * Listener that handles the amount change by the user on a specific item.
+	 */
 	private class OnAmountClickListener implements View.OnClickListener{
 
 		private final int position;
@@ -324,6 +379,11 @@ public class EditRecipeFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * Helper method to change the amount on a specific item in the list.
+	 * @param v
+	 * @param position
+	 */
 	private void changeAmount(View v, int position) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getView().getContext());
 		View view = getActivity().getLayoutInflater().inflate(R.layout.number_picker_layout, null);
@@ -338,6 +398,10 @@ public class EditRecipeFragment extends Fragment {
 		dialog.show();
 	}
 
+	/**
+	 * Listener for the Dialog that is given to the user to decied what amount a specific list
+	 * should have.
+	 */
 	private class ChangedAmountListener implements DialogInterface.OnClickListener {
 
 		private NumberPicker np;
@@ -365,25 +429,4 @@ public class EditRecipeFragment extends Fragment {
 			((Button) v).setText((float) np.getValue() + "");
 		}
 	}
-
-	private class OnPrefixClickListener implements View.OnClickListener{
-
-		private final int position;
-
-		public OnPrefixClickListener(int position) {
-			super();
-			this.position = position;
-		}
-
-		@Override
-		public void onClick(View v) {
-			changePrefix(v, position);
-		}
-	}
-
-	private void changePrefix(View v, int position) {
-		//TODO should i be able to do this ?
-	}
-
-
 }
