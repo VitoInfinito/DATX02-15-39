@@ -12,7 +12,7 @@ public final class Utils {
 
     //account prefs is the referenced value of the saved account preferences
     public static final String ACCOUNT_PREFS = "account_prefs";
-	public static final int DATABASE_VERSION = 1;
+	public static final int DATABASE_VERSION = 2;
     public static final String recipeArgument = "RECIPEARGUMENT";
     public static final String dietActivityArgument = "DIETACTIVITYARGUMENT";
 

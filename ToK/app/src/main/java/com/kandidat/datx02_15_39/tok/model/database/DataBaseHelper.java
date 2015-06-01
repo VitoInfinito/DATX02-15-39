@@ -1,12 +1,4 @@
 package com.kandidat.datx02_15_39.tok.model.database;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,14 +6,19 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.kandidat.datx02_15_39.tok.model.diet.Food;
-import com.kandidat.datx02_15_39.tok.utility.Utils;
 
-import junit.runner.Version;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper
 {
 	private static String TAG = "DataBaseHelper"; // Tag just for the LogCat window
 	private static String DB_NAME = "food_database.sql";// Database name
+	private static String DB_NAME_PART[] = {"food_database_vara.sql","food_database_nvarden.sql", "food_database_fpcu.sql"};
 	private SQLiteDatabase mDataBase;
 	private final Context mContext;
 
@@ -124,29 +121,31 @@ public class DataBaseHelper extends SQLiteOpenHelper
 		// Reseting Counter
 		int result = 0;
 
-		// Open the resource
-		InputStream insertsStream = mContext.getAssets().open(DB_NAME);
-		BufferedReader insertReader = new BufferedReader(new InputStreamReader(insertsStream));
+
 		db.execSQL("BEGIN TRANSACTION;");
 		// Iterate through lines (assuming each insert has its own line and theres no other stuff)
-		while (insertReader.ready()) {
-			String insertStmt = insertReader.readLine();
-			if(insertStmt.length() > 0 ) {
-				String insertStmtEnd = insertStmt.substring(insertStmt.length() - 2, insertStmt.length());
-				while (!insertStmtEnd.equals(");")) {
-					if (insertReader.ready()) {
-						insertStmt += insertReader.readLine();
-						insertStmtEnd = insertStmt.substring(insertStmt.length() - 2, insertStmt.length());
-					} else {
-						Log.d("Databas", "databas fel");
+		for(int i = 0; i < 3; i++) {
+			InputStream insertsStream = mContext.getAssets().open(DB_NAME_PART[i]);
+			BufferedReader insertReader = new BufferedReader(new InputStreamReader(insertsStream));
+			while (insertReader.ready()) {
+				String insertStmt = insertReader.readLine();
+				if (insertStmt.length() > 0) {
+					String insertStmtEnd = insertStmt.substring(insertStmt.length() - 2, insertStmt.length());
+					while (!insertStmtEnd.equals(");")) {
+						if (insertReader.ready()) {
+							insertStmt += insertReader.readLine();
+							insertStmtEnd = insertStmt.substring(insertStmt.length() - 2, insertStmt.length());
+						} else {
+							Log.d("Databas", "databas fel");
+						}
 					}
+					db.execSQL(insertStmt);
+					result++;
 				}
-				db.execSQL(insertStmt);
-				result++;
 			}
+			insertReader.close();
 		}
 		db.execSQL("COMMIT;");
-		insertReader.close();
 
 		// returning number of inserted rows
 		return result;
