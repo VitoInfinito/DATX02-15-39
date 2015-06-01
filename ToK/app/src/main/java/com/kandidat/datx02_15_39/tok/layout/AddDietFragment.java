@@ -33,6 +33,7 @@ import com.kandidat.datx02_15_39.tok.utility.Utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Fragment tht will make it possible to search for recipes and/or food object to add to you
@@ -90,6 +91,7 @@ public class AddDietFragment extends DietFragment{
 		((SearchView)getView().findViewById(R.id.search_field)).setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 			@Override
 			public boolean onQueryTextSubmit(String query) {
+				Utils.hideKeyboard(getActivity());
 				searchForItems(query);
 				return false;
 			}
@@ -147,7 +149,7 @@ public class AddDietFragment extends DietFragment{
 	*/
 	private void searchForItems(String searchWord){
 		searchResultFood = (ArrayList<Food>) mDbHelper.searchFoodItems(searchWord);
-		updateList();
+		updateSearchList();
 		((TextView)getView().findViewById(R.id.info_about_search_list)).setText("Search result for " + searchWord);
 	}
 
@@ -218,7 +220,6 @@ public class AddDietFragment extends DietFragment{
 				@Override
 				public void onClick(View v) {
 					if (activatedObject == R.id.recipe_button_view_diet) {
-						//TODO Start creating a new Recipe
 						EditRecipeFragment editRecipeFragment = new EditRecipeFragment();
 						listener.onAttachFragment(editRecipeFragment);
 						listener.getSupportFragmentManager().beginTransaction()

@@ -239,6 +239,7 @@ public class CustomActionBarActivity extends ActionBarActivity{
 	public void onBackPressed() {
 		/*
 		This added to make the user aware of when the user leaves the application.
+		In all other cases the activities parent will be the new activity
 		 */
 		if(this.getClass() == MainActivity.class) {
 			new AlertDialog.Builder(this)

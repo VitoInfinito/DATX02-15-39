@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -99,7 +100,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity implements IGra
         tmpCal.set(Calendar.HOUR_OF_DAY, Calendar.HOUR_OF_DAY+2);
         Date stopDate = tmpCal.getTime();*/
 
-        Button previousDateButton = (Button) findViewById(R.id.previousDayButton);
+        ImageButton previousDateButton = (ImageButton) findViewById(R.id.previousDayButton);
         previousDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +109,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity implements IGra
             }
         });
 
-        Button nextDateButton = (Button) findViewById(R.id.nextDayButton);
+		ImageButton nextDateButton = (ImageButton)  findViewById(R.id.nextDayButton);
         nextDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

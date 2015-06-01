@@ -3,6 +3,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.kandidat.datx02_15_39.tok.model.diet.Food;

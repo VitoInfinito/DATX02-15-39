@@ -39,7 +39,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
     private Button dayRadioButton;
     private Button weekRadioButton;
-    private Button dateButton;
+    private TextView dateButton;
     private GraphView dietGraph;
     private TextView kcalText, carbText, protText, fatText;
     private Calendar cal;
@@ -76,7 +76,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
         dayRadioButton = (Button) findViewById(R.id.day_radioButton);
         weekRadioButton = (Button) findViewById(R.id.week_radiobutton);
-        dateButton = (Button) findViewById(R.id.dateButton);
+        dateButton = (TextView) findViewById(R.id.dateButton);
         kcalText = (TextView) findViewById(R.id.kcal_text_view);
         carbText = (TextView) findViewById(R.id.carb_text_view);
         protText = (TextView) findViewById(R.id.protein_text_view);
@@ -230,7 +230,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
         });
         builder.setNegativeButton("Radera", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //TODO fråga Marcus om understående
+				dialog.cancel();
                 myDiary.removeActivity(cal, ((DietActivity)mealList.getItemAtPosition(position)).getID());
             }
         });
@@ -417,7 +417,20 @@ public class DietHomeActivity extends CustomActionBarActivity {
         dateButton.setText("Denna vecka");
     }
 
-    public void onDayViewClick(View view) {
+	@Override
+	public void onBackPressed() {
+		//Added this if statement to not use backpressed if tempFragment is shown
+		if(tempFragment != null){
+			getSupportFragmentManager().beginTransaction().remove(tempFragment).commit();
+			tempFragment = null;
+			updateMealList();
+			invalidateOptionsMenu();
+		}else{
+			super.onBackPressed();
+		}
+	}
+
+	public void onDayViewClick(View view) {
         updateDayScreen(cal);
     }
 

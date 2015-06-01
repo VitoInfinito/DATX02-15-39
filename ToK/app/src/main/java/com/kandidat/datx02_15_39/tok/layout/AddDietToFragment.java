@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Fragment to make it possible to add new food items to any meal or recipe.
  */
-public class AddDietToFragment extends Fragment {
+public class AddDietToFragment extends DietFragment {
 
 	private SearchResultAdapter sra;
 
