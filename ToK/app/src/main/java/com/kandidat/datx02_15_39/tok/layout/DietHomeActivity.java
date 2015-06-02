@@ -66,6 +66,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
         initMenu();
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#80FF6F00")));
 
+		//Initial alla buttons and views with listeneres.
         dietGraph = (GraphView) findViewById(R.id.diet_graph);
         series = new BarGraphSeries<>();
 
@@ -138,6 +139,10 @@ public class DietHomeActivity extends CustomActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+	/**
+	 * Class that works as an adapter to a list view, this is needed to make listitems appear with
+	 * listener on the items.
+	 */
     public class MealListAdapter extends ArrayAdapter<DietActivity>
     {
         public MealListAdapter(Context context)
@@ -169,8 +174,9 @@ public class DietHomeActivity extends CustomActionBarActivity {
         }
     }
 
-
-    //updates the meal list with the appropriate meals for given dates
+	/**
+	 * updates the meal list with the appropriate meals for given dates
+	 */
     private void updateMealList(){
         mealList = (ListView) findViewById(R.id.meal_list_view);
         mealList.removeAllViewsInLayout();
@@ -185,7 +191,9 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
     }
 
-    //Decides what happens on click on meal items in the ListView
+	/**
+	 * Decides what happens on click on meal items in the ListView
+	 */
     private class MealItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
@@ -193,6 +201,10 @@ public class DietHomeActivity extends CustomActionBarActivity {
         }
     }
 
+	/**
+	 * Method  used to make a fragment appear with the possibility to change a existing meal.
+	 * @param dietActivity - the activity to change
+	 */
 	void startNewFragmentToEditMeal(DietActivity dietActivity){
 		if(dietActivity != null) {
 			tempFragment = new ViewAddDietFragment();
@@ -204,6 +216,11 @@ public class DietHomeActivity extends CustomActionBarActivity {
 		}
 	}
 
+	/**
+	 * Helper method to when a item in the list is pressed that gives you an alertdialog to choose
+	 * if you want to change, erase or do nothing to a DietActivity.
+	 * @param position
+	 */
     private void editMealItem(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // set title
@@ -236,10 +253,10 @@ public class DietHomeActivity extends CustomActionBarActivity {
         alertDialog.show();
     }
 
-    void sendMessage(String s){
-        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
-    }
-
+	/**
+	 * updates the graph and the list with a new sets of DietActivities.
+	 * @param activityList - the new sets of DietActivity
+	 */
     private void updateActivityList(ArrayList<DietActivity> activityList) {
 
         double calSum = 0, carbSum = 0 , protSum = 0, fatSum = 0;
@@ -275,16 +292,18 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
         dietGraph.getViewport().setXAxisBoundsManual(true);
         dietGraph.getViewport().setMinX(5);
-        dietGraph.getViewport().setMaxX(45); //om större än 45 så fuckar de statiska lablarna ur, venne varför.
+        dietGraph.getViewport().setMaxX(45);
 
-        //TODO lägg till nedanstående line till Workout
         dietGraph.removeAllSeries();
         dietGraph.addSeries(series);
 
         updateMealList();
     }
 
-    
+	/**
+	 * Method to update the graph and list with all activities of a day
+	 * @param cal - the day to take activities from
+	 */
     private void updateDayScreen(Calendar cal) {
 
         activityList = (ArrayList) myDiary.showDaysActivities(cal);
@@ -292,9 +311,13 @@ public class DietHomeActivity extends CustomActionBarActivity {
         updateActivityList(activityList);
     }
 
-    //Calculates the start and end date for a given date and print out the diet activities for that interval
+	/**
+	 * Method to update the graph anad list with all activities of a week.
+	 * @param date - a Day in the week to focus.
+	 */
     private void updateWeekScreen(Calendar date) {
 
+		//Calculates the start and end date for a given date and print out the diet activities for that interval
         Pair<Calendar, Calendar> pairDate = getDateIntervalOfWeek(date);
 
         activityList = (ArrayList) myDiary.showPeriodActivities(pairDate.first, pairDate.second);
@@ -302,10 +325,18 @@ public class DietHomeActivity extends CustomActionBarActivity {
         updateActivityList(activityList);
     }
 
+	/**
+	 * @return - if the dayview button is pressed or not.
+	 */
     private boolean isDayView() {
         return dayRadioButton.isActivated();
     }
 
+	/**
+	 * Method to handle when you press the day view. This will change the view and you will be able
+	 * to look at your daily food consumption insteed of weekly
+	 * @param view - not used. needed for android
+	 */
     public void onLeftButtonClick(View view) {
 
         if (isDayView()) {
@@ -337,6 +368,11 @@ public class DietHomeActivity extends CustomActionBarActivity {
         }
     }
 
+	/**
+	 * Method to handle when you press the day view. This will change the view and you will be able
+	 * to look at your weekly food consumption insteed of daily
+	 * @param view - not used. needed for android
+	 */
     public void onRightButtonClick(View view) {
 
         if (isDayView() && dayOffset != 0) { // makes sure that you can't proceed past today's date
@@ -369,7 +405,11 @@ public class DietHomeActivity extends CustomActionBarActivity {
         }
     }
 
-    //Fins the date interval of a week for a current date
+	/**
+	 * Method to find the date interval of a week for a current date
+	 * @param date - a date in the week you want the start day and end day of.
+	 * @return - to dates the is the first an last week.
+	 */
     private Pair<Calendar, Calendar> getDateIntervalOfWeek(Calendar date) {
 
         Calendar c = (Calendar) date.clone();
@@ -385,6 +425,10 @@ public class DietHomeActivity extends CustomActionBarActivity {
         return new Pair<>(firstDay, lastDay);
     }
 
+	/**
+	 * Method to update the graph with the today or this weeks consumption.
+	 * @param view - not used. needed for android
+	 */
     public void onDateButtonClick(View view) {
         if (isDayView()) {
             resetDay();
@@ -393,12 +437,18 @@ public class DietHomeActivity extends CustomActionBarActivity {
         }
     }
 
+	/**
+	 * Method to reset to today for the date to update graph and list with
+	 */
     private void resetDay() {
         dayOffset = 0;
         cal.setTime(Calendar.getInstance().getTime());
         dateButton.setText("Idag");
     }
 
+	/**
+	 * Method to reset to todays week for the date to update graph and list with
+	 */
     private void resetWeek() {
         weekOffset = 0;
         cal.setTime(Calendar.getInstance().getTime());
@@ -418,10 +468,18 @@ public class DietHomeActivity extends CustomActionBarActivity {
 		}
 	}
 
+	/**
+	 * Listener to the button that switch the view to only display days
+	 * @param view
+	 */
 	public void onDayViewClick(View view) {
         updateDayScreen(cal);
     }
 
+	/**
+	 * Listener to the button that switch the view to only display weeks
+	 * @param view
+	 */
     public void onWeekViewClick(View view) {
         updateWeekScreen(cal);
     }
