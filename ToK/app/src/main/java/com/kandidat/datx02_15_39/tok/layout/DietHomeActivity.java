@@ -44,7 +44,6 @@ public class DietHomeActivity extends CustomActionBarActivity {
     private TextView kcalText, carbText, protText, fatText;
     private Calendar cal;
     private BarGraphSeries<DataPoint> series;
-    ArrayList<Food> foodList;
 
 	private ViewAddDietFragment tempFragment;
 
@@ -69,7 +68,6 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
         dietGraph = (GraphView) findViewById(R.id.diet_graph);
         series = new BarGraphSeries<>();
-        foodList = createTestFoodList();
 
         cal = Calendar.getInstance();
         tempCal = Calendar.getInstance();
@@ -87,13 +85,13 @@ public class DietHomeActivity extends CustomActionBarActivity {
             public boolean onTouch(View v, MotionEvent event) {
 
                 if (v == dayRadioButton) {
-                    weekRadioButton.setPressed(false);
-                    v.setPressed(true);
+                    weekRadioButton.setActivated(false);
+                    v.setActivated(true);
                     resetDay();
 
-                } else {
-                    dayRadioButton.setPressed(false);
-                    v.setPressed(true);
+                } else if(v == weekRadioButton){
+                    dayRadioButton.setActivated(false);
+                    v.setActivated(true);
                     resetWeek();
                 }
                 return true;
@@ -102,7 +100,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
         myDiary = DietDiary.getInstance();
 
-        dayRadioButton.setPressed(true);
+        dayRadioButton.setActivated(true);
         dayRadioButton.setOnTouchListener(dayAndWeekListener);
         weekRadioButton.setOnTouchListener(dayAndWeekListener);
 
@@ -171,16 +169,6 @@ public class DietHomeActivity extends CustomActionBarActivity {
         }
     }
 
-    private ArrayList<Food> createTestFoodList() {
-        Food testFood = new Food(460, 120, 20, 40, "Kokt potatis", "Mjölig potatis som är kokt", Food.FoodPrefix.g, 200);
-        Food testFoodTwo = new Food(300, 24, 15, 45, "Kokt Wienerkorv", "Wienerkorv som är kokt", Food.FoodPrefix.g, 250);
-        Food testFoodThree = new Food(150, 24, 15, 45, "Bostongurka", "Finns inget mer att säga", Food.FoodPrefix.g, 250);
-        ArrayList<Food> foodList = new ArrayList<>();
-        foodList.add(testFood);
-        foodList.add(testFoodTwo);
-        foodList.add(testFoodThree);
-        return foodList;
-    }
 
     //updates the meal list with the appropriate meals for given dates
     private void updateMealList(){
@@ -315,7 +303,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
     }
 
     private boolean isDayView() {
-        return dayRadioButton.isPressed();
+        return dayRadioButton.isActivated();
     }
 
     public void onLeftButtonClick(View view) {
