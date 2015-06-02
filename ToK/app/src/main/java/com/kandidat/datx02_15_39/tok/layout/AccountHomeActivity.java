@@ -1,6 +1,5 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,26 +10,24 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.kandidat.datx02_15_39.tok.R;
-import com.kandidat.datx02_15_39.tok.jawbone.JawboneSetupActivity;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
+/**
+ * Activity class for Account home
+ */
 public class AccountHomeActivity extends CustomActionBarActivity {
 
     Account account;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_home);
-        initMenu(R.layout.activity_account_home);
+        initMenu();
 
         account = Account.getInstance();
-
-        //((TextView) findViewById(R.id.accountUsername)).setText(account.getName());
         ((EditText) findViewById(R.id.accountUsername)).setHint(account.getName());
-
         ((EditText) findViewById(R.id.accountAge)).setHint("" + account.getAge());
 
         Spinner spinner = (Spinner) findViewById(R.id.accountGender);
@@ -41,8 +38,6 @@ public class AccountHomeActivity extends CustomActionBarActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
-
-
     }
 
 
@@ -68,6 +63,10 @@ public class AccountHomeActivity extends CustomActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Method called when wanting to save the settings into the account singleton
+     * @param view used as reference to the view
+     */
     public void saveAccountSettings(View view) {
         String newName = ((EditText)findViewById(R.id.accountUsername)).getText().toString();
         if(!newName.equals("")) {
@@ -93,10 +92,5 @@ public class AccountHomeActivity extends CustomActionBarActivity {
             }
         }
 
-    }
-
-    public void gotoJawboneConnection(View view) {
-        //startActivity(new Intent(this, JawboneSetup.class));
-        startActivity(new Intent(this, JawboneSetupActivity.class));
     }
 }

@@ -3,7 +3,8 @@ package com.kandidat.datx02_15_39.tok.model.diet;
 import java.io.Serializable;
 
 /**
- * Created by Lagerstedt on 2015-02-16.
+ * Class to represent Food Items you can eat whit the nutritional values with the prefix and amount.
+ * This is a way to have these food obejcts standardize in our application.
  */
 public class Food implements Serializable {
 	private final double calorieAmount;
@@ -25,6 +26,10 @@ public class Food implements Serializable {
 		st,
 	};
 
+	/**
+	 * Method to clone a food object to always have a one copy of a food object.
+	 * @return
+	 */
 	public Food clone(){
 		return new Food(calorieAmount, proteinAmount, fatAmount
 				, carbAmount, name, description
@@ -71,6 +76,11 @@ public class Food implements Serializable {
 		}
 	}
 
+	/**
+	 * To convert all nutrition value according to the amount
+	 * @param d - the amount
+	 * @return
+	 */
 	private double getAmountMultiplier(double d){
 		if(this.prefix == FoodPrefix.g || this.prefix == FoodPrefix.ml){
 			return (d/100.0);
@@ -79,34 +89,70 @@ public class Food implements Serializable {
 		}
 	}
 
+	/**
+	 * Getter to get the amount of calorie of a food object
+	 * @return
+	 */
 	public double getCalorieAmount() {
 		return calorieAmount * getAmountMultiplier(amount);
 	}
 
+
+	/**
+	 * Getter to get the amount of protein of a food object
+	 * @return
+	 */
 	public double getProteinAmount() {
 		return proteinAmount * getAmountMultiplier(amount);
 	}
 
+	/**
+	 * Getter to get the amount of fat of a food object
+	 * @return
+	 */
 	public double getFatAmount() {
 		return fatAmount* getAmountMultiplier(amount);
 	}
 
+	/**
+	 * Getter to get the amount of Carbs of a food object
+	 * @return
+	 */
 	public double getCarbAmount() {
 		return carbAmount* getAmountMultiplier(amount);
 	}
 
+
+	/**
+	 * Getter to get the name of a food object
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}
 
+
+	/**
+	 * Getter to get the Descriptions
+	 * @return
+	 */
 	public String getDescription() {
 		return description;
 	}
 
+
+	/**
+	 * Getter to get the amount of the food object
+	 * @return
+	 */
 	public double getAmount() {
 		return amount;
 	}
 
+	/**
+	 * Getter to get the prefix of the food object
+	 * @return
+	 */
 	public FoodPrefix getPrefix() {
 		return prefix;
 	}

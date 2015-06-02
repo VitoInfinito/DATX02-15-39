@@ -16,8 +16,6 @@ import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.jawbone.upplatformsdk.api.ApiManager;
-import com.jawbone.upplatformsdk.utils.UpPlatformSdkConstants;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -39,6 +37,9 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+/**
+ * Activity class for adding a sleep
+ */
 public class AddSleepActivity extends CustomActionBarActivity {
 
     private static final String TAG = AddSleepActivity.class.getSimpleName();
@@ -68,7 +69,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_sleep);
-		initMenu(R.layout.activity_add_sleep);
+		initMenu();
 
 	    Calendar currentCalendar = Calendar.getInstance();
 
@@ -184,12 +185,14 @@ public class AddSleepActivity extends CustomActionBarActivity {
 	 * Adds a new sleep entry into the diary such that it can be viewed in other activities
 	 */
 	public void addNewSleep(){
-		/*Sleep sleep = new Sleep(startDate, stopDate, Sleep.SleepState.DEEP);
+        //TODO just fix plis
+		Sleep sleep = new Sleep(startDate, stopDate, Sleep.SleepState.DEEP);
 		SleepActivity sleepActivity = new SleepActivity("id4", sleep);
 		SleepDiary sleepDiary = (SleepDiary) SleepDiary.getInstance();
-		sleepDiary.addActivity(startDate, sleepActivity);*/
+		sleepDiary.addActivity(sleepActivity);
 
-        Calendar tmpCal = Calendar.getInstance();
+        //Code for connecting to and sending the data to UP. Currently not used
+        /*Calendar tmpCal = Calendar.getInstance();
 
         tmpCal.setTime(startDate);
         tmpCal.set(Calendar.HOUR_OF_DAY, startHours);
@@ -199,31 +202,31 @@ public class AddSleepActivity extends CustomActionBarActivity {
         tmpCal.setTime(stopDate);
         tmpCal.set(Calendar.HOUR_OF_DAY, stopHours);
         tmpCal.set(Calendar.MINUTE, stopMinutes);
-        int stopSeconds = (int) (tmpCal.getTimeInMillis()/1000);
+        int stopSeconds = (int) (tmpCal.getTimeInMillis()/1000);*/
 
-        Log.e(TAG, "making Create Sleep Event api call ...");
+        /*Log.e(TAG, "making Create Sleep Event api call ...");
         ApiManager.getRestApiInterface().createSleepEvent(
                 UpPlatformSdkConstants.API_VERSION_STRING,
                 getCreateSleepEventRequestParams(startSeconds, stopSeconds),
-                createSleepCallbackListener);
-
-
+                createSleepCallbackListener);*/
 	}
 
+    /**
+     * Used to create the request query for creating a sleep event with Jawbone
+     * @param time_created shows when the sleep was created
+     * @param time_completed shows when the sleep was completed
+     * @return a HashMap containing the queries for the request to Jawbone
+     */
     private static HashMap<String, Object> getCreateSleepEventRequestParams(int time_created, int time_completed) {
         HashMap<String, Object> queryHashMap = new HashMap<String, Object>();
-
-//        //uncomment to add as needed parameters
-//        queryHashMap.put("time_created", 1);
-//        queryHashMap.put("time_completed", 1);
-//        queryHashMap.put("tz", null);
-//        queryHashMap.put("share", false);
-
         queryHashMap.put("time_created", time_created);
         queryHashMap.put("time_completed", time_completed);
         return queryHashMap;
     }
 
+    /**
+     * Callback function when creating a new sleep event with Jawbone
+     */
     private Callback createSleepCallbackListener = new Callback<Object>() {
         @Override
         public void success(Object o, Response response) {
@@ -243,7 +246,7 @@ public class AddSleepActivity extends CustomActionBarActivity {
      * Method to call when returning to sleep home
      */
     private void returnToSleepHome() {
-        startActivity(new Intent(this, SleepHomeActivity.class));
+        startNewActivity( SleepHomeActivity.class);
     }
 
 	/**
@@ -419,7 +422,6 @@ public class AddSleepActivity extends CustomActionBarActivity {
             stopDate = tmpCal.getTime();
         }
 
-		//tmpCal.setTime(stopDate);
 		tmpCal.set(Calendar.HOUR_OF_DAY, stopHours);
 		tmpCal.set(Calendar.MINUTE, stopMinutes);
 
@@ -430,9 +432,6 @@ public class AddSleepActivity extends CustomActionBarActivity {
 		datapoints.add(new DataPoint(stopTime.getTime(), 2));
 		datapoints.add(new DataPoint(stopTime.getTime(), 0));
 
-		/*for(int i = 0; i<datapoints.size(); i++){
-			System.out.println(datapoints.get(i));
-		}*/
 		return datapoints.toArray(new DataPoint[]{});
 	}
 }

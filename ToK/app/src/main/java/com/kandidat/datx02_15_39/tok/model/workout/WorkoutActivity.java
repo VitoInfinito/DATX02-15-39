@@ -12,37 +12,57 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by emma on 2015-02-24.
+ * Class used to define a workout activity
  */
 public class WorkoutActivity extends AbstractDiaryActivity {
 
     private List<Workout> workoutList;
 
-    private Date date;
+    private Calendar calendar;
     private final String id;
 
+    /**
+     * Constructor used when only referencing a workout with an ID
+     * @param id is the id used
+     * @param workout is the workout referenced
+     */
     public WorkoutActivity(String id, Workout workout) {
         this.id=id;
         workoutList = new ArrayList<Workout>();
         workoutList.add(workout);
-        date = workout.getEndTime();
+        calendar = Utils.DateToCalendar(workout.getEndTime());
     }
 
-    public WorkoutActivity(String id, Date date, Workout workout) {
+    /**
+     * Constructor used when adding a calendar to the workout
+     * @param id is the id used
+     * @param calendar is the specifically referenced calendar
+     * @param workout is the workout used in the activity
+     */
+    public WorkoutActivity(String id, Calendar calendar, Workout workout) {
         this.id=id;
         workoutList = new ArrayList<Workout>();
         workoutList.add(workout);
-        this.date = date;
+        this.calendar = calendar;
     }
 
 
-    //TODO Another very wut moment. Look up later.
-    public Calendar getDate(){
-        return Utils.DateToCalendar(date);
+    /**
+     * Returns the calendar belonging to the workout activity
+     * @return
+     */
+    public Calendar getCalendar(){
+        return calendar;
     }
-    public void setDate(Date d){
-        date = new Date(d.getTime());
+
+    /**
+     * Sets the calendar belonging to the activity to a new value
+     * @param c is the new calendar
+     */
+    public void setCalendar(Calendar c){
+        calendar.setTimeInMillis(c.getTimeInMillis());
     }
+
 
     @Override
     public void edit(EditActivityParams eap) {

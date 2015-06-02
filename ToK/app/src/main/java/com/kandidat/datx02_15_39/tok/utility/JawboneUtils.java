@@ -18,12 +18,17 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
- * Created by tomashasselquist on 06/05/15.
+ * Class used for all utility methods used when connecting to jawbone
  */
 public class JawboneUtils {
 
     private JawboneUtils(){}
 
+    /**
+     * Method used to check if the user is connected to UP
+     * @param context is the context of the activity
+     * @param intent is the intent of the activity (Not used in this stage)
+     */
     public static void checkConnectionToUP(Context context, Intent intent) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String mAccessToken = preferences.getString(UpPlatformSdkConstants.UP_PLATFORM_ACCESS_TOKEN, null);
@@ -37,6 +42,9 @@ public class JawboneUtils {
 
     }
 
+    /**
+     * Callback function from UP to check if the user is connected
+     */
     private static Callback callbackFromUP = new Callback<Object>() {
         @Override
         public void success(Object o, Response response) {
@@ -44,17 +52,6 @@ public class JawboneUtils {
             //isConnected = true;
             Account account = Account.getInstance();
             account.setConnectedUP(true);
-            try {
-                //LinkedTreeMap obj = (LinkedTreeMap) o;
-                //LinkedTreeMap data = (LinkedTreeMap) obj.get("data");
-
-                //firstName = data.get("first").toString();
-                //lastName = data.get("last").toString();
-                //Log.e("UP Connection", "Connection to account belonging to " + firstName + " " + lastName + " successfully established");
-            }catch(Exception e) {
-                Log.e("UP Connection", "Error with fetched UP Data");
-                e.printStackTrace();
-            }
         }
 
         @Override

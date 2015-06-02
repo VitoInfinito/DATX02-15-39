@@ -34,6 +34,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+/**
+ * Activity class for Weight home
+ */
 public class WeightHomeActivity extends CustomActionBarActivity {
     private WeightDiary diary;
 
@@ -55,7 +58,7 @@ public class WeightHomeActivity extends CustomActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weight_home);
-        initMenu(R.layout.activity_weight_home);
+        initMenu();
 
         diary = (WeightDiary) WeightDiary.getInstance();
 

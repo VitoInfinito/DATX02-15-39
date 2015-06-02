@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by tomashasselquist on 03/03/15.
+ * Class used for referencing a weight to a certain date and ID
  */
 public class WeightActivity extends AbstractDiaryActivity {
 
@@ -19,6 +19,12 @@ public class WeightActivity extends AbstractDiaryActivity {
     private Weight weight;
     private Date date;
 
+    /**
+     * Constructor used for the weight
+     * @param id is the ID
+     * @param weight is the weight
+     * @param date is the date
+     */
     public WeightActivity(String id, Weight weight, Date date) {
         this.id = id;
         this.weight = weight;
@@ -28,10 +34,18 @@ public class WeightActivity extends AbstractDiaryActivity {
 		setDate(cal);
     }
 
+    /**
+     * Set method used for setting a new weight to the activity
+     * @param weight is the new weight
+     */
 	public void setWeight(Weight weight){
 		this.weight = weight;
 	}
 
+    /**
+     * Get method for fetching the weight
+     * @return the weight in the activity
+     */
     public Weight getWeight() {
         return weight;
     }

@@ -1,33 +1,34 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.NumberPicker;
-import android.widget.SeekBar;
-import android.widget.Spinner;
+import android.view.Window;
 import android.widget.TextView;
 
-import com.jawbone.upplatformsdk.api.ApiManager;
 import com.kandidat.datx02_15_39.tok.R;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
 import com.kandidat.datx02_15_39.tok.utility.JawboneUtils;
 import com.kandidat.datx02_15_39.tok.utility.Utils;
 
-
+/**
+ * Main activity class for users home screen
+ */
 public class MainActivity extends CustomActionBarActivity {
     private Account account;
+	private AlertDialog ad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity);
-		initMenu(R.layout.activity_main_activity);
+		initMenu();
 
 
         //Fetching and/or setting up account name from saved preferences
@@ -44,10 +45,11 @@ public class MainActivity extends CustomActionBarActivity {
                 Account.getInstance().setName(accountName);
                 ((TextView) findViewById(R.id.homeUsername)).setText(accountName);
             }else {
-                startActivity(new Intent(this, CreateUserActivity.class));
+                startNewActivity( CreateUserActivity.class);
             }
         }
 
+        //Not used in this stage. Is to be implemented later if needed
         //checkFormerConnection();
     }
 
@@ -72,10 +74,10 @@ public class MainActivity extends CustomActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.right_corner_button_add) {
-			View add = getLayoutInflater().inflate(R.layout.activity_add_all, null);
-			AlertDialog ad = new AlertDialog.Builder(this, R.style.CustomDialog)
-					.create();
+			View add = getLayoutInflater().inflate(R.layout.add_all, null);
+			ad = new AlertDialog.Builder(this, R.style.CustomDialog).create();
 			ad.setView(add);
+			ad.setCancelable(true);
 			ad.setCanceledOnTouchOutside(true);
 			ad.show();
         }
@@ -84,71 +86,70 @@ public class MainActivity extends CustomActionBarActivity {
     }
 
 	/**
+	 * Helper method to handle a button selection of diet, sleep, training and weight.
+	 * This is usefull when you want to make buttons with all the different types of diarys.
+	 * @param view
+	 */
+	public void onAlertAddButtonClick(View view){
+		switch(view.getId()) {
+			case R.id.alert_diet_button:
+				ad.dismiss();
+				startNewActivity( AddDietActivity.class);
+				break;
+			case R.id.alert_sleep_button:
+				ad.dismiss();
+				startNewActivity( AddSleepActivity.class);
+				break;
+			case R.id.alert_training_button:
+				ad.dismiss();
+				startNewActivity( AddWorkoutActivity.class);
+				break;
+			case R.id.alert_weight_button:
+				ad.dismiss();
+				startNewActivity(WeightHomeActivity.class);
+				break;
+		}
+	}
+
+
+	/**
 	 * Navigates to diet activity overview.
-	 *
 	 * @param view Not used.
 	 */
     public void onDietButtonClick(View view) {
-        startActivity(new Intent(this, DietHomeActivity.class));
+		startNewActivity(DietHomeActivity.class);
     }
 
     /**
      * Navigates to sleep activity overview.
-     *
      * @param view Not used.
      */
     public void onSleepButtonClick(View view) {
-        startActivity(new Intent(this, SleepHomeActivity.class));
+		startNewActivity( SleepHomeActivity.class);
     }
 
     /**
      * Navigates to workout activity overview.
-     *
      * @param view Not used.
      */
     public void onWorkOutButtonClick(View view){
-        startActivity(new Intent(this, WorkoutHomeActivity.class));
+		startNewActivity( WorkoutHomeActivity.class);
     }
 
 
 	/**
-	 * Creates a popup with a numberpicker inside it to register your weight for the day.
-	 *
-	 * @param view View to get context from for the alert dialog
+	 * Navigates to the weight activity
+	 * @param view not used
 	 */
 	public void registerWeightOnClick(View view){
-		/*AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-
-		builder.setTitle("Weight");
-		builder.setIcon(R.drawable.weigth_scale);
-
-		NumberPicker weightPicker = new NumberPicker(this);
-
-		weightPicker.setMinValue(25);
-		weightPicker.setMaxValue(200);
-		weightPicker.setValue(80);
-
-		builder.setView(weightPicker);
-
-		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-
-			}
-		});
-		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				// User cancelled the dialog
-			}
-		});
-
-		AlertDialog dialog = builder.create();
-
-		dialog.show();*/
-
-		startActivity(new Intent(this, WeightHomeActivity.class));
+		startNewActivity( WeightHomeActivity.class);
 	}
 
+    /**
+     * Navigates to the goals activity
+     * @param view not used
+     */
 	public void goalsButtonOnClick(View view){
-		startActivity(new Intent(this, GoalActivity.class));
+		startNewActivity( GoalActivity.class);
 	}
 }

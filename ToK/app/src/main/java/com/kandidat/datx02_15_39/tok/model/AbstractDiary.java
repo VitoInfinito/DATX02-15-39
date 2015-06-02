@@ -36,7 +36,6 @@ public abstract class AbstractDiary implements IDiary {
         }
 		if(ida != null)
        		idl.add(ida);
-        //activities.put(sdf.format(d), ida);
     }
 
     protected void removeDate(Calendar date) {

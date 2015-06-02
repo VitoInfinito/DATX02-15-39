@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -21,7 +22,6 @@ import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
-import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
@@ -39,7 +39,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
     private Button dayRadioButton;
     private Button weekRadioButton;
-    private Button dateButton;
+    private TextView dateButton;
     private GraphView dietGraph;
     private TextView kcalText, carbText, protText, fatText;
     private Calendar cal;
@@ -64,7 +64,8 @@ public class DietHomeActivity extends CustomActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_diet_home);
-        initMenu(R.layout.activity_diet_home);
+        initMenu();
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#80FF6F00")));
 
         dietGraph = (GraphView) findViewById(R.id.diet_graph);
         series = new BarGraphSeries<>();
@@ -75,7 +76,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
         dayRadioButton = (Button) findViewById(R.id.day_radioButton);
         weekRadioButton = (Button) findViewById(R.id.week_radiobutton);
-        dateButton = (Button) findViewById(R.id.dateButton);
+        dateButton = (TextView) findViewById(R.id.dateButton);
         kcalText = (TextView) findViewById(R.id.kcal_text_view);
         carbText = (TextView) findViewById(R.id.carb_text_view);
         protText = (TextView) findViewById(R.id.protein_text_view);
@@ -126,12 +127,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.right_corner_button_add) {
-            View add = getLayoutInflater().inflate(R.layout.activity_add_all, null);
-            AlertDialog ad = new AlertDialog.Builder(this, R.style.CustomDialog)
-                    .create();
-            ad.setView(add);
-            ad.setCanceledOnTouchOutside(true);
-            ad.show();
+           startNewActivity(AddDietActivity.class);
         }
 		if(id == R.id.right_corner_button_confirm){
 			tempFragment.editActivity();
@@ -234,7 +230,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
         });
         builder.setNegativeButton("Radera", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //TODO fråga Marcus om understående
+				dialog.cancel();
                 myDiary.removeActivity(cal, ((DietActivity)mealList.getItemAtPosition(position)).getID());
             }
         });
@@ -313,7 +309,7 @@ public class DietHomeActivity extends CustomActionBarActivity {
 
         Pair<Calendar, Calendar> pairDate = getDateIntervalOfWeek(date);
 
-        activityList = (ArrayList) myDiary.showWeekActivities(pairDate.first, pairDate.second);
+        activityList = (ArrayList) myDiary.showPeriodActivities(pairDate.first, pairDate.second);
 
         updateActivityList(activityList);
     }
@@ -421,7 +417,20 @@ public class DietHomeActivity extends CustomActionBarActivity {
         dateButton.setText("Denna vecka");
     }
 
-    public void onDayViewClick(View view) {
+	@Override
+	public void onBackPressed() {
+		//Added this if statement to not use backpressed if tempFragment is shown
+		if(tempFragment != null){
+			getSupportFragmentManager().beginTransaction().remove(tempFragment).commit();
+			tempFragment = null;
+			updateMealList();
+			invalidateOptionsMenu();
+		}else{
+			super.onBackPressed();
+		}
+	}
+
+	public void onDayViewClick(View view) {
         updateDayScreen(cal);
     }
 

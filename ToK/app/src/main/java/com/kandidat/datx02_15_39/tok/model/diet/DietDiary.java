@@ -1,10 +1,14 @@
 package com.kandidat.datx02_15_39.tok.model.diet;
 
+import android.util.Log;
+
 import com.kandidat.datx02_15_39.tok.model.AbstractDiary;
 import com.kandidat.datx02_15_39.tok.model.AddToActivity;
 import com.kandidat.datx02_15_39.tok.model.EditActivityParams;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
+import com.kandidat.datx02_15_39.tok.utility.Utils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,7 +59,7 @@ public class DietDiary extends AbstractDiary {
 
 
 	@Override
-	public List<IDiaryActivity> showWeekActivities(Calendar start, Calendar end) {
+	public List<IDiaryActivity> showPeriodActivities(Calendar start, Calendar end) {
 		if(!start.before(end)){
 			throw new IllegalArgumentException();
 		}
@@ -71,6 +75,15 @@ public class DietDiary extends AbstractDiary {
 			start.add(Calendar.DATE, 1);
 		}
 		return returnValue;
+	}
+
+	@Override
+	public List<IDiaryActivity> showWeekActivities(Calendar startDayAtWeek) {
+		Calendar tmp = Utils.setupCalendar(startDayAtWeek);
+		tmp.set(Calendar.DAY_OF_WEEK, tmp.getFirstDayOfWeek());
+		Calendar tmpStart = Utils.setupCalendar(tmp);
+		tmp.add(Calendar.DATE, 7);
+		return showPeriodActivities(tmpStart, tmp);
 	}
 
 	@Override

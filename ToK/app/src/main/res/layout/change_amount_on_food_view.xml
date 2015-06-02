@@ -24,12 +24,11 @@
         android:focusable="false"
         android:focusableInTouchMode="false"/>
 
-    <Button
+    <TextView
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:text="g"
         android:id="@+id/btn_food_prefix"
-        android:background="@drawable/combo_box_button"
         android:layout_weight="0.5"
         android:gravity="left|center_vertical"
         android:paddingLeft="2dp"

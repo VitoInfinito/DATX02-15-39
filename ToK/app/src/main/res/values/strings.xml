@@ -88,7 +88,6 @@
     <string name="unset">Ej vald</string>
     <string name="male">Man</string>
     <string name="female">Kvinna</string>
-    <string name="title_activity_view_add_diet">ViewAddDietActivity</string>
     <string name="title_activity_create_user">CreateUserActivity</string>
     <string name="title_activity_jawbone_setup">JawboneSetup</string>
     <string name="title_activity_up_api_list">UpApiListActivity</string>
@@ -106,5 +105,6 @@
     <string name="RecipeViewFragment">Recept överskod</string>
     <string name="title_activity_accessories_home">Koppla Tillbehör</string>
     <string name="no_connection_UP">Ingen uppkoppling till UP hittad.</string>
+    <string name="title_activity_database">DatabaseActivity</string>
 
 </resources>

@@ -37,6 +37,7 @@ import retrofit.client.Response;
 /**
  * Activity that provides a list view of all the API calls available
  * for UP Platform
+ * Used for accessing the different API calls that can be made to UP
  */
 public class UpApiListActivity extends ListActivity {
 

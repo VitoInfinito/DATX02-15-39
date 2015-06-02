@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.util.Pair;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.kandidat.datx02_15_39.tok.R;
+import com.kandidat.datx02_15_39.tok.jawbone.IGraphSetup;
 import com.kandidat.datx02_15_39.tok.jawbone.JawboneSetupActivity;
 import com.kandidat.datx02_15_39.tok.model.IDiaryActivity;
 import com.kandidat.datx02_15_39.tok.model.account.Account;
@@ -39,7 +42,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,8 +49,10 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-
-public class WorkoutHomeActivity extends CustomActionBarActivity {
+/**
+ * Activity class for workout home
+ */
+public class WorkoutHomeActivity extends CustomActionBarActivity implements IGraphSetup{
 
     private WorkoutDiary diary;
 
@@ -60,14 +64,13 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     private TextView textDay;
     private Date todaysDate;
     private BarGraphSeries<DataPoint> series;
-    private GraphView graph;
 
     private ArrayList <WorkoutActivity> workoutActivityList;
     private int dayOffset = 0;
     private int weekOffset = 0;
     private Calendar cal;
 
-    private boolean WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING = true;
+    private boolean isWeekView = true;
 
     private Integer [] imgid ={
             R.drawable.yoga_icon,
@@ -89,18 +92,56 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_workout_home);
-		initMenu(R.layout.activity_workout_home);
+		initMenu();
 
-        Calendar tmpCal = Calendar.getInstance();
+        //Temporary calendar for testing
+        /*Calendar tmpCal = Calendar.getInstance();
         Date startDate = tmpCal.getTime();
         tmpCal.set(Calendar.HOUR_OF_DAY, Calendar.HOUR_OF_DAY+2);
-        Date stopDate = tmpCal.getTime();
+        Date stopDate = tmpCal.getTime();*/
 
-        //Dummy listitem
-        Workout workout = new Workout(startDate, stopDate, 15, Workout.WorkoutType.CARDIO);
+        ImageButton previousDateButton = (ImageButton) findViewById(R.id.previousDayButton);
+        previousDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPreviousButtonClick(v);
+
+            }
+        });
+
+		ImageButton nextDateButton = (ImageButton)  findViewById(R.id.nextDayButton);
+        nextDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onNextButtonClick(v);
+
+            }
+        });
+
+        Button dayToggleButton = (Button) findViewById(R.id.day_radioButton);
+        dayToggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onDayButtonClick(v);
+
+            }
+        });
+
+        Button weekToggleButton = (Button) findViewById(R.id.week_radiobutton);
+        weekToggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onWeekButtonClick(v);
+
+            }
+        });
+
+        //Dummy listitem for testing
+       /* Workout workout = new Workout(startDate, stopDate, 15, Workout.WorkoutType.CARDIO);
         WorkoutActivity workoutActivity = new WorkoutActivity("WORKOUT", workout);
         WorkoutDiary workoutDiary = (WorkoutDiary) WorkoutDiary.getInstance();
-        workoutDiary.addActivity(startDate, workoutActivity);
+        workoutDiary.addActivity(startDate, workoutActivity);*/
+
 
         todaysDate = Calendar.getInstance().getTime();
         diary = (WorkoutDiary) WorkoutDiary.getInstance();
@@ -109,14 +150,14 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         cal = Calendar.getInstance();
 
-        graph = (GraphView) findViewById(R.id.workout_graph);
-        series = new BarGraphSeries<>();
-        //fillListWithDummyData();
+        setupGraph();
         fillListWithDataFromCalendar(cal);
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#F5B3C0")));
 
         updateDayScreen(cal);
 
-        if(WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING){
+        if(isWeekView){
             textDay.setText("Denna vecka");
         }else {
             textDay.setText("Idag");
@@ -143,7 +184,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         }else {
             Toast.makeText(getActivity(), R.string.no_connection_UP, Toast.LENGTH_LONG).show();
             Account.getInstance().setNextClassCallback(this.getClass());
-            startActivity(new Intent(this, JawboneSetupActivity.class));
+            startNewActivity( JawboneSetupActivity.class);
         }
     }
 
@@ -163,7 +204,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.right_corner_button_add) {
-            startActivity(new Intent(this, AddWorkoutActivity.class));
+            startNewActivity( AddWorkoutActivity.class);
             return true;
         }
 
@@ -171,6 +212,10 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     }
 
 
+    /**
+     * Method used for fetching a list of workouts from UP
+     * The method will relay the call to a callback function
+     */
     private void fetchWorkoutFromUP() {
         Log.e(TAG, "making Get Workout Events List api call ...");
         ApiManager.getRestApiInterface().getWorkoutEventList(
@@ -199,8 +244,9 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
                     Log.e(TAG, "Xid: " + xid);
 
                     if(diary.getActivity(Utils.MillisToCalendar(Double.valueOf((ltm.get("time_completed").toString())).longValue() * 1000), xid) == null) {
+
                         //Creating new activity with a workout using the information from UP and adding it to the diary
-                        diary.addActivity(new WorkoutActivity(xid, new Date(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000),
+                        diary.addActivity(new WorkoutActivity(xid, Utils.MillisToCalendar(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000),
                                 new Workout(new Date(Double.valueOf((ltm.get("time_created").toString())).longValue()*1000),
                                         new Date(Double.valueOf((ltm.get("time_completed").toString())).longValue()*1000),
                                         convertUPStringToInt(details.get("intensity").toString()), convertSubToWork(convertUPStringToInt(ltm.get("sub_type").toString())),
@@ -222,11 +268,19 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         }
     };
 
+    /**
+     * Method used to create a hashmap for the workout event request
+     * @return a hashmap with the requests for the workout event call
+     */
     private static HashMap<String, Integer> getWorkoutEventsListRequestParams(){
         HashMap<String, Integer> queryHashMap = new HashMap<>();
         return queryHashMap;
     }
 
+    /**
+     * Method used to fill the list with the events from diary using a calendar
+     * @param c is the calendar used when referencing what date is to be fetched and put in the list
+     */
     private void fillListWithDataFromCalendar(Calendar c){
         ListView lv = (ListView) findViewById(R.id.show_workout);
         Log.e("This is the cal", "" + c.getTime());
@@ -249,13 +303,22 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         lv.setAdapter(adapter);
     }
 
+    /**
+     * Method used to get the activity context
+     * @return the context of the current activity
+     */
     public Context getActivity() {
         return this;
     }
 
+    /**
+     * Method used for manually setting up the workout activity list
+     * @param workoutActivityList
+     */
     private void updateActivityList (ArrayList<WorkoutActivity> workoutActivityList){
         double intensity =0;
         ArrayList <Workout> workoutArrayList = new ArrayList<>();
+        GraphView wGraph = (GraphView) findViewById(R.id.workout_graph);
 
         for(int i = 0; i<workoutActivityList.size(); i++) {
             for (int j = 0; j < workoutActivityList.get(i).getWorkoutList().size(); j++) {
@@ -267,52 +330,44 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
             intensity += workout.getIntensity();
         }
 
-        if(series!= null){
-            series.resetData(new DataPoint[]{
-                    new DataPoint(0,0),
-                    new DataPoint(10, intensity),
-                    new DataPoint(20, intensity),
-                    new DataPoint(30, intensity),
-                    new DataPoint(40, intensity),
+        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(wGraph);
 
-            });
-        series.setSpacing(20);
+        wGraph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
 
-        }
-
-        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
-//        staticLabelsFormatter.setHorizontalLabels(new String[] {"Antal });
-        graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
-
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Intensitet");
-        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+        wGraph.getGridLabelRenderer().setVerticalAxisTitle("Intensitet");
+        wGraph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
 
         series.setColor(Color.DKGRAY);
-        graph.removeSeries(series);
-        graph.addSeries(series);
+        List<DataPoint[]> dataPointsList = fetchDataPoints(cal.getTime());
+        series.resetData(dataPointsList.get(0));
     }
 
+    /**
+     * Method used for updating the day view of the layout
+     * @param cal used as reference to what date the data is fetched from
+     */
     private void updateDayScreen(Calendar cal){
+        this.cal = cal;
         workoutActivityList = (ArrayList) diary.showDaysActivities(cal);
         updateActivityList(workoutActivityList);
     }
 
-    //Calculates the start and end date for a given date and print out the diet activities for that interval
-    private void updateWeekScreen(Calendar date) {
-        Pair<Calendar, Calendar> pairDate = getDateIntervalOfWeek(date);
-        workoutActivityList= (ArrayList) diary.showWeekActivities(pairDate.first, pairDate.second);
+    /**
+     * Method used for updating the week view of the layout
+     * @param cal used as reference to what date the data is fetched from
+     */
+    private void updateWeekScreen(Calendar cal) {
+        this.cal = cal;
+        Pair<Calendar, Calendar> pairDate = getDateIntervalOfWeek(cal);
+        workoutActivityList= (ArrayList) diary.showPeriodActivities(pairDate.first, pairDate.second);
         updateActivityList(workoutActivityList);
     }
 
-    public List<IDiaryActivity> getListOfActivities(){
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(todaysDate);
-
-        Calendar cal2 = new GregorianCalendar();
-        cal2.add(Calendar.DATE, 1);
-        return WorkoutDiary.getInstance().showWeekActivities(cal, cal2);
-    }
-
+    /**
+     * Used when pairing two calendars to to get the interval of a week
+     * @param pairCal is the referenced calendar when calculating a week
+     * @return a pairing of two calendars
+     */
     private Pair<Calendar, Calendar> getDateIntervalOfWeek(Calendar pairCal) {
 
         Calendar c = (Calendar) pairCal.clone();
@@ -328,9 +383,13 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         return new Pair<>(firstDay, lastDay);
     }
 
+    /**
+     * Method called when pressing the next button
+     * @param view not used
+     */
     public void onNextButtonClick(View view){
         //Only dayview
-        if (!WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING && dayOffset != 0) { // makes sure that you can't proceed past today's date
+        if (!isWeekView && dayOffset != 0) { // makes sure that you can't proceed past today's date
 
             dayOffset++;
             cal.add(Calendar.DATE, 1);
@@ -345,7 +404,7 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
             }
             updateDayScreen(cal);
         //Only weekview
-        } else if (WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING && weekOffset != 0) {
+        } else if (isWeekView && weekOffset != 0) {
             weekOffset++;
             cal.add(Calendar.DATE, 7);
 
@@ -361,9 +420,13 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
         fillListWithDataFromCalendar(cal);
     }
 
+    /**
+     * Method called when pressing the previous button
+     * @param view not used
+     */
     public void onPreviousButtonClick(View view){
-        Log.e("Is this weekview?", " - " + WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING);
-        if (!WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING) {
+        Log.e("Is this weekview?", " - " + isWeekView);
+        if (!isWeekView) {
             Log.e("Inside", "I'm fucking inside DAYVIEEEW!");
             dayOffset--;
             Log.e("Dayoffset", "" + dayOffset);
@@ -397,26 +460,41 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
             updateWeekScreen(cal);
         }
     }
+
+    /**
+     * Used to reset the current day offset and calendar
+     */
     private void resetDay() {
         dayOffset = 0;
         cal.setTime(Calendar.getInstance().getTime());
         textDay.setText("Idag");
     }
 
+    /**
+     * Used to reset the current week offset and calendar
+     */
     private void resetWeek() {
         weekOffset = 0;
         cal.setTime(Calendar.getInstance().getTime());
         textDay.setText("Denna vecka");
     }
 
+    /**
+     * Method called when pressing the show week button
+     * @param view not used
+     */
     public void onWeekButtonClick(View view){
-        WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING = true;
+        isWeekView = true;
         updateWeekScreen(cal);
         resetWeek();
     }
 
+    /**
+     * Method called when pressing the show day button
+     * @param view not used
+     */
     public void onDayButtonClick(View view){
-        WHAT_THE_ACTUAL_FUCK_WERE_YOU_THINKING = false;
+        isWeekView = false;
         updateDayScreen(cal);
         resetDay();
     }
@@ -470,5 +548,67 @@ public class WorkoutHomeActivity extends CustomActionBarActivity {
     private int convertUPStringToInt(String integerWannabe) {
         return Integer.parseInt(integerWannabe.substring(0, integerWannabe.indexOf(".")));
 
+    }
+
+    public List<DataPoint[]> fetchDataPoints(Date date) {
+        List<DataPoint> workoutGraphPoints = new ArrayList<>();
+        List<Workout> workoutList;
+        if(isWeekView) {
+            workoutList = diary.getWorkoutListFromWeek(date);
+        }else {
+            workoutList = diary.getWorkoutListFromDate(date);
+        }
+
+        int steps = 0;
+        int calories = 0;
+        int intensity = 0;
+        int nbrOfIntensities = 0;
+        if(!workoutList.isEmpty()) {
+            for (int i = 0; i < workoutList.size(); i++) {
+                Workout workout = workoutList.get(i);
+
+                steps += workout.getSteps();
+                calories += workout.getCalories();
+                intensity += workout.getIntensity();
+                nbrOfIntensities++;
+            }
+        }
+        if(nbrOfIntensities != 0)
+            intensity /= nbrOfIntensities;
+
+        List<DataPoint[]> dataPointsList = new ArrayList<>();
+        dataPointsList.add(new DataPoint[]{
+                new DataPoint(0,0),
+                new DataPoint(10, steps),
+                new DataPoint(20, calories),
+                new DataPoint(30, intensity),
+                new DataPoint(40, 0),
+        });
+
+        return new ArrayList<>(dataPointsList);
+
+    }
+
+    public void setupGraph() {
+        cal = Calendar.getInstance();
+        Date activeDate = cal.getTime();
+
+        GraphView wGraph = (GraphView) findViewById(R.id.workout_graph);
+
+        DataPoint[] barGraphPoints = fetchDataPoints(activeDate).get(0);
+        series = new BarGraphSeries<>(barGraphPoints);
+
+        wGraph.addSeries(series);
+        series.setColor(Color.rgb(0, 204, 204));
+
+        //Y Axis bounds
+        wGraph.getViewport().setScalable(true);
+        wGraph.getViewport().setYAxisBoundsManual(true);
+
+
+        series.setSpacing(20);
+        wGraph.getGridLabelRenderer().setNumVerticalLabels(0);
+
+        wGraph.getGridLabelRenderer().setGridColor(Color.argb(0,255,255,255));
     }
 }

@@ -8,13 +8,16 @@ import android.widget.TextView;
 
 import com.kandidat.datx02_15_39.tok.R;
 
+/**
+ * Activity for setting goals
+ */
 public class GoalActivity extends CustomActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_goal);
-		initMenu(R.layout.activity_goal);
+		initMenu();
 
 		//Just a wierd thing that I'm trying to fix so I'm writing something super wierd right now.
 		//Food sliders and textview

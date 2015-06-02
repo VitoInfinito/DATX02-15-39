@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import com.kandidat.datx02_15_39.tok.model.diet.DietActivity;
 
 /**
- * Created by Lagerstedt on 2015-04-26.
+ * Classed you as a helper abstract class to hold parameters
  */
 public abstract class DietFragment extends Fragment {
 

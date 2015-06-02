@@ -8,7 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Lagerstedt on 2015-02-18.
+ * Class Added to be able to standardize the edit function to a diary item, This class will help to
+ * edit a DietActivity.
  */
 public class EditDietActivityParams extends EditActivityParams {
 	public final List<Food> list;

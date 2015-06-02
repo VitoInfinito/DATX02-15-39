@@ -1,19 +1,21 @@
 package com.kandidat.datx02_15_39.tok.layout;
 
 import android.app.AlertDialog;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +30,9 @@ import android.widget.Toast;
 import com.kandidat.datx02_15_39.tok.R;
 
 /**
- * Created by Lagerstedt on 2015-02-24.
+ * This class is an activity that all our activities will extends to be able to implement the
+ * slidable menu, Switch activities right and send toast. This class is created to not make
+ * redundant code.
  */
 public class CustomActionBarActivity extends ActionBarActivity{
 
@@ -40,7 +44,12 @@ public class CustomActionBarActivity extends ActionBarActivity{
 	private DrawerLayout mDrawerLayout;
 	protected int screenWidth, screenHeight;
 
-	protected void initMenu(int layout){
+
+	/**
+	 * Method to initial a activity with menu on the left hand side.
+	 * This gives all buttons a listener and divides the menu item in different sections.
+	 */
+	protected void initMenu(){
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		this.screenHeight = dm.heightPixels;
@@ -141,7 +150,9 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 	}
 
-
+	/**
+	 * The menu item click listener. This will handle the input on the menu.
+	 */
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView parent, View view, int position, long id) {
@@ -149,50 +160,55 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		}
 	}
 
-	/** Swaps fragments in the main content view */
+	/** Swaps fragments in the main content view
+	 * This is a helper class for the menu item click listener that changes the Activity depending
+	 * on which menu item you press.
+	 * @param parent - The view that was pressed
+	 * @param position - The position it has in the listview
+	 */
 	private void selectItem(AdapterView parent, int position) {
 		mDrawerLayout.closeDrawer(GravityCompat.START);
 		if(parent.getId() == R.id.left_drawer_list_top){
 			switch(position){
 				case 0:
-					startActivity(new Intent(this, MainActivity.class));
+					startNewActivity(MainActivity.class);
 					break;
 				default:
-					Toast.makeText(this, "Please Report this button is not implemented, TOP", Toast.LENGTH_SHORT).show();
+					sendToast("Var god rapportera fel, denna knapp är inte implementerad, DiaryTop");
 			}
 		}else if(parent.getId() == R.id.left_drawer_list_diary){
 			switch(position){
 				case 0:
-					startActivity(new Intent(this, WorkoutHomeActivity.class));
+					startNewActivity(WorkoutHomeActivity.class);
 					break;
 				case 1:
-					startActivity(new Intent(this, DietHomeActivity.class));
+					startNewActivity(DietHomeActivity.class);
 					break;
 				case 2:
-					startActivity(new Intent(this, SleepHomeActivity.class));
+					startNewActivity(SleepHomeActivity.class);
 					break;
 				case 3:
-                    startActivity(new Intent(this, WeightHomeActivity.class));
+					startNewActivity(WeightHomeActivity.class);
 					break;
 				default:
-					Toast.makeText(this, "Please Report this button is not implemented, Diary", Toast.LENGTH_SHORT).show();
+					sendToast("Var god rapportera fel, denna knapp är inte implementerad, DiaryMid");
 			}
 		}else if(parent.getId() == R.id.left_drawer_list_setting){
 			switch(position){
 				case 0:
-                    startActivity(new Intent(this, AccountHomeActivity.class));
+					startNewActivity(AccountHomeActivity.class);
 					break;
 				case 1:
-                    startActivity(new Intent(this, AccessoriesHomeActivity.class));
+                    startNewActivity(AccessoriesHomeActivity.class);
 					break;
 				case 2:
-					//TODO
+					sendToast("");
 					break;
 				default:
-					Toast.makeText(this, "Please Report this button is not implemented, DiaryP", Toast.LENGTH_SHORT).show();
+					sendToast("Var god rapportera fel, denna knapp är inte implementerad, DiaryBot");
 			}
 		}else{
-			Toast.makeText(this, "Should not happen", Toast.LENGTH_LONG).show();
+			sendToast("Borde inte hända, var god rapportera fel");
 		}
 	}
 
@@ -216,13 +232,15 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-		// Handle your other action bar items...
-
 		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
 	public void onBackPressed() {
+		/*
+		This added to make the user aware of when the user leaves the application.
+		In all other cases the activities parent will be the new activity
+		 */
 		if(this.getClass() == MainActivity.class) {
 			new AlertDialog.Builder(this)
 									.setTitle("Really Exit?")
@@ -235,15 +253,23 @@ public class CustomActionBarActivity extends ActionBarActivity{
 						}
 					}).create().show();
 		}else{
-			super.onBackPressed();
+			startActivity(NavUtils.getParentActivityIntent(this));
+			finish();
 		}
 	}
 
+	/**
+	 * Method to exit the program
+	 */
 	private void quitPrograme(){
-		this.finish();
+		moveTaskToBack(true);
+		finish();
 	}
 
-
+	/**
+	 * This is a helper class to represent the menu items.
+	 * This is needed because of the adapter that is used.
+	 */
 	public class MenuItems{
 		private String title;
 		private int icon;
@@ -278,6 +304,9 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		}
 	}
 
+	/**
+	 * A class that extends adapters to be able to fill a List view with information
+	 */
 	public class MenuItemAdapter extends ArrayAdapter<MenuItems>
 	{
 		public MenuItemAdapter (Context context)
@@ -303,19 +332,27 @@ public class CustomActionBarActivity extends ActionBarActivity{
 		}
 	}
 
-	public void onAlertAddButtonClick(View view){
-		switch(view.getId()) {
-			case R.id.alert_diet_button:
-				startActivity(new Intent(this, AddDietActivity2.class));
-				break;
-			case R.id.alert_sleep_button:
-				startActivity(new Intent(this, AddSleepActivity.class));
-				break;
-			case R.id.alert_training_button:
-				startActivity(new Intent(this, AddWorkoutActivity.class));
-				break;
-			case R.id.alert_weight_button:
-				break;
+	/**
+	 * Method added to not make redundant code in all activities.
+	 * This will close the acticity your on and switch to the wanted activity.class,
+	 * but it the new is the same as 'this.class' nothing will happen and if
+	 * 'this.class' == Main.class it will only switch acitivity.
+	 * @param activity - The new activity you want to switch to
+	 */
+	public void startNewActivity(Class<?> activity) {
+		if (this.getClass() != activity) {
+			startActivity(new Intent(this, activity));
+			if(this.getClass() != MainActivity.class) {
+				finish();
+			}
 		}
+	}
+
+	/**
+	 * Method to not have redundant code with toasts.
+	 * @param message - The message you want to display.
+	 */
+	public void sendToast(String message){
+		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 	}
 }

@@ -1,62 +1,84 @@
 package com.kandidat.datx02_15_39.tok.utility;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 
 import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by tomashasselquist on 25/03/15.
+ * Class used for all static utility functions used in the application
  */
 public final class Utils {
 
+    //account prefs is the referenced value of the saved account preferences
     public static final String ACCOUNT_PREFS = "account_prefs";
-
+	public static final int DATABASE_VERSION = 2;
+    public static final String recipeArgument = "RECIPEARGUMENT";
+    public static final String dietActivityArgument = "DIETACTIVITYARGUMENT";
 
     private Utils() {}
 
-
-    public static final int getTwoPlusX(int x) {
-        return 3;
-    }
-
+    /**
+     * Method used to convert a date to a calendar
+     * @param date is the date that is to be converted
+     * @return a calendar containing the information the date contained
+     */
     public static Calendar DateToCalendar(Date date){
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal;
     }
 
+    /**
+     * Method used to create a calendar from milliseconds
+     * @param millis the milliseconds since January 1st 1970
+     * @return the calendar represented by the milliseconds
+     */
     public static Calendar MillisToCalendar(long millis) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(millis);
         return cal;
     }
 
-	/*
- * Sets upp a calender that can be compared only between 2 dates!
- * The Hour, Minute, Seconds, and milliseconds is set to 0.
- * @return - A Calendar that is Comparable between days
- */
+	/**
+     * Sets upp a calender that can be compared only between 2 dates!
+     * The Hour, Minute, Seconds, and milliseconds is set to 0.
+     * @return - A Calendar that is Comparable between days
+     */
 	public static Calendar setupCalendar(){
 		Calendar tmp = Calendar.getInstance();
-		tmp.set(Calendar.HOUR_OF_DAY, 0);
-		tmp.set(Calendar.MINUTE, 0);
-		tmp.set(Calendar.SECOND,0);
-		tmp.set(Calendar.MILLISECOND,0);
+		tmp = setupCalendar(tmp);
 		return tmp;
 	}
 
-	public static int getDpToPixel(Context context, int dp){
-		final float scale = context.getResources().getDisplayMetrics().density;
-		return (int) (dp * scale + 0.5f);
+	/**
+	 * Method to hide the keyboard from the user
+	 */
+	public static void hideKeyboard(Activity activity) {
+		try
+		{
+			InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+			inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+		}
+		catch (Exception e)
+		{
+			// Ignore exceptions if any
+			Log.e("KeyBoardUtil", e.toString(), e);
+		}
 	}
 
-	/*
-		 * Sets upp a calender that can be compared only between 2 dates!
-		 * The Hour, Minute, Seconds, and milliseconds is set to 0.
-		 * @return
-		 */
-	public static Calendar setupCalendar(Calendar cal){
+	/**
+	 * Sets upp a calender that can be compared only between 2 dates!
+	 * The Hour, Minute, Seconds, and milliseconds is set to 0.
+	 * @param calendar -Calendar to change to new calendar that is comparable.
+	 *	@return - A Calendar that is Comparable between days
+	 */
+	public static Calendar setupCalendar(Calendar calendar){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(calendar.getTime());
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND,0);
@@ -64,6 +86,14 @@ public final class Utils {
 		return cal;
 	}
 
-	public static final String recipeArgument = "RECIPEARGUMENT";
-	public static final String dietActivityArgument = "DIETACTIVITYARGUMENT";
+    /**
+     * Method used for converting DP to pixels
+     * @param context is the context of the activity
+     * @param dp is the dp to be converted
+     * @return an int containing the pixels the dp was converted to
+     */
+	public static int getDpToPixel(Context context, int dp){
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int) (dp * scale + 0.5f);
+	}
 }
